@@ -1,0 +1,121 @@
+/*
+ * Shared hero styles: only what Tailwind has no syntax for (keyframes, masks,
+ * the splash's no-JavaScript fallback). Timing comes from the system's
+ * --motion-* tokens.
+ */
+
+/* The intro script takes the splash over on mount. If the script never runs,
+   this fades it out, so the page is never stuck behind it. */
+[data-splash] {
+  animation: hero-splash-fallback var(--motion-duration-slowest) linear
+    calc(var(--motion-duration-slowest) * 8) forwards;
+}
+
+@keyframes hero-splash-fallback {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* The shield settles in on the first paint (CSS, so it needs no script), in
+   the system's entrance: from the entrance scale, fading up. */
+[data-splash-mark] {
+  animation: hero-splash-mark-in var(--motion-duration-slowest) var(--motion-easing-expressive-entrance) both;
+}
+
+@keyframes hero-splash-mark-in {
+  from {
+    opacity: 0;
+    transform: scale(var(--motion-scale-enter));
+  }
+}
+
+/* The zooming layers are drawn once and scaled on the GPU. Without this the
+   browser redraws the masks at up to 180x every frame and the zoom stalls;
+   with it, the upscaled image softens as it grows, which reads as motion blur. */
+[data-splash-zoom],
+[data-splash-ghost] {
+  will-change: transform;
+}
+
+/* The SSB mark, in the logo's own accent for the current theme. */
+.hero-splash-mark {
+  background: var(--ssx-logo-ssb-accent);
+  mask: var(--brand-mark) center / contain no-repeat;
+}
+
+/* Once open, the ground has the mark's outline cut out of it, so the mark's
+   openings look through to the footage behind the splash. The intro sets
+   --shield-hole (the outline) and --shield-height (the mark's drawn height). */
+[data-splash][data-open] .hero-splash-ground {
+  mask-image: linear-gradient(#000, #000), var(--shield-hole);
+  mask-size:
+    100% 100%,
+    auto var(--shield-height);
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-composite: exclude;
+}
+
+/* Logo ticker: two identical lists slide left by one list's width, forever. */
+.hero-ticker {
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+.hero-ticker-track {
+  animation: hero-ticker var(--ticker-duration) linear infinite;
+}
+
+.hero-ticker:hover .hero-ticker-track {
+  animation-play-state: paused;
+}
+
+@keyframes hero-ticker {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Video placeholder: a slow brand-tinted drift, so the frame reads as footage. */
+.hero-video-placeholder {
+  background:
+    radial-gradient(
+      45% 60% at 25% 35%,
+      color-mix(in oklab, var(--surface-brand-solid) 55%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      40% 50% at 75% 70%,
+      color-mix(in oklab, var(--surface-brand-solid) 30%, transparent),
+      transparent 70%
+    ),
+    var(--surface-page);
+  background-size: 180% 180%;
+  animation: hero-video-drift calc(var(--motion-duration-slowest) * 6) var(--motion-easing-expressive-in-out)
+    infinite alternate;
+}
+
+@keyframes hero-video-drift {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: 100% 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-splash] {
+    display: none;
+  }
+
+  .hero-ticker {
+    overflow-x: auto;
+  }
+
+  .hero-ticker-track,
+  .hero-video-placeholder {
+    animation: none;
+  }
+}

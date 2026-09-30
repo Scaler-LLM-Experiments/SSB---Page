@@ -1,0 +1,131 @@
+/* =========================================================
+   SSX Story Card (overlay variant) — ported from human-feature-card.html.
+   Photo fills the card, content sits on a text sits straight on the
+   photo's dark base, one logo under it in white.
+   Tokens only; follows data-brand / data-theme.
+   ========================================================= */
+
+.ssx-card {
+  --card-radius: var(--radius-lg);
+  --card-pad: var(--space-6);
+
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  /* clip-path, so the entrance animation can wipe the card open from its
+     rounded resting shape */
+  clip-path: inset(0 round var(--card-radius));
+  border-radius: var(--card-radius);
+  background: var(--surface-sunken);
+  color: var(--on-image-ink);
+  font-family: var(--font-family-sans);
+}
+
+.ssx-card__media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+.ssx-card__media > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--card-focal, 50% 0%);
+}
+
+.ssx-card__content {
+  position: relative;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: auto;
+  padding: var(--card-pad);
+}
+
+.ssx-card__body {
+  display: grid;
+  gap: var(--space-1);
+}
+.ssx-card__title {
+  margin: 0;
+  font-size: var(--type-h2-size);
+  line-height: var(--type-h2-lh);
+  letter-spacing: var(--type-h2-tracking);
+  font-weight: var(--type-h2-weight);
+  color: var(--on-image-ink);
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+.ssx-card__description {
+  margin: 0;
+  font-size: var(--type-body-sm-size);
+  line-height: var(--type-body-sm-lh);
+  letter-spacing: var(--type-body-sm-tracking);
+  font-weight: var(--type-body-sm-weight);
+  color: var(--on-image-ink-secondary);
+  text-wrap: pretty;
+}
+
+/* ---- Logo: one per card, 24px tall (20px on a phone), width auto ---- */
+.ssx-logos {
+  --logo-h: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-width: 0;
+  height: var(--logo-h);
+}
+.ssx-logo {
+  display: block;
+  flex: 0 1 auto;
+  height: var(--logo-h);
+  width: auto;
+  min-width: 0;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: left center;
+  filter: brightness(0) invert(1);
+}
+
+/* ---- Mobile: spacing only; type steps come from the type roles ---- */
+@media (max-width: 671px) {
+  .ssx-card {
+    --card-pad: var(--space-4);
+  }
+  .ssx-card .ssx-card__content {
+    gap: var(--space-3);
+  }
+  .ssx-card .ssx-logos {
+    --logo-h: 1.25rem;
+  }
+}
+
+/* =========================================================
+   Horizontal scroller: the track bleeds to the viewport edge but its
+   first card lines up with the Container's content edge.
+   ========================================================= */
+.h-scroller {
+  --scroller-inset: calc(max(0px, (100% - var(--size-container-max)) / 2) + var(--space-gutter));
+  display: flex;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0 var(--scroller-inset) var(--space-2);
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-padding-inline: var(--scroller-inset);
+  scrollbar-width: none;
+}
+.h-scroller::-webkit-scrollbar {
+  display: none;
+}
+.h-scroller > li {
+  flex: none;
+  width: min(78vw, 20rem);
+}

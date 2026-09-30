@@ -1,0 +1,28 @@
+/*
+ * Hero V2: on desktop the video blends into the black through feathered edges.
+ * Each edge's feather is a custom property, so the motion can tween the edges
+ * to hard (0%) and back. On a phone the video is a plain card: no feathers.
+ */
+.hero-v2-video {
+  --feather-left: 0%;
+  --feather-right: 0%;
+  --feather-top: 0%;
+  --feather-bottom: 0%;
+  mask-image:
+    linear-gradient(to right, transparent, #000 var(--feather-left)),
+    linear-gradient(to left, transparent, #000 var(--feather-right)),
+    linear-gradient(to bottom, transparent, #000 var(--feather-top)),
+    linear-gradient(to top, transparent, #000 var(--feather-bottom));
+  mask-composite: intersect;
+}
+
+/* md: the video fills the top of the hero, edge to edge, and fades down into
+   the black where the copy sits; the sides fall off softly. */
+@media (min-width: 1056px) {
+  .hero-v2-video {
+    --feather-left: 12%;
+    --feather-right: 12%;
+    --feather-top: 6%;
+    --feather-bottom: 50%;
+  }
+}
