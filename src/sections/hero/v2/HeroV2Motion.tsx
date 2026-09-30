@@ -59,25 +59,43 @@ export function HeroV2Motion({ children }: { children: React.ReactNode }) {
           });
       },
       onDone: () => {
-        scroll.add(DESKTOP_WITH_MOTION, () => videoMoment(hooksIn(root)));
+        scroll.add(DESKTOP_WITH_MOTION, () => videoMoment(hooksIn(root), closeFilm));
         scroll.add(OTHERWISE, () => navFollowsPage(hooksIn(root)));
       },
     });
 
-    // The play button (shown once the video is framed) plays the film from the
-    // start, with sound. With the placeholder there is no film yet: it does nothing.
+    // The play button (shown once the video is framed) opens the full film from
+    // YouTube in the frame, with sound, in place of the silent loop. Scrolling
+    // back out of the frame, or the hero off screen, closes it and the loop
+    // carries on, so the film never plays where it can't be seen.
     const play = root.querySelector('[data-video-play] button');
-    const playFilm = () => {
-      const video = root.querySelector('video');
-      if (!video) return;
-      video.muted = false;
-      video.currentTime = 0;
-      void video.play();
+    const filmId = hooksIn(root)('video-play')?.dataset.youtubeId;
+    const loop = root.querySelector('video');
+    const openFilm = () => {
+      if (!card || !filmId || card.querySelector('iframe')) return;
+      const film = document.createElement('iframe');
+      film.src = `https://www.youtube-nocookie.com/embed/${filmId}?autoplay=1&rel=0&playsinline=1`;
+      film.title = 'Scaler School of Business campus film';
+      film.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      film.allowFullscreen = true;
+      film.className = 'absolute inset-0 h-full w-full';
+      card.setAttribute('data-film-open', '');
+      card.append(film);
+      loop?.pause();
+      film.focus();
     };
-    play?.addEventListener('click', playFilm);
+    function closeFilm() {
+      const film = card?.querySelector('iframe');
+      if (!film) return;
+      film.remove();
+      card!.removeAttribute('data-film-open');
+      void loop?.play();
+    }
+    play?.addEventListener('click', openFilm);
 
     return () => {
-      play?.removeEventListener('click', playFilm);
+      play?.removeEventListener('click', openFilm);
+      closeFilm();
       stopIntro();
       scroll.revert();
     };
@@ -98,7 +116,7 @@ function restingFeathers(card: HTMLElement) {
   };
 }
 
-function videoMoment(get: Get) {
+function videoMoment(get: Get, closeFilm: () => void) {
   const section = get('hero')!;
   const slot = get('video-slot')!;
   const card = get('video-card')!;
@@ -106,18 +124,33 @@ function videoMoment(get: Get) {
   // Inside the page margins, lined up with the copy, not edge to edge.
   const frame = () => centredFrame(get, 'content');
 
-  gsap
-    .timeline({
-      defaults: { ease: 'none' },
-      scrollTrigger: {
-        // The hero sticks under the nav (CSS) while its tall track scrolls past.
-        trigger: get('hero-pin'),
-        start: () => `top top+=${navHeight(get)}`,
-        end: 'bottom bottom',
-        scrub: duration.slower,
-        invalidateOnRefresh: true,
+  // Where the play button starts to fade in: scrolled back before it, the
+  // frame is opening up again, and an open film closes.
+  const framedAt = 0.3;
+
+  // The hero scrolled away under the nav: an open film closes.
+  ScrollTrigger.create({
+    trigger: get('hero-pin'),
+    start: () => `bottom top+=${navHeight(get)}`,
+    onEnter: closeFilm,
+  });
+
+  const tl = gsap.timeline({
+    defaults: { ease: 'none' },
+    scrollTrigger: {
+      // The hero sticks under the nav (CSS) while its tall track scrolls past.
+      trigger: get('hero-pin'),
+      start: () => `top top+=${navHeight(get)}`,
+      end: 'bottom bottom',
+      scrub: duration.slower,
+      invalidateOnRefresh: true,
+      onUpdate: (self) => {
+        if (self.progress * tl.duration() < framedAt) closeFilm();
       },
-    })
+    },
+  });
+
+  tl
     // Positions are shares of the scroll distance.
     .fromTo(
       card,
@@ -160,13 +193,13 @@ function videoMoment(get: Get) {
       get('video-play'),
       { autoAlpha: 0 },
       { autoAlpha: 1, duration: 0.12, ease: ease('productiveInOut') },
-      0.3,
+      framedAt,
     )
     .fromTo(
       get('video-caption'),
       { autoAlpha: 0, y: offset.enter },
       { autoAlpha: 1, y: 0, duration: 0.12, ease: ease('productiveInOut') },
-      0.3,
+      framedAt,
     )
     // Then the black gives way to the light page, behind the open frame, and
     // the nav turns light with it.

@@ -12,14 +12,17 @@ import { ease, motionTokens, prefersReducedMotion } from '@kishanscaler/ssx-ui/m
  *
  * Sequence:
  *   1. The SSB shield is on screen from the first paint (it settles in with
- *      CSS). The intro waits for the fonts and the video, and for the shield
- *      to have been seen (LOGO_HOLD).
- *   2. swap   The shield's openings start to look through to the hero's video,
- *             moved full-screen behind the splash; the footage fades up in them.
+ *      CSS). As soon as it has settled and the film can play, its openings
+ *      look through to the hero's video, moved full-screen behind the splash:
+ *      the footage fades up and plays inside the logo while it holds. The
+ *      zoom waits for the fonts too, and for the shield to have been seen
+ *      (LOGO_HOLD).
+ *   2. swap   The camera starts to drift the opening it flies into to the
+ *             centre of the screen.
  *   3. zoom   At once, the camera eases into the middle of the shield and
  *             builds to a fast, motion-blurred rush through it ("zoop"), the
  *             shield dissolving as it goes, until the footage fills the screen
- *             and pulls into focus.
+ *             eases back to its natural size.
  *   4. land   While the mark is still leaving, the footage (seen through its
  *             window) is already travelling to its place in the hero: it
  *             launches with the zoom's speed and decelerates into the slot, on
@@ -47,10 +50,6 @@ const GHOST_LAG = [0.1, 0.2];
 
 /** Peak motion blur on the mark as the camera rushes through it, in px on screen. */
 const LENS_BLUR = 14;
-
-/** How soft the campus footage starts behind the mark, before focus pulls on
- * landing, in px. Light, so it still reads as footage playing. */
-const FOCUS_BLUR = 8;
 
 /** The shield holds on screen this long after navigation before the zoom, in
  * ms, so it registers as the brand before the camera flies into it. */
@@ -95,10 +94,19 @@ export function runIntro(root: HTMLElement, context: gsap.Context, { media, onDo
   window.scrollTo(0, 0);
   const unlock = holdScroll();
 
-  Promise.all([document.fonts.ready, videoReady(root), untilTime(LOGO_HOLD)]).then(() => {
+  // The card's resting corners, read before the window squares them off.
+  const card = get('video-card');
+  const restRadius = card ? getComputedStyle(card).borderTopLeftRadius : '0px';
+
+  // The film starts playing inside the logo as soon as both are ready.
+  const opened = Promise.all([settled(get('splash-mark')), videoReady(root)]).then(() => {
+    if (alive) context.add(() => openWindow(root, get));
+  });
+
+  Promise.all([document.fonts.ready, opened, untilTime(LOGO_HOLD)]).then(() => {
     if (!alive) return;
     context.add(() => {
-      const tl = introTimeline(root, get, () => {
+      const tl = introTimeline(root, get, restRadius, () => {
         unlock();
         if (alive) context.add(onDone);
       });
@@ -134,7 +142,61 @@ function holdScroll(): () => void {
   };
 }
 
-function introTimeline(root: HTMLElement, get: Get, onComplete: () => void) {
+/** What fades in once the footage lands: the nav's contents, then each block of
+ * copy. The nav bar itself stays solid (a half-faded dark bar over the light
+ * page is grey). */
+function arrivals(root: HTMLElement, get: Get): HTMLElement[] {
+  const nav = get('hero-nav');
+  return [
+    ...(nav ? Array.from(nav.children as HTMLCollectionOf<HTMLElement>) : []),
+    ...gsap.utils.toArray<HTMLElement>('[data-hero-fade]', root),
+  ];
+}
+
+/**
+ * Opens the shield's window: the ground gets the mark's outline cut out of it,
+ * and the hero's video, moved full-screen behind the splash (a little too close,
+ * so the zoom can ease it back), fades up in the mark's openings. What would
+ * show through before it has faded up is hidden until it arrives.
+ */
+function openWindow(root: HTMLElement, get: Get) {
+  const splash = get('splash')!;
+  const mark = get('splash-mark')!;
+  const slot = get('video-slot');
+  const card = get('video-card');
+  const hole = shieldOutline(splash);
+
+  gsap.set(arrivals(root, get), { autoAlpha: 0 });
+  if (hole) {
+    gsap.set(splash, {
+      '--shield-hole': hole,
+      '--shield-height': `${mark.getBoundingClientRect().height}px`,
+      attr: { 'data-open': '' },
+    });
+  }
+  if (!card || !slot) return;
+
+  const slotBox = slot.getBoundingClientRect();
+  // Full-screen, the footage rides above the sticky nav; it drops back under
+  // once it has settled.
+  const above = getComputedStyle(document.documentElement).getPropertyValue('--z-overlay').trim();
+  gsap.set(slot, { zIndex: above });
+  gsap.set(card, {
+    left: -slotBox.left,
+    top: -slotBox.top,
+    width: window.innerWidth,
+    height: window.innerHeight,
+    borderRadius: 0,
+  });
+  gsap.set(get('video-frame'), { scale: 1 / motionTokens.scale.enter ** 4 });
+  gsap.fromTo(
+    card,
+    { autoAlpha: 0 },
+    { autoAlpha: 1, duration: duration.slower, ease: ease('expressiveInOut') },
+  );
+}
+
+function introTimeline(root: HTMLElement, get: Get, restRadius: string, onComplete: () => void) {
   const splash = get('splash')!;
   const zoomLayer = get('splash-zoom')!;
   const ghosts = gsap.utils.toArray<HTMLElement>('[data-splash-ghost]', root);
@@ -142,7 +204,6 @@ function introTimeline(root: HTMLElement, get: Get, onComplete: () => void) {
   const slot = get('video-slot');
   const card = get('video-card');
   const frame = get('video-frame');
-  const restRadius = card ? getComputedStyle(card).borderTopLeftRadius : '0px';
   const smooth = ease('expressiveInOut');
   const zoom = duration.slowest * 1.1;
   const settle = duration.slowest * 1.25;
@@ -152,7 +213,7 @@ function introTimeline(root: HTMLElement, get: Get, onComplete: () => void) {
 
   const tl = gsap.timeline({ onComplete });
 
-  // swap: the shield's window opens.
+  // swap: the camera lines up on the opening it flies into.
   const box = mark.getBoundingClientRect();
   const unit = box.height / MARK.height;
   const opening = {
@@ -163,53 +224,14 @@ function introTimeline(root: HTMLElement, get: Get, onComplete: () => void) {
   // the exact centre of the screen, so the zoom converges on the middle.
   const drift = { x: window.innerWidth / 2 - opening.x, y: window.innerHeight / 2 - opening.y };
   const layers = [zoomLayer, ...ghosts];
-  const hole = shieldOutline(splash);
 
   tl.addLabel('swap')
     .set(layers, { transformOrigin: `${opening.x}px ${opening.y}px` }, 'swap')
     .to(layers, { ...drift, duration: zoom * 0.6, ease: smooth }, 'swap');
-  if (hole) {
-    tl.set(
-      splash,
-      { '--shield-hole': hole, '--shield-height': `${box.height}px`, attr: { 'data-open': '' } },
-      'swap',
-    );
-  }
 
-  // Behind the splash, the hero's video fills the screen and fades up in the
-  // shield's openings: a little too close and out of focus. It eases back the
-  // whole way in, and focus pulls as the camera arrives (a rack focus).
-  if (card && slot) {
-    const slotBox = slot.getBoundingClientRect();
-    // Full-screen, the footage rides above the sticky nav; it drops back under
-    // once it has settled.
-    const above = getComputedStyle(document.documentElement).getPropertyValue('--z-overlay').trim();
-    tl.set(slot, { zIndex: above }, 'swap')
-      .set(
-        card,
-        {
-          left: -slotBox.left,
-          top: -slotBox.top,
-          width: window.innerWidth,
-          height: window.innerHeight,
-          borderRadius: 0,
-        },
-        'swap',
-      )
-      .fromTo(card, { autoAlpha: 0 }, { autoAlpha: 1, duration: duration.slower, ease: smooth }, 'swap')
-      .fromTo(
-        frame,
-        { scale: 1 / motionTokens.scale.enter ** 4 },
-        { scale: 1, duration: zoom + settle, ease: smooth },
-        'swap',
-      )
-      .fromTo(
-        frame,
-        { filter: `blur(${FOCUS_BLUR}px)` },
-        { filter: 'blur(0px)', duration: zoom * 0.5 + duration.slower, ease: smooth },
-        `swap+=${zoom * 0.5}`,
-      );
-  }
+  // The footage behind the window (opened while the shield held) eases back
+  // from a little too close the whole way in.
+  if (frame) tl.to(frame, { scale: 1, duration: zoom + settle, ease: smooth }, 'swap');
 
   // zoom: straight into the mark. The camera eases in and builds to a rush;
   // scale grows exponentially so speed reads as forward motion. Two ghosts
@@ -261,17 +283,14 @@ function introTimeline(root: HTMLElement, get: Get, onComplete: () => void) {
       'land',
     )
       .set(card, { clearProps: 'left,top,width,height,borderRadius,opacity,visibility' }, `land+=${settle}`)
-      .set(slot, { clearProps: 'zIndex' }, `land+=${settle}`)
-      .set(frame, { clearProps: 'filter' }, `land+=${settle}`);
+      .set(slot, { clearProps: 'zIndex' }, `land+=${settle}`);
   }
 
   // enter: the nav's contents, then each block of copy, fade in following the
   // page's structure (reading order). Opacity only: nothing moves, so it reads
-  // as one gentle arrival rather than parts assembling. The nav bar itself stays
-  // solid (a half-faded dark bar over the light page is grey).
-  const nav = get('hero-nav');
+  // as one gentle arrival rather than parts assembling.
   tl.addLabel('enter', 'land').fromTo(
-    [...(nav ? Array.from(nav.children) : []), ...gsap.utils.toArray<HTMLElement>('[data-hero-fade]', root)],
+    arrivals(root, get),
     { autoAlpha: 0 },
     {
       autoAlpha: 1,
@@ -293,6 +312,13 @@ function videoReady(root: HTMLElement): Promise<void> {
     video.addEventListener('canplay', () => resolve(), { once: true });
     setTimeout(resolve, VIDEO_WAIT);
   });
+}
+
+/** Resolves when the element's CSS animations (the shield's entrance) have finished. */
+function settled(el: HTMLElement | null): Promise<void> {
+  if (!el) return Promise.resolve();
+  // A cancelled animation rejects `finished`; that counts as settled too.
+  return Promise.all(el.getAnimations().map((a) => a.finished.catch(() => undefined))).then(() => undefined);
 }
 
 /** Resolves at `ms` after navigation start (at once if that has passed). */

@@ -2,8 +2,8 @@ import type { HeroContent } from '@/sections/hero/types';
 
 /*
  * Copy from the team's hero mock (2026-09-30). CTA hrefs are placeholders until
- * real destinations are agreed; there is no campus video yet, so the hero shows
- * a placeholder frame.
+ * real destinations are agreed. The campus film is a 15s silent cut of the team's
+ * screen recording (campus walk-through, then the programme director), looping.
  */
 export const hero: HeroContent = {
   eyebrow: 'PGP in Management & Technology',
@@ -29,6 +29,9 @@ export const hero: HeroContent = {
     { name: 'Bain & Company', wikidataId: 'Q764850', wordmark: 'Bain' },
   ],
   media: {
+    videoSrc: '/media/campus-film.mp4',
+    poster: '/media/campus-film-poster.jpg',
+    youtubeId: 'yBYXT419bFw',
     caption: 'Learn by doing. Build alongside the people shaping what comes next.',
   },
 };

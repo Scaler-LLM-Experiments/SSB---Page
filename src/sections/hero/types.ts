@@ -36,6 +36,8 @@ export type HeroMedia = {
   poster?: string;
   /** A line shown with the video once it is fully revealed. */
   caption?: string;
+  /** The full film's YouTube video id, played in the frame from its play button. Unset: no play button. */
+  youtubeId?: string;
 };
 
 export type HeroContent = {

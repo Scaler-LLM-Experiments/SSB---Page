@@ -43,3 +43,7 @@ next-env.d.ts
 # source material from the team's SSB website build (another app, the ssx-ui
 # source and the internal content deck); sections are ported into src/
 /ssb-website/
+
+# the campus film's source GIF (313 MB, over GitHub's 100 MB limit); the page
+# uses the MP4 cut in public/media
+/src/Gif.gif

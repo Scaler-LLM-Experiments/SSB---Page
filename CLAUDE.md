@@ -51,7 +51,7 @@ src/
     logos.ts            organisation logos from Wikidata (P154) at build time, no key
   sections/hero/
     types.ts            HeroContent: the content contract every variation shares
-    HeroTitle.tsx       title with a brand-coloured phrase; keeps "B-school" unbroken
+    HeroTitle.tsx       title with a pure-white phrase; keeps "B-school" unbroken
     shared/             pieces the cinematic variations share
       Splash.tsx          full-screen splash: the SSB shield the camera zooms into
       intro.ts            zoom into the shield and land on campus, then the copy fades in
@@ -119,9 +119,10 @@ it links to are not in the package. The `.d.ts` files are the reliable source fo
 ## The intro
 
 The SSB shield (monogram only, no wordmark, no loader) is on screen from the first paint and
-settles in with CSS. After `LOGO_HOLD` (1.25s from navigation, once fonts and video are ready) the
-campus footage fades up in the shield's openings and the camera eases, then rushes, straight into
-the shield's centre: motion blur from GPU-upscaled layers, trailing ghosts and a lens blur, and the
+settles in with CSS. As soon as it has settled and the film can play, the campus film fades up in
+the shield's openings and plays there while the logo holds. After `LOGO_HOLD` (1.25s from
+navigation, once fonts are ready too) the camera eases, then rushes, straight into the shield's
+centre: motion blur from GPU-upscaled layers, trailing ghosts and a lens blur, and the
 shield dissolves as it goes. The footage is already travelling to its slot as the shield clears,
 launching at the zoom's speed and decelerating in. Then the nav's contents, the copy and the facts
 fade in together, once. Tuning lives in the constants at the top of `intro.ts`.
@@ -164,7 +165,12 @@ the section is the last thing on the page.
 ## Content
 
 Copy in `src/content/home.ts` comes from the team's hero mock (2026-09-30). CTA hrefs are
-placeholders and there is no campus video yet (a placeholder frame stands in; set `media.videoSrc`).
+placeholders. The campus film (`public/media/campus-film.mp4`, 15s, silent, 6.4 MB) is cut from the
+team's GIF (`src/Gif.gif`, 313 MB, gitignored): frames 0–453, before the screen recorder's player
+controls appear, lightly denoised, H.264 CRF 26. One `<video>` plays it from first paint: behind the
+shield, in the hero, then framed on scroll, looping, never restarted. The framed video's play button
+opens the full film from YouTube (`media.youtubeId`, via youtube-nocookie) in the frame and pauses
+the loop; scrolling back out of the frame or the hero off screen closes it and the loop resumes.
 The five logos (BCG, ISB, McKinsey, IIMA, Bain) are confirmed. ISB and IIMA have no logo on Wikidata,
 so they show as wordmarks until a `logoUrl` is added.
 

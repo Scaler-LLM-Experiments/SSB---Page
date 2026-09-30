@@ -14,8 +14,8 @@ import './hero-v2.css';
 /**
  * V2 (cinematic, black into white): the hero is black.
  *
- * Desktop: the video has no frame. It bleeds off the right edge and fades into
- * the black under the copy. Scrolling pulls it to the centre, inside the page
+ * Desktop: the video has no frame. It runs edge to edge under the nav and fades
+ * into the black under the copy. Scrolling pulls it to the centre, inside the page
  * margins, and hardens its edges into a 16:9 frame; then the black gives way to
  * the white of the light page below.
  *
@@ -71,14 +71,14 @@ export async function HeroV2({
                 left edges line up too. Static, so the video slot positions against the section. */}
             <Container
               data-hero-body
-              className="relative flex flex-1 flex-col gap-8 pb-12 pt-12 md:static md:grid md:grid-cols-[minmax(0,1fr)_auto] md:content-end md:gap-x-16 md:gap-y-10 md:pb-40 md:pt-16"
+              className="relative flex flex-1 flex-col gap-8 pb-12 pt-12 md:static md:grid md:grid-cols-[minmax(0,1fr)_auto] md:content-end md:gap-x-16 md:gap-y-10 md:pb-24 md:pt-16"
             >
               <div
                 data-hero-copy
                 data-hero-fade
                 className="relative flex w-full flex-col gap-5 md:z-lift md:col-start-1 md:row-start-1 md:max-w-panel-xl md:self-end"
               >
-                <Heading as="p" size="eyebrow" data-hero-eyebrow className="text-content-secondary">
+                <Heading as="p" size="eyebrow" data-hero-eyebrow className="text-on-image-ink">
                   {eyebrow}
                 </Heading>
                 <Heading as="h1" data-hero-title className="type-billboard-sm">
@@ -148,20 +148,24 @@ export async function HeroV2({
                     </div>
                   ) : null}
                   {/* The play button, faded in as the video opens into its frame on scroll
-                      (HeroV2Motion plays the film on click). The wrapper fades, not the
-                      button: Button's own transition fights a tween on the button itself. */}
+                      (HeroV2Motion opens the full film from YouTube on click). The wrapper
+                      fades, not the button: Button's own transition fights a tween on the
+                      button itself. */}
                   <div
                     data-video-play
+                    data-youtube-id={media?.youtubeId}
                     data-surface-ink="on-image"
                     className="pointer-events-none invisible absolute inset-0 grid place-items-center opacity-0"
                   >
-                    <GlassButton
-                      size="icon-lg"
-                      aria-label="Play the campus film"
-                      className="pointer-events-auto"
-                    >
-                      <Play weight="fill" />
-                    </GlassButton>
+                    {media?.youtubeId ? (
+                      <GlassButton
+                        size="icon-lg"
+                        aria-label="Play the campus film"
+                        className="pointer-events-auto"
+                      >
+                        <Play weight="fill" />
+                      </GlassButton>
+                    ) : null}
                   </div>
                 </div>
               </div>

@@ -1,8 +1,10 @@
 import * as React from 'react';
 
 /**
- * A hero title with an optional brand-coloured phrase. Hyphenated words are
- * kept on one line, so "B-school" never breaks after the hyphen.
+ * A hero title with an optional highlighted phrase, in pure white (the ink for
+ * text over footage) against the title's softer white on the dark hero.
+ * Hyphenated words are kept on one line, so "B-school" never breaks after the
+ * hyphen.
  */
 export function HeroTitle({ title, highlight }: { title: string; highlight?: string }) {
   const at = highlight ? title.indexOf(highlight) : -1;
@@ -11,7 +13,7 @@ export function HeroTitle({ title, highlight }: { title: string; highlight?: str
   return (
     <>
       {keepHyphenated(title.slice(0, at))}
-      <span className="text-content-brand">{keepHyphenated(highlight)}</span>
+      <span className="text-on-image-ink">{keepHyphenated(highlight)}</span>
       {keepHyphenated(title.slice(at + highlight.length))}
     </>
   );
