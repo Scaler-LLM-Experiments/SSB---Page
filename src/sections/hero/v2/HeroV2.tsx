@@ -152,7 +152,9 @@ export async function HeroV2({
                     ) : null}
                     {/* The big play button, faded in as the video frames on scroll; it opens the
                         full film from YouTube, under YouTube-style controls. */}
-                    {media?.youtubeId ? <FilmPlayer youtubeId={media.youtubeId} /> : null}
+                    {media?.youtubeId ? (
+                      <FilmPlayer youtubeId={media.youtubeId} length={media.youtubeLength} />
+                    ) : null}
                   </div>
                 </div>
               </div>

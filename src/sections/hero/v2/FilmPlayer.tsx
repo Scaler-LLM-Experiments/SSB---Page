@@ -10,8 +10,9 @@ import './film-player.css';
  * YouTube's own controls rebuilt (`Controls`):
  *
  * - The preview: the silent loop already playing in the card, with the big play
- *   button and the controls over it; its progress bar runs with the loop and
- *   scrubs it. Play (the big button, the bar's play or mute) opens the film.
+ *   button and just the scrubber, spanning the full film (`length`, 4:48): it
+ *   runs with the loop, shows times on hover, and a click or drag opens the film
+ *   at that point. The big button opens it from the start.
  * - The film: the full film from YouTube in the frame (the embed's controls
  *   off), under the same controls: scrub, play/pause, mute, the time against
  *   the film's length, fullscreen; they fade while it plays untouched; a click
@@ -25,19 +26,23 @@ import './film-player.css';
  */
 export function FilmPlayer({
   youtubeId,
+  length = 0,
   title = 'Scaler School of Business campus film',
 }: {
   youtubeId: string;
+  /** The film's length in seconds, for the preview's scrubber. */
+  length?: number;
   title?: string;
 }) {
   const previewRef = React.useRef<HTMLDivElement>(null);
-  const [open, setOpen] = React.useState(false);
-  const openFilm = React.useCallback(() => setOpen(true), []);
+  // Closed, or open from a point in the film (seconds).
+  const [open, setOpen] = React.useState<{ start: number } | null>(null);
+  const openFilm = React.useCallback((start = 0) => setOpen({ start }), []);
 
   React.useEffect(() => {
     const card = previewRef.current?.closest('[data-video-card]');
     if (!card) return;
-    const close = () => setOpen(false);
+    const close = () => setOpen(null);
     card.addEventListener('film:close', close);
     return () => card.removeEventListener('film:close', close);
   }, []);
@@ -54,8 +59,9 @@ export function FilmPlayer({
     };
   }, [open]);
 
-  // The loop as the preview's source. Drawn only while the preview shows (the
-  // motion has faded it in) and the film is closed.
+  // The preview's source: the loop's time on the film's length. Drawn only while
+  // the preview shows (the motion has faded it in) and the film is closed. A
+  // seek, once the pointer lets go, opens the film there.
   const preview = React.useMemo<Source>(() => {
     const loop = () => previewRef.current?.closest('[data-video-card]')?.querySelector('video') ?? null;
     return {
@@ -65,18 +71,13 @@ export function FilmPlayer({
         return !!visibility && visibility !== 'hidden' && !wrapper?.closest('[data-film-open]');
       },
       time: () => loop()?.currentTime ?? 0,
-      duration: () => loop()?.duration || 0,
-      loaded: () => {
-        const video = loop();
-        if (!video?.duration || !video.buffered.length) return 0;
-        return video.buffered.end(video.buffered.length - 1) / video.duration;
-      },
-      seek: (seconds) => {
-        const video = loop();
-        if (video) video.currentTime = seconds;
+      duration: () => length,
+      loaded: () => 0,
+      seek: (seconds, final) => {
+        if (final) openFilm(seconds);
       },
     };
-  }, []);
+  }, [length, openFilm]);
 
   return (
     <>
@@ -91,13 +92,13 @@ export function FilmPlayer({
           size="icon-lg"
           aria-label="Play the campus film"
           className="pointer-events-auto size-20"
-          onClick={openFilm}
+          onClick={() => openFilm()}
         >
           <Play weight="fill" className="size-8" />
         </GlassButton>
-        <Controls source={preview} playing={false} muted onToggle={openFilm} onMute={openFilm} />
+        <Controls source={preview} bare />
       </div>
-      {open ? <Film youtubeId={youtubeId} title={title} /> : null}
+      {open ? <Film youtubeId={youtubeId} start={open.start} title={title} /> : null}
     </>
   );
 }
@@ -116,9 +117,10 @@ type Source = {
   seek: (seconds: number, final: boolean) => void;
 };
 
-/** Seconds as YouTube writes them: 0:15, 4:47, 1:02:07. */
-function clock(seconds: number): string {
-  const s = Math.max(0, Math.floor(seconds));
+/** Seconds as YouTube writes them: 0:15, 4:48, 1:02:07. A length is rounded up (the film runs
+ * a fraction over 287s, and YouTube lists it as 4:48); a time into the film is rounded down. */
+function clock(seconds: number, length = false): string {
+  const s = Math.max(0, length ? Math.ceil(seconds) : Math.floor(seconds));
   const h = Math.floor(s / 3600);
   const m = Math.floor((s % 3600) / 60);
   const ss = String(s % 60).padStart(2, '0');
@@ -128,13 +130,15 @@ function clock(seconds: number): string {
 /**
  * YouTube's controls: the progress bar (3px, 5px under the pointer; played,
  * buffered, the knob, a time tooltip; drag to scrub), then play/pause, mute,
- * the time, fullscreen. The bar and the time are drawn every frame straight to
- * the DOM, by transform: no layout, so no layout shift as the film plays.
+ * the time, fullscreen. `bare`: the bar alone, along the bottom edge (YouTube's
+ * preview). The bar and the time are drawn every frame straight to the DOM, by
+ * transform: no layout, so no layout shift as the film plays.
  */
 function Controls({
   source,
-  playing,
-  muted,
+  bare = false,
+  playing = false,
+  muted = false,
   ended = false,
   fullscreen,
   onToggle,
@@ -142,12 +146,13 @@ function Controls({
   onFullscreen,
 }: {
   source: Source;
-  playing: boolean;
-  muted: boolean;
+  bare?: boolean;
+  playing?: boolean;
+  muted?: boolean;
   ended?: boolean;
   fullscreen?: boolean;
-  onToggle: () => void;
-  onMute: () => void;
+  onToggle?: () => void;
+  onMute?: () => void;
   onFullscreen?: () => void;
 }) {
   const bar = React.useRef<HTMLDivElement>(null);
@@ -163,7 +168,10 @@ function Controls({
     el.style.setProperty('--played', String(fraction));
     if (now.current) now.current.textContent = clock(fraction * length.current);
     el.setAttribute('aria-valuenow', String(Math.round(fraction * length.current)));
-    el.setAttribute('aria-valuetext', `${clock(fraction * length.current)} of ${clock(length.current)}`);
+    el.setAttribute(
+      'aria-valuetext',
+      `${clock(fraction * length.current)} of ${clock(length.current, true)}`,
+    );
   }, []);
 
   React.useEffect(() => {
@@ -175,7 +183,7 @@ function Controls({
       if (!duration) return;
       if (duration !== length.current) {
         length.current = duration;
-        if (total.current) total.current.textContent = clock(duration);
+        if (total.current) total.current.textContent = clock(duration, true);
         bar.current?.setAttribute('aria-valuemax', String(Math.round(duration)));
       }
       bar.current?.style.setProperty('--loaded', String(source.loaded()));
@@ -230,8 +238,8 @@ function Controls({
   };
 
   return (
-    <div className="yt-chrome">
-      <div className="yt-gradient" />
+    <div className="yt-chrome" data-bare={bare || undefined}>
+      {bare ? null : <div className="yt-gradient" />}
       <div className="yt-bottom">
         <div
           ref={bar}
@@ -260,42 +268,44 @@ function Controls({
           </div>
         </div>
 
-        <div className="yt-controls">
-          <button
-            type="button"
-            className="yt-button"
-            aria-label={ended ? 'Replay' : playing ? 'Pause (k)' : 'Play (k)'}
-            onClick={onToggle}
-          >
-            {ended ? <ReplayIcon /> : playing ? <PauseIcon /> : <PlayIcon />}
-          </button>
-          <button
-            type="button"
-            className="yt-button"
-            aria-label={muted ? 'Unmute (m)' : 'Mute (m)'}
-            onClick={onMute}
-          >
-            {muted ? <VolumeOffIcon /> : <VolumeIcon />}
-          </button>
-          <div className="yt-time">
-            <span ref={now}>0:00</span>
-            <span className="yt-time-separator"> / </span>
-            <span ref={total} className="yt-time-duration">
-              0:00
-            </span>
-          </div>
-          <span className="yt-spacer" />
-          {onFullscreen ? (
+        {bare ? null : (
+          <div className="yt-controls">
             <button
               type="button"
               className="yt-button"
-              aria-label={fullscreen ? 'Exit full screen (f)' : 'Full screen (f)'}
-              onClick={onFullscreen}
+              aria-label={ended ? 'Replay' : playing ? 'Pause (k)' : 'Play (k)'}
+              onClick={onToggle}
             >
-              {fullscreen ? <ExitFullscreenIcon /> : <FullscreenIcon />}
+              {ended ? <ReplayIcon /> : playing ? <PauseIcon /> : <PlayIcon />}
             </button>
-          ) : null}
-        </div>
+            <button
+              type="button"
+              className="yt-button"
+              aria-label={muted ? 'Unmute (m)' : 'Mute (m)'}
+              onClick={onMute}
+            >
+              {muted ? <VolumeOffIcon /> : <VolumeIcon />}
+            </button>
+            <div className="yt-time">
+              <span ref={now}>0:00</span>
+              <span className="yt-time-separator"> / </span>
+              <span ref={total} className="yt-time-duration">
+                0:00
+              </span>
+            </div>
+            <span className="yt-spacer" />
+            {onFullscreen ? (
+              <button
+                type="button"
+                className="yt-button"
+                aria-label={fullscreen ? 'Exit full screen (f)' : 'Full screen (f)'}
+                onClick={onFullscreen}
+              >
+                {fullscreen ? <ExitFullscreenIcon /> : <FullscreenIcon />}
+              </button>
+            ) : null}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -364,7 +374,7 @@ const IDLE_AFTER = 2500;
 
 /* ---- The film ---- */
 
-function Film({ youtubeId, title }: { youtubeId: string; title: string }) {
+function Film({ youtubeId, start, title }: { youtubeId: string; start: number; title: string }) {
   const root = React.useRef<HTMLDivElement>(null);
   const frame = React.useRef<HTMLDivElement>(null);
   const player = React.useRef<YTPlayer | null>(null);
@@ -402,6 +412,7 @@ function Film({ youtubeId, title }: { youtubeId: string; title: string }) {
         },
         events: {
           onReady: (event) => {
+            if (start) event.target.seekTo(start, true);
             event.target.playVideo();
             setMuted(event.target.isMuted());
           },
@@ -416,6 +427,8 @@ function Film({ youtubeId, title }: { youtubeId: string; title: string }) {
       player.current = null;
       host.replaceChildren();
     };
+    // The player is made once per open; `start` is read only then.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [youtubeId]);
 
   React.useEffect(() => {

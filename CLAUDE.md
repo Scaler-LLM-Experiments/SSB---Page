@@ -242,8 +242,11 @@ viewBox. A `logoUrl` that isn't ours (or a `wikidataId`) still works, at a fixed
 
 The framed video is a YouTube player in two states, under one set of YouTube's controls rebuilt
 (`Controls` in `FilmPlayer.tsx`, fed by a small source interface: time, duration, buffered, seek).
-**The preview:** the silent loop, playing, with the 80px play button and the controls over it; its
-bar runs with the loop (0:05 / 0:15) and scrubs it; play, mute or the big button open the film.
+**The preview:** the silent loop, playing, with the 80px play button and just the scrubber along
+the bottom edge (no buttons, no time), spanning the full film (`media.youtubeLength`, 288s = 4:48):
+it creeps forward with the loop, shows times on hover, and a click or drag opens the film at that
+point (the big button opens it from the start). Lengths are shown rounded up, as YouTube lists them:
+the film runs a fraction over 287s, so 4:48, not 4:47.
 **The film:** the first open loads YouTube's IFrame API and plays the full film
 (`media.youtubeId`, 4:47) with the embed's controls off and the same controls on top: the progress bar (3px, 5px on hover, red-to-pink played, buffered, the red knob, a time
 tooltip; drag to scrub), play/pause, mute, the time against the film's length, fullscreen; the
@@ -312,8 +315,8 @@ on scroll back or away; the card moves by transforms only; the zoom re-measures 
 starts; the Faculty section sits below the hero. Then (2026-10-01): the whole title pure white at
 `type-hero`; eyebrow at the label size; description `lg`; plain CTAs; the nav logo draws itself on
 hover; the ticker's logos changed (Swiggy and Cars24 for ISB and IIMA), self-hosted, sized to equal
-ink, real colours on hover, 48px apart; YouTube-style controls on the film and on the framed loop
-(its bar runs with the loop) and an 80px play button; the scroll moment quicker (220svh track,
+ink, real colours on hover, 48px apart; YouTube-style controls on the film, a bare scrubber over
+the framed loop spanning the film's 4:48 (click to open the film there), an 80px play button; the scroll moment quicker (220svh track,
 white from 0.45).
 
 ## Checking changes visually

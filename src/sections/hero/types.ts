@@ -42,6 +42,8 @@ export type HeroMedia = {
   caption?: string;
   /** The full film's YouTube video id, played in the frame from its play button. Unset: no play button. */
   youtubeId?: string;
+  /** The full film's length in seconds (288 = 4:48): the preview's scrubber spans it before the film loads. */
+  youtubeLength?: number;
 };
 
 export type HeroContent = {

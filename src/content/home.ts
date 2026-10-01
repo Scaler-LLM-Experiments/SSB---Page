@@ -26,6 +26,7 @@ export const hero: HeroContent = {
     videoSrc: '/media/campus-film.mp4',
     poster: '/media/campus-film-poster.jpg',
     youtubeId: 'yBYXT419bFw',
+    youtubeLength: 288,
     caption: 'Learn by doing. Build alongside the people shaping what comes next.',
   },
 };
