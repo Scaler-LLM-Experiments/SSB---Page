@@ -1,6 +1,6 @@
 /*
- * The campus film's player: YouTube's controls, rebuilt over the embed (whose
- * own are off). Deliberately not the design system: it copies YouTube's player,
+ * The hero video's player: YouTube's controls, rebuilt, over the silent loop
+ * (the preview) and over the YouTube embed (whose own controls are off). Deliberately not the design system: it copies YouTube's player,
  * so its colours, type and timings are YouTube's, written as literals here and
  * nowhere else. Everything that moves while the film plays (the bars, the knob,
  * the hover tooltip) moves by transform, so playback is no layout shift.
@@ -8,16 +8,11 @@
  * --played, --loaded, --hover: shares of the film (0–1), set by FilmPlayer.
  */
 .yt-player {
-  --yt-red: #f03;
-  --yt-pink: #ff2791;
   position: absolute;
   inset: 0;
   overflow: hidden;
   background: #000;
-  color: #eee;
-  font-family: 'YouTube Noto', Roboto, Arial, Helvetica, sans-serif;
   outline: none;
-  user-select: none;
 }
 .yt-player[data-idle] {
   cursor: none;
@@ -35,8 +30,13 @@
 
 /* Everything over the film fades out together while it plays untouched. */
 .yt-chrome {
+  --yt-red: #f03;
+  --yt-pink: #ff2791;
   position: absolute;
   inset: 0;
+  color: #eee;
+  font-family: 'YouTube Noto', Roboto, Arial, Helvetica, sans-serif;
+  user-select: none;
   pointer-events: none;
   transition: opacity 0.25s cubic-bezier(0, 0, 0.2, 1);
 }

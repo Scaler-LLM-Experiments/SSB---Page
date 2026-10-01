@@ -6,18 +6,22 @@ import { Play } from '@phosphor-icons/react';
 import './film-player.css';
 
 /**
- * The campus film, played from YouTube inside the hero's framed video, under
- * YouTube's own player controls rebuilt on top (the embed's are switched off):
- * the progress bar (hover to preview a time, drag to scrub), play/pause, mute,
- * the time against the film's length, fullscreen; the controls fade while it
- * plays untouched, a click toggles play with YouTube's centre flash, a double
- * click goes fullscreen, and YouTube's keys work (k or space, m, f, j/l, arrows).
+ * The hero's framed video as a YouTube player, in two states, both under
+ * YouTube's own controls rebuilt (`Controls`):
  *
- * Renders the big play button (`data-video-play`, faded in by HeroV2Motion as
- * the video frames). While the film is open the card carries `data-film-open`
- * (hiding the caption and the button) and the silent loop pauses; a `film:close`
- * event on the card (the scroll moment, scrolling away) closes it and the loop
- * carries on.
+ * - The preview: the silent loop already playing in the card, with the big play
+ *   button and the controls over it; its progress bar runs with the loop and
+ *   scrubs it. Play (the big button, the bar's play or mute) opens the film.
+ * - The film: the full film from YouTube in the frame (the embed's controls
+ *   off), under the same controls: scrub, play/pause, mute, the time against
+ *   the film's length, fullscreen; they fade while it plays untouched; a click
+ *   toggles play with YouTube's centre flash, a double click goes fullscreen,
+ *   and YouTube's keys work (k or space, m, f, j/l, arrows).
+ *
+ * The preview is `data-video-play`, faded in by HeroV2Motion as the video
+ * frames. While the film is open the card carries `data-film-open` (hiding the
+ * caption and the preview) and the loop pauses; a `film:close` event on the
+ * card (scrolling out of the frame, or away) closes it and the loop carries on.
  */
 export function FilmPlayer({
   youtubeId,
@@ -26,11 +30,12 @@ export function FilmPlayer({
   youtubeId: string;
   title?: string;
 }) {
-  const playRef = React.useRef<HTMLDivElement>(null);
+  const previewRef = React.useRef<HTMLDivElement>(null);
   const [open, setOpen] = React.useState(false);
+  const openFilm = React.useCallback(() => setOpen(true), []);
 
   React.useEffect(() => {
-    const card = playRef.current?.closest('[data-video-card]');
+    const card = previewRef.current?.closest('[data-video-card]');
     if (!card) return;
     const close = () => setOpen(false);
     card.addEventListener('film:close', close);
@@ -38,7 +43,7 @@ export function FilmPlayer({
   }, []);
 
   React.useEffect(() => {
-    const card = playRef.current?.closest('[data-video-card]');
+    const card = previewRef.current?.closest('[data-video-card]');
     if (!open || !card) return;
     const loop = card.querySelector('video');
     card.setAttribute('data-film-open', '');
@@ -49,11 +54,35 @@ export function FilmPlayer({
     };
   }, [open]);
 
+  // The loop as the preview's source. Drawn only while the preview shows (the
+  // motion has faded it in) and the film is closed.
+  const preview = React.useMemo<Source>(() => {
+    const loop = () => previewRef.current?.closest('[data-video-card]')?.querySelector('video') ?? null;
+    return {
+      active: () => {
+        const wrapper = previewRef.current;
+        const visibility = wrapper?.style.visibility;
+        return !!visibility && visibility !== 'hidden' && !wrapper?.closest('[data-film-open]');
+      },
+      time: () => loop()?.currentTime ?? 0,
+      duration: () => loop()?.duration || 0,
+      loaded: () => {
+        const video = loop();
+        if (!video?.duration || !video.buffered.length) return 0;
+        return video.buffered.end(video.buffered.length - 1) / video.duration;
+      },
+      seek: (seconds) => {
+        const video = loop();
+        if (video) video.currentTime = seconds;
+      },
+    };
+  }, []);
+
   return (
     <>
       {/* The wrapper fades, not the button: Button's own transition fights a tween on it. */}
       <div
-        ref={playRef}
+        ref={previewRef}
         data-video-play
         data-surface-ink="on-image"
         className="pointer-events-none invisible absolute inset-0 grid place-items-center opacity-0"
@@ -62,13 +91,213 @@ export function FilmPlayer({
           size="icon-lg"
           aria-label="Play the campus film"
           className="pointer-events-auto size-20"
-          onClick={() => setOpen(true)}
+          onClick={openFilm}
         >
           <Play weight="fill" className="size-8" />
         </GlassButton>
+        <Controls source={preview} playing={false} muted onToggle={openFilm} onMute={openFilm} />
       </div>
-      {open ? <Player youtubeId={youtubeId} title={title} /> : null}
+      {open ? <Film youtubeId={youtubeId} title={title} /> : null}
     </>
+  );
+}
+
+/* ---- The controls, for any source ---- */
+
+/** What the controls read and drive: the loop, or the YouTube film. */
+type Source = {
+  /** Whether to draw at all this frame (default: always). */
+  active?: () => boolean;
+  time: () => number;
+  duration: () => number;
+  /** Share of the film buffered, 0–1. */
+  loaded: () => number;
+  /** `final`: the pointer let go (YouTube fetches ahead only then). */
+  seek: (seconds: number, final: boolean) => void;
+};
+
+/** Seconds as YouTube writes them: 0:15, 4:47, 1:02:07. */
+function clock(seconds: number): string {
+  const s = Math.max(0, Math.floor(seconds));
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const ss = String(s % 60).padStart(2, '0');
+  return h ? `${h}:${String(m).padStart(2, '0')}:${ss}` : `${m}:${ss}`;
+}
+
+/**
+ * YouTube's controls: the progress bar (3px, 5px under the pointer; played,
+ * buffered, the knob, a time tooltip; drag to scrub), then play/pause, mute,
+ * the time, fullscreen. The bar and the time are drawn every frame straight to
+ * the DOM, by transform: no layout, so no layout shift as the film plays.
+ */
+function Controls({
+  source,
+  playing,
+  muted,
+  ended = false,
+  fullscreen,
+  onToggle,
+  onMute,
+  onFullscreen,
+}: {
+  source: Source;
+  playing: boolean;
+  muted: boolean;
+  ended?: boolean;
+  fullscreen?: boolean;
+  onToggle: () => void;
+  onMute: () => void;
+  onFullscreen?: () => void;
+}) {
+  const bar = React.useRef<HTMLDivElement>(null);
+  const now = React.useRef<HTMLSpanElement>(null);
+  const total = React.useRef<HTMLSpanElement>(null);
+  const tip = React.useRef<HTMLSpanElement>(null);
+  const length = React.useRef(0);
+  const scrubbing = React.useRef(false);
+
+  const draw = React.useCallback((fraction: number) => {
+    const el = bar.current;
+    if (!el) return;
+    el.style.setProperty('--played', String(fraction));
+    if (now.current) now.current.textContent = clock(fraction * length.current);
+    el.setAttribute('aria-valuenow', String(Math.round(fraction * length.current)));
+    el.setAttribute('aria-valuetext', `${clock(fraction * length.current)} of ${clock(length.current)}`);
+  }, []);
+
+  React.useEffect(() => {
+    let raf = 0;
+    const tick = () => {
+      raf = requestAnimationFrame(tick);
+      if (source.active && !source.active()) return;
+      const duration = source.duration();
+      if (!duration) return;
+      if (duration !== length.current) {
+        length.current = duration;
+        if (total.current) total.current.textContent = clock(duration);
+        bar.current?.setAttribute('aria-valuemax', String(Math.round(duration)));
+      }
+      bar.current?.style.setProperty('--loaded', String(source.loaded()));
+      if (!scrubbing.current) draw(source.time() / duration);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [source, draw]);
+
+  // Scrubbing: the pointer's place on the bar, previewed on hover, sought on drag.
+  const fractionAt = (clientX: number) => {
+    const box = bar.current!.getBoundingClientRect();
+    return Math.min(1, Math.max(0, (clientX - box.left) / box.width));
+  };
+  const hoverAt = (clientX: number) => {
+    const fraction = fractionAt(clientX);
+    bar.current?.style.setProperty('--hover', String(fraction));
+    if (tip.current) tip.current.textContent = clock(fraction * length.current);
+    return fraction;
+  };
+  const onDown = (event: React.PointerEvent) => {
+    if (!length.current) return;
+    scrubbing.current = true;
+    bar.current?.setPointerCapture(event.pointerId);
+    const fraction = hoverAt(event.clientX);
+    draw(fraction);
+    source.seek(fraction * length.current, false);
+  };
+  const onMove = (event: React.PointerEvent) => {
+    const fraction = hoverAt(event.clientX);
+    if (!scrubbing.current) return;
+    draw(fraction);
+    source.seek(fraction * length.current, false);
+  };
+  const onUp = (event: React.PointerEvent) => {
+    if (!scrubbing.current) return;
+    scrubbing.current = false;
+    source.seek(fractionAt(event.clientX) * length.current, true);
+  };
+  const onKey = (event: React.KeyboardEvent) => {
+    if (!length.current) return;
+    const step = { ArrowLeft: -5, ArrowRight: 5 }[event.key];
+    const to =
+      step !== undefined
+        ? Math.min(length.current, Math.max(0, source.time() + step))
+        : { Home: 0, End: length.current }[event.key];
+    if (to === undefined) return;
+    event.preventDefault();
+    event.stopPropagation();
+    source.seek(to, true);
+    draw(to / length.current);
+  };
+
+  return (
+    <div className="yt-chrome">
+      <div className="yt-gradient" />
+      <div className="yt-bottom">
+        <div
+          ref={bar}
+          className="yt-progress"
+          role="slider"
+          tabIndex={0}
+          aria-label="Seek"
+          aria-valuemin={0}
+          aria-valuemax={0}
+          aria-valuenow={0}
+          onPointerDown={onDown}
+          onPointerMove={onMove}
+          onPointerUp={onUp}
+          onKeyDown={onKey}
+        >
+          <div className="yt-progress-list">
+            <div className="yt-progress-loaded" />
+            <div className="yt-progress-hover" />
+            <div className="yt-progress-played" />
+          </div>
+          <div className="yt-knob-track">
+            <div className="yt-knob" />
+          </div>
+          <div className="yt-tooltip-track">
+            <span ref={tip} className="yt-tooltip" />
+          </div>
+        </div>
+
+        <div className="yt-controls">
+          <button
+            type="button"
+            className="yt-button"
+            aria-label={ended ? 'Replay' : playing ? 'Pause (k)' : 'Play (k)'}
+            onClick={onToggle}
+          >
+            {ended ? <ReplayIcon /> : playing ? <PauseIcon /> : <PlayIcon />}
+          </button>
+          <button
+            type="button"
+            className="yt-button"
+            aria-label={muted ? 'Unmute (m)' : 'Mute (m)'}
+            onClick={onMute}
+          >
+            {muted ? <VolumeOffIcon /> : <VolumeIcon />}
+          </button>
+          <div className="yt-time">
+            <span ref={now}>0:00</span>
+            <span className="yt-time-separator"> / </span>
+            <span ref={total} className="yt-time-duration">
+              0:00
+            </span>
+          </div>
+          <span className="yt-spacer" />
+          {onFullscreen ? (
+            <button
+              type="button"
+              className="yt-button"
+              aria-label={fullscreen ? 'Exit full screen (f)' : 'Full screen (f)'}
+              onClick={onFullscreen}
+            >
+              {fullscreen ? <ExitFullscreenIcon /> : <FullscreenIcon />}
+            </button>
+          ) : null}
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -130,28 +359,15 @@ function loadYouTube(): Promise<YTNamespace> {
   return youTube;
 }
 
-/** Seconds as YouTube writes them: 4:58, 1:02:07. */
-function clock(seconds: number): string {
-  const s = Math.max(0, Math.floor(seconds));
-  const h = Math.floor(s / 3600);
-  const m = Math.floor((s % 3600) / 60);
-  const ss = String(s % 60).padStart(2, '0');
-  return h ? `${h}:${String(m).padStart(2, '0')}:${ss}` : `${m}:${ss}`;
-}
-
 /** How long the controls stay up after the pointer stops, while playing (YouTube's is ~3s). */
 const IDLE_AFTER = 2500;
 
-function Player({ youtubeId, title }: { youtubeId: string; title: string }) {
+/* ---- The film ---- */
+
+function Film({ youtubeId, title }: { youtubeId: string; title: string }) {
   const root = React.useRef<HTMLDivElement>(null);
   const frame = React.useRef<HTMLDivElement>(null);
-  const bar = React.useRef<HTMLDivElement>(null);
-  const now = React.useRef<HTMLSpanElement>(null);
-  const total = React.useRef<HTMLSpanElement>(null);
-  const tip = React.useRef<HTMLSpanElement>(null);
   const player = React.useRef<YTPlayer | null>(null);
-  const duration = React.useRef(0);
-  const scrubbing = React.useRef(false);
   const [state, setState] = React.useState(-1);
   const [muted, setMuted] = React.useState(false);
   const [fullscreen, setFullscreen] = React.useState(false);
@@ -202,38 +418,6 @@ function Player({ youtubeId, title }: { youtubeId: string; title: string }) {
     };
   }, [youtubeId]);
 
-  // The progress bar and the time, drawn every frame straight to the DOM, with
-  // transforms (no layout, so no layout shift as it plays).
-  const draw = React.useCallback((fraction: number) => {
-    bar.current?.style.setProperty('--played', String(fraction));
-    if (now.current) now.current.textContent = clock(fraction * duration.current);
-    bar.current?.setAttribute('aria-valuenow', String(Math.round(fraction * duration.current)));
-    bar.current?.setAttribute(
-      'aria-valuetext',
-      `${clock(fraction * duration.current)} of ${clock(duration.current)}`,
-    );
-  }, []);
-
-  React.useEffect(() => {
-    let raf = 0;
-    const tick = () => {
-      raf = requestAnimationFrame(tick);
-      const p = player.current;
-      if (!p?.getDuration) return;
-      const length = p.getDuration();
-      if (!length) return;
-      if (length !== duration.current) {
-        duration.current = length;
-        if (total.current) total.current.textContent = clock(length);
-        bar.current?.setAttribute('aria-valuemax', String(Math.round(length)));
-      }
-      bar.current?.style.setProperty('--loaded', String(p.getVideoLoadedFraction()));
-      if (!scrubbing.current) draw(p.getCurrentTime() / length);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [draw]);
-
   React.useEffect(() => {
     const onChange = () => setFullscreen(document.fullscreenElement === root.current);
     document.addEventListener('fullscreenchange', onChange);
@@ -242,6 +426,17 @@ function Player({ youtubeId, title }: { youtubeId: string; title: string }) {
       window.clearTimeout(idleTimer.current);
     };
   }, []);
+
+  // The player's methods arrive once it is ready; until then everything reads 0.
+  const source = React.useMemo<Source>(
+    () => ({
+      time: () => player.current?.getCurrentTime?.() ?? 0,
+      duration: () => player.current?.getDuration?.() ?? 0,
+      loaded: () => player.current?.getVideoLoadedFraction?.() ?? 0,
+      seek: (seconds, final) => player.current?.seekTo?.(seconds, final),
+    }),
+    [],
+  );
 
   const toggle = (flash = false) => {
     const p = player.current;
@@ -269,56 +464,14 @@ function Player({ youtubeId, title }: { youtubeId: string; title: string }) {
   };
   const seekBy = (seconds: number) => {
     const p = player.current;
-    if (!p || !duration.current) return;
-    const to = Math.min(duration.current, Math.max(0, p.getCurrentTime() + seconds));
-    p.seekTo(to, true);
-    draw(to / duration.current);
+    const length = p?.getDuration?.();
+    if (!p || !length) return;
+    p.seekTo(Math.min(length, Math.max(0, p.getCurrentTime() + seconds)), true);
   };
   const wake = () => {
     setIdle(false);
     window.clearTimeout(idleTimer.current);
     idleTimer.current = window.setTimeout(() => setIdle(true), IDLE_AFTER);
-  };
-
-  // Scrubbing: the pointer's place on the bar, previewed on hover, sought on drag.
-  const fractionAt = (clientX: number) => {
-    const box = bar.current!.getBoundingClientRect();
-    return Math.min(1, Math.max(0, (clientX - box.left) / box.width));
-  };
-  const hoverAt = (clientX: number) => {
-    const fraction = fractionAt(clientX);
-    bar.current?.style.setProperty('--hover', String(fraction));
-    if (tip.current) tip.current.textContent = clock(fraction * duration.current);
-    return fraction;
-  };
-  const onBarDown = (event: React.PointerEvent) => {
-    if (!duration.current) return;
-    scrubbing.current = true;
-    bar.current?.setPointerCapture(event.pointerId);
-    const fraction = hoverAt(event.clientX);
-    draw(fraction);
-    player.current?.seekTo(fraction * duration.current, false);
-  };
-  const onBarMove = (event: React.PointerEvent) => {
-    const fraction = hoverAt(event.clientX);
-    if (!scrubbing.current) return;
-    draw(fraction);
-    player.current?.seekTo(fraction * duration.current, false);
-  };
-  const onBarUp = (event: React.PointerEvent) => {
-    if (!scrubbing.current) return;
-    scrubbing.current = false;
-    player.current?.seekTo(fractionAt(event.clientX) * duration.current, true);
-  };
-  const onBarKey = (event: React.KeyboardEvent) => {
-    const p = player.current;
-    if (!p || !duration.current) return;
-    const to = { Home: 0, End: duration.current }[event.key];
-    if (to === undefined) return;
-    event.preventDefault();
-    event.stopPropagation();
-    p.seekTo(to, true);
-    draw(to / duration.current);
   };
 
   // YouTube's keys, while focus is in the player.
@@ -336,7 +489,7 @@ function Player({ youtubeId, title }: { youtubeId: string; title: string }) {
     };
     const action = actions[key];
     if (!action || event.metaKey || event.ctrlKey || event.altKey) return;
-    // Space and Enter on a focused button press that button instead.
+    // Space on a focused button presses that button instead.
     if (key === ' ' && (event.target as HTMLElement).tagName === 'BUTTON') return;
     event.preventDefault();
     action();
@@ -362,73 +515,16 @@ function Player({ youtubeId, title }: { youtubeId: string; title: string }) {
           {bezel.icon === 'play' ? <PlayIcon /> : <PauseIcon />}
         </div>
       ) : null}
-
-      <div className="yt-chrome">
-        <div className="yt-gradient" />
-        <div className="yt-bottom">
-          <div
-            ref={bar}
-            className="yt-progress"
-            role="slider"
-            tabIndex={0}
-            aria-label="Seek"
-            aria-valuemin={0}
-            aria-valuemax={0}
-            aria-valuenow={0}
-            onPointerDown={onBarDown}
-            onPointerMove={onBarMove}
-            onPointerUp={onBarUp}
-            onKeyDown={onBarKey}
-          >
-            <div className="yt-progress-list">
-              <div className="yt-progress-loaded" />
-              <div className="yt-progress-hover" />
-              <div className="yt-progress-played" />
-            </div>
-            <div className="yt-knob-track">
-              <div className="yt-knob" />
-            </div>
-            <div className="yt-tooltip-track">
-              <span ref={tip} className="yt-tooltip" />
-            </div>
-          </div>
-
-          <div className="yt-controls">
-            <button
-              type="button"
-              className="yt-button"
-              aria-label={state === ENDED ? 'Replay' : playing ? 'Pause (k)' : 'Play (k)'}
-              onClick={() => toggle()}
-            >
-              {state === ENDED ? <ReplayIcon /> : playing ? <PauseIcon /> : <PlayIcon />}
-            </button>
-            <button
-              type="button"
-              className="yt-button"
-              aria-label={muted ? 'Unmute (m)' : 'Mute (m)'}
-              onClick={toggleMute}
-            >
-              {muted ? <VolumeOffIcon /> : <VolumeIcon />}
-            </button>
-            <div className="yt-time">
-              <span ref={now}>0:00</span>
-              <span className="yt-time-separator"> / </span>
-              <span ref={total} className="yt-time-duration">
-                0:00
-              </span>
-            </div>
-            <span className="yt-spacer" />
-            <button
-              type="button"
-              className="yt-button"
-              aria-label={fullscreen ? 'Exit full screen (f)' : 'Full screen (f)'}
-              onClick={toggleFullscreen}
-            >
-              {fullscreen ? <ExitFullscreenIcon /> : <FullscreenIcon />}
-            </button>
-          </div>
-        </div>
-      </div>
+      <Controls
+        source={source}
+        playing={playing}
+        muted={muted}
+        ended={state === ENDED}
+        fullscreen={fullscreen}
+        onToggle={() => toggle()}
+        onMute={toggleMute}
+        onFullscreen={toggleFullscreen}
+      />
     </div>
   );
 }

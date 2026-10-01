@@ -35,7 +35,7 @@ function LogoList({ logos, label, copy }: { logos: ResolvedLogo[]; label?: strin
   return (
     <ul aria-label={label} aria-hidden={copy || undefined} className="flex shrink-0 items-center">
       {logos.map((logo) => (
-        <li key={logo.name} className="hero-ticker-item flex h-12 shrink-0 items-center px-8">
+        <li key={logo.name} className="hero-ticker-item flex h-12 shrink-0 items-center px-6">
           {logo.src ? (
             // A plain <img> at its display size, so it takes no layout shift as it
             // loads. Without known proportions: a fixed height, the width following

@@ -240,9 +240,12 @@ viewBox. A `logoUrl` that isn't ours (or a `wikidataId`) still works, at a fixed
 
 ### The film player
 
-The framed video's 80px play button (`FilmPlayer`) loads YouTube's IFrame API on first click and
-plays the full film (`media.youtubeId`, 4:47) with the embed's controls off and YouTube's rebuilt
-on top: the progress bar (3px, 5px on hover, red-to-pink played, buffered, the red knob, a time
+The framed video is a YouTube player in two states, under one set of YouTube's controls rebuilt
+(`Controls` in `FilmPlayer.tsx`, fed by a small source interface: time, duration, buffered, seek).
+**The preview:** the silent loop, playing, with the 80px play button and the controls over it; its
+bar runs with the loop (0:05 / 0:15) and scrubs it; play, mute or the big button open the film.
+**The film:** the first open loads YouTube's IFrame API and plays the full film
+(`media.youtubeId`, 4:47) with the embed's controls off and the same controls on top: the progress bar (3px, 5px on hover, red-to-pink played, buffered, the red knob, a time
 tooltip; drag to scrub), play/pause, mute, the time against the film's length, fullscreen; the
 controls fade after 2.5s idle while playing; a click toggles play with the centre flash, a double
 click goes fullscreen; YouTube's keys (k or space, m, f, j/l, arrows). The film's captions are
@@ -256,6 +259,8 @@ YouTube's own. Things learnt:
   tooltip ride full-width tracks translated by a percentage, since a translate percentage is the
   element's own width. Playback measured 0 layout shift.
 - `film-player.css` is the one place with literal colours and type: it copies YouTube's player.
+  Its custom properties live on `.yt-chrome` (the controls), not the film's wrapper: the preview's
+  controls sit outside that wrapper, and its red bar once drew nothing for it.
 
 ## The production site's port: what it taught us
 
@@ -307,8 +312,9 @@ on scroll back or away; the card moves by transforms only; the zoom re-measures 
 starts; the Faculty section sits below the hero. Then (2026-10-01): the whole title pure white at
 `type-hero`; eyebrow at the label size; description `lg`; plain CTAs; the nav logo draws itself on
 hover; the ticker's logos changed (Swiggy and Cars24 for ISB and IIMA), self-hosted, sized to equal
-ink, real colours on hover; YouTube-style controls on the film and an 80px play button; the scroll
-moment quicker (220svh track, white from 0.45).
+ink, real colours on hover, 48px apart; YouTube-style controls on the film and on the framed loop
+(its bar runs with the loop) and an 80px play button; the scroll moment quicker (220svh track,
+white from 0.45).
 
 ## Checking changes visually
 
