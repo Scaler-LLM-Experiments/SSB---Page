@@ -238,7 +238,6 @@ function Controls({
 
   return (
     <div className="yt-chrome">
-      <div className="yt-gradient" />
       <div className="yt-bottom">
         <div
           ref={bar}
@@ -319,6 +318,7 @@ type YTPlayer = {
   getCurrentTime(): number;
   getDuration(): number;
   getVideoLoadedFraction(): number;
+  unloadModule?(name: string): void;
   mute(): void;
   unMute(): void;
   isMuted(): boolean;
@@ -334,7 +334,11 @@ type YTNamespace = {
       width?: string;
       height?: string;
       playerVars?: Record<string, number>;
-      events?: { onReady?: (event: YTEvent) => void; onStateChange?: (event: YTEvent) => void };
+      events?: {
+        onReady?: (event: YTEvent) => void;
+        onStateChange?: (event: YTEvent) => void;
+        onApiChange?: (event: YTEvent) => void;
+      };
     },
   ) => YTPlayer;
 };
@@ -366,6 +370,12 @@ function loadYouTube(): Promise<YTNamespace> {
     document.head.append(script);
   });
   return youTube;
+}
+
+/** YouTube's auto-captions repeat the subtitles burned into the film (and garble them): off. */
+function hideCaptions(player: YTPlayer) {
+  player.unloadModule?.('captions');
+  player.unloadModule?.('cc');
 }
 
 /** How long the controls stay up after the pointer stops, while playing (YouTube's is ~3s). */
@@ -408,14 +418,18 @@ function Film({ youtubeId, start, title }: { youtubeId: string; start: number; t
           iv_load_policy: 3,
           playsinline: 1,
           rel: 0,
+          cc_load_policy: 0,
         },
         events: {
           onReady: (event) => {
             if (start) event.target.seekTo(start, true);
             event.target.playVideo();
             setMuted(event.target.isMuted());
+            hideCaptions(event.target);
           },
           onStateChange: (event) => setState(event.data),
+          // The captions module can load after ready: switch it off again.
+          onApiChange: (event) => hideCaptions(event.target),
         },
       });
     });

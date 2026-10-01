@@ -155,11 +155,16 @@ starts dark and turns light with the page. Hovering the logo plays the package's
 loader is square with the 29:40 shield centred in it, so it sits `(29/40 − 1) × height / 2` left of
 the lockup's shield, and is shown with `display` so the draw restarts on every hover.
 
-**V2's scroll timing** (`videoMoment`): a 140svh track, so the hero-to-next-section trip is short
-(it took ~6 flicks at 240svh: the next section began 2,195px down the page; now 1,308px). On a
-1480×888 screen the card reaches the frame by ~200px of scroll (0.35 of the timeline), the play
-button and its controls fade in from 0.26, the white from 0.45 (fully white by ~400px), the nav
-turns light at 0.55, then a short hold (0.1). What remains is the framed hero scrolling away.
+**V2's scroll timing** is generic: `v2/moment.ts` sets each phase in screens of scroll (1 = one
+viewport height): the copy fades over 0.1, the video frames over 0.25 (its play button and controls
+arriving over the last quarter), a beat of 0.05, the white over 0.17 (the nav turns light halfway),
+a hold of 0.08. The timeline runs in those units and the track's height is computed from their sum
+(`TRACK_HEIGHT`: one screen under the nav plus 0.55), so the moment takes the same share of any
+screen: framed by 222px and white by 417px on 1480×888, by 270px and 508px on 1920×1080. Change a
+phase there; nothing else needs retuning. The scrub smooths lightly (`duration.slow`): heavier
+smoothing lagged a quick flick past the end of the short track, so the hero began to scroll away
+before the moment had finished (it read as a glitch). History: the next section began 2,195px down
+the page at 240svh (~6 flicks); 1,377px now.
 
 **The Faculty entrance** plays in two moments, each once, when its part is on screen: the header
 (eyebrow, headline line by line, then the rest) when it is 85% of the way up, and the cards (wiped
@@ -264,6 +269,10 @@ YouTube's own. Things learnt:
 - Everything that moves during playback (bars, knob, tooltip) moves by transform; the knob and
   tooltip ride full-width tracks translated by a percentage, since a translate percentage is the
   element's own width. Playback measured 0 layout shift.
+- No gradient behind the controls (the team found it heavy); they rely on YouTube's text shadow.
+- YouTube's auto-captions are switched off (`unloadModule('captions')` on ready and again on
+  `onApiChange`, as the module can load late): the film has its subtitles burned in, and the
+  auto-captions repeated them, garbled, over the bottom of the picture.
 - `film-player.css` is the one place with literal colours and type: it copies YouTube's player.
   Its custom properties live on `.yt-chrome` (the controls), not the film's wrapper: the preview's
   controls sit outside that wrapper, and its red bar once drew nothing for it.
@@ -319,8 +328,9 @@ starts; the Faculty section sits below the hero. Then (2026-10-01): the whole ti
 `type-hero`; eyebrow at the label size; description `lg`; plain CTAs; the nav logo draws itself on
 hover; the ticker's logos changed (Swiggy and Cars24 for ISB and IIMA), self-hosted, sized to equal
 ink, real colours on hover, 48px apart; YouTube-style controls on the film, on the framed loop
-the scrubber (spanning the film's 4:48; click to open the film there), play and the time, an 80px play button; the scroll moment zippy (140svh track,
-white from 0.45, a short hold).
+the scrubber (spanning the film's 4:48; click to open the film there), play and the time, an 80px play button; the scroll moment zippy and generic
+(phases in screens of scroll in `moment.ts`, the track computed from them); no gradient under the
+player's controls; YouTube's auto-captions off.
 
 ## Checking changes visually
 

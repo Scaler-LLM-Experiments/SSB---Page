@@ -8,6 +8,7 @@ import type { HeroContent } from '../types';
 import { VideoOrPlaceholder } from '../shared/VideoOrPlaceholder';
 import { FilmPlayer } from './FilmPlayer';
 import { HeroV2Motion } from './HeroV2Motion';
+import { TRACK_HEIGHT } from './moment';
 import '../shared/hero.css';
 import './hero-v2.css';
 
@@ -46,8 +47,13 @@ export async function HeroV2({
 
         {/* The scroll track for the desktop video moment: tall, with the hero stuck
             under the nav while it scrolls past (CSS sticky, so nothing is re-parented,
-            nothing is fixed, and it follows window resizes). */}
-        <div data-hero-pin className="motion-safe:md:h-[140svh]">
+            nothing is fixed, and it follows window resizes). Its height comes from the
+            moment's length (moment.ts). */}
+        <div
+          data-hero-pin
+          className="motion-safe:md:h-(--hero-track)"
+          style={{ '--hero-track': TRACK_HEIGHT } as React.CSSProperties}
+        >
           {/* One screen under the sticky nav (HeroNav is h-16). */}
           <section
             data-hero

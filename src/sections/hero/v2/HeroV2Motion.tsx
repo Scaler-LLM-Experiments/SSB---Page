@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ease, motionTokens, useMotion } from '@kishanscaler/ssx-ui/motion';
 import { centredFrame, clearCard, drawCard, navHeight, tokenPx, type CardView } from '../shared/frame';
 import { hooksIn, runIntro, type Get } from '../shared/intro';
+import { MOMENT } from './moment';
 
 const { duration, offset } = motionTokens;
 
@@ -121,11 +122,11 @@ function videoMoment(get: Get, closeFilm: () => void) {
   };
   sizeOverlay();
 
-  // How long the card takes to reach the frame, and where the play button
-  // starts to fade in: scrolled back before it, the frame is opening up again,
-  // and an open film closes. (Shares of the timeline; the track is 140svh.)
-  const toFrame = 0.35;
-  const framedAt = 0.26;
+  // The timeline runs in screens of scroll (moment.ts): the track adds exactly
+  // its length to the hero's own screen, so position 0.25 is a quarter of a
+  // viewport's height of scrolling, on any display.
+  const framedAt = MOMENT.frame * 0.75; // the play button starts to arrive
+  const whiteAt = MOMENT.frame + MOMENT.beat;
 
   // The hero scrolled away under the nav: an open film closes.
   ScrollTrigger.create({
@@ -141,9 +142,13 @@ function videoMoment(get: Get, closeFilm: () => void) {
       trigger: get('hero-pin'),
       start: () => `top top+=${navHeight(get)}`,
       end: 'bottom bottom',
-      scrub: duration.slower,
+      // Light smoothing: more lags the scroll, and a quick flick reaches the end
+      // of the track (the hero starts scrolling away) before the moment has.
+      scrub: duration.slow,
       invalidateOnRefresh: true,
       onRefresh: sizeOverlay,
+      // Scrolled back before the play button arrives, the frame is opening up
+      // again: an open film closes.
       onUpdate: (self) => {
         if (self.progress * tl.duration() < framedAt) closeFilm();
       },
@@ -151,8 +156,8 @@ function videoMoment(get: Get, closeFilm: () => void) {
   });
 
   tl
-    // Positions are shares of the scroll distance. The card's box, drawn with
-    // transforms, and its feathered edge hardening, on the same curve.
+    // The card's box, drawn with transforms, and its feathered edge hardening,
+    // on the same curve.
     .fromTo(
       view,
       {
@@ -169,7 +174,7 @@ function videoMoment(get: Get, closeFilm: () => void) {
         height: () => frame().height,
         radius: () => tokenPx('--radius-2xl'),
         ease: ease('productiveInOut'),
-        duration: toFrame,
+        duration: MOMENT.frame,
         onUpdate: draw,
       },
       0,
@@ -183,7 +188,7 @@ function videoMoment(get: Get, closeFilm: () => void) {
         '--feather-top': '0%',
         '--feather-bottom': '0%',
         ease: ease('productiveInOut'),
-        duration: toFrame,
+        duration: MOMENT.frame,
       },
       0,
     )
@@ -193,21 +198,21 @@ function videoMoment(get: Get, closeFilm: () => void) {
       {
         autoAlpha: 0,
         y: `-${offset.reveal}`,
-        duration: 0.12,
+        duration: MOMENT.fade,
         ease: ease('productiveInOut'),
       },
       0,
     )
-    // Then the black gives way to the light page, behind the open frame, and
-    // the nav turns light with it.
-    .fromTo(get('hero-light'), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 }, 0.45)
-    .set(get('hero-nav'), { attr: { 'data-theme': 'light' } }, 0.55)
-    // Hold the frame on white for the rest of the scroll.
-    .to({}, { duration: 0.1 });
+    // After a beat, the black gives way to the light page, behind the open
+    // frame, and the nav turns light with it.
+    .fromTo(get('hero-light'), { autoAlpha: 0 }, { autoAlpha: 1, duration: MOMENT.white }, whiteAt)
+    .set(get('hero-nav'), { attr: { 'data-theme': 'light' } }, whiteAt + MOMENT.white / 2)
+    // Hold the frame on white to the end of the track.
+    .to({}, { duration: MOMENT.hold }, whiteAt + MOMENT.white);
 
   // The play button and caption arrive with the video, overlapping its last
   // stretch (each only if the hero has one).
-  const arrive = { autoAlpha: 1, duration: 0.12, ease: ease('productiveInOut') };
+  const arrive = { autoAlpha: 1, duration: MOMENT.frame * 0.35, ease: ease('productiveInOut') };
   const play = get('video-play');
   const caption = get('video-caption');
   if (play) tl.fromTo(play, { autoAlpha: 0 }, arrive, framedAt);
