@@ -280,8 +280,7 @@ YouTube's own. Things learnt:
 ## The production site's port: what it taught us
 
 The team building the Storyblok site rebuilt V2 as blocks on 2026-09-30 and wrote up everything they
-had to build themselves, as requests for the package: `design-team-requests.md` at the repo root
-(kept local, not committed). Pointers, sorted:
+had to build themselves, as requests for the package: `design-team-requests.md` at the repo root. Pointers, sorted:
 
 **Fixed here after their write-up:** layout shift from the moving card (transforms only, above).
 
