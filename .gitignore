@@ -40,8 +40,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# source material from the team's SSB website build (another app, the ssx-ui
-# source and the internal content deck); sections are ported into src/
+# the internal content deck (the repo is public)
 /ssb-website/
 
 # the campus film's source GIF (313 MB, over GitHub's 100 MB limit); the page

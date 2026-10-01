@@ -9,8 +9,9 @@ type LogoTickerProps = React.HTMLAttributes<HTMLDivElement> & {
 };
 
 /**
- * A continuous logo marquee. Logos are set in one tone so no brand colour
- * competes with SSB's, and turn light on a dark theme. Pauses on hover; still
+ * A continuous logo marquee. Every logo is drawn at one visual weight (sizes
+ * from `resolveLogos`) and in one tone, so no brand colour competes with SSB's;
+ * hovering one shows its own colours. Pauses on hover; still
  * (and scrollable) under reduced motion. Needs `shared/hero.css`.
  */
 export function LogoTicker({ logos, label, className, style, ...props }: LogoTickerProps) {
@@ -34,16 +35,19 @@ function LogoList({ logos, label, copy }: { logos: ResolvedLogo[]; label?: strin
   return (
     <ul aria-label={label} aria-hidden={copy || undefined} className="flex shrink-0 items-center">
       {logos.map((logo) => (
-        <li key={logo.name} className="flex h-12 shrink-0 items-center px-8">
+        <li key={logo.name} className="hero-ticker-item flex h-12 shrink-0 items-center px-8">
           {logo.src ? (
-            // A plain <img>: remote logos of unknown aspect. Fixed height; the
-            // width follows the artwork, capped so a long wordmark can't dominate.
+            // A plain <img> at its display size, so it takes no layout shift as it
+            // loads. Without known proportions: a fixed height, the width following
+            // the artwork, capped so a long wordmark can't dominate.
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={logo.src}
               alt={copy ? '' : logo.name}
+              width={logo.width}
+              height={logo.height}
               decoding="async"
-              className="h-8 w-auto max-w-40 object-contain opacity-muted grayscale dark:invert"
+              className={`hero-ticker-logo object-contain ${logo.width ? '' : 'h-8 w-auto max-w-40'}`}
             />
           ) : (
             <>

@@ -1,15 +1,63 @@
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
 import type { HeroLogo } from '@/sections/hero/types';
 
 /**
- * Organisation logos from Wikidata (property P154, "logo image"), served by
- * Wikimedia Commons. No API key. Runs on the server, so for a static page the
- * lookup happens once, at build time.
+ * Organisation logos: a file of our own (`logoUrl`, in `public/logos`), or one
+ * looked up on Wikidata (property P154, "logo image", served by Wikimedia
+ * Commons; no API key). Runs on the server, so for a static page it happens
+ * once, at build time. Our own files are sized from their proportions.
  */
 
 export type ResolvedLogo = HeroLogo & {
   /** Image URL, or unset when none was found: render `wordmark` instead. */
   src?: string;
+  /** Display size in px, when the file's proportions are known (a file in `public/`). */
+  width?: number;
+  height?: number;
 };
+
+/**
+ * Logos drawn at one visual weight: the same amount of ink each. A logo's ink
+ * is its box (width × height) times `ink`, the share of the box its artwork
+ * fills; so a thin, wide wordmark (Bain, McKinsey) is drawn larger than a heavy,
+ * compact mark (BCG). Equal heights made the wordmarks shout or vanish; equal
+ * boxes still made BCG twice the weight of Bain. INK_AREA is a logo of ink 0.4
+ * at 3:1 drawn LOGO_HEIGHT tall; never wider than LOGO_MAX_WIDTH.
+ */
+const LOGO_HEIGHT = 30;
+const LOGO_MAX_WIDTH = 196;
+const INK_AREA = 0.4 * 3 * LOGO_HEIGHT ** 2;
+
+function displaySize(ratio: number, ink = 0.4) {
+  let height = Math.sqrt(INK_AREA / (ink * ratio));
+  let width = height * ratio;
+  if (width > LOGO_MAX_WIDTH) {
+    height *= LOGO_MAX_WIDTH / width;
+    width = LOGO_MAX_WIDTH;
+  }
+  return { width: Math.round(width), height: Math.round(height) };
+}
+
+/** Width over height of a file in `public/`, from an SVG's viewBox or a PNG's header. */
+async function localRatio(src: string): Promise<number | undefined> {
+  if (!src.startsWith('/')) return undefined;
+  try {
+    const file = await readFile(path.join(process.cwd(), 'public', src));
+    if (src.endsWith('.svg')) {
+      const box = /viewBox="([^"]+)"/
+        .exec(file.toString('utf8'))?.[1]
+        .trim()
+        .split(/[\s,]+/)
+        .map(Number);
+      return box?.[3] ? box[2] / box[3] : undefined;
+    }
+    if (src.endsWith('.png')) return file.readUInt32BE(16) / file.readUInt32BE(20);
+  } catch {
+    // Unknown proportions: the ticker's fixed height applies.
+  }
+  return undefined;
+}
 
 type Statement = {
   rank: 'preferred' | 'normal' | 'deprecated';
@@ -37,10 +85,14 @@ export async function resolveLogos(logos: HeroLogo[]): Promise<ResolvedLogo[]> {
     }
   }
 
-  return logos.map((logo) => {
-    const file = logo.wikidataId ? files[logo.wikidataId] : undefined;
-    return { ...logo, src: logo.logoUrl ?? (file ? commonsUrl(file) : undefined) };
-  });
+  return Promise.all(
+    logos.map(async (logo) => {
+      const file = logo.wikidataId ? files[logo.wikidataId] : undefined;
+      const src = logo.logoUrl ?? (file ? commonsUrl(file) : undefined);
+      const ratio = src ? await localRatio(src) : undefined;
+      return { ...logo, src, ...(ratio ? displaySize(ratio, logo.ink) : {}) };
+    }),
+  );
 }
 
 async function fetchLogoFiles(ids: string[]): Promise<Record<string, string>> {

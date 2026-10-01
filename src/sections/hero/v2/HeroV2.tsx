@@ -1,5 +1,4 @@
-import { Button, ButtonIcon, Container, GlassButton, Heading, Text } from '@kishanscaler/ssx-ui';
-import { ArrowUpRight, DownloadSimple, Play } from '@phosphor-icons/react/ssr';
+import { Button, Container, Heading, Text } from '@kishanscaler/ssx-ui';
 import { resolveLogos } from '@/lib/logos';
 import { HeroTitle } from '../HeroTitle';
 import { FactsStrip } from '../shared/FactsStrip';
@@ -7,6 +6,7 @@ import { LogoTicker } from '../shared/LogoTicker';
 import { Splash } from '../shared/Splash';
 import type { HeroContent } from '../types';
 import { VideoOrPlaceholder } from '../shared/VideoOrPlaceholder';
+import { FilmPlayer } from './FilmPlayer';
 import { HeroV2Motion } from './HeroV2Motion';
 import '../shared/hero.css';
 import './hero-v2.css';
@@ -47,7 +47,7 @@ export async function HeroV2({
         {/* The scroll track for the desktop video moment: tall, with the hero stuck
             under the nav while it scrolls past (CSS sticky, so nothing is re-parented,
             nothing is fixed, and it follows window resizes). */}
-        <div data-hero-pin className="motion-safe:md:h-[240svh]">
+        <div data-hero-pin className="motion-safe:md:h-[220svh]">
           {/* One screen under the sticky nav (HeroNav is h-16). */}
           <section
             data-hero
@@ -78,15 +78,23 @@ export async function HeroV2({
                 data-hero-fade
                 className="relative flex w-full flex-col gap-5 md:z-lift md:col-start-1 md:row-start-1 md:max-w-panel-xl md:self-end"
               >
-                <Heading as="p" size="eyebrow" data-hero-eyebrow className="text-on-image-ink">
+                {/* One step up the type scale from the eyebrow role (the label's size), in
+                    the eyebrow's caps, tracking and weight. */}
+                <Heading
+                  as="p"
+                  size="eyebrow"
+                  data-hero-eyebrow
+                  className="text-on-image-ink [--type-eyebrow-lh:var(--type-label-lh)] [--type-eyebrow-size:var(--type-label-size)]"
+                >
                   {eyebrow}
                 </Heading>
-                <Heading as="h1" data-hero-title className="type-billboard-sm">
+                <Heading as="h1" data-hero-title className="type-hero text-on-image-ink">
                   <HeroTitle title={title} highlight={titleHighlight} />
                 </Heading>
                 {resolvedLogos.length ? (
                   <LogoTicker
                     data-hero-ticker
+                    className="md:max-w-panel-lg"
                     logos={resolvedLogos}
                     label="Organisations our industry leaders come from"
                   />
@@ -96,6 +104,7 @@ export async function HeroV2({
               <Text
                 data-hero-description
                 data-hero-fade
+                size="lg"
                 tone="secondary"
                 className="relative max-w-measure md:z-lift md:col-start-2 md:row-start-1 md:w-0 md:min-w-full md:max-w-none md:self-end"
               >
@@ -108,21 +117,11 @@ export async function HeroV2({
                 className="relative flex w-full flex-col gap-3 md:z-lift md:col-start-1 md:row-start-2 md:w-auto md:flex-row md:gap-4"
               >
                 <Button asChild size="lg" className="w-full md:w-auto">
-                  <a href={primaryCta.href}>
-                    {primaryCta.label}
-                    <ButtonIcon>
-                      <ArrowUpRight />
-                    </ButtonIcon>
-                  </a>
+                  <a href={primaryCta.href}>{primaryCta.label}</a>
                 </Button>
                 {secondaryCta ? (
                   <Button asChild size="lg" variant="secondary" className="w-full md:w-auto">
-                    <a href={secondaryCta.href}>
-                      {secondaryCta.label}
-                      <ButtonIcon>
-                        <DownloadSimple />
-                      </ButtonIcon>
-                    </a>
+                    <a href={secondaryCta.href}>{secondaryCta.label}</a>
                   </Button>
                 ) : null}
               </div>
@@ -135,37 +134,25 @@ export async function HeroV2({
                   data-video-card
                   className="hero-v2-video absolute left-0 top-0 h-full w-full overflow-hidden rounded-2xl md:rounded-none"
                 >
-                  <div data-video-frame className="h-full w-full">
+                  <div data-video-frame className="hero-media-cover">
                     <VideoOrPlaceholder media={media} />
                   </div>
-                  {media?.caption ? (
-                    <div
-                      data-video-caption
-                      data-surface-ink="on-image"
-                      className="invisible absolute inset-x-0 top-0 bg-linear-to-b from-surface-image-scrim to-transparent p-8 pb-16 opacity-0"
-                    >
-                      <p className="type-h2 max-w-measure text-on-image-ink">{media.caption}</p>
-                    </div>
-                  ) : null}
-                  {/* The play button, faded in as the video opens into its frame on scroll
-                      (HeroV2Motion opens the full film from YouTube on click). The wrapper
-                      fades, not the button: Button's own transition fights a tween on the
-                      button itself. */}
-                  <div
-                    data-video-play
-                    data-youtube-id={media?.youtubeId}
-                    data-surface-ink="on-image"
-                    className="pointer-events-none invisible absolute inset-0 grid place-items-center opacity-0"
-                  >
-                    {media?.youtubeId ? (
-                      <GlassButton
-                        size="icon-lg"
-                        aria-label="Play the campus film"
-                        className="pointer-events-auto"
+                  {/* What sits on the film: the caption, the play button and, once
+                      played, the YouTube film. Drawn 1:1 however the card is scaled
+                      (frame.ts drawCard), and sized to the scroll frame on desktop. */}
+                  <div data-video-overlay className="pointer-events-none absolute left-0 top-0 h-full w-full">
+                    {media?.caption ? (
+                      <div
+                        data-video-caption
+                        data-surface-ink="on-image"
+                        className="invisible absolute inset-x-0 top-0 bg-linear-to-b from-surface-image-scrim to-transparent p-8 pb-16 opacity-0"
                       >
-                        <Play weight="fill" />
-                      </GlassButton>
+                        <p className="type-h2 max-w-measure text-on-image-ink">{media.caption}</p>
+                      </div>
                     ) : null}
+                    {/* The big play button, faded in as the video frames on scroll; it opens the
+                        full film from YouTube, under YouTube-style controls. */}
+                    {media?.youtubeId ? <FilmPlayer youtubeId={media.youtubeId} /> : null}
                   </div>
                 </div>
               </div>

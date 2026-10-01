@@ -1,10 +1,9 @@
 import * as React from 'react';
 
 /**
- * A hero title with an optional highlighted phrase, in pure white (the ink for
- * text over footage) against the title's softer white on the dark hero.
- * Hyphenated words are kept on one line, so "B-school" never breaks after the
- * hyphen.
+ * A hero title with an optional highlighted phrase (pure white, the ink for text
+ * over footage). Hyphenated words are kept on one line, so "B-school" never
+ * breaks after the hyphen.
  */
 export function HeroTitle({ title, highlight }: { title: string; highlight?: string }) {
   const at = highlight ? title.indexOf(highlight) : -1;

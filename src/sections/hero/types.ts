@@ -23,10 +23,14 @@ export type HeroLogo = {
   name: string;
   /** Wikidata item id. The logo image is looked up from it at build time. */
   wikidataId?: string;
-  /** A logo image URL. Wins over `wikidataId` (a Storyblok asset later). */
+  /** A logo image URL. Wins over `wikidataId` (a Storyblok asset later). A file in `public/`
+   * (`/logos/…`, trimmed to its edges, in its own colours) is sized from its proportions. */
   logoUrl?: string;
   /** Short name set as text when no logo image is found, e.g. "ISB". */
   wordmark: string;
+  /** The share of the logo's box its artwork fills, 0–1 (default 0.4), so every logo is drawn
+   * with the same amount of ink. Measured once per file: see CLAUDE.md, "Logos". */
+  ink?: number;
 };
 
 export type HeroMedia = {

@@ -1,5 +1,6 @@
 import { gsap } from 'gsap';
 import { ease, motionTokens, prefersReducedMotion } from '@kishanscaler/ssx-ui/motion';
+import { clearCard, drawCard, type CardView } from './frame';
 
 /**
  * The splash-to-hero intro shared by the cinematic variations: zoom into the
@@ -7,12 +8,12 @@ import { ease, motionTokens, prefersReducedMotion } from '@kishanscaler/ssx-ui/m
  * inside `useMotion`. It works on server-rendered markup found by `data-*` hooks:
  *
  *   splash, splash-lens, splash-zoom, splash-mark, splash-ghost                  the Splash
- *   video-slot, video-card, video-frame                                           the hero's video
+ *   video-slot, video-card, video-frame, video-overlay                            the hero's video
  *   hero-nav (its contents), and every data-hero-fade block                         what fades in
  *
  * Sequence:
  *   1. The SSB shield is on screen from the first paint (it settles in with
- *      CSS). As soon as it has settled and the film can play, its openings
+ *      CSS). As soon as it is nearly in and the film can play, its openings
  *      look through to the hero's video, moved full-screen behind the splash:
  *      the footage fades up and plays inside the logo while it holds. The
  *      zoom waits for the fonts too, and for the shield to have been seen
@@ -29,7 +30,8 @@ import { ease, motionTokens, prefersReducedMotion } from '@kishanscaler/ssx-ui/m
  *             every screen size. The nav, copy and facts fade in together
  *             (`enter`). One gentle fade, no parts moving.
  *
- * Every phase overlaps the next, so motion never stops and restarts. The
+ * Every phase overlaps the next, so motion never stops and restarts. The card
+ * moves by transforms only (`drawCard`), so none of it is a layout shift. The
  * variation adds its own tweens through `media`, at those labels. Durations
  * and curves are SSX motion tokens; the blur amounts are named below.
  */
@@ -54,6 +56,11 @@ const LENS_BLUR = 14;
 /** The shield holds on screen this long after navigation before the zoom, in
  * ms, so it registers as the brand before the camera flies into it. */
 const LOGO_HOLD = 1250;
+
+/** How far through the shield's CSS entrance its window opens. Its curve
+ * settles early: halfway through, it is ~99% in place, so the film gets most
+ * of the hold to play inside it (waiting for the end left it ~0.2s). */
+const WINDOW_AT = 0.5;
 
 /** Longest the splash waits for the video before zooming in anyway, in ms. */
 const VIDEO_WAIT = 4000;
@@ -94,19 +101,28 @@ export function runIntro(root: HTMLElement, context: gsap.Context, { media, onDo
   window.scrollTo(0, 0);
   const unlock = holdScroll();
 
-  // The card's resting corners, read before the window squares them off.
+  // Where the card is drawn, from the window opening until it rests in its slot.
+  // Its resting corners are read before the window squares them off.
   const card = get('video-card');
-  const restRadius = card ? getComputedStyle(card).borderTopLeftRadius : '0px';
+  const restRadius = card ? parseFloat(getComputedStyle(card).borderTopLeftRadius) : 0;
+  const view: CardView = {
+    left: 0,
+    top: 0,
+    width: 0,
+    height: 0,
+    radius: 0,
+    zoom: 1,
+  };
 
   // The film starts playing inside the logo as soon as both are ready.
-  const opened = Promise.all([settled(get('splash-mark')), videoReady(root)]).then(() => {
-    if (alive) context.add(() => openWindow(root, get));
+  const opened = Promise.all([settling(get('splash-mark'), WINDOW_AT), videoReady(root)]).then(() => {
+    if (alive) context.add(() => openWindow(root, get, view));
   });
 
   Promise.all([document.fonts.ready, opened, untilTime(LOGO_HOLD)]).then(() => {
     if (!alive) return;
     context.add(() => {
-      const tl = introTimeline(root, get, restRadius, () => {
+      const tl = introTimeline(root, get, view, restRadius, () => {
         unlock();
         if (alive) context.add(onDone);
       });
@@ -117,6 +133,7 @@ export function runIntro(root: HTMLElement, context: gsap.Context, { media, onDo
   return () => {
     alive = false;
     unlock();
+    clearCard(get);
   };
 }
 
@@ -155,11 +172,11 @@ function arrivals(root: HTMLElement, get: Get): HTMLElement[] {
 
 /**
  * Opens the shield's window: the ground gets the mark's outline cut out of it,
- * and the hero's video, moved full-screen behind the splash (a little too close,
+ * and the hero's video, drawn full-screen behind the splash (a little too close,
  * so the zoom can ease it back), fades up in the mark's openings. What would
  * show through before it has faded up is hidden until it arrives.
  */
-function openWindow(root: HTMLElement, get: Get) {
+function openWindow(root: HTMLElement, get: Get, view: CardView) {
   const splash = get('splash')!;
   const mark = get('splash-mark')!;
   const slot = get('video-slot');
@@ -170,25 +187,19 @@ function openWindow(root: HTMLElement, get: Get) {
   if (hole) {
     gsap.set(splash, {
       '--shield-hole': hole,
-      '--shield-height': `${mark.getBoundingClientRect().height}px`,
+      // Its layout height: the size it settles at, not mid-entrance.
+      '--shield-height': `${mark.offsetHeight}px`,
       attr: { 'data-open': '' },
     });
   }
   if (!card || !slot) return;
 
-  const slotBox = slot.getBoundingClientRect();
   // Full-screen, the footage rides above the sticky nav; it drops back under
   // once it has settled.
   const above = getComputedStyle(document.documentElement).getPropertyValue('--z-overlay').trim();
   gsap.set(slot, { zIndex: above });
-  gsap.set(card, {
-    left: -slotBox.left,
-    top: -slotBox.top,
-    width: window.innerWidth,
-    height: window.innerHeight,
-    borderRadius: 0,
-  });
-  gsap.set(get('video-frame'), { scale: 1 / motionTokens.scale.enter ** 4 });
+  Object.assign(view, fullScreen(slot), { radius: 0, zoom: 1 / motionTokens.scale.enter ** 4 });
+  drawCard(get, view);
   gsap.fromTo(
     card,
     { autoAlpha: 0 },
@@ -196,14 +207,26 @@ function openWindow(root: HTMLElement, get: Get) {
   );
 }
 
-function introTimeline(root: HTMLElement, get: Get, restRadius: string, onComplete: () => void) {
+function introTimeline(
+  root: HTMLElement,
+  get: Get,
+  view: CardView,
+  restRadius: number,
+  onComplete: () => void,
+) {
   const splash = get('splash')!;
   const zoomLayer = get('splash-zoom')!;
   const ghosts = gsap.utils.toArray<HTMLElement>('[data-splash-ghost]', root);
   const mark = get('splash-mark')!;
   const slot = get('video-slot');
   const card = get('video-card');
-  const frame = get('video-frame');
+  const draw = () => drawCard(get, view);
+  // The window may have opened before the web fonts arrived and the page
+  // reflowed under it (the slot moved): measure the full screen again.
+  if (card && slot) {
+    Object.assign(view, fullScreen(slot));
+    draw();
+  }
   const smooth = ease('expressiveInOut');
   const zoom = duration.slowest * 1.1;
   const settle = duration.slowest * 1.25;
@@ -222,7 +245,10 @@ function introTimeline(root: HTMLElement, get: Get, restRadius: string, onComple
   };
   // The opening sits a few px below the mark's middle; the camera drifts it to
   // the exact centre of the screen, so the zoom converges on the middle.
-  const drift = { x: window.innerWidth / 2 - opening.x, y: window.innerHeight / 2 - opening.y };
+  const drift = {
+    x: window.innerWidth / 2 - opening.x,
+    y: window.innerHeight / 2 - opening.y,
+  };
   const layers = [zoomLayer, ...ghosts];
 
   tl.addLabel('swap')
@@ -231,7 +257,7 @@ function introTimeline(root: HTMLElement, get: Get, restRadius: string, onComple
 
   // The footage behind the window (opened while the shield held) eases back
   // from a little too close the whole way in.
-  if (frame) tl.to(frame, { scale: 1, duration: zoom + settle, ease: smooth }, 'swap');
+  if (card) tl.to(view, { zoom: 1, duration: zoom + settle, ease: smooth, onUpdate: draw }, 'swap');
 
   // zoom: straight into the mark. The camera eases in and builds to a rush;
   // scale grows exponentially so speed reads as forward motion. Two ghosts
@@ -247,14 +273,22 @@ function introTimeline(root: HTMLElement, get: Get, restRadius: string, onComple
     tl.to(ghost, flyTo(ZOOM ** (1 - GHOST_LAG[i])), 'zoom').fromTo(
       ghost,
       { autoAlpha: 0 },
-      { autoAlpha: 0.35 - i * 0.15, duration: zoom * 0.5, ease: ease('productiveExit') },
+      {
+        autoAlpha: 0.35 - i * 0.15,
+        duration: zoom * 0.5,
+        ease: ease('productiveExit'),
+      },
       `zoom+=${zoom * 0.3}`,
     );
   });
   tl.fromTo(
     get('splash-lens'),
     { filter: 'blur(0px)' },
-    { filter: `blur(${LENS_BLUR}px)`, duration: zoom * 0.8, ease: ease('productiveExit') },
+    {
+      filter: `blur(${LENS_BLUR}px)`,
+      duration: zoom * 0.8,
+      ease: ease('productiveExit'),
+    },
     `zoom+=${zoom * 0.2}`,
   )
     // The shield dissolves as it flies past, melting into the footage rather
@@ -270,20 +304,23 @@ function introTimeline(root: HTMLElement, get: Get, restRadius: string, onComple
   // under the copy, and the footage glides down into it.
   if (card && slot) {
     tl.to(
-      card,
+      view,
       {
         left: 0,
         top: 0,
         width: () => slot.offsetWidth,
         height: () => slot.offsetHeight,
-        borderRadius: restRadius,
+        radius: restRadius,
         duration: settle,
         ease: ease('expressiveEntrance'),
+        onUpdate: draw,
       },
       'land',
     )
-      .set(card, { clearProps: 'left,top,width,height,borderRadius,opacity,visibility' }, `land+=${settle}`)
-      .set(slot, { clearProps: 'zIndex' }, `land+=${settle}`);
+      .set(slot, { clearProps: 'zIndex' }, `land+=${settle}`)
+      // At rest once the ease-back (the longer of the two) has finished too.
+      .set(card, { clearProps: 'opacity,visibility' }, `swap+=${zoom + settle}`)
+      .call(() => clearCard(get), undefined, `swap+=${zoom + settle}`);
   }
 
   // enter: the nav's contents, then each block of copy, fade in following the
@@ -304,6 +341,12 @@ function introTimeline(root: HTMLElement, get: Get, restRadius: string, onComple
   return tl;
 }
 
+/** The whole viewport as a box relative to the video's slot. */
+function fullScreen(slot: HTMLElement) {
+  const box = slot.getBoundingClientRect();
+  return { left: -box.left, top: -box.top, width: window.innerWidth, height: window.innerHeight };
+}
+
 /** Resolves when the hero's video can play (or there is none), or after VIDEO_WAIT. */
 function videoReady(root: HTMLElement): Promise<void> {
   const video = root.querySelector('video');
@@ -314,11 +357,13 @@ function videoReady(root: HTMLElement): Promise<void> {
   });
 }
 
-/** Resolves when the element's CSS animations (the shield's entrance) have finished. */
-function settled(el: HTMLElement | null): Promise<void> {
-  if (!el) return Promise.resolve();
-  // A cancelled animation rejects `finished`; that counts as settled too.
-  return Promise.all(el.getAnimations().map((a) => a.finished.catch(() => undefined))).then(() => undefined);
+/** Resolves once the element's CSS animations (the shield's entrance) are `share` of the way through. */
+function settling(el: HTMLElement | null, share: number): Promise<void> {
+  const waits = (el?.getAnimations() ?? []).map((animation) => {
+    const end = Number(animation.effect?.getComputedTiming().endTime ?? 0);
+    return end * share - Number(animation.currentTime ?? 0);
+  });
+  return new Promise((resolve) => setTimeout(resolve, Math.max(0, ...waits)));
 }
 
 /** Resolves at `ms` after navigation start (at once if that has passed). */

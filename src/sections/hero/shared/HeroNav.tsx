@@ -1,5 +1,4 @@
-import { Button, ButtonIcon, Container, Logo } from '@kishanscaler/ssx-ui';
-import { ArrowUpRight } from '@phosphor-icons/react/ssr';
+import { Button, Container, Logo, LogoLoader } from '@kishanscaler/ssx-ui';
 import type { HeroCta } from '../types';
 
 /**
@@ -12,6 +11,10 @@ import type { HeroCta } from '../types';
  *
  * `theme` pins the bar's theme (a dark hero starts it dark); the variation's
  * motion may switch it as the page scrolls past the hero.
+ *
+ * Hovering the logo plays the package's loading mark (`LogoLoader`: the shield
+ * tracing and inking itself) in place of the static shield; the wordmark stays.
+ * Needs `shared/hero.css`.
  */
 export function HeroNav({ cta, theme }: { cta: HeroCta; theme?: 'light' | 'dark' }) {
   return (
@@ -22,14 +25,12 @@ export function HeroNav({ cta, theme }: { cta: HeroCta; theme?: 'light' | 'dark'
       className="sticky top-0 z-sticky border-b border-border-decorative bg-page"
     >
       <Container className="flex h-16 items-center justify-between gap-4">
-        <Logo />
+        <span className="hero-nav-logo">
+          <Logo />
+          <LogoLoader decorative />
+        </span>
         <Button asChild>
-          <a href={cta.href}>
-            {cta.label}
-            <ButtonIcon>
-              <ArrowUpRight />
-            </ButtonIcon>
-          </a>
+          <a href={cta.href}>{cta.label}</a>
         </Button>
       </Container>
     </header>

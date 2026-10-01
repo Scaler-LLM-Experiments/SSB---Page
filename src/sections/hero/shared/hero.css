@@ -58,6 +58,47 @@
   mask-composite: exclude;
 }
 
+/* The hero's video card is moved with transforms only (frame.ts drawCard).
+   Its media is a box of the film's own shape (16:9) covering the card, centred,
+   rather than object-fit on the card's shape: scaled evenly onto any frame, it
+   shows the right crop, and the whole film once the frame is 16:9. */
+[data-video-card] {
+  container-type: size;
+}
+.hero-media-cover {
+  --media-w: max(100cqw, 100cqh * 16 / 9);
+  position: absolute;
+  left: calc(50% - var(--media-w) / 2);
+  top: calc(50% - var(--media-w) * 9 / 32);
+  width: var(--media-w);
+  height: calc(var(--media-w) * 9 / 16);
+}
+
+/* Nav logo: on hover the shield draws itself (the package's LogoLoader) over
+   the static one, which steps aside; the wordmark stays. The loader is square
+   and the shield 29:40 inside it, so it sits that much left of the lockup's
+   shield (the first 29 of its 103 units). Shown with display, so the draw
+   starts from the top on every hover. */
+.hero-nav-logo {
+  --nav-logo-h: var(--spacing-8);
+  position: relative;
+  display: inline-flex;
+}
+.hero-nav-logo [data-logo-loader] {
+  position: absolute;
+  top: 0;
+  left: calc((29 / 40 - 1) * var(--nav-logo-h) / 2);
+  width: var(--nav-logo-h);
+  height: var(--nav-logo-h);
+  display: none;
+}
+.hero-nav-logo:hover [data-logo-loader] {
+  display: inline-flex;
+}
+.hero-nav-logo:hover [data-slot='logo'] path:not(:first-child) {
+  opacity: 0;
+}
+
 /* Logo ticker: two identical lists slide left by one list's width, forever. */
 .hero-ticker {
   mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
@@ -75,6 +116,28 @@
   to {
     transform: translateX(-50%);
   }
+}
+
+/* Ticker logos: one tone at rest, so no brand colour competes with SSB's; on
+   hover, the logo's own colours. No tile behind it, so the dark ones (BCG's
+   green, McKinsey's navy) stay low-contrast on the black hero.
+   The one tone keeps a logo's white details (Swiggy's pin) as cut-outs: grey,
+   then inverted, so colour is light and white is black, then brightened until
+   every colour is white (Swiggy's orange, the lightest, needs 1.8x). On a
+   light page, inverted back: colour black, details white. */
+.hero-ticker-logo {
+  filter: grayscale(1) invert(1) brightness(1.8) invert(1);
+  opacity: var(--opacity-muted);
+  transition:
+    filter var(--motion-duration-fast) var(--motion-easing-productive-in-out),
+    opacity var(--motion-duration-fast) var(--motion-easing-productive-in-out);
+}
+[data-theme='dark'] .hero-ticker-logo {
+  filter: grayscale(1) invert(1) brightness(1.8);
+}
+.hero-ticker-item:hover .hero-ticker-logo {
+  filter: none;
+  opacity: 1;
 }
 
 /* Video placeholder: a slow brand-tinted drift, so the frame reads as footage. */
