@@ -123,7 +123,7 @@ function videoMoment(get: Get, closeFilm: () => void) {
 
   // How long the card takes to reach the frame, and where the play button
   // starts to fade in: scrolled back before it, the frame is opening up again,
-  // and an open film closes. (Shares of the timeline; the track is 220svh.)
+  // and an open film closes. (Shares of the timeline; the track is 140svh.)
   const toFrame = 0.35;
   const framedAt = 0.26;
 
@@ -203,7 +203,7 @@ function videoMoment(get: Get, closeFilm: () => void) {
     .fromTo(get('hero-light'), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 }, 0.45)
     .set(get('hero-nav'), { attr: { 'data-theme': 'light' } }, 0.55)
     // Hold the frame on white for the rest of the scroll.
-    .to({}, { duration: 0.25 });
+    .to({}, { duration: 0.1 });
 
   // The play button and caption arrive with the video, overlapping its last
   // stretch (each only if the hero has one).

@@ -155,9 +155,11 @@ starts dark and turns light with the page. Hovering the logo plays the package's
 loader is square with the 29:40 shield centred in it, so it sits `(29/40 − 1) × height / 2` left of
 the lockup's shield, and is shown with `display` so the draw restarts on every hover.
 
-**V2's scroll timing** (`videoMoment`): a 220svh track; the card reaches the frame by 0.35 of the
-timeline (~450px of scroll on a 1480×888 screen), the play button and caption fade in from 0.26,
-the white from 0.45 (fully white by ~850px), the nav turns light at 0.55.
+**V2's scroll timing** (`videoMoment`): a 140svh track, so the hero-to-next-section trip is short
+(it took ~6 flicks at 240svh: the next section began 2,195px down the page; now 1,308px). On a
+1480×888 screen the card reaches the frame by ~200px of scroll (0.35 of the timeline), the play
+button and its controls fade in from 0.26, the white from 0.45 (fully white by ~400px), the nav
+turns light at 0.55, then a short hold (0.1). What remains is the framed hero scrolling away.
 
 **The Faculty entrance** plays in two moments, each once, when its part is on screen: the header
 (eyebrow, headline line by line, then the rest) when it is 85% of the way up, and the cards (wiped
@@ -242,10 +244,11 @@ viewBox. A `logoUrl` that isn't ours (or a `wikidataId`) still works, at a fixed
 
 The framed video is a YouTube player in two states, under one set of YouTube's controls rebuilt
 (`Controls` in `FilmPlayer.tsx`, fed by a small source interface: time, duration, buffered, seek).
-**The preview:** the silent loop, playing, with the 80px play button and just the scrubber along
-the bottom edge (no buttons, no time), spanning the full film (`media.youtubeLength`, 288s = 4:48):
-it creeps forward with the loop, shows times on hover, and a click or drag opens the film at that
-point (the big button opens it from the start). Lengths are shown rounded up, as YouTube lists them:
+**The preview:** the silent loop, playing, with the 80px play button and, inside the video as on
+YouTube, the scrubber over a control row of just play and the time (0:07 / 4:48): the bar spans
+the full film (`media.youtubeLength`, 288s), creeps forward with the loop, shows times on hover,
+and a click or drag opens the film at that point (either play button opens it from the start).
+Not a bare bar along the bottom edge: the card's rounded corners clip it. Lengths are shown rounded up, as YouTube lists them:
 the film runs a fraction over 287s, so 4:48, not 4:47.
 **The film:** the first open loads YouTube's IFrame API and plays the full film
 (`media.youtubeId`, 4:47) with the embed's controls off and the same controls on top: the progress bar (3px, 5px on hover, red-to-pink played, buffered, the red knob, a time
@@ -315,9 +318,9 @@ on scroll back or away; the card moves by transforms only; the zoom re-measures 
 starts; the Faculty section sits below the hero. Then (2026-10-01): the whole title pure white at
 `type-hero`; eyebrow at the label size; description `lg`; plain CTAs; the nav logo draws itself on
 hover; the ticker's logos changed (Swiggy and Cars24 for ISB and IIMA), self-hosted, sized to equal
-ink, real colours on hover, 48px apart; YouTube-style controls on the film, a bare scrubber over
-the framed loop spanning the film's 4:48 (click to open the film there), an 80px play button; the scroll moment quicker (220svh track,
-white from 0.45).
+ink, real colours on hover, 48px apart; YouTube-style controls on the film, on the framed loop
+the scrubber (spanning the film's 4:48; click to open the film there), play and the time, an 80px play button; the scroll moment zippy (140svh track,
+white from 0.45, a short hold).
 
 ## Checking changes visually
 

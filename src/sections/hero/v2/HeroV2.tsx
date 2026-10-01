@@ -47,7 +47,7 @@ export async function HeroV2({
         {/* The scroll track for the desktop video moment: tall, with the hero stuck
             under the nav while it scrolls past (CSS sticky, so nothing is re-parented,
             nothing is fixed, and it follows window resizes). */}
-        <div data-hero-pin className="motion-safe:md:h-[220svh]">
+        <div data-hero-pin className="motion-safe:md:h-[140svh]">
           {/* One screen under the sticky nav (HeroNav is h-16). */}
           <section
             data-hero

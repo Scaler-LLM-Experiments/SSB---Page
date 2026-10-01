@@ -10,9 +10,10 @@ import './film-player.css';
  * YouTube's own controls rebuilt (`Controls`):
  *
  * - The preview: the silent loop already playing in the card, with the big play
- *   button and just the scrubber, spanning the full film (`length`, 4:48): it
- *   runs with the loop, shows times on hover, and a click or drag opens the film
- *   at that point. The big button opens it from the start.
+ *   button and a cut-down set of the controls: the scrubber, spanning the full
+ *   film (`length`, 4:48), then play and the time (0:07 / 4:48). The bar runs
+ *   with the loop and shows times on hover; a click or drag opens the film at
+ *   that point; either play button opens it from the start.
  * - The film: the full film from YouTube in the frame (the embed's controls
  *   off), under the same controls: scrub, play/pause, mute, the time against
  *   the film's length, fullscreen; they fade while it plays untouched; a click
@@ -96,7 +97,7 @@ export function FilmPlayer({
         >
           <Play weight="fill" className="size-8" />
         </GlassButton>
-        <Controls source={preview} bare />
+        <Controls source={preview} onToggle={() => openFilm()} />
       </div>
       {open ? <Film youtubeId={youtubeId} start={open.start} title={title} /> : null}
     </>
@@ -130,13 +131,12 @@ function clock(seconds: number, length = false): string {
 /**
  * YouTube's controls: the progress bar (3px, 5px under the pointer; played,
  * buffered, the knob, a time tooltip; drag to scrub), then play/pause, mute,
- * the time, fullscreen. `bare`: the bar alone, along the bottom edge (YouTube's
- * preview). The bar and the time are drawn every frame straight to the DOM, by
- * transform: no layout, so no layout shift as the film plays.
+ * the time, fullscreen; mute and fullscreen only when given a handler. The bar
+ * and the time are drawn every frame straight to the DOM, by transform: no
+ * layout, so no layout shift as the film plays.
  */
 function Controls({
   source,
-  bare = false,
   playing = false,
   muted = false,
   ended = false,
@@ -146,7 +146,6 @@ function Controls({
   onFullscreen,
 }: {
   source: Source;
-  bare?: boolean;
   playing?: boolean;
   muted?: boolean;
   ended?: boolean;
@@ -238,8 +237,8 @@ function Controls({
   };
 
   return (
-    <div className="yt-chrome" data-bare={bare || undefined}>
-      {bare ? null : <div className="yt-gradient" />}
+    <div className="yt-chrome">
+      <div className="yt-gradient" />
       <div className="yt-bottom">
         <div
           ref={bar}
@@ -268,16 +267,16 @@ function Controls({
           </div>
         </div>
 
-        {bare ? null : (
-          <div className="yt-controls">
-            <button
-              type="button"
-              className="yt-button"
-              aria-label={ended ? 'Replay' : playing ? 'Pause (k)' : 'Play (k)'}
-              onClick={onToggle}
-            >
-              {ended ? <ReplayIcon /> : playing ? <PauseIcon /> : <PlayIcon />}
-            </button>
+        <div className="yt-controls">
+          <button
+            type="button"
+            className="yt-button"
+            aria-label={ended ? 'Replay' : playing ? 'Pause (k)' : 'Play (k)'}
+            onClick={onToggle}
+          >
+            {ended ? <ReplayIcon /> : playing ? <PauseIcon /> : <PlayIcon />}
+          </button>
+          {onMute ? (
             <button
               type="button"
               className="yt-button"
@@ -286,26 +285,26 @@ function Controls({
             >
               {muted ? <VolumeOffIcon /> : <VolumeIcon />}
             </button>
-            <div className="yt-time">
-              <span ref={now}>0:00</span>
-              <span className="yt-time-separator"> / </span>
-              <span ref={total} className="yt-time-duration">
-                0:00
-              </span>
-            </div>
-            <span className="yt-spacer" />
-            {onFullscreen ? (
-              <button
-                type="button"
-                className="yt-button"
-                aria-label={fullscreen ? 'Exit full screen (f)' : 'Full screen (f)'}
-                onClick={onFullscreen}
-              >
-                {fullscreen ? <ExitFullscreenIcon /> : <FullscreenIcon />}
-              </button>
-            ) : null}
+          ) : null}
+          <div className="yt-time">
+            <span ref={now}>0:00</span>
+            <span className="yt-time-separator"> / </span>
+            <span ref={total} className="yt-time-duration">
+              0:00
+            </span>
           </div>
-        )}
+          <span className="yt-spacer" />
+          {onFullscreen ? (
+            <button
+              type="button"
+              className="yt-button"
+              aria-label={fullscreen ? 'Exit full screen (f)' : 'Full screen (f)'}
+              onClick={onFullscreen}
+            >
+              {fullscreen ? <ExitFullscreenIcon /> : <FullscreenIcon />}
+            </button>
+          ) : null}
+        </div>
       </div>
     </div>
   );
