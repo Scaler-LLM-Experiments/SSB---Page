@@ -23,6 +23,8 @@ export interface FooterContent {
   navLabel: string;
   /** Drawn in particles at the foot (decorative). */
   wordmark: string;
+  /** The campus footer: the photo the footer stands on, and the short line beside the tagline. */
+  campus: { image: { src: string; small: string; alt: string }; place: string };
 }
 
 export const SSB_FOOTER: FooterContent = {
@@ -58,4 +60,6 @@ export const SSB_FOOTER: FooterContent = {
   backToTop: 'Back to top',
   navLabel: 'Footer',
   wordmark: 'Scaler School of Business',
+  // the school's own photo of the campus entrance (DSC06135, supplied 2026-10-05); served by the page
+  campus: { image: { src: '/footer/campus.webp', small: '/footer/campus-1200.webp', alt: 'The Scaler School of Business campus entrance at dusk' }, place: 'Campus: Bengaluru' },
 };
