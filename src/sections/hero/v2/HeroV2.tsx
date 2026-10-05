@@ -1,5 +1,6 @@
 import { Button, Container, Heading, Text } from '@kishanscaler/ssx-ui';
 import { resolveLogos } from '@/lib/logos';
+import { CtaIcon } from '../CtaIcon';
 import { HeroTitle } from '../HeroTitle';
 import { FactsStrip } from '../shared/FactsStrip';
 import { LogoTicker } from '../shared/LogoTicker';
@@ -123,11 +124,17 @@ export async function HeroV2({
                 className="relative flex w-full flex-col gap-3 md:z-lift md:col-start-1 md:row-start-2 md:w-auto md:flex-row md:gap-4"
               >
                 <Button asChild size="lg" className="w-full md:w-auto">
-                  <a href={primaryCta.href}>{primaryCta.label}</a>
+                  <a href={primaryCta.href}>
+                    {primaryCta.label}
+                    <CtaIcon icon={primaryCta.icon} />
+                  </a>
                 </Button>
                 {secondaryCta ? (
                   <Button asChild size="lg" variant="secondary" className="w-full md:w-auto">
-                    <a href={secondaryCta.href}>{secondaryCta.label}</a>
+                    <a href={secondaryCta.href}>
+                      {secondaryCta.label}
+                      <CtaIcon icon={secondaryCta.icon} />
+                    </a>
                   </Button>
                 ) : null}
               </div>

@@ -1,4 +1,5 @@
 import { Button, Container, Logo, LogoLoader } from '@kishanscaler/ssx-ui';
+import { CtaIcon } from '../CtaIcon';
 import type { HeroCta } from '../types';
 
 /**
@@ -30,7 +31,10 @@ export function HeroNav({ cta, theme }: { cta: HeroCta; theme?: 'light' | 'dark'
           <LogoLoader decorative />
         </span>
         <Button asChild>
-          <a href={cta.href}>{cta.label}</a>
+          <a href={cta.href}>
+            {cta.label}
+            <CtaIcon icon={cta.icon} />
+          </a>
         </Button>
       </Container>
     </header>

@@ -6,9 +6,13 @@
  * so a variation can change layout without changing what editors fill in.
  */
 
+/** A CTA's trailing icon: `arrow` to go somewhere, `download` for a file (CtaIcon). */
+export type CtaIconName = 'arrow' | 'download';
+
 export type HeroCta = {
   label: string;
   href: string;
+  icon?: CtaIconName;
 };
 
 export type HeroFact = {
