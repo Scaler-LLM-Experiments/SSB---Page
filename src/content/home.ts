@@ -10,8 +10,8 @@ export const hero: HeroContent = {
   title: 'India’s first AI-native B-school built by 100+ industry leaders from',
   description:
     'Learn by doing: build startups and AI products, solve live company challenges, and work with practitioners. No technology background required.',
-  primaryCta: { label: 'Apply now', href: '#apply' },
-  secondaryCta: { label: 'Download brochure', href: '#brochure' },
+  primaryCta: { label: 'Apply now', href: '#apply', icon: 'arrow' },
+  secondaryCta: { label: 'Download brochure', href: '#brochure', icon: 'download' },
   facts: [{ value: '18 months' }, { value: 'Bengaluru campus' }, { value: '150 seats' }],
   // Our own files, in their own colours, trimmed to their edges (public/logos). `ink` as measured
   // in one tone (CLAUDE.md, "Logos").
