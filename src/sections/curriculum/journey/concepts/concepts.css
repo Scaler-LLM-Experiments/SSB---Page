@@ -1,0 +1,475 @@
+/* ==========================================================================
+ * Concepts: three interaction models for the year journey.
+ *   .cb-*  build-up artifact     .cs-*  stacked cards (.cj-ship is shared)
+ * Tokens only. Container queries for reflow (the JS picks desktop / m-web
+ * from the container width). Motion 200–320ms; reduced motion = instant.
+ * ======================================================================== */
+
+.cj-wrap, .cb-wrap, .cs-wrap { display: grid; gap: calc(var(--sj-space) * 1.25); }
+.cj-ship { color: var(--content-secondary); font-size: var(--type-body-sm-size, 14px); line-height: var(--type-body-sm-lh, 1.5); }
+
+/* ── build-up artifact ──────────────────────────────────────────────────── */
+.cb-art { position: relative; aspect-ratio: 4 / 3; border-radius: var(--sj-card-r, var(--radius-lg)); background: var(--surface-sunken); overflow: visible; container: cbart / inline-size; }
+.cb-art[data-size='sm'] { border-radius: var(--radius-lg); }
+.cb-slot { position: absolute; display: block; opacity: 0; transform: scale(0.9); transition: transform 320ms var(--ease-productive-in-out, ease), opacity 240ms, left 320ms var(--ease-productive-in-out, ease), top 320ms var(--ease-productive-in-out, ease), width 320ms var(--ease-productive-in-out, ease), height 320ms var(--ease-productive-in-out, ease); }
+.cb-slot[data-on] { opacity: 1; transform: none; }
+.cb-slot[data-new] .cb-piece { box-shadow: 0 0 0 2px var(--border-brand); }
+.cb-art[data-exploded] .cb-slot[data-on] { transform: translate(var(--dx), var(--dy)); }
+.cb-piece { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; gap: 6%; border-radius: var(--radius-md); background: var(--surface-raised); border: 1.5px solid var(--border-strong); color: var(--content-brand); overflow: hidden; }
+.cb-piece svg { width: 34%; height: 60%; max-width: 44px; }
+.cb-art[data-style='wire'] .cb-piece { background: transparent; border-style: dashed; color: var(--content-secondary); }
+.cb-piece[data-piece='browser'] { flex-direction: column; align-items: stretch; justify-content: start; gap: 0; }
+.cb-bar { display: flex; align-items: center; gap: 4%; height: 14%; padding: 0 5%; background: var(--surface-subtle); border-bottom: 1px solid var(--border-subtle); }
+.cb-bar i { width: 4%; aspect-ratio: 1; border-radius: 50%; background: var(--border-strong); }
+.cb-bar b { flex: 1; height: 42%; border-radius: 99px; background: var(--surface-raised); margin-left: 4%; }
+.cb-page { flex: 1; display: grid; align-content: center; gap: 7%; padding: 8% 10%; }
+.cb-page em { display: block; height: 7cqi; max-height: 12px; border-radius: 3px; background: var(--border-subtle); }
+.cb-page .cb-l1 { width: 70%; background: var(--content-primary); opacity: 0.8; }
+.cb-page .cb-l2 { width: 90%; }
+.cb-page .cb-l3 { width: 60%; }
+.cb-page .cb-btn { width: 32%; height: 10cqi; max-height: 18px; background: var(--surface-brand-solid); border-radius: 99px; }
+.cb-piece[data-piece='price'] { background: var(--accent1-surface); color: var(--accent1-content); border-color: var(--accent1-border); }
+.cb-piece[data-piece='users'] { color: var(--accent1-content); }
+.cb-piece[data-piece='ai'] { position: relative; background: var(--brand-tint-surface); color: var(--brand-tint-content); border-color: var(--brand-tint-border); border-radius: 50%; }
+.cb-piece[data-piece='ai'] .cb-spark { position: absolute; right: 16%; top: 14%; width: 22%; color: var(--accent1-solid); }
+.cb-piece[data-piece='company'] { background: var(--surface-brand-solid); color: var(--content-on-brand-solid); border-color: transparent; }
+.cb-art[data-style='wire'] .cb-piece:is([data-piece='company'], [data-piece='ai'], [data-piece='price']) { background: transparent; color: var(--content-secondary); border-color: var(--border-strong); }
+
+.cb-strip { position: relative; display: grid; grid-template-columns: repeat(var(--cb-n), minmax(0, 1fr)); gap: calc(var(--sj-space) * 0.75); }
+.cb-track { position: absolute; left: 12.5%; right: 12.5%; top: calc(var(--cb-thumb, 88px) / 2 + 8px); height: 3px; background: var(--border-subtle); border-radius: 3px; z-index: 0; }
+.cb-track i { position: absolute; inset: 0 auto 0 0; width: calc(100% * var(--cb-sel) / (var(--cb-n) - 1)); background: var(--surface-brand-solid); border-radius: 3px; transition: width 320ms var(--ease-productive-in-out, ease); }
+.cb-stop { all: unset; box-sizing: border-box; position: relative; z-index: 1; cursor: pointer; display: grid; gap: 10px; justify-items: center; text-align: center; padding: 8px; border-radius: var(--radius-lg); min-height: var(--size-touch-min, 44px); }
+.cb-stop .cb-art { width: min(100%, 132px); background: var(--surface-page); box-shadow: 0 0 0 1px var(--border-subtle); transition: transform 200ms, box-shadow 200ms; }
+.cb-stop:hover .cb-art { transform: translateY(-3px); }
+.cb-stop[aria-checked='true'] .cb-art { box-shadow: 0 0 0 2px var(--border-brand), var(--shadow-raised); }
+.cb-stop:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+.cb-stop-text { display: grid; gap: 2px; }
+.cb-stop-text b { font-size: calc(14px * var(--ts, 1)); }
+.cb-stop-text > span:last-child { font-size: calc(12.5px * var(--ts, 1)); color: var(--content-secondary); }
+.cb-stop[aria-checked='false'] .cb-stop-text b { color: var(--content-secondary); }
+
+.cb-stage { display: grid; gap: calc(var(--sj-space) * 1.25); padding: calc(var(--sj-space) * 1.5); border-radius: var(--sj-card-r, var(--radius-lg)); background: var(--surface-raised); border: 1px solid var(--border-subtle); }
+.cb-hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: calc(var(--sj-space) * 2); align-items: center; }
+.cb-hero-text { display: grid; gap: 10px; justify-items: start; }
+.cb-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.cb-exploded { display: grid; gap: calc(var(--sj-space) * 1.25); animation: cj-in 300ms var(--ease-productive-entrance, ease-out); }
+.cb-explode-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr); gap: calc(var(--sj-space) * 1.5); align-items: center; }
+.cb-center { padding: 8%; }
+.cb-side { display: grid; gap: 12px; }
+.cb-side[data-side='l'] { justify-items: end; text-align: right; }
+.cb-side[data-side='l'] .cb-callouts ul { justify-content: flex-end; }
+.cb-callouts { display: grid; gap: 8px; position: relative; }
+.cb-callouts ul { display: flex; flex-wrap: wrap; gap: 6px; }
+.cb-callouts li { display: contents; }
+.cb-side .cb-callouts::after { content: ''; position: absolute; top: 50%; width: 28px; height: 2px; background: var(--border-strong); }
+.cb-side[data-side='l'] .cb-callouts::after { right: -40px; }
+.cb-side[data-side='r'] .cb-callouts::after { left: -40px; }
+.cb-textlist { display: grid; gap: 8px; }
+.cb-textlist li { display: grid; gap: 2px; font-size: calc(13px * var(--ts, 1)); color: var(--content-secondary); line-height: 1.4; }
+.cb-textlist b { color: var(--content-primary); font-size: calc(14px * var(--ts, 1)); }
+.cb-exploded[data-stacked] .cb-explode-grid { grid-template-columns: 1fr; }
+.cb-exploded[data-stacked] .cb-center { order: -1; padding: 8% 14%; }
+.cb-exploded[data-stacked] .cb-side[data-side='l'] { justify-items: start; text-align: left; }
+.cb-exploded[data-stacked] .cb-side[data-side='l'] .cb-callouts ul { justify-content: flex-start; }
+.cb-exploded[data-stacked] .cb-callouts::after { display: none; }
+
+.cb-cards { display: grid; gap: calc(var(--sj-space) * 0.75); }
+.cb-cards > li { display: grid; gap: 8px; }
+.cb-card { all: unset; box-sizing: border-box; cursor: pointer; width: 100%; display: grid; grid-template-columns: 104px 1fr; gap: 14px; align-items: center; padding: 14px; border-radius: var(--sj-card-r, var(--radius-lg)); background: var(--surface-raised); border: 1px solid var(--border-subtle); }
+.cb-card:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+.cb-card[aria-expanded='true'] { border-color: var(--border-brand); box-shadow: inset 0 0 0 1px var(--border-brand); }
+.cb-card-text { display: grid; gap: 4px; justify-items: start; min-width: 0; }
+@container sj (max-width: 1023px) { .cb-hero { grid-template-columns: 1fr; } .cb-explode-grid { grid-template-columns: 1fr 1.3fr 1fr; } }
+
+/* ── stacked cards ──────────────────────────────────────────────────────── */
+.cs-deck { position: relative; transition: height var(--cs-dur, 320ms) var(--cs-spring, ease); }
+/* while a card unfolds the deck tracks its measured height frame by frame; easing it would lag and overlap what follows */
+.cs-deck[data-open] { transition: none; }
+/* motion, after a shared-layout modal morph: one critically damped spring (no
+   overshoot, it just glides to rest) drives position, width and height together,
+   so opening reads as a single continuous morph rather than a series of jumps.
+   The content settles in last; everything else recedes. */
+.cs-wrap { --cs-spring: linear(0, 0.034, 0.113, 0.212, 0.317, 0.418, 0.511, 0.594, 0.666, 0.727, 0.778, 0.821, 0.856, 0.885, 0.908, 0.927, 0.942, 0.954, 0.964, 0.972, 0.978, 0.983, 0.986, 0.989, 0.992, 0.994, 0.995, 0.996, 1); --cs-dur: 720ms; }
+.cs-card { position: absolute; left: 0; top: 0; transform-origin: 50% 100%;
+  transform: translate(var(--x, 0), var(--y, 0)) rotate(var(--r, 0deg)) scale(var(--s, 1));
+  transition: transform var(--cs-dur) var(--cs-spring), width var(--cs-dur) var(--cs-spring); }
+.cs-deck:not([data-open]) .cs-card:hover, .cs-deck:not([data-open]) .cs-card:focus-within { transform: translate(var(--x), calc(var(--y) - 4px)) rotate(calc(var(--r) * 0.8)) scale(var(--s)); z-index: 20 !important; transition-duration: 520ms; }
+/* the rest of the deck recedes while one card is open, like a modal's backdrop */
+.cs-card[data-piled] .cs-front { opacity: 0.55; }
+.cs-card[data-piled]:hover .cs-front { opacity: 1; }
+.cs-card[data-piled]:hover { transform: translate(calc(var(--x) + 4px), var(--y)) rotate(var(--r)) scale(var(--s)); transition-duration: 520ms; }
+.cs-inner { position: relative; display: grid; border-radius: var(--sj-card-r, var(--radius-lg)); background: var(--surface-raised); border: 1px solid var(--border-subtle); box-shadow: var(--shadow-raised); }
+.cs-face { box-sizing: border-box; }
+.cs-front { all: unset; box-sizing: border-box; cursor: pointer; display: grid; gap: 8px; align-content: start; width: 100%; padding: calc(var(--sj-space) * 1.25); border-radius: var(--sj-card-r, var(--radius-lg)); transition: opacity 480ms ease; }
+.cs-front:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+/* focus handed back after a pointer close: no ring (keyboard closes keep it) */
+.cs-front[data-quiet-focus]:focus-visible { outline: none; }
+.cs-front .sj-visual { margin-top: 6px; }
+/* the front's extra lines fold away (piled, or open) instead of popping out */
+.cs-extra { display: grid; grid-template-rows: 1fr; transition: grid-template-rows var(--cs-dur) var(--cs-spring), opacity 360ms ease 160ms; }
+.cs-extra > span { min-height: 0; max-width: calc(var(--cw, 100%) - var(--sj-space) * 2.5); overflow: hidden; display: grid; gap: 8px; align-content: start; }
+.cs-card[data-piled] .cs-extra, .cs-card[data-open] .cs-extra { grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows var(--cs-dur) var(--cs-spring), opacity 160ms ease; }
+/* open: one surface (.cs-inner); the card slides and widens first, then the
+   body unfolds under the front and fades in. Closing folds it straight away. */
+.cs-fold { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 520ms var(--cs-spring); }
+.cs-fold[data-on] { grid-template-rows: 1fr; transition: grid-template-rows var(--cs-dur) var(--cs-spring) 40ms; }
+.cs-fold > .cs-back { min-height: 0; overflow: hidden; padding: 0; }
+.cs-fold .cs-backbody { padding: 0 calc(var(--sj-space) * 1.25) calc(var(--sj-space) * 1.25); }
+.cs-fold .cs-backbody > :not(header) { opacity: 0; transform: translateY(6px) scale(0.985); transform-origin: 50% 0; transition: opacity 160ms ease, transform 160ms ease; }
+/* staggered, so the body reads top to bottom as it settles */
+.cs-fold[data-on] .cs-backbody > :not(header) { opacity: 1; transform: none; transition: opacity 420ms ease calc(260ms + var(--i, 0) * 60ms), transform 640ms var(--cs-spring) calc(220ms + var(--i, 0) * 60ms); }
+.cs-fold .cs-backbody > :nth-child(3) { --i: 1; }
+.cs-fold .cs-backbody > :nth-child(4) { --i: 2; }
+.cs-fold .cs-backbody > :nth-child(n + 5) { --i: 3; }
+/* the close button sits in the card's top-right corner, over the front */
+.cs-fold .cs-backbody > header { position: absolute; top: calc(var(--sj-space) * 0.75); right: calc(var(--sj-space) * 0.75); opacity: 0; transition: opacity 140ms ease; }
+.cs-fold[data-on] .cs-backbody > header { opacity: 1; transition: opacity 360ms ease 320ms; }
+.cs-backbody { display: grid; gap: calc(var(--sj-space) * 1); }
+.cs-backbody > header { display: flex; justify-content: space-between; align-items: start; gap: 12px; }
+.cs-backbody > header > div { display: grid; gap: 4px; }
+.cs-hint { text-align: center; }
+
+/* modal: the lifted card leaves an empty slot while its modal is up */
+/* lifting: the card fades as the modal grows out of it. landing: it fades back
+   in under the returning modal, over the last half of the close (HANDOFF in
+   stack.tsx), so the two cross-fade in the slot. Settling back is instant. */
+.cs-inner[data-lifted] { opacity: 0; transition: opacity 180ms ease; }
+.cs-inner[data-landing] { opacity: 1; transition: opacity 260ms ease 300ms; }
+.cs-modal { position: fixed; inset: 0; z-index: 1000; }
+.cs-modal[data-leaving] { pointer-events: none; }
+.cs-modal-back { position: absolute; inset: 0; background: var(--surface-overlay-scrim, rgb(10 12 20 / 0.55));
+  background-image: radial-gradient(120% 80% at 50% 110%, color-mix(in srgb, var(--surface-brand-solid) 28%, transparent), transparent 70%); backdrop-filter: blur(2px); }
+/* overscroll none, not contain: contain still lets macOS rubber-band the box, which makes the header photo bounce on a scroll back up */
+.cs-modal-box { position: fixed; box-sizing: border-box; display: flex; flex-direction: column; overflow: auto; overscroll-behavior: none;
+  border-radius: var(--sj-card-r, var(--radius-lg)); background: var(--surface-raised); border: 1px solid var(--border-subtle); box-shadow: var(--shadow-overlay, 0 24px 64px rgb(0 0 0 / 0.28)); }
+.cs-modal-box:focus-visible { outline: none; }
+.cs-modal-hero { position: relative; flex: none; min-height: 132px; display: grid; align-content: end; background: var(--surface-brand-subtle); }
+.cs-modal-hero .sj-visual { position: absolute; inset: 0; aspect-ratio: auto; border-radius: 0; }
+/* a progressive blur under the title: strongest at the bottom edge, gone by mid-band */
+.cs-modal-blur { position: absolute; inset: 0; pointer-events: none; -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  -webkit-mask-image: linear-gradient(to top, #000 0%, #000 30%, rgb(0 0 0 / 0.5) 55%, transparent 80%); mask-image: linear-gradient(to top, #000 0%, #000 30%, rgb(0 0 0 / 0.5) 55%, transparent 80%); }
+@media (prefers-reduced-transparency: reduce) { .cs-modal-blur { display: none; } }
+.cs-modal-hero[data-photo]::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgb(0 0 0 / 0.62), rgb(0 0 0 / 0.08) 55%, transparent); pointer-events: none; }
+.cs-modal-hero[data-photo] { aspect-ratio: 21 / 9; max-height: min(240px, 30vh); } /* a slim band: the content, not the photo, is the point */
+.cs-modal-title { position: relative; z-index: 1; display: grid; gap: 4px; padding: calc(var(--sj-space) * 1.25) calc(var(--sj-space) * 1.5); padding-right: 64px; }
+.cs-modal-hero[data-photo] .cs-modal-title { color: var(--content-on-image, #fff); }
+.cs-modal-hero[data-photo] .cs-modal-title > :first-child, .cs-modal-hero[data-photo] .cs-modal-title > :first-child * { color: inherit !important; opacity: 0.85; }
+.cs-modal-hero[data-photo] .cs-modal-ship { color: inherit; opacity: 0.85; }
+.cs-modal-ship { color: var(--content-secondary); font-size: var(--type-body-sm-size, 14px); }
+.cs-modal-closebar { position: sticky; top: 0; z-index: 3; flex: none; height: 0; }
+.cs-modal-close { all: unset; box-sizing: border-box; cursor: pointer; position: absolute; top: calc(var(--sj-space) * 0.75); right: calc(var(--sj-space) * 0.75);
+  display: grid; place-items: center; width: 44px; height: 44px; border-radius: var(--sj-ctl-r, var(--radius-md));
+  background: rgb(255 255 255 / 0.94); color: #111; box-shadow: 0 2px 10px rgb(0 0 0 / 0.28), 0 0 0 1px rgb(0 0 0 / 0.06); transition: transform 300ms ease, background 200ms ease; }
+.cs-modal-close svg { width: 20px; height: 20px; }
+.cs-modal-close:hover { background: #fff; transform: rotate(90deg) scale(1.06); }
+.cs-modal-close:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+/* the body is laid out at the final width from the start (set inline), so it
+   never reflows while the box morphs; its own container drives the queries */
+.cs-modal-body { box-sizing: border-box; flex: none; max-width: 100%; container: sj / inline-size; display: grid; gap: calc(var(--sj-space) * 1.25); padding: calc(var(--sj-space) * 1.25) calc(var(--sj-space) * 1.5) calc(var(--sj-space) * 1.5); }
+@media (prefers-reduced-motion: reduce) { .cs-inner[data-lifted], .cs-inner[data-landing] { transition: opacity 150ms ease; } .cs-modal-back { backdrop-filter: none; } }
+
+/* m-web: the scroll stack. Every year open; each card pins when its bottom
+   meets the screen's (sticky top set inline) and the next slides over it */
+.ss-wrap { display: grid; gap: 14px; }
+/* responsive width: the cards never outgrow the screen, equal space both sides, capped on big phones */
+.ss { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); }
+/* an open card is being read: it scrolls with the page instead of pinning */
+.ss-card[data-reading] { position: relative; top: auto !important; }
+.ss-card[data-reading] .ss-inner { transform: none !important; filter: none !important; }
+.ss-card { position: sticky; min-width: 0; width: 100%; max-width: 520px; justify-self: center; box-sizing: border-box; padding-inline: 2px; }
+.ss-card + .ss-card { margin-top: 32px; } /* room between cards, so each reads as its own */
+.ss-card[data-reading] + .ss-card { margin-top: 48px; } /* an open card and its shadow get clear room before the next */
+.ss-inner { transform-origin: 50% 0; border-radius: var(--sj-card-r); overflow: hidden; background: var(--surface-raised); border: 1px solid var(--border-subtle);
+  box-shadow: 0 -8px 30px rgb(0 0 0 / 0.08), var(--shadow-raised); transition: transform 120ms linear, filter 120ms linear; will-change: transform; }
+.ss-hero { position: relative; display: grid; align-content: end; min-height: 120px; background: var(--surface-brand-subtle); }
+.ss-hero[data-photo] { aspect-ratio: 4 / 3; }
+.ss-hero .sj-visual { position: absolute; inset: 0; aspect-ratio: auto; border-radius: 0; }
+/* an eased scrim: darkest under the text, gone by the top half, so the photo stays bright */
+.ss-hero[data-photo]::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgb(0 0 0 / 0.82) 0%, rgb(0 0 0 / 0.66) 18%, rgb(0 0 0 / 0.42) 36%, rgb(0 0 0 / 0.18) 54%, rgb(0 0 0 / 0.04) 70%, transparent 82%); }
+.ss-title { position: relative; z-index: 1; display: grid; gap: 4px; padding: 16px 18px; }
+.ss-hero[data-photo] .ss-title { color: #fff; text-shadow: 0 1px 12px rgb(0 0 0 / 0.35); }
+.ss-hero[data-photo] .ss-title .sj-eyebrow { color: inherit; opacity: 0.85; }
+.ss-ship { font-size: var(--type-body-sm-size, 14px); opacity: 0.88; }
+.ss-body { display: grid; gap: 14px; padding: 16px 16px 18px; min-width: 0; }
+/* progressive disclosure: two rows, one open at a time */
+.ss-folds { display: grid; border-top: 1px solid var(--border-subtle); }
+.ss-fold { border-bottom: 1px solid var(--border-subtle); }
+.ss-fold-head { all: unset; box-sizing: border-box; cursor: pointer; width: 100%; display: grid; grid-template-columns: 1fr auto 20px; align-items: center; gap: 10px; min-height: 52px; padding: 10px 2px; }
+.ss-fold-head:focus-visible { outline: 2px solid var(--border-focus); outline-offset: -2px; border-radius: 8px; }
+.ss-fold-title { font-size: calc(15px * var(--ts, 1)); font-weight: 600; color: var(--content-primary); }
+.ss-fold-count { font-size: 12.5px; color: var(--content-secondary); white-space: nowrap; }
+.ss-fold-caret { width: 18px; height: 18px; color: var(--content-secondary); transition: transform 240ms ease; }
+.ss-fold[data-open] .ss-fold-caret { transform: rotate(180deg); color: var(--content-brand); }
+.ss-fold-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 320ms var(--ease-productive-in-out, ease); }
+.ss-fold[data-open] .ss-fold-panel { grid-template-rows: 1fr; }
+.ss-fold-inner { min-height: 0; min-width: 0; overflow: hidden; display: grid; gap: 14px; }
+.ss-fold[data-open] .ss-fold-inner { padding-bottom: 16px; }
+/* the counter and rail ride along at the bottom while the stack is in view */
+.ss-meter { position: sticky; bottom: 12px; z-index: 20; justify-self: center; display: inline-flex; align-items: center; gap: 12px; padding: 8px 14px; border-radius: var(--sj-ctl-r, var(--radius-md));
+  background: color-mix(in srgb, var(--surface-raised) 88%, transparent); backdrop-filter: blur(8px); border: 1px solid var(--border-subtle); box-shadow: var(--shadow-raised); }
+.ss-count { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.ss-count i { font-style: normal; font-weight: 400; color: var(--content-secondary); }
+.ss-rail { position: relative; width: 72px; height: 3px; border-radius: 2px; background: var(--border-subtle); overflow: hidden; }
+.ss-rail > span { position: absolute; inset: 0; background: var(--surface-brand-solid); transform-origin: 0 50%; transition: transform 300ms ease; }
+@media (prefers-reduced-motion: reduce) { .ss-inner, .ss-rail > span, .ss-fold-panel, .ss-fold-caret { transition: none; } }
+
+/* reduced motion: instant states */
+@media (prefers-reduced-motion: reduce) {
+  .cb-slot, .cb-track i, .cs-card, .cs-deck, .cs-extra, .cs-fold, .cs-fold .cs-backbody > * { transition: none !important; }
+}
+
+/* ── desktop fan: cover cards (after React Bits' Modal Cards) ────────────────
+   The photo fills the card; a dark gradient rises from the bottom; the term,
+   title, summary and counts sit on it in white; a frosted round "+" bottom-right.
+   Piled cards show just their top strip (term + title); an open card's cover
+   shortens to a header. */
+/* desktop cover card, editorial: photo first with a glass term label, the
+   title and outcome under it, then a hairline and a foot with the counts and
+   the open control. Every card is the same height, so the row reads as one. */
+.cs-deck .cs-front[data-cover] { position: relative; overflow: hidden; padding: 8px; display: flex; flex-direction: column; align-content: normal; gap: 0; height: 100%; border-radius: var(--sj-card-r); }
+.cs-hero { position: relative; flex: none; aspect-ratio: 5 / 4; overflow: hidden; border-radius: var(--sj-card-r-in); isolation: isolate; background: var(--surface-subtle, var(--surface-sunken)); }
+.cs-front[data-cover] .cs-cover { position: absolute; inset: 0; }
+.cs-front[data-cover] .cs-cover .sj-visual { position: absolute; inset: 0; margin: 0; aspect-ratio: auto; border-radius: 0; }
+.cs-front[data-cover] .cs-cover img { transition: transform 700ms var(--cs-spring, cubic-bezier(0.2, 0.8, 0.2, 1)); }
+.cs-card:hover .cs-front[data-cover] .cs-cover img { transform: scale(1.05); }
+/* a whisper of shade at the top so the glass label holds on bright photos */
+.cs-hero::after { content: ''; position: absolute; inset: 0 0 auto; height: 45%; background: linear-gradient(to bottom, rgb(0 0 0 / 0.28), transparent); pointer-events: none; }
+/* the term, as a tinted glass label on the photo: a dark tint, so the white type reads on any photo */
+.cs-chip { position: absolute; z-index: 1; left: 10px; top: 10px; display: inline-flex; align-items: center; padding: 5px 10px; border-radius: var(--sj-ctl-r, var(--radius-md));
+  background: rgb(12 24 16 / 0.55); -webkit-backdrop-filter: blur(10px) saturate(1.4); backdrop-filter: blur(10px) saturate(1.4);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.22); }
+.cs-chip .sj-eyebrow, .cs-chip .sj-eyebrow * { color: #fff !important; font-size: 11px; letter-spacing: 0.08em; text-shadow: 0 1px 2px rgb(0 0 0 / 0.35); }
+.cs-cover-text { display: grid; align-content: start; gap: 6px; padding: 16px 10px 14px; color: var(--content-primary); }
+.cs-cover-text h3 { margin: 0; min-height: 2lh; text-wrap: balance; letter-spacing: -0.01em; }
+.cs-cover-text .cj-ship { color: var(--content-secondary); font-size: var(--type-body-sm-size, 14px); line-height: 1.45; min-height: 2lh; }
+/* the foot: counts on the left, the open control on the right, under a hairline */
+.cs-cover-foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 12px 2px 2px 8px; border-top: 1px solid var(--border-subtle); }
+.cs-meta { display: flex; flex-wrap: nowrap; align-items: center; gap: 6px; min-width: 0; font-size: 12px; letter-spacing: -0.005em; font-weight: 500; color: var(--content-secondary); }
+.cs-meta > span { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.cs-meta > span + span::before { content: ''; width: 3px; height: 3px; border-radius: 50%; background: currentColor; opacity: 0.55; }
+/* the open cue: a flat light brand-green tile on the SSX button radius, the glyph dead centre */
+.cs-cover-plus { flex: none; display: grid; place-items: center; width: 32px; height: 32px; border-radius: var(--sj-ctl-r, var(--radius-md));
+  background: var(--surface-brand-subtle); color: var(--content-brand); transition: background 200ms ease, color 200ms ease; }
+.cs-cover-plus svg { display: block; width: 16px; height: 16px; margin: 0; transition: transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+.cs-card:hover .cs-cover-plus, .cs-front:focus-visible .cs-cover-plus { background: var(--surface-brand-solid); color: var(--content-on-brand-solid); }
+/* the arrow nudges out the way it points */
+.cs-card:hover .cs-cover-plus svg, .cs-front:focus-visible .cs-cover-plus svg { transform: translate(1px, -1px); }
+/* the whole card lifts a touch on hover */
+.cs-deck .cs-card .cs-inner:has(> .cs-front[data-cover]) { transition: box-shadow 300ms ease, translate 300ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+.cs-deck .cs-card:not([data-open]):not([data-piled]):hover .cs-inner:has(> .cs-front[data-cover]) { translate: 0 -4px; box-shadow: 0 14px 32px -12px rgb(0 0 0 / 0.22); }
+/* piled: a short text tab, no photo */
+.cs-card[data-piled] .cs-front[data-cover] { padding: 0; height: auto; }
+.cs-card[data-piled] .cs-hero, .cs-card[data-piled] .cs-cover-foot, .cs-card[data-piled] .cj-ship { display: none; }
+.cs-card[data-piled] .cs-cover-text { padding: 12px 16px; }
+.cs-card[data-piled] .cs-cover-text h3 { min-height: 0; }
+/* open (expand): the photo becomes a wide header */
+.cs-card[data-open] .cs-hero { aspect-ratio: 16 / 5; }
+.cs-card[data-open] .cs-cover-foot { display: none; }
+@media (prefers-reduced-motion: reduce) { .cs-front[data-cover] .cs-cover img, .cs-cover-plus, .cs-deck .cs-card .cs-inner { transition: none; } }
+
+
+/* ── the modal body: content first, calm and scannable ─────────────────────── */
+.cm { --cm-rule: 1px solid var(--border-subtle); display: grid; gap: 40px; padding: 8px 0 8px; color: var(--content-primary); }
+.cm-intro { display: grid; gap: 28px; }
+.cm-lede { margin: 0; max-width: 64ch; font-size: calc(18px * var(--ts, 1)); line-height: 1.6; color: var(--content-secondary); text-wrap: pretty; }
+/* the counts, at a glance: big numerals on one hairline strip */
+.cm-glance { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); } /* no rules or dividers: space alone separates the stats */
+.cm-glance > div { display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: 14px; row-gap: 2px; align-items: center; padding: 4px 20px 4px 0; }
+/* the tile is exactly the height of the number + label beside it (30 + 2 + 18) */
+.cm-glance-icon { grid-row: 1 / span 2; display: grid; place-items: center; width: 50px; height: 50px; border-radius: var(--sj-ctl-r, var(--radius-md)); background: var(--surface-brand-subtle); color: var(--content-brand); } /* a soft green tile, no stroke */
+.cm-glance-icon svg { width: 26px; height: 26px; }
+.cm-glance dd, .cm-glance dt { grid-column: 2; }
+.cm-glance dd { margin: 0; font-size: calc(30px * var(--ts, 1)); font-weight: 600; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.cm-glance dt { font-size: 13px; line-height: 18px; color: var(--content-secondary); }
+/* the outcome: one editorial line with a single brand hairline, no tinted box */
+.cm-outcome { margin: 0; display: grid; gap: 10px; padding-left: 20px; border-left: 2px solid var(--border-brand, var(--surface-brand-solid)); }
+.cm-outcome figcaption { color: var(--content-secondary); }
+.cm-outcome blockquote { margin: 0; font-size: calc(24px * var(--ts, 1)); font-weight: 500; line-height: 1.3; letter-spacing: -0.015em; text-wrap: balance; }
+/* sections: a quiet heading on a hairline */
+.cm-section { display: grid; gap: 20px; }
+.cm-h { margin: 0; font-size: calc(20px * var(--ts, 1)); font-weight: 600; letter-spacing: -0.01em; }
+/* in class: equal columns, one per lane plus the masterclasses, each with the
+   same header (glyph · name · count) on a rule, the same rows, a divider between */
+/* the columns share their rows (subgrid), so a header that wraps keeps every rule on one line */
+.cm-learn { display: grid; grid-template-columns: repeat(var(--cm-cols, 3), minmax(0, 1fr)); grid-template-rows: auto 1fr; }
+.cm-col { display: grid; grid-row: span 2; grid-template-rows: subgrid; align-content: start; min-width: 0; padding: 0 24px; }
+.cm-col:first-child { padding-left: 0; }
+.cm-col:last-child { padding-right: 0; }
+.cm-col h5 { margin: 0; display: flex; align-items: flex-end; min-height: 22px; padding-bottom: 12px; border-bottom: var(--cm-rule); } /* a rule under each column header; no dividers between the columns */
+.cm-col .sj-lane { color: var(--content-brand); } /* the column headers carry the one green accent */
+/* the glyph sits on the first line when a header wraps */
+.cm-col .sj-lane { align-items: flex-start; }
+.cm-col .sj-lane > .sj-eyebrow { line-height: 18px; }
+.cm-col .sj-lane svg { width: 16px; height: 16px; margin-top: 1px; }
+@container sj (max-width: 599px) {
+  .cm-learn { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; gap: 28px; }
+  .cm-col { grid-row: auto; grid-template-rows: auto 1fr; }
+  .cm-col, .cm-col:first-child, .cm-col:last-child { padding: 0; border-left: 0; }
+}
+/* courses as plain rows: one per line, a hairline between */
+.cm-list { list-style: none; margin: 0; padding: 6px 0 0; display: grid; align-content: start; } /* rows with air between, no rules */
+.cm-list li { padding: 8px 0; font-size: calc(15px * var(--ts, 1)); line-height: 1.4; }
+/* out of class, as a playlist: # · video still · one column of text.
+   The eye runs down a single column (title, line, what the video shows), never
+   across the row. Every still carries a play button, so it reads as a video. */
+.cm-playlist { list-style: none; margin: -4px 0 0; padding: 0; display: grid; }
+.cm-track { position: relative; display: grid; grid-template-columns: 24px 144px minmax(0, 1fr); align-items: center; gap: 24px; padding: 22px 12px; margin: 0 -12px; border-radius: var(--sj-card-r-in, var(--radius-md)); cursor: pointer; transition: background 180ms ease; }
+.cm-track + .cm-track::before { content: ''; position: absolute; left: 12px; right: 12px; top: 0; border-top: var(--cm-rule); }
+.cm-track:hover { background: var(--surface-subtle, var(--surface-sunken)); }
+.cm-track:hover::before, .cm-track:hover + .cm-track::before { opacity: 0; }
+.cm-track-n { font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; color: var(--content-secondary); }
+/* the video still: 16:9, a soft scrim and a solid play button in the middle */
+.cm-still { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--sj-card-r-in, var(--radius-md)); background: var(--surface-subtle, var(--surface-sunken)); }
+.cm-still .sj-visual { position: absolute; inset: 0; margin: 0; aspect-ratio: auto; border-radius: 0 !important; }
+.cm-still .sj-visual img { transition: transform 500ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+.cm-track:hover .cm-still .sj-visual img { transform: scale(1.06); }
+.cm-still[data-video]::after { content: ''; position: absolute; inset: 0; background: rgb(0 0 0 / 0.22); transition: background 200ms ease; }
+.cm-track:hover .cm-still[data-video]::after { background: rgb(0 0 0 / 0.34); }
+/* the play: small frosted glass, it grows on hover; no brand fill */
+.cm-still-play { position: absolute; z-index: 1; left: 50%; top: 50%; display: grid; place-items: center; width: 28px; height: 28px; translate: -50% -50%; border-radius: var(--sj-ctl-r, var(--radius-md));
+  background: rgb(255 255 255 / 0.2); color: #fff; -webkit-backdrop-filter: blur(8px) saturate(1.4); backdrop-filter: blur(8px) saturate(1.4);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.45), 0 4px 12px rgb(0 0 0 / 0.2); transition: transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1), background 200ms ease; }
+.cm-still-play svg { width: 11px; height: 11px; margin-left: 1px; filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.3)); }
+.cm-track:hover .cm-still-play { transform: scale(1.35); background: rgb(255 255 255 / 0.3); }
+.cm-track-main { display: grid; gap: 8px; min-width: 0; }
+.cm-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
+/* tags that read as tags: an outline, a leading glyph, ink text; the flagship is a solid dark chip */
+.cm-tag { display: inline-flex; align-items: center; gap: 6px; padding: 4px 9px; border-radius: var(--sj-ctl-r, var(--radius-md)); background: var(--surface-brand-subtle); font-size: 12px; font-weight: 600; line-height: 1.25; color: var(--content-brand); } /* a soft green tag, no stroke */
+.cm-tag svg { width: 12px; height: 12px; flex: none; color: inherit; }
+.cm-flag { background: var(--content-primary); color: var(--surface-page); box-shadow: none; font-size: 10.5px; letter-spacing: 0.07em; text-transform: uppercase; }
+.cm-flag svg { color: #F5C451; }
+.cm-track-title { font-size: calc(16px * var(--ts, 1)); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em; text-wrap: pretty; }
+.cm-track-desc { font-size: 14px; line-height: 1.5; color: var(--content-secondary); max-width: 64ch; }
+@container sj (max-width: 640px) { .cm-track { grid-template-columns: 112px minmax(0, 1fr); gap: 14px; } .cm-track-n { display: none; } }
+@media (prefers-reduced-motion: reduce) { .cm-track, .cm-still-play, .cm-still .sj-visual img { transition: none; } }
+
+
+/* ── bottom sheet (desktop): edge to edge, 75% tall, three columns ─────────────
+   (85% tall, 20px inner padding) column 1 the term's photo, inset and pinned; columns 2–3 the title and the content,
+   scrolling on their own. m-web never opens it (it scrolls a stack instead). */
+/* an even inner padding: the photo sits inset on the inner radius, the text column breathes */
+.cs-sheet { top: auto; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); padding: 20px; column-gap: 8px; overflow: hidden; border: 0; border-top: 1px solid var(--border-subtle);
+  border-radius: var(--radius-2xl) var(--radius-2xl) 0 0; box-shadow: 0 -16px 48px rgb(0 0 0 / 0.2); will-change: transform; }
+.cs-sheet-media { position: relative; min-height: 0; overflow: hidden; border-radius: var(--sj-card-r, var(--radius-lg)); /* the photo panel takes the card radius, 8px */ background: var(--surface-subtle, var(--surface-sunken)); touch-action: none; }
+.cs-sheet-media .sj-visual { position: absolute; inset: 0; margin: 0; aspect-ratio: auto; border-radius: 0 !important; }
+.cs-sheet-main { min-height: 0; overflow-y: auto; overscroll-behavior: none; }
+.cs-sheet-head { display: grid; gap: 6px; padding: 28px clamp(24px, 4vw, 56px) 0; padding-right: 96px; }
+.cs-sheet-head .sj-eyebrow { color: var(--content-secondary); }
+.cs-sheet-body { width: auto !important; padding: 28px clamp(24px, 4vw, 56px) 0; } /* no dead space after the last row: the sheet's own padding closes it */
+.cs-sheet-body .cm { padding-bottom: 0; }
+.cs-sheet-body .cm-track:last-child { margin-bottom: 0; }
+.cs-sheet-close { position: absolute !important; z-index: 5; top: 28px; right: 36px; }
+/* the handle, centred across the top edge */
+.cs-sheet-grip { position: absolute; z-index: 5; top: 0; left: 50%; translate: -50% 0; width: 200px; height: 28px; display: flex; justify-content: center; cursor: grab; touch-action: none; }
+.cs-sheet-grip span { margin-top: 10px; width: 44px; height: 5px; border-radius: 999px; background: var(--border-default, rgb(0 0 0 / 0.18)); pointer-events: none; }
+.cs-sheet-grip:active { cursor: grabbing; }
+
+/* ── type scale for the open term (modal and sheet) ────────────────────────────
+   eyebrow 12 · title 32 · deck 17 · lede 16 · numerals 28 · section 18 ·
+   column label 11.5 caps · items 15 · meta 13. Each step reads as one level. */
+.cs-sheet-head { gap: 8px; }
+.cs-sheet-head .sj-eyebrow, .cs-sheet-head .sj-eyebrow * { font-size: 12px; letter-spacing: 0.08em; }
+.cs-sheet-head h3 { margin: 0; font-size: calc(32px * var(--ts, 1)); line-height: 1.15; font-weight: 600; letter-spacing: -0.02em; }
+.cs-sheet-head .cs-modal-ship { font-size: calc(17px * var(--ts, 1)); line-height: 1.4; font-weight: 500; color: var(--content-secondary); }
+.cm { gap: 44px; }
+.cm-intro { gap: 32px; }
+.cm-lede { font-size: calc(16px * var(--ts, 1)); line-height: 1.65; max-width: 60ch; }
+.cm-glance dd { font-size: calc(28px * var(--ts, 1)); }
+.cm-h { font-size: calc(18px * var(--ts, 1)); font-weight: 600; letter-spacing: -0.005em; } /* no rule under the section headings: space alone sets them off */
+.cm-col h5 { padding-bottom: 12px; }
+.cm-col .sj-lane > .sj-eyebrow { font-size: 11.5px; letter-spacing: 0.07em; font-weight: 600; line-height: 16px; }
+/* the header glyph on the page's icon tile: soft green, no stroke; the label centres on the tile's first line */
+.cm-col .sj-lane { gap: 8px; }
+.cm-col .sj-lane svg { box-sizing: content-box; width: 15px; height: 15px; margin-top: 0; padding: 5px; border-radius: 6px; background: var(--surface-brand-subtle); }
+.cm-col .sj-lane > .sj-eyebrow { padding-top: 4.5px; }
+.cm-list { padding-top: 10px; }
+.cm-list li { padding: 7px 0; font-size: calc(15px * var(--ts, 1)); line-height: 1.45; color: var(--content-primary); }
+.cm-track-title { font-size: calc(15.5px * var(--ts, 1)); }
+.cm-track-desc { font-size: 13.5px; }
+
+/* ── the peek (desktop sheet, trigger = peek): the sheet's top edge, up 88px ── */
+.cs-peek { all: unset; box-sizing: border-box; position: fixed; z-index: 900; left: 0; right: 0; bottom: 0; height: 88px; cursor: pointer;
+  display: grid; grid-template-columns: 56px auto minmax(0, 1fr) auto; align-items: center; gap: 18px; padding: 14px clamp(24px, 4vw, 56px) 14px 20px;
+  background: var(--surface-raised); border-top: 1px solid var(--border-subtle); border-radius: var(--radius-2xl) var(--radius-2xl) 0 0; box-shadow: 0 -12px 40px rgb(0 0 0 / 0.16);
+  transform: translateY(105%); transition: transform 380ms cubic-bezier(0.2, 0.8, 0.2, 1); font-family: inherit; color: var(--content-primary); }
+.cs-peek[data-on] { transform: none; }
+.cs-peek:hover { box-shadow: 0 -16px 48px rgb(0 0 0 / 0.22); }
+.cs-peek-grip { position: absolute; top: 8px; left: 50%; translate: -50% 0; width: 44px; height: 5px; border-radius: 999px; background: var(--border-default, rgb(0 0 0 / 0.18)); }
+.cs-peek-thumb { width: 56px; height: 56px; overflow: hidden; border-radius: var(--radius-md); background: var(--surface-subtle, var(--surface-sunken)); }
+.cs-peek-thumb .sj-visual { height: 100%; aspect-ratio: 1 / 1; margin: 0; border-radius: 0 !important; }
+.cs-peek-text { display: grid; gap: 2px; min-width: 0; }
+.cs-peek-text .sj-eyebrow { font-size: 11.5px; letter-spacing: 0.08em; color: var(--content-secondary); }
+.cs-peek-title { font-size: 20px; font-weight: 600; letter-spacing: -0.015em; white-space: nowrap; }
+.cs-peek-ship { font-size: 14.5px; color: var(--content-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cs-peek-cue { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: var(--radius-md); background: var(--surface-brand-solid); color: var(--content-on-brand-solid); font-size: 14px; font-weight: 600; }
+.cs-peek-cue svg { width: 14px; height: 14px; transition: transform 300ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+.cs-peek:hover .cs-peek-cue svg { transform: translate(2px, -2px); }
+@media (prefers-reduced-motion: reduce) { .cs-peek { transition: opacity 150ms ease; opacity: 0; transform: none; } .cs-peek[data-on] { opacity: 1; } }
+.cs-peek:not([data-on]) { pointer-events: none; }
+/* term cards: a taller, square photo and more air around the text */
+.cs-deck .cs-front[data-cover] { padding: 10px; }
+.cs-hero { aspect-ratio: 1 / 1; }
+.cs-cover-text { gap: 10px; padding: 22px 12px 20px; }
+.cs-cover-foot { padding: 16px 2px 4px 12px; }
+.cs-card[data-open] .cs-hero { aspect-ratio: 16 / 5; }
+/* term cards as a carousel (modal / sheet): 4 and a half cards in view, arrows top-right */
+.cs-scroll { overflow: visible; }
+.cs-scroller[data-carousel] .cs-scroll { overflow-x: auto; overflow-y: hidden; margin: -12px -8px -16px; padding: 12px 8px 16px; scrollbar-width: none; overscroll-behavior-x: contain; }
+.cs-scroller[data-carousel] .cs-scroll::-webkit-scrollbar { display: none; }
+.cs-nav { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: -4px; }
+/* the frame never grows with its track (that would feed back into the card width) */
+.cs-scroller { min-width: 0; width: 100%; }
+.cs-scroller[data-carousel] { overflow: hidden; }
+.cs-scroller[data-carousel] .cs-scroll { width: calc(100% + 16px); box-sizing: border-box; }
+.cs-scroller[data-carousel] { overflow: visible; }
+.cs-scroller[data-carousel] .cs-scroll { width: 100%; margin: 0; padding: 8px 0 24px; } /* room for the hover lift and the shadow; the edges line up with the page */
+/* shorter term cards: the square photo stays, the text below tightens */
+.cs-deck .cs-front[data-cover] { padding: 8px; }
+.cs-cover-text { gap: 6px; padding: 14px 10px 12px; }
+.cs-cover-text h3 { min-height: 0; }
+.cs-cover-text .cj-ship { min-height: 2lh; }
+.cs-cover-foot { padding: 10px 2px 2px 10px; }
+.cs-cover-text h3 { min-height: 2lh; } /* every card the same height, whatever its title wraps to */
+/* titles: always two balanced lines, one per span; a touch smaller, so the card is shorter */
+.cs-cover-text h3 { min-height: 0; font-size: calc(20px * var(--ts, 1)); line-height: 1.22; }
+.cs-title-line { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cs-cover-text { gap: 6px; padding: 12px 10px 10px; }
+.cs-cover-text .cj-ship { font-size: 13.5px; line-height: 1.45; min-height: 2lh; }
+.cs-cover-foot { padding: 8px 2px 2px 10px; }
+/* m-web cards: the sheet's In class columns and playlist inside the folds */
+.ss-fold-inner { --cm-rule: 1px solid var(--border-subtle); }
+.ss-fold-inner .cm-learn { gap: 18px; }
+.ss-fold-inner .cm-playlist { margin: 0; }
+.ss-fold-inner .cm-track { margin: 0; padding: 22px 0; }
+.ss-fold-inner .cm-track + .cm-track::before { left: 0; right: 0; }
+/* no line after the last row: the card's edge closes it */
+.ss-folds .ss-fold:last-child { border-bottom: 0; }
+/* m-web In class: smaller type, and no column dividers once the columns stack */
+.ss-fold-inner .cm-col, .ss-fold-inner .cm-col + .cm-col { padding: 0; border-left: 0; }
+.ss-fold-inner .cm-list { padding-top: 6px; }
+.ss-fold-inner .cm-list li { padding: 5px 0; font-size: 14px; line-height: 1.4; }
+.ss-fold-inner .cm-col h5 { padding-bottom: 8px; }
+.ss-fold-inner .cm-col .sj-lane > .sj-eyebrow { font-size: 11px; }
+.ss-fold-inner .cm-learn { gap: 16px; }
+/* the flagship chip on the carousel photos */
+.sj-mcard .cm-flag, .ss-fold .cm-flag { display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border-radius: var(--sj-ctl-r, var(--radius-md)); background: var(--content-primary); color: var(--surface-page); font-size: 10.5px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; }
+.sj-mcard .cm-flag svg, .ss-fold .cm-flag svg { width: 11px; height: 11px; color: #F5C451; }
+/* the carousel's arrows sit under it, with the hint: nothing between the title and the cards */
+.cs-foot-row { display: flex; align-items: center; justify-content: center; gap: 16px; }
+.cs-foot-row[data-carousel] { justify-content: space-between; }
+.cs-foot-row .cs-nav { margin: 0; }
+.cs-foot-row .cs-hint { margin: 0; }
+/* term cards, tighter: less air between the photo and the text, and a shorter text block */
+.cs-cover-text { gap: 4px; padding: 10px 10px 8px; }
+.cs-cover-text .cj-ship { line-height: 1.4; }
+.cs-cover-foot { padding: 6px 2px 0 10px; }
+.cs-scroller[data-carousel] .cs-scroll { padding-bottom: 12px; }
+.cs-hero { aspect-ratio: 4 / 3; } /* shorter than square, and closer to the 3:2 photos, so less of each scene is cropped */
+.cs-card[data-open] .cs-hero { aspect-ratio: 16 / 5; }
+.cs-modal-close:hover { transform: none; } /* the close X stays still on hover: only its fill changes */
+/* term cards: lighter shadows (about half the SSX raised shadow, and a softer hover lift) */
+.sj .cs-deck .cs-inner:has(> .cs-front[data-cover]) { box-shadow: 0 1px 2px rgb(23 23 23 / 0.03), 0 2px 6px rgb(23 23 23 / 0.03); }
+.cs-deck .cs-card:not([data-open]):not([data-piled]):hover .cs-inner:has(> .cs-front[data-cover]) { box-shadow: 0 10px 24px -14px rgb(0 0 0 / 0.14); }
+/* no track numbers on desktop: the still leads each row */
+.cm-track { grid-template-columns: 144px minmax(0, 1fr); }
+@container sj (max-width: 640px) { .cm-track { grid-template-columns: 112px minmax(0, 1fr); } }

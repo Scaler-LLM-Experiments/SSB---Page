@@ -1,0 +1,136 @@
+/* SSB footer. SSX tokens only; layout follows the footer's own width. */
+/* no container / transform on the wrapper: it holds the whole page, and either would trap the page's
+   fixed layers (modals) inside it. Layout switches on the screen width instead. */
+.sf { display: grid; grid-template-columns: minmax(0, 1fr); /* one column the page's width: a wide child (a scrolling row) can't stretch it */ gap: 0; color: var(--content-primary); font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif); }
+
+/* ── CTA band ── */
+/* the footer owns its gutters (24px, 16px on m-web), so it drops into any page edge to edge */
+.sf { --sf-gutter: 24px; }
+.sf-cta { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); overflow: hidden; margin: 0 auto 56px; width: min(1120px, calc(100% - var(--sf-gutter) * 2));
+  border-radius: var(--radius-lg); border: 1px solid var(--border-subtle); background: var(--surface-brand-subtle); }
+.sf-cta-media { position: relative; min-height: 260px; }
+.sf-cta-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.sf-cta-body { display: grid; align-content: center; gap: 12px; padding: 40px 44px; }
+.sf-cta-note { margin-top: -4px; }
+.sf-cta-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+.sf-cta-actions a svg { width: 18px; height: 18px; }
+
+/* the footer shares one surface token */
+/* ── footer ── */
+.sf-foot { border-top: 1px solid var(--border-subtle); padding: 72px var(--sf-gutter) 44px; }
+.sf-top, .sf-bottom { width: 100%; max-width: 1120px; margin: 0 auto; box-sizing: border-box; }
+.sf-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 56px; }
+.sf-brand { display: grid; gap: 14px; justify-items: start; }
+.sf-cols { display: flex; gap: 88px; }
+.sf-col { display: grid; gap: 18px; align-content: start; }
+.sf-links { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.sf-bottom { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--border-subtle); }
+.sf-top-link { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.sf-top-link svg { width: 16px; height: 16px; }
+
+/* ── m-web ── */
+@media (max-width: 640px) {
+  .sf { --sf-gutter: 16px; }
+  .sf-cta { grid-template-columns: 1fr; margin-bottom: 36px; }
+  .sf-cta-media { min-height: 0; aspect-ratio: 16 / 10; }
+  .sf-cta-body { padding: 22px 20px 24px; }
+  .sf-cta-actions { display: grid; }
+  .sf-cta-actions > * { width: 100%; justify-content: center; }
+  .sf-foot { padding-top: 44px; padding-bottom: 32px; }
+  .sf-top { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; } /* one full-width column (the desktop space-between would shrink it) */
+  .sf-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 24px; }
+  .sf-col { gap: 14px; }
+  .sf-bottom { display: grid; gap: 16px; justify-items: start; margin-top: 28px; padding-top: 24px; }
+}
+
+/* the particle sign-off, full width of the footer's content */
+.sf-wordmark { width: 100%; max-width: 1120px; box-sizing: border-box; margin: 64px auto 0; cursor: crosshair; }
+@media (max-width: 640px) { .sf-wordmark { margin-top: 40px; } }
+
+/* ── lift reveal ─────────────────────────────────────────────────────────────
+   The footer is pinned to the screen's bottom BEHIND the CTA layer; scrolling
+   lifts the layer off it. --lift (0–1, from JS) is how much is uncovered. */
+.sf[data-lift] { --lift: 0; }
+.sf[data-lift] .sf-lift { position: relative; z-index: 2; background: var(--surface-page); padding-bottom: 56px; margin-bottom: 0;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  top: calc(var(--lift) * -8px); /* a relative offset, not a transform (see above) */
+  /* a soft, light edge: the sheet reads as lifted, not dropped in shadow */
+  box-shadow: 0 calc(var(--lift) * 10px) calc(var(--lift) * 24px) calc(var(--lift) * -12px) rgb(0 0 0 / 0.12); }
+.sf[data-lift] .sf-cta { margin-bottom: 0; }
+.sf[data-lift] .sf-foot { position: sticky; bottom: 0; z-index: 1; border-top: 0; }
+/* the footer rises into place and brightens as it is uncovered */
+.sf[data-lift] .sf-foot > * { transform: translateY(calc((1 - var(--lift)) * 28px)); opacity: calc(0.35 + var(--lift) * 0.65); }
+@media (max-width: 640px) { .sf[data-lift] .sf-lift { padding-bottom: 36px; } }
+@media (prefers-reduced-motion: reduce) {
+  .sf[data-lift] .sf-lift, .sf[data-lift] .sf-foot > * { transform: none; opacity: 1; box-shadow: 0 8px 20px -12px rgb(0 0 0 / 0.1); }
+}
+
+/* links: neutral ink at rest, green only on hover (with a small bounce), so
+   green marks interaction rather than every word */
+.sf { --sf-link: var(--content-primary); --sf-link-hover: var(--content-brand); }
+.sf-links a, .sf-top-link { display: inline-flex; align-items: center; gap: 6px; color: var(--sf-link) !important; transition: color 180ms ease; }
+.sf-links a, .sf-top-link { text-decoration: none !important; } /* never underlined: hover says it in green */
+.sf-links a:hover, .sf-links a:focus-visible, .sf-top-link:hover, .sf-top-link:focus-visible { color: var(--sf-link-hover) !important; text-decoration: none !important; }
+.sf-links a:hover, .sf-top-link:hover { animation: sf-bounce 420ms cubic-bezier(0.3, 1.6, 0.5, 1); }
+@keyframes sf-bounce { 0% { transform: translateY(0); } 35% { transform: translateY(-3px); } 65% { transform: translateY(1px); } 100% { transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .sf-links a:hover, .sf-top-link:hover { animation: none; } }
+
+/* a larger logo, and a light SSB green rising from the bottom edge that fades
+   into the page's own background by the top, so the top meets the page with no seam */
+.sf-logo { height: 3.5rem !important; width: auto; }
+.sf-foot { background: linear-gradient(to top,
+  color-mix(in srgb, var(--surface-brand-solid) 6%, var(--surface-page)) 0%,
+  color-mix(in srgb, var(--surface-brand-solid) 3.5%, var(--surface-page)) 25%,
+  color-mix(in srgb, var(--surface-brand-solid) 1.5%, var(--surface-page)) 35%,
+  var(--surface-page) 55%); }
+@media (max-width: 640px) { .sf-logo { height: 2.75rem !important; } }
+
+/* northern lights: soft, heavily blurred ribbons of the SSB greens glowing up
+   from the bottom edge; each drifts, stretches and breathes on its own slow
+   rhythm. Behind the content; still under reduced motion */
+.sf-foot { position: relative; isolation: isolate; overflow: hidden; }
+.sf-foot > * { position: relative; z-index: 1; }
+.sf-foot::before, .sf-foot::after { content: ''; position: absolute; left: -15%; right: -15%; bottom: -60px; z-index: 0; pointer-events: none; filter: blur(42px); }
+/* ribbon 1: the brand green, a long low band swaying left and right */
+.sf-foot::before { height: 230px;
+  background:
+    radial-gradient(40% 55% at 25% 70%, color-mix(in srgb, var(--surface-brand-solid) 24%, transparent), transparent 70%),
+    radial-gradient(35% 45% at 70% 80%, color-mix(in srgb, var(--surface-brand-solid) 19%, transparent), transparent 70%);
+  animation: sf-aurora-a 22s ease-in-out infinite alternate; }
+/* ribbon 2: mint and a hint of teal-green, higher and thinner, drifting the other way */
+.sf-foot::after { height: 260px;
+  background:
+    radial-gradient(30% 35% at 60% 60%, color-mix(in srgb, #2FB573 20%, transparent), transparent 72%),
+    radial-gradient(28% 40% at 15% 55%, color-mix(in srgb, #3FB8A0 14%, transparent), transparent 72%),
+    radial-gradient(25% 30% at 88% 65%, color-mix(in srgb, #7ACB9F 18%, transparent), transparent 72%);
+  animation: sf-aurora-b 28s ease-in-out infinite alternate; }
+@keyframes sf-aurora-a {
+  0% { transform: translateX(-6%) scaleY(0.9) skewX(-6deg); opacity: 0.75; }
+  50% { transform: translateX(4%) scaleY(1.15) skewX(4deg); opacity: 1; }
+  100% { transform: translateX(8%) scaleY(0.95) skewX(-3deg); opacity: 0.85; }
+}
+@keyframes sf-aurora-b {
+  0% { transform: translateX(7%) scaleY(1.1) skewX(5deg); opacity: 0.9; }
+  50% { transform: translateX(-3%) scaleY(0.85) skewX(-5deg); opacity: 0.6; }
+  100% { transform: translateX(-8%) scaleY(1.2) skewX(2deg); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) { .sf-foot::before, .sf-foot::after { animation: none; } }
+
+
+/* waves: two soft green wave bands in front of the aurora, drifting sideways at
+   different speeds and bobbing a little; lightly blurred so they stay soft */
+.sf-foot > .sf-waves { position: absolute; z-index: 0; left: 0; right: 0; bottom: 0; height: 120px; overflow: hidden; pointer-events: none; transform: none !important; opacity: 1 !important; }
+.sf-waves i { position: absolute; left: -520px; right: -520px; bottom: -6px; filter: blur(3px);
+  background: color-mix(in srgb, var(--surface-brand-solid) 9%, transparent);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27400%27%20height%3D%2780%27%20viewBox%3D%270%200%20400%2080%27%20preserveAspectRatio%3D%27none%27%3E%3Cpath%20d%3D%27M0%2040%20C%20100.0%2024%2C%20100.0%2056%2C%20200.0%2040%20S%20300.0%2024%2C%20400%2040%20V%2080%20H%200%20Z%27%20fill%3D%27black%27/%3E%3C/svg%3E") repeat-x 0 100% / 400px 100%; mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27400%27%20height%3D%2780%27%20viewBox%3D%270%200%20400%2080%27%20preserveAspectRatio%3D%27none%27%3E%3Cpath%20d%3D%27M0%2040%20C%20100.0%2024%2C%20100.0%2056%2C%20200.0%2040%20S%20300.0%2024%2C%20400%2040%20V%2080%20H%200%20Z%27%20fill%3D%27black%27/%3E%3C/svg%3E") repeat-x 0 100% / 400px 100%;
+  height: 100px; animation: sf-wave-a 14s linear infinite, sf-bob 7s ease-in-out infinite; }
+.sf-waves i + i { height: 72px; background: color-mix(in srgb, var(--surface-brand-solid) 7%, transparent);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27520%27%20height%3D%2780%27%20viewBox%3D%270%200%20520%2080%27%20preserveAspectRatio%3D%27none%27%3E%3Cpath%20d%3D%27M0%2040%20C%20130.0%2030%2C%20130.0%2050%2C%20260.0%2040%20S%20390.0%2030%2C%20520%2040%20V%2080%20H%200%20Z%27%20fill%3D%27black%27/%3E%3C/svg%3E") repeat-x 0 100% / 520px 100%; mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27520%27%20height%3D%2780%27%20viewBox%3D%270%200%20520%2080%27%20preserveAspectRatio%3D%27none%27%3E%3Cpath%20d%3D%27M0%2040%20C%20130.0%2030%2C%20130.0%2050%2C%20260.0%2040%20S%20390.0%2030%2C%20520%2040%20V%2080%20H%200%20Z%27%20fill%3D%27black%27/%3E%3C/svg%3E") repeat-x 0 100% / 520px 100%;
+  animation: sf-wave-b 20s linear infinite reverse, sf-bob 9s ease-in-out infinite reverse; }
+@keyframes sf-wave-a { to { -webkit-mask-position: 400px 100%; mask-position: 400px 100%; } }
+@keyframes sf-wave-b { to { -webkit-mask-position: 520px 100%; mask-position: 520px 100%; } }
+@keyframes sf-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+@media (prefers-reduced-motion: reduce) { .sf-waves i { animation: none; } }
+@media (max-width: 640px) { .sf-foot > .sf-waves { height: 90px; } }
+/* m-web heading scale: the CTA headline is a section title, 24px like the others */
+@media (max-width: 767px) { .sf-cta-body h2 { font-size: 24px; line-height: 1.27; } }

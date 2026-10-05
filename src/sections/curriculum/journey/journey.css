@@ -1,0 +1,1859 @@
+/* ==========================================================================
+ * curriculum_journey: layout for the SST AI & B curriculum section.
+ *
+ * Colour, type, radius and spacing are ssx-ui tokens, under the section's
+ * own data-brand ("sst" blue / "ssb" green) and data-theme (light / dark).
+ * The only values set here are the Lab's multipliers, which SCALE the SSX
+ * tokens on the section root so every SSX component inside follows:
+ *
+ *   L0  tokens      --sj-radius, --sj-density → --radius-*, --sj-space
+ *   L1  atoms       eyebrow, lane, skill, summary, fact, role, point, visual…
+ *   L2  molecules   outcome, skill group, project, flagship, perk, split…
+ *   L3  cards       year row, open year, fork path
+ *   L4  sections    frame, year spine, threads, fork, portfolio
+ *   L5  layout      the shell: block order, block gap, max width
+ *
+ * The last part of this file is the override layer: what the Lab sets on
+ * one component ([data-o] lists which properties), applied on top.
+ * Internal reflow is container queries only (freeplay rule, spec §6.3).
+ * ======================================================================== */
+
+.sj {
+  --sj-radius: 1;
+  --sj-density: 1;
+  --radius-sm: calc(0.125rem * var(--sj-radius));
+  --radius-md: calc(0.25rem * var(--sj-radius));
+  --radius-lg: calc(0.5rem * var(--sj-radius));
+  --radius-xl: calc(0.75rem * var(--sj-radius));
+  --radius-2xl: calc(1rem * var(--sj-radius));
+  --sj-space: calc(var(--space-4, 1rem) * var(--sj-density));
+  --sj-gap-web: 48px;
+  --sj-max: 1280px;
+  --block-gap: var(--sj-gap-web);
+  /* the type roles as the tokens set them, so a text-scale override can
+     multiply from the base instead of compounding (see the override layer) */
+  --b-h1: var(--type-h1-size);
+  --b-h2: var(--type-h2-size);
+  --b-h3: var(--type-h3-size);
+  --b-body-lg: var(--type-body-lg-size);
+  --b-body: var(--type-body-size);
+  --b-body-sm: var(--type-body-sm-size);
+  --b-eyebrow: var(--type-eyebrow-size);
+  --b-caption: var(--type-caption-size);
+  --b-fs-xs: var(--font-size-xs);
+  --b-fs-sm: var(--font-size-sm);
+  --b-fs-base: var(--font-size-base);
+  --b-fs-lg: var(--font-size-lg);
+
+  position: relative;
+  color: var(--content-primary);
+  background: var(--surface-page);
+  font-family: var(--font-sans);
+}
+.sj *, .sj *::before, .sj *::after { box-sizing: border-box; }
+.sj :where(h2, h3, h4, h5, p, ul, ol, figure, dl, dd) { margin: 0; }
+.sj :where(ul, ol) { padding: 0; list-style: none; }
+
+/* page edge: px-gutter (16px phones, 24px from sm) */
+.sj-box { container: sj / inline-size; }
+.sj-shell { padding: calc(var(--sj-space) * 3) var(--space-gutter); display: grid; gap: var(--block-gap); max-width: var(--sj-max); margin-inline: auto; }
+@container sj (max-width: 767px) { .sj-shell { --block-gap: calc(var(--sj-gap-web) * 2 / 3); } }
+/* the overlay layer sits OUTSIDE the container (containment would trap fixed-position sheets) */
+.sj-layer { position: static; }
+
+/* ── L1 atoms ───────────────────────────────────────────────────────────── */
+.sj-eyebrow { font-size: var(--type-eyebrow-size, 12px); line-height: var(--type-eyebrow-lh, 1.3); letter-spacing: var(--type-eyebrow-tracking, 0.08em); font-weight: var(--type-eyebrow-weight, 600); text-transform: uppercase; color: var(--content-secondary); }
+.sj-eyebrow[data-mono] { font-family: var(--font-mono); letter-spacing: 0.04em; }
+.sj-lane { display: inline-flex; align-items: center; gap: 6px; }
+.sj-lane svg { width: calc(16px * var(--ts, 1)); height: calc(16px * var(--ts, 1)); flex: none; }
+.sj-lane[data-lane='tech'], .sj-lane[data-lane='business'] { color: var(--content-secondary); } /* same quiet ink as the other section labels */
+.sj-lane[data-lane='shared'] { color: var(--content-secondary); }
+.sj-expand { width: var(--size-touch-min, 44px); height: var(--size-touch-min, 44px); flex: none; display: grid; place-items: center; border-radius: var(--sj-ctl-r); border: 1px solid var(--border-control); color: var(--content-primary); background: var(--surface-raised); transition: transform 240ms var(--ease-productive-in-out, ease), background 240ms; }
+.sj-expand svg { width: 20px; height: 20px; }
+.sj-visual { position: relative; aspect-ratio: var(--sj-ratio, 16 / 10); overflow: hidden; border-radius: var(--sj-card-r-in); background: var(--surface-sunken); }
+.sj-visual img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.sj-fine { font-size: var(--type-caption-size, 12px); line-height: 1.45; color: var(--content-secondary); }
+.sj-point { display: flex; gap: 8px; font-size: calc(14px * var(--ts, 1)); line-height: 1.45; }
+.sj-point svg { width: 18px; height: 18px; flex: none; color: var(--status-success-icon); margin-top: 1px; }
+.sj-grouplabel { color: var(--content-secondary); }
+
+/* ── L2 molecules ───────────────────────────────────────────────────────── */
+.sj-outcome { display: grid; gap: 4px; padding: calc(var(--sj-space) * 1) calc(var(--sj-space) * 1.25); border-radius: var(--radius-lg); background: var(--surface-subtle, var(--surface-sunken)); color: var(--content-primary); }
+.sj-outcome:not([data-style]) .sj-eyebrow, .sj-outcome[data-style='tint'] .sj-eyebrow { color: var(--content-secondary) !important; }
+.sj-outcome .sj-outcome-text { font-size: var(--type-body-lg-size, 18px); line-height: var(--type-body-lg-lh, 1.5); font-weight: 500; }
+.sj-outcome[data-style='rule'] { color: var(--content-primary); background: none; padding: 0 0 0 calc(var(--sj-space)); border-left: 3px solid var(--border-brand); border-radius: 0; }
+.sj-outcome[data-style='solid'] { background: var(--surface-brand-solid); color: var(--content-on-brand-solid); }
+
+.sj-skillgroup { display: grid; gap: calc(var(--sj-space) * 0.5); align-content: start; }
+.sj-skillgroup h4 { display: flex; align-items: center; gap: 8px; }
+.sj-skillgroup h4 .sj-count { color: var(--content-secondary); font-weight: 500; }
+.sj-skillgroup ul { display: flex; flex-wrap: wrap; gap: 6px; }
+.sj-skillgroup li { display: contents; }
+.sj-skills { display: grid; gap: calc(var(--sj-space) * 1.25); }
+@container sj (min-width: 900px) { .sj-skills[data-lanes='3'] { grid-template-columns: 1.5fr 1fr 1fr; } .sj-skills[data-lanes='2'] { grid-template-columns: 1.5fr 1fr; } }
+
+.sj-build { display: grid; gap: calc(var(--sj-space) * 0.75); }
+.sj-projects { display: grid; gap: calc(var(--sj-space) * 0.75); grid-template-columns: 1fr; }
+@container sj (min-width: 560px) { .sj-projects { grid-template-columns: repeat(2, 1fr); } }
+@container sj (min-width: 1000px) { .sj-projects { grid-template-columns: repeat(3, 1fr); } }
+.sj-project { height: 100%; }
+.sj-project-n { font-family: var(--font-mono); font-size: calc(12px * var(--ts, 1)); color: var(--content-secondary); }
+.sj-projects[data-style='list'] { grid-template-columns: 1fr; gap: 0; }
+.sj-projects[data-style='list'] > li { border-bottom: 1px solid var(--border-subtle); padding: calc(var(--sj-space) * 0.75) 0; display: grid; grid-template-columns: 32px 1fr; gap: 12px; }
+@container sj (min-width: 760px) { .sj-projects[data-style='list'] { grid-template-columns: 1fr 1fr; column-gap: calc(var(--sj-space) * 2); } }
+
+.sj-flagship { position: relative; display: grid; overflow: hidden; border-radius: var(--sj-card-r); border: 1px solid var(--border-subtle); background: var(--surface-raised); }
+.sj-flagship-body { position: relative; z-index: 3; display: grid; gap: 8px; align-content: center; padding: calc(var(--sj-space) * 1.5); }
+.sj-flagship .sj-visual { border-radius: 0; --sj-ratio: 16 / 9; }
+@container sj (min-width: 760px) { .sj-flagship[data-style='media'] { grid-template-columns: 1.1fr 1fr; } .sj-flagship[data-style='media'] .sj-visual { aspect-ratio: auto; min-height: 240px; } }
+.sj-flagship[data-style='inverted'] { background: var(--surface-brand-solid); border-color: transparent; color: var(--content-on-brand-solid); }
+/* overlay: the photo fills the card, the text sits on it (surface-ink: on-image) */
+.sj-flagship[data-style='overlay'] { min-height: 320px; align-content: end; border-color: transparent; color: var(--on-image-ink, #fff); background: var(--surface-inverse); }
+.sj-flagship[data-style='overlay'] .sj-visual { position: absolute; inset: 0; aspect-ratio: auto; }
+.sj-flagship[data-style='overlay'] .sj-visual::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, transparent 20%, rgb(0 0 0 / 0.82)); }
+.sj-flagship[data-style='overlay'] .sj-flagship-body { max-width: 62ch; }
+@container sj (min-width: 760px) { .sj-flagship[data-style='overlay'] { min-height: 380px; } }
+
+.sj-perks { display: grid; gap: calc(var(--sj-space) * 0.75); grid-template-columns: repeat(2, 1fr); }
+@container sj (min-width: 1000px) { .sj-perks { grid-template-columns: repeat(5, 1fr); } }
+.sj-perk { height: 100%; list-style: none; }
+.sj-perk-icon { width: 40px; height: 40px; border-radius: var(--sj-ctl-r, var(--radius-md)); display: grid; place-items: center; background: var(--surface-brand-subtle); color: var(--content-brand); margin-bottom: 4px; }
+.sj-perk-icon svg { width: 22px; height: 22px; }
+.sj-perk[data-target] { outline: 2px solid var(--border-focus); outline-offset: 2px; border-radius: var(--sj-card-r); }
+.sj-perk-plain { display: grid; gap: 6px; align-content: start; padding: 4px 0; }
+
+.sj-split { display: grid; grid-template-columns: 1fr 1fr; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); }
+.sj-split > div { padding: calc(var(--sj-space) * 1); display: grid; gap: 2px; }
+.sj-split > div:first-child { background: var(--surface-brand-solid); color: var(--content-on-brand-solid); }
+.sj-split > div[data-industry] { background: repeating-linear-gradient(135deg, var(--accent1-surface) 0 10px, color-mix(in srgb, var(--accent1-surface) 70%, var(--surface-raised)) 10px 20px); color: var(--accent1-content); }
+.sj-split > div[data-replaced] { background: var(--surface-subtle); color: var(--content-secondary); }
+.sj-split b { font-size: calc(15px * var(--ts, 1)); }
+.sj-split span { font-size: calc(13px * var(--ts, 1)); opacity: 0.9; }
+
+.sj-facts { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.sj-tile { all: unset; box-sizing: border-box; cursor: pointer; display: grid; gap: 6px; align-content: start; min-height: 88px; padding: 12px; border-radius: var(--radius-lg); border: 1px solid var(--border-subtle); background: var(--surface-raised); font-size: calc(13.5px * var(--ts, 1)); font-weight: 600; line-height: 1.3; }
+.sj-tile:not([data-static]):hover { border-color: var(--border-strong); }
+.sj-tile[data-static] { cursor: default; }
+.sj-tile:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+.sj-tile[data-flagship] { background: var(--brand-tint-surface); border-color: var(--brand-tint-border); color: var(--brand-tint-content); }
+.sj-tile[data-flagship] .sj-eyebrow { color: inherit; opacity: 0.8; }
+
+/* ── L3 cards ───────────────────────────────────────────────────────────── */
+.sj-row {
+  all: unset; box-sizing: border-box; cursor: pointer; width: 100%; position: relative; overflow: hidden;
+  display: grid; grid-template-columns: 1fr auto; gap: calc(var(--sj-space) * 0.75) var(--sj-space); align-items: start;
+  padding: calc(var(--sj-space) * 1.25); border-radius: var(--sj-card-r);
+  background: var(--surface-raised); border: 1px solid var(--border-subtle);
+  transition: border-color 200ms, background 200ms, box-shadow 200ms;
+}
+.sj-row:hover { border-color: var(--border-strong); }
+.sj-row:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+.sj-row-text { display: grid; gap: 6px; min-width: 0; position: relative; z-index: 3; }
+.sj-row .sj-ship { color: var(--content-secondary); font-size: var(--type-body-sm-size, 14px); line-height: var(--type-body-sm-lh, 1.5); }
+.sj-row .sj-expand { position: relative; z-index: 3; }
+.sj-row .sj-visual { grid-column: 1 / -1; }
+.sj-row[aria-expanded='true'] { border-color: var(--border-brand); box-shadow: inset 0 0 0 1px var(--border-brand); }
+.sj-row[aria-expanded='true'] .sj-expand { background: var(--surface-brand-solid); color: var(--content-on-brand-solid); border-color: transparent; }
+.sj-row[aria-expanded='true'] .sj-expand[data-glyph='plus'] { transform: rotate(45deg); }
+.sj-row[aria-expanded='true'] .sj-expand[data-glyph='caret'] { transform: rotate(180deg); }
+.sj-row[aria-expanded='true'] .sj-expand[data-glyph='arrow'] { transform: rotate(90deg); }
+.sj-row[data-inverted][aria-expanded='true'] { background: var(--surface-brand-solid); color: var(--content-on-brand-solid); border-color: transparent; box-shadow: none; }
+.sj-row[data-inverted][aria-expanded='true'] :is(.sj-ship, .sj-eyebrow) { color: color-mix(in srgb, var(--content-on-brand-solid) 78%, transparent); }
+.sj-row[data-inverted][aria-expanded='true'] .sj-expand { background: var(--surface-raised); color: var(--content-primary); }
+/* side: visual beside the text (wide containers only) */
+@container sj (min-width: 560px) {
+  .sj-spine[data-spine='stack'] .sj-row[data-layout='side'] { grid-template-columns: minmax(160px, 34%) 1fr auto; align-items: center; }
+  .sj-spine[data-spine='stack'] .sj-row[data-layout='side'] .sj-visual { grid-column: 1; grid-row: 1; }
+}
+/* cover: the visual fills the row, the text sits on it */
+.sj-row[data-layout='cover'] { min-height: 260px; align-content: end; border-color: transparent; color: var(--on-image-ink, #fff); background: var(--surface-inverse); }
+.sj-row[data-layout='cover'] .sj-visual { position: absolute; inset: 0; aspect-ratio: auto; border-radius: 0; z-index: 0; }
+.sj-row[data-layout='cover'] .sj-visual::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgb(0 0 0 / 0.1), rgb(0 0 0 / 0.8)); }
+.sj-row[data-layout='cover'] :is(.sj-ship, .sj-eyebrow) { color: var(--on-image-ink-secondary, rgb(255 255 255 / 0.8)); }
+.sj-row[data-layout='cover'] .sj-expand { align-self: end; }
+
+.sj-detail { display: grid; gap: calc(var(--sj-space) * 1.75); align-content: start; }
+.sj-detail > header { display: flex; justify-content: space-between; gap: var(--sj-space); align-items: start; }
+.sj-detail > header > div { display: grid; gap: 6px; }
+.sj-detail section { display: grid; gap: calc(var(--sj-space) * 0.9); }
+.sj-detail .sj-desc { color: var(--content-secondary); max-width: 68ch; }
+.sj-inline { padding: calc(var(--sj-space) * 1.5); border-radius: var(--sj-card-r); background: var(--surface-raised); border: 1px solid var(--border-subtle); transform-origin: top center; animation: sj-grow 260ms var(--ease-productive-entrance, cubic-bezier(0, 0, 0.38, 0.9)); }
+@keyframes sj-grow { from { opacity: 0; transform: translateY(-8px) scale(0.985); } }
+@media (prefers-reduced-motion: reduce) { .sj-inline, .sj * { animation: none !important; transition: none !important; } }
+
+.sj-path { display: grid; gap: 10px; align-content: start; padding: calc(var(--sj-space) * 1.25); border-radius: var(--sj-card-r); border: 1px solid var(--border-subtle); background: var(--surface-raised); }
+.sj-path[data-style='outline'] { background: transparent; border-style: dashed; border-color: var(--border-control); }
+.sj-path .sj-points { display: grid; gap: 6px; }
+.sj-path .sj-roles { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* ── L4 sections ────────────────────────────────────────────────────────── */
+.sj-frame { display: grid; gap: calc(var(--sj-space) * 1); }
+.sj-frame-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 24px; }
+/* the head follows the faculty section's: a brand eyebrow, the display title, the lede, 12px apart, on the page's measure */
+.sj-frame-text { display: grid; gap: 12px; max-width: var(--size-measure-max, 72ch); }
+.sj-frame-eyebrow { color: var(--content-brand); }
+.sj-frame-controls { flex: none; }
+.sj-frame-controls:empty { display: none; }
+.sj-frame-controls .cs-nav { margin: 0; }
+.sj-frame .sj-lede { color: var(--content-secondary); }
+
+/* spine: the four years */
+.sj-spine { display: grid; gap: calc(var(--sj-space) * 0.75); position: relative; }
+.sj-spine > ol { display: grid; gap: calc(var(--sj-space) * 0.75); position: relative; }
+.sj-spine > ol > li { position: relative; display: grid; gap: calc(var(--sj-space) * 0.75); }
+/* the connector: a line through the year nodes (learning_path, vertical) */
+.sj-spine[data-spine='stack'] > ol::before, .sj-spine[data-spine='rail'] > ol::before { content: ''; position: absolute; left: calc(var(--sj-space) * 1.25 + 21px); top: 40px; bottom: 40px; width: 2px; background: var(--border-subtle); z-index: 0; }
+.sj-spine > ol > li > .sj-row { position: relative; z-index: 1; }
+
+@container sj (min-width: 1024px) {
+  /* rail: years on the left, the open year beside them */
+  .sj-spine[data-spine='rail'] { grid-template-columns: minmax(300px, 380px) 1fr; align-items: start; gap: calc(var(--sj-space) * 1.5); }
+  .sj-spine[data-spine='rail'] > .sj-inline { position: sticky; top: calc(var(--sj-space) * 1.5); }
+  .sj-spine[data-spine='rail'] .sj-row .sj-visual { display: none; }
+  .sj-spine[data-spine='rail'] > .sj-rail-empty { display: grid; place-items: center; align-content: center; gap: 10px; min-height: 360px; border-radius: var(--sj-card-r); border: 1px dashed var(--border-control); color: var(--content-secondary); text-align: center; padding: 24px; }
+  /* row: four across, the open year opens full-width below */
+  .sj-spine[data-spine='row'] > ol { grid-template-columns: repeat(4, 1fr); }
+  .sj-spine[data-spine='row'] > ol::before { content: ''; position: absolute; left: 12.5%; right: 12.5%; top: calc(var(--sj-space) * 1.25 + 30px); height: 2px; background: var(--border-subtle); }
+}
+.sj-rail-empty { display: none; }
+
+/* threads table (comparison_table) */
+.sj-threads-wrap { overflow-x: auto; border-radius: var(--sj-card-r); border: 1px solid var(--border-subtle); background: var(--surface-raised); }
+.sj-threads { width: 100%; min-width: 720px; border-collapse: separate; border-spacing: 0; font-size: calc(14px * var(--ts, 1)); }
+.sj-threads th, .sj-threads td { text-align: left; vertical-align: top; padding: 12px 14px; border-bottom: 1px solid var(--border-subtle); }
+.sj-threads thead th { background: var(--surface-subtle); }
+.sj-threads thead th .sj-eyebrow { display: block; }
+.sj-threads tbody th { position: sticky; left: 0; z-index: 1; background: var(--surface-raised); width: 160px; min-width: 112px; box-shadow: 1px 0 0 var(--border-subtle); }
+.sj-threads tbody th button { all: unset; box-sizing: border-box; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; min-height: var(--size-touch-min, 44px); font-weight: 600; }
+.sj-threads tbody th button:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; border-radius: 4px; }
+.sj-threads tbody th button svg { width: 16px; height: 16px; transition: transform 200ms; }
+.sj-threads tbody th button[aria-expanded='true'] svg { transform: rotate(180deg); }
+.sj-threads td ul { display: flex; flex-wrap: wrap; gap: 6px; }
+.sj-threads td ul li { display: contents; }
+.sj-threads .sj-more { font-size: calc(12.5px * var(--ts, 1)); color: var(--content-secondary); font-weight: 600; align-self: center; }
+.sj-threads .sj-empty { color: var(--content-disabled); }
+.sj-threads tr:last-child > * { border-bottom: 0; }
+@container sj (min-width: 640px) { .sj-threads { min-width: 0; } }
+
+/* fork: a branch out of the startup phase */
+.sj-fork { position: relative; display: grid; gap: calc(var(--sj-space) * 1); padding-top: calc(var(--sj-space) * 0.5); }
+.sj-fork-head { display: flex; align-items: center; gap: 10px; color: var(--content-secondary); }
+.sj-fork-head svg { width: 20px; height: 20px; color: var(--brand-tint-content); }
+.sj-fork-paths { display: grid; gap: calc(var(--sj-space) * 0.75); position: relative; }
+@container sj (min-width: 720px) {
+  .sj-fork-paths { grid-template-columns: 1fr 1fr; margin-top: 18px; }
+  .sj-fork-paths[data-style='cards']::before { content: ''; position: absolute; left: 25%; right: 25%; top: -14px; height: 14px; border: 2px solid var(--border-subtle); border-bottom: 0; border-radius: 10px 10px 0 0; }
+  .sj-fork-paths:not([data-style='cards']) { margin-top: 0; }
+}
+.sj-safety { font-size: calc(14px * var(--ts, 1)); color: var(--content-secondary); max-width: 80ch; }
+
+/* portfolio grid (badge_grid, all earned) */
+.sj-portfolio { display: grid; gap: calc(var(--sj-space) * 0.75); }
+.sj-tiles { display: grid; gap: 8px; grid-template-columns: repeat(2, 1fr); }
+@container sj (min-width: 600px) { .sj-tiles { grid-template-columns: repeat(4, 1fr); } }
+@container sj (min-width: 1000px) { .sj-tiles { grid-template-columns: repeat(6, 1fr); } }
+
+
+/* ── Project media card (SSX Card / ClickableCard + CardMedia) ──────────── */
+/* Standard media card: image on top at a fixed ratio (cropped), chips on the
+   image, title (wraps, never truncated), description clamped to 2 lines,
+   body grows so cards in a row share a height. 8-pt spacing. */
+.sj-mcard { height: 100%; }
+.sj-mcard .sj-mcard-media { position: relative; }
+.sj-mcard .sj-mcard-media img { transition: transform 420ms var(--ease-productive-in-out, ease); }
+.sj-mcard .sj-mcard-media::after { content: ''; position: absolute; inset: auto 0 0 0; height: 40%; background: linear-gradient(180deg, transparent, rgb(0 0 0 / 0.28)); pointer-events: none; }
+.sj-mcard:not([data-photo]) .sj-mcard-media { display: none; }
+.sj-mcard-chips { position: absolute; top: 10px; left: 10px; right: 10px; z-index: 1; display: flex; gap: 6px; flex-wrap: wrap; }
+.sj-mcard-chips [data-slot='badge'] { box-shadow: 0 1px 2px rgb(0 0 0 / 0.18); }
+.sj-mcard-chips .sj-mcard-year { background: color-mix(in srgb, var(--surface-raised) 92%, transparent); color: var(--content-primary); backdrop-filter: blur(6px); }
+.sj-mcard-year[data-mono] { font-family: var(--font-mono); letter-spacing: 0.02em; }
+.sj-mcard-meta { display: none; gap: 6px; flex-wrap: wrap; }
+.sj-mcard-body { gap: 6px; padding: 16px; }
+.sj-mcard-desc { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+button.sj-mcard:hover .sj-mcard-media img, a.sj-mcard:hover .sj-mcard-media img { transform: scale(1.04); }
+@media (prefers-reduced-motion: reduce) { .sj-mcard .sj-mcard-media img { transition: none; transform: none !important; } }
+
+/* portfolio head: title left, year filter right (wraps under on narrow) */
+.sj-portfolio-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 12px 24px; }
+.sj-portfolio > *, .sj-portfolio-head > * { min-width: 0; }
+.sj-portfolio-head > :last-child { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+
+/* portfolio grid: 8-pt gaps, equal-height rows */
+.sj-mgrid { display: grid; gap: 16px; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-flow: dense; }
+.sj-mgrid > li { display: flex; min-width: 0; }
+.sj-mgrid > li > * { flex: 1; }
+@container sj (min-width: 768px) { .sj-mgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; } }
+@container sj (min-width: 1024px) { .sj-mgrid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; } }
+/* bento: the flagship is a 2 × 2 feature card, its photo fills the extra height */
+@container sj (min-width: 768px) {
+  .sj-mgrid[data-style='bento'] > li[data-feature] { grid-column: span 2; grid-row: span 2; }
+  .sj-mcard[data-feature] .sj-mcard-media { aspect-ratio: auto; flex: 1; min-height: 240px; }
+  .sj-mcard[data-feature] [data-slot='card-title'] { font-size: var(--type-h2-size); line-height: var(--type-h2-lh); }
+  .sj-mcard[data-feature] .sj-mcard-body { padding: 20px 24px 24px; flex-grow: 0; }
+  .sj-mcard[data-feature] .sj-mcard-desc { -webkit-line-clamp: 3; }
+}
+
+/* m-web: horizontal list cards (thumbnail left, text right), one column */
+@container sj (max-width: 599px) {
+  .sj-mgrid { grid-template-columns: 1fr; gap: 10px; }
+  .sj-mgrid .sj-mcard, .sj-projects[data-style='media'] .sj-mcard { display: grid; grid-template-columns: 104px minmax(0, 1fr); align-items: stretch; }
+  .sj-mgrid .sj-mcard .sj-mcard-media, .sj-projects[data-style='media'] .sj-mcard .sj-mcard-media { aspect-ratio: auto; height: 100%; min-height: 104px; border-bottom: 0; border-right: 1px solid var(--border-decorative); }
+  .sj-mgrid .sj-mcard .sj-mcard-media::after { display: none; }
+  .sj-mcard .sj-mcard-chips { display: none; }
+  .sj-mcard .sj-mcard-meta { display: flex; }
+  .sj-mcard .sj-mcard-body { padding: 12px 14px; align-content: center; }
+  .sj-mcard .sj-mcard-desc { -webkit-line-clamp: 2; }
+}
+
+/* What you build: the same card, 2 → 3 across */
+.sj-projects[data-style='media'] { gap: 16px; }
+.sj-projects[data-style='media'] > li { display: flex; min-width: 0; }
+.sj-projects[data-style='media'] > li > * { flex: 1; }
+
+
+/* ── Fork variants (fork.tsx) ───────────────────────────────────────────── */
+.sj-fork { --fork-scrim: 0.75; }
+.sj-pointchips { display: flex; flex-wrap: wrap; gap: 6px; }
+.sj-pointchips li { display: inline-flex; align-items: center; gap: 6px; min-height: 30px; padding: 4px 10px; border-radius: var(--sj-ctl-r); font-size: calc(13.5px * var(--ts, 1)); font-weight: 600; background: rgb(255 255 255 / 0.16); color: inherit; backdrop-filter: blur(8px); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.22); }
+.sj-pointchips svg { width: 16px; height: 16px; color: var(--status-success-icon); flex: none; }
+:is(.sj-pathcover, .sj-panel) .sj-roles [data-slot='badge'] { background: rgb(255 255 255 / 0.9); color: #171717; }
+
+/* cover: the photo is the card */
+.sj-pathcover { position: relative; isolation: isolate; overflow: hidden; display: grid; align-content: end; min-height: 360px; border-radius: var(--sj-card-r); background: var(--surface-inverse); color: var(--on-image-ink, #fff); }
+.sj-pathcover .sj-visual { position: absolute; inset: 0; z-index: -1; aspect-ratio: auto; border-radius: 0; }
+.sj-pathcover .sj-visual img { transition: transform 900ms var(--ease-productive-in-out, ease); }
+.sj-pathcover .sj-visual::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgb(0 0 0 / calc(var(--fork-scrim) * 0.15)) 0%, rgb(0 0 0 / var(--fork-scrim)) 62%); transition: opacity 300ms; }
+.sj-pathcover:hover .sj-visual img, .sj-pathcover:focus-within .sj-visual img { transform: scale(1.05); }
+.sj-pathcover-body { display: grid; gap: 12px; padding: calc(var(--sj-space) * 1.5); }
+.sj-fork-paths[data-style='cover'] { gap: calc(var(--sj-space) * 1); }
+@container sj (min-width: 720px) { .sj-pathcover { min-height: 420px; } }
+
+/* branch: the fork draws itself */
+.sj-branch { position: relative; display: grid; gap: calc(var(--sj-space) * 1); }
+.sj-fork-icon { all: unset; cursor: pointer; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--surface-raised); box-shadow: 0 0 0 2px var(--border-strong); color: var(--content-primary); flex: none; }
+.sj-fork-icon:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+.sj-fork-icon svg { width: 22px; height: 22px; color: var(--content-primary); }
+.sj-branch-lines { position: absolute; inset: 0; pointer-events: none; overflow: visible; z-index: 0; }
+.sj-branch-lines path { fill: none; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 0; transition: stroke-dashoffset 700ms var(--ease-productive-in-out, ease); }
+.sj-branch[data-phase='armed'] .sj-branch-lines path { stroke-dashoffset: 1; transition: none; }
+.sj-branch-lines path[data-path='founder'] { stroke: var(--surface-brand-solid); }
+.sj-branch-lines path[data-path='placement'] { stroke: var(--accent1-solid); transition-delay: 160ms; }
+.sj-fork-paths[data-style='branch'] { position: relative; z-index: 1; margin-top: 56px; }
+.sj-branch-card { transition: opacity 320ms, transform 320ms var(--ease-productive-entrance, ease-out); }
+.sj-branch[data-phase='armed'] .sj-branch-card { opacity: 0; transform: translateY(16px); transition: none; }
+.sj-branch[data-phase='drawn'] .sj-branch-card { transition-delay: 560ms; }
+.sj-branch[data-phase='drawn'] .sj-branch-card[data-i='1'] { transition-delay: 720ms; }
+.sj-branch-card > .sj-path { height: 100%; }
+.sj-branch-card[data-i='0'] > .sj-path { box-shadow: inset 0 3px 0 var(--surface-brand-solid); }
+.sj-branch-card[data-i='1'] > .sj-path { box-shadow: inset 0 3px 0 var(--accent1-solid); }
+.sj-branch[data-narrow] .sj-fork-paths { margin-top: 12px; padding-left: 40px; }
+.sj-branch[data-narrow] .sj-fork-head { padding-left: 0; }
+
+/* split: expanding panels */
+.sj-panels { display: flex; gap: calc(var(--sj-space) * 0.75); min-height: 440px; }
+.sj-panel { position: relative; isolation: isolate; overflow: hidden; flex: 1 1 0; min-width: 0; display: grid; align-content: end; border-radius: var(--sj-card-r); background: var(--surface-inverse); color: var(--on-image-ink, #fff); cursor: pointer; transition: flex-grow 360ms var(--ease-productive-in-out, ease); }
+.sj-panel[data-on] { flex-grow: 1.85; cursor: default; }
+.sj-panel .sj-visual { position: absolute; inset: 0; z-index: -1; aspect-ratio: auto; border-radius: 0; }
+.sj-panel .sj-visual img { transition: transform 900ms var(--ease-productive-in-out, ease), filter 360ms; }
+.sj-panel .sj-visual::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgb(0 0 0 / calc(var(--fork-scrim) * 0.2)) 0%, rgb(0 0 0 / var(--fork-scrim)) 60%); }
+.sj-panel[data-on] .sj-visual img { transform: scale(1.04); }
+.sj-panel[data-dim] .sj-visual img { filter: grayscale(0.6) brightness(0.8); }
+.sj-panel-body { display: grid; gap: 10px; padding: calc(var(--sj-space) * 1.5); }
+.sj-panel-title { margin: 0; }
+.sj-panel-title button { all: unset; box-sizing: border-box; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: var(--size-touch-min, 44px); font-size: var(--type-h2-size); line-height: var(--type-h2-lh); font-weight: var(--type-h2-weight, 600); letter-spacing: var(--type-h2-tracking); }
+.sj-panel-title button:focus-visible { outline: 2px solid #fff; outline-offset: 4px; border-radius: 6px; }
+.sj-panel-title svg { width: 22px; height: 22px; flex: none; transition: transform 300ms; }
+.sj-panel[data-on] .sj-panel-title svg { transform: rotate(180deg); }
+.sj-panel-more { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 360ms var(--ease-productive-in-out, ease), opacity 240ms; }
+.sj-panel-more > div { overflow: hidden; display: grid; gap: 10px; min-height: 0; }
+.sj-panel-more[data-open] { grid-template-rows: 1fr; opacity: 1; }
+@container sj (max-width: 719px) {
+  .sj-panels { flex-direction: column; min-height: 0; }
+  .sj-panel { min-height: 220px; flex: none; }
+  .sj-panel[data-on] { min-height: 320px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sj-branch-lines path, .sj-branch-card, .sj-panel, .sj-panel-more, .sj-pathcover .sj-visual img, .sj-panel .sj-visual img { transition: none !important; }
+  .sj-branch .sj-branch-lines path { stroke-dashoffset: 0 !important; }
+  .sj-branch .sj-branch-card { opacity: 1 !important; transform: none !important; }
+}
+
+
+/* ── Portfolio carousel (auto-scrolling marquee) ────────────────────────── */
+/* Two identical sets side by side; the track moves by exactly one set, so
+   the loop is seamless. Pauses on hover, on keyboard focus, and via the
+   Pause button. Reduced motion: no movement, a row you scroll by hand. */
+.sj-portfolio-tools { display: flex; align-items: center; gap: 10px; min-width: 0; max-width: 100%; }
+.sj-portfolio-tools > [role='group'], .sj-portfolio-tools > :first-child:not(button) { min-width: 0; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+.sj-marquee { position: relative; overflow: hidden; margin-inline: calc(var(--space-gutter) * -1); padding-block: 6px 12px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+.sj-marquee-track { display: flex; width: max-content; animation: sj-marquee var(--sj-loop, 60s) linear infinite; }
+.sj-marquee-set { display: flex; gap: 20px; padding-right: 20px; }
+.sj-marquee-set > li { display: flex; width: 280px; flex: none; }
+.sj-marquee-set > li[data-flagship] { width: 420px; }
+.sj-marquee-set > li > * { flex: 1; }
+.sj-marquee:hover .sj-marquee-track, .sj-marquee:focus-within .sj-marquee-track, .sj-marquee[data-paused] .sj-marquee-track { animation-play-state: paused; }
+@keyframes sj-marquee { to { transform: translateX(-50%); } }
+@container sj (max-width: 599px) {
+  .sj-marquee-set { gap: 12px; padding-right: 12px; }
+  .sj-marquee-set > li { width: 232px; }
+  .sj-marquee-set > li[data-flagship] { width: 288px; }
+  /* in the marquee the card keeps its vertical anatomy on m-web */
+  .sj-marquee .sj-mcard { display: flex; }
+  .sj-marquee .sj-mcard .sj-mcard-media { aspect-ratio: 4 / 3; height: auto; min-height: 0; border-right: 0; border-bottom: 1px solid var(--border-decorative); }
+  .sj-marquee .sj-mcard .sj-mcard-chips { display: flex; }
+  .sj-marquee .sj-mcard .sj-mcard-meta { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sj-marquee { overflow-x: auto; -webkit-mask-image: none; mask-image: none; scroll-snap-type: x mandatory; }
+  .sj-marquee-track { animation: none; }
+  .sj-marquee-set[aria-hidden] { display: none; }
+  .sj-marquee-set > li { scroll-snap-align: start; }
+  .sj-marquee-toggle { display: none; }
+}
+
+
+/* reveal: one card that splits into the two paths (choreography in fork.tsx) */
+.sj-reveal { position: relative; perspective: 1400px;
+  --rv-spring: cubic-bezier(0.34, 1.56, 0.64, 1); --rv-ease: var(--ease-productive-in-out, cubic-bezier(0.2, 0, 0.38, 0.9)); }
+@supports (transition-timing-function: linear(0, 1)) {
+  .sj-reveal { --rv-spring: linear(0, 0.009, 0.035 2.1%, 0.141, 0.281 6.7%, 0.723 12.9%, 0.938 16.7%, 1.017, 1.077, 1.121, 1.149 24.3%, 1.159, 1.163, 1.161, 1.154 29.9%, 1.129 32.8%, 1.051 39.6%, 1.017 43.1%, 0.991, 0.977 51%, 0.974 53.8%, 0.975 57.1%, 0.997 69.8%, 1.003 76.9%, 1); }
+}
+.sj-reveal-halves { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 0; min-height: 400px; transform-style: preserve-3d;
+  transform: rotateX(var(--rv-rx, 0deg)) rotateY(var(--rv-ry, 0deg)); transition: transform 500ms var(--rv-ease); }
+.sj-reveal[data-open] .sj-reveal-halves { gap: calc(var(--sj-space) * 1.25); transform: none; }
+.sj-reveal-half { position: relative; isolation: isolate; overflow: hidden; display: grid; align-content: end; min-width: 0; background: var(--surface-inverse); color: var(--on-image-ink, #fff);
+  transform-origin: var(--rv-origin, center); backface-visibility: hidden; transition: border-radius 420ms var(--rv-ease), translate 420ms var(--rv-spring), box-shadow 420ms; }
+.sj-reveal-half[data-i='0'] { --rv-origin: 100% 50%; border-radius: var(--sj-card-r) 0 0 var(--sj-card-r); }
+.sj-reveal-half[data-i='1'] { --rv-origin: 0% 50%; border-radius: 0 var(--sj-card-r) var(--sj-card-r) 0; }
+.sj-reveal[data-open] .sj-reveal-half { border-radius: var(--sj-card-r); box-shadow: 0 18px 40px rgb(0 0 0 / 0.35); }
+/* hover (closed): the halves part a hair, a promise of the split */
+.sj-reveal:not([data-open]):not([data-busy]):hover .sj-reveal-half[data-i='0'] { translate: -5px 0; }
+.sj-reveal:not([data-open]):not([data-busy]):hover .sj-reveal-half[data-i='1'] { translate: 5px 0; }
+.sj-reveal-half .sj-visual { position: absolute; inset: 0; z-index: -1; aspect-ratio: auto; border-radius: 0; }
+.sj-reveal-half .sj-visual img { transition: filter 460ms; }
+.sj-reveal[data-open] .sj-reveal-half .sj-visual img { animation: rv-settle 1100ms var(--rv-ease) both; }
+@keyframes rv-settle { from { transform: scale(1.18); filter: blur(2px) brightness(1.3); } }
+.sj-reveal-half .sj-visual::before { content: ''; position: absolute; inset: 0; z-index: 1; transition: background 460ms;
+  background: linear-gradient(180deg, rgb(0 0 0 / calc(var(--fork-scrim) * 0.55)), rgb(0 0 0 / calc(var(--fork-scrim) * 0.85))); }
+.sj-reveal[data-open] .sj-reveal-half .sj-visual::before { background: linear-gradient(180deg, rgb(0 0 0 / calc(var(--fork-scrim) * 0.15)) 0%, rgb(0 0 0 / var(--fork-scrim)) 62%); }
+.sj-reveal:not([data-open]) .sj-reveal-half .sj-visual img { filter: saturate(0.8); }
+/* closed: each half names its path in its corner */
+.sj-reveal-teaser { position: absolute; left: 24px; right: 24px; bottom: 22px; z-index: 1; font-size: var(--type-h3-size); line-height: var(--type-h3-lh); font-weight: 600; opacity: 0.92; transition: opacity 180ms, transform 240ms var(--rv-ease); }
+.sj-reveal-half[data-i='1'] .sj-reveal-teaser { text-align: right; }
+.sj-reveal[data-open] .sj-reveal-teaser { opacity: 0; transform: translateY(8px); }
+/* open: the content arrives in a staggered cascade */
+.sj-reveal-content { position: relative; z-index: 1; display: grid; gap: 12px; padding: calc(var(--sj-space) * 1.5); opacity: 0; }
+.sj-reveal-content :focus { outline: none; }
+.sj-reveal[data-open] .sj-reveal-content { opacity: 1; --d: 380ms; }
+.sj-reveal[data-open] .sj-reveal-half[data-i='1'] .sj-reveal-content { --d: 480ms; }
+.sj-reveal[data-open] .sj-reveal-title { animation: rv-wipe 620ms var(--rv-ease) both; animation-delay: var(--d); }
+.sj-reveal[data-open] .sj-reveal-desc { animation: rv-rise 520ms var(--rv-ease) both; animation-delay: calc(var(--d) + 120ms); }
+.sj-reveal[data-open] :is(.sj-pointchips li, .sj-roles [data-slot='badge']) { animation: rv-pop 560ms var(--rv-spring) both; animation-delay: calc(var(--d) + 240ms + var(--n, 0) * 60ms); }
+.sj-reveal :is(.sj-pointchips li, .sj-roles li):nth-child(2) { --n: 1; } .sj-reveal :is(.sj-pointchips li, .sj-roles li):nth-child(3) { --n: 2; }
+.sj-reveal :is(.sj-pointchips li, .sj-roles li):nth-child(4) { --n: 3; } .sj-reveal :is(.sj-pointchips li, .sj-roles li):nth-child(5) { --n: 4; }
+.sj-reveal :is(.sj-pointchips li, .sj-roles li):nth-child(6) { --n: 5; }
+.sj-reveal .sj-roles li { display: contents; }
+@keyframes rv-wipe { from { clip-path: inset(0 100% 0 0); transform: translateX(-12px); } to { clip-path: inset(0 0 0 0); } }
+@keyframes rv-rise { from { opacity: 0; transform: translateY(12px); } }
+@keyframes rv-pop { from { opacity: 0; transform: scale(0.5) translateY(8px); } }
+/* the seam: breathes while closed, flashes on the split */
+.sj-reveal-seam { position: absolute; z-index: 2; left: 50%; top: 14px; bottom: 14px; width: 2px; transform: translateX(-50%); border-radius: 2px; pointer-events: none;
+  background: linear-gradient(180deg, transparent, rgb(255 255 255 / 0.9) 20%, rgb(255 255 255 / 0.9) 80%, transparent); animation: rv-breathe 2.4s ease-in-out infinite; }
+@keyframes rv-breathe { 0%, 100% { opacity: 0.35; box-shadow: 0 0 0 0 rgb(255 255 255 / 0); } 50% { opacity: 0.9; box-shadow: 0 0 16px 3px rgb(255 255 255 / 0.35); } }
+.sj-reveal:not([data-open]):hover .sj-reveal-seam { animation-duration: 1.1s; }
+.sj-reveal[data-open] .sj-reveal-seam { animation: rv-flash 520ms ease-out forwards; }
+@keyframes rv-flash { 0% { opacity: 1; width: 4px; box-shadow: 0 0 32px 12px rgb(255 255 255 / 0.7); } 100% { opacity: 0; width: 40px; box-shadow: 0 0 0 0 rgb(255 255 255 / 0); } }
+/* sparks: emitted from the split point (WAAPI, fork.tsx) */
+.sj-reveal-sparks { position: absolute; left: 50%; top: 50%; z-index: 5; width: 0; height: 0; pointer-events: none; }
+.sj-reveal-sparks i { position: absolute; left: 0; top: 0; width: 9px; height: 9px; border-radius: 50%; opacity: 0; transform: translate(-50%, -50%); }
+.sj-reveal-sparks i[data-k='0'] { background: var(--surface-brand-solid); box-shadow: 0 0 10px var(--surface-brand-solid); }
+.sj-reveal-sparks i[data-k='1'] { background: var(--accent1-solid); box-shadow: 0 0 10px var(--accent1-solid); width: 7px; height: 7px; }
+.sj-reveal-sparks i[data-k='2'] { background: #fff; box-shadow: 0 0 8px #fff; width: 5px; height: 5px; }
+/* the closed card is one button over both halves */
+.sj-reveal-cover { all: unset; box-sizing: border-box; position: absolute; inset: 0; z-index: 3; cursor: pointer; border-radius: var(--sj-card-r); display: grid; place-content: center; justify-items: center; gap: 16px; padding: 24px 24px 72px; text-align: center; color: #fff; }
+.sj-reveal-cover:focus-visible { outline: 3px solid var(--border-focus); outline-offset: 3px; }
+.sj-reveal-intro { display: inline-flex; align-items: center; gap: 10px; max-width: 30ch; font-size: var(--type-h2-size); line-height: var(--type-h2-lh); font-weight: 600; letter-spacing: var(--type-h2-tracking); text-wrap: balance; text-shadow: 0 2px 16px rgb(0 0 0 / 0.4); }
+.sj-reveal-intro svg { width: 1.1em; height: 1.1em; flex: none; }
+.sj-reveal-names { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.sj-reveal-cta { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 20px; border-radius: var(--sj-ctl-r); background: #fff; color: #171717; font-weight: 600; font-size: calc(15px * var(--ts, 1)); box-shadow: 0 6px 20px rgb(0 0 0 / 0.25); transition: transform 220ms var(--rv-spring), box-shadow 200ms; }
+.sj-reveal-cta svg { width: 18px; height: 18px; animation: rv-nudge 1.6s ease-in-out infinite; }
+@keyframes rv-nudge { 0%, 60%, 100% { transform: none; } 30% { transform: translateX(4px); } }
+.sj-reveal-cover:hover .sj-reveal-cta { transform: translateY(-3px) scale(1.04); box-shadow: 0 12px 28px rgb(0 0 0 / 0.32); }
+.sj-reveal-cover:active .sj-reveal-cta { transform: scale(0.96); }
+.sj-reveal[data-busy] .sj-reveal-cover { pointer-events: none; }
+.sj-reveal[data-busy]:not([data-open]) .sj-reveal-cover > * { opacity: 0; transition: opacity 120ms; }
+.sj-reveal-join { all: unset; box-sizing: border-box; position: absolute; top: 12px; left: 50%; z-index: 4; transform: translateX(-50%); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 14px; border-radius: var(--sj-ctl-r); font-weight: 600; font-size: 13px; color: #fff; background: rgb(0 0 0 / 0.55); backdrop-filter: blur(8px); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.25); animation: sj-join-in 420ms 700ms var(--rv-spring) both; }
+.sj-reveal-join:focus-visible { outline: 3px solid var(--border-focus); outline-offset: 2px; }
+.sj-reveal-join svg { width: 16px; height: 16px; }
+@keyframes sj-join-in { from { opacity: 0; transform: translate(-50%, -10px) scale(0.8); } }
+/* m-web: the card splits top / bottom */
+.sj-reveal[data-narrow] .sj-reveal-halves { grid-template-columns: 1fr; min-height: 460px; }
+.sj-reveal[data-narrow] .sj-reveal-half[data-i='0'] { --rv-origin: 50% 100%; border-radius: var(--sj-card-r) var(--sj-card-r) 0 0; }
+.sj-reveal[data-narrow] .sj-reveal-half[data-i='1'] { --rv-origin: 50% 0%; border-radius: 0 0 var(--sj-card-r) var(--sj-card-r); }
+.sj-reveal[data-narrow][data-open] .sj-reveal-half { border-radius: var(--sj-card-r); }
+.sj-reveal[data-narrow]:not([data-open]):not([data-busy]):hover .sj-reveal-half[data-i='0'] { translate: 0 -4px; }
+.sj-reveal[data-narrow]:not([data-open]):not([data-busy]):hover .sj-reveal-half[data-i='1'] { translate: 0 4px; }
+.sj-reveal[data-narrow] .sj-reveal-half[data-i='1'] .sj-reveal-teaser { text-align: left; }
+.sj-reveal[data-narrow] .sj-reveal-half[data-i='0'] .sj-reveal-teaser { top: 20px; bottom: auto; }
+.sj-reveal[data-narrow] .sj-reveal-seam { left: 14px; right: 14px; top: 50%; bottom: auto; width: auto; height: 2px; transform: translateY(-50%); background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.9) 20%, rgb(255 255 255 / 0.9) 80%, transparent); }
+.sj-reveal[data-narrow][data-open] .sj-reveal-seam { animation-name: rv-flash-h; }
+@keyframes rv-flash-h { 0% { opacity: 1; height: 4px; box-shadow: 0 0 32px 12px rgb(255 255 255 / 0.7); } 100% { opacity: 0; height: 40px; } }
+.sj-reveal[data-narrow] .sj-reveal-cover { padding: 20px; place-content: center; }
+.sj-reveal[data-narrow] .sj-reveal-intro { font-size: var(--type-h3-size); line-height: var(--type-h3-lh); }
+.sj-reveal[data-narrow] .sj-reveal-teaser { font-size: calc(17px * var(--ts, 1)); }
+.sj-reveal[data-narrow][data-open] .sj-reveal-half[data-i='0'] { padding-top: 40px; }
+@media (prefers-reduced-motion: reduce) {
+  .sj-reveal *, .sj-reveal-halves { transition: none !important; animation: none !important; }
+  .sj-reveal-halves { transform: none !important; }
+  .sj-reveal-seam { opacity: 0.6; }
+  .sj-reveal[data-open] .sj-reveal-seam { opacity: 0; }
+}
+
+/* L3 syllabus slot is hidden until data exists (spec §4.2) */
+
+/* ==========================================================================
+ * Override layer. `c(cfg, id)` writes the overridden values as --c-* on the
+ * component root and names them in data-o. Only named properties apply, so
+ * an untouched component keeps its own CSS. !important because an override
+ * is an explicit instance edit (and SSX components style with utilities).
+ * Grids take `cols`; flex rows take `align`; containers take `gap`.
+ * ======================================================================== */
+.sj [data-o~='hide'] { display: none !important; }
+.sj [data-o~='gap'] { gap: var(--c-gap) !important; }
+.sj [data-o~='gap'] > :is(ul, ol, .sj-projects, .sj-tiles, .sj-fork-paths, .sj-frame-top) { gap: var(--c-gap) !important; }
+.sj [data-o~='px'] { padding-inline: var(--c-px) !important; }
+.sj [data-o~='py'] { padding-block: var(--c-py) !important; }
+.sj [data-o~='align'] { align-items: var(--c-align) !important; align-content: var(--c-align) !important; }
+.sj [data-o~='w'] { width: var(--c-w) !important; justify-content: center; }
+.sj [data-o~='bg'] { background: var(--c-bg) !important; }
+.sj [data-o~='fg'] { color: var(--c-fg) !important; }
+.sj [data-o~='bw'] { border-style: solid !important; border-width: var(--c-bw) !important; }
+.sj [data-o~='bc'] { border-color: var(--c-bc) !important; }
+.sj [data-o~='r'] { border-radius: var(--c-r) !important; }
+.sj [data-o~='sh'] { box-shadow: var(--c-sh) !important; }
+.sj [data-o~='op'] { opacity: var(--c-op) !important; }
+.sj [data-o~='fw'], .sj [data-o~='fw'] * { font-weight: var(--c-fw) !important; }
+/* grid columns, per viewport class: desktop from 768 container, m-web below */
+@container sj (min-width: 768px) {
+  .sj [data-o~='cols'], .sj [data-o~='cols'] > :is(ul, ol, .sj-projects, .sj-tiles, .sj-fork-paths) { display: grid !important; grid-template-columns: repeat(var(--c-cols), minmax(0, 1fr)) !important; }
+}
+@container sj (max-width: 767px) {
+  .sj [data-o~='colsm'], .sj [data-o~='colsm'] > :is(ul, ol, .sj-projects, .sj-tiles, .sj-fork-paths) { display: grid !important; grid-template-columns: repeat(var(--c-colsm), minmax(0, 1fr)) !important; }
+}
+/* text scale: every SSX type role inside, from the section's base values */
+.sj [data-o~='ts'] {
+  --ts: var(--c-ts);
+  --type-h1-size: calc(var(--b-h1) * var(--ts));
+  --type-h2-size: calc(var(--b-h2) * var(--ts));
+  --type-h3-size: calc(var(--b-h3) * var(--ts));
+  --type-body-lg-size: calc(var(--b-body-lg) * var(--ts));
+  --type-body-size: calc(var(--b-body) * var(--ts));
+  --type-body-sm-size: calc(var(--b-body-sm) * var(--ts));
+  --type-eyebrow-size: calc(var(--b-eyebrow) * var(--ts));
+  --type-caption-size: calc(var(--b-caption) * var(--ts));
+  --font-size-xs: calc(var(--b-fs-xs) * var(--ts));
+  --font-size-sm: calc(var(--b-fs-sm) * var(--ts));
+  --font-size-base: calc(var(--b-fs-base) * var(--ts));
+  --font-size-lg: calc(var(--b-fs-lg) * var(--ts));
+}
+.sj [data-o~='ts'][data-slot='badge'] { height: auto !important; min-height: calc(1.375rem * var(--ts)); padding-block: 0.2em; }
+/* overlay: a layer over an image (scrim / tint / dark / light) */
+.sj [data-o~='ov'] { position: relative; }
+.sj [data-o~='ov']::after { content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none; background: var(--c-ov); opacity: var(--c-ovop); border-radius: inherit; }
+
+/* ── SSB additions: video references, workshops, career prep ─────────────── */
+.sj-visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+/* a challenge's video: a play glyph + the video it points to; `tile` sits on the photo */
+.sj-video { display: inline-flex; align-items: center; gap: 8px; font-size: var(--type-body-sm-size, 14px); line-height: 1.35; color: var(--content-secondary); }
+.sj-video-play { flex: none; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--surface-brand-solid); color: var(--content-on-brand-solid); font-size: 12px; }
+.sj-video[data-tile] { position: absolute; left: 10px; right: 10px; bottom: 10px; z-index: 1; color: var(--content-on-image, #fff); font-size: 12.5px; text-shadow: 0 1px 2px rgb(0 0 0 / 0.5); }
+.sj-video[data-tile] .sj-video-play { width: 32px; height: 32px; background: rgb(255 255 255 / 0.92); color: #111; box-shadow: 0 2px 8px rgb(0 0 0 / 0.25); }
+.sj-mcard[data-video] .sj-mcard-media::after, .sj-flagship-media[data-video]::after { content: ''; position: absolute; inset: 0; height: auto; /* the base scrim is 40% tall: reset it, or it pins to the top as a hard band */ background: linear-gradient(to top, rgb(0 0 0 / 0.55), transparent 55%); pointer-events: none; }
+.sj-mcard[data-video] .sj-mcard-media { position: relative; }
+.sj-flagship-media { position: relative; display: grid; }
+.sj-flagship-media > .sj-visual { height: 100%; }
+.sj-flagship[data-style='overlay'] .sj-flagship-media { display: contents; }
+.sj-flagship-body .sj-video { margin-top: 6px; }
+
+.sj-workshops { display: grid; gap: 10px; }
+.sj-workshops ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+
+.sj-career { display: grid; gap: calc(var(--sj-space) * 1.25); }
+/* stats: icon tiles; the featured one (a count) spans two cells */
+.sj-career-stats { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.sj-cstat { display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto 1fr; column-gap: 12px; row-gap: 4px; align-items: start; align-content: start; padding: 14px 16px; border-radius: var(--radius-lg); background: var(--surface-subtle, var(--surface-sunken)); }
+/* the icon sits at the tile's top, level with the number (the first line), not centred on the tile */
+.sj-cstat-icon { grid-row: 1 / span 2; align-self: start; display: grid; place-items: center; width: 40px; height: 40px; border-radius: var(--sj-card-r-in); background: var(--surface-brand-subtle); color: var(--content-brand); font-size: 22px; }
+.sj-cstat dd { margin: 0; font-size: calc(24px * var(--ts, 1)); font-weight: 700; line-height: 1.05; letter-spacing: -0.01em; color: var(--content-primary); }
+.sj-cstat dt { font-size: 12.5px; line-height: 1.3; color: var(--content-secondary); }
+.sj-cstat[data-feature] { grid-column: span 2; background: var(--surface-brand-subtle); }
+.sj-cstat[data-feature] .sj-cstat-icon { width: 52px; height: 52px; background: var(--surface-brand-solid); color: var(--content-on-brand-solid); font-size: 28px; }
+.sj-cstat[data-feature] dd { font-size: calc(34px * var(--ts, 1)); }
+/* desktop: the icon on top, the number and label under it, all left-aligned */
+@container sj (min-width: 768px) {
+  .sj-cstat { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto 1fr; row-gap: 6px; }
+  .sj-cstat-icon { grid-row: auto; margin-bottom: 8px; }
+}
+/* phases: a track from "Month 1", one node per phase */
+.sj-career-track { --node: 44px; list-style: none; margin: 0; padding: 0; position: relative; display: grid; grid-template-columns: auto repeat(3, max-content); justify-content: space-between; gap: 16px 32px; align-items: start; } /* each phase is as wide as its pills, spread across the row */
+.sj-career-track::before { content: ''; position: absolute; left: 0; right: 0; top: calc(var(--node) / 2); height: 2px; translate: 0 -1px; background: linear-gradient(to right, var(--border-strong), var(--surface-brand-solid)); }
+.sj-ctrack-start { position: relative; padding-top: calc(var(--node) / 2 - 11px); }
+.sj-ctrack-start span { display: inline-block; padding: 3px 10px; border-radius: var(--sj-ctl-r); font-size: 12px; font-weight: 600; background: var(--surface-raised); border: 1px solid var(--border-strong); color: var(--content-secondary); white-space: nowrap; }
+.sj-cphase { position: relative; display: grid; gap: 12px; justify-items: start; }
+.sj-cphase-node { position: relative; display: grid; place-items: center; width: var(--node); height: var(--node); border-radius: 50%; background: var(--surface-raised); border: 2px solid var(--surface-brand-solid); color: var(--content-brand); font-size: 22px; box-shadow: 0 0 0 5px var(--surface-page); }
+.sj-cphase-body { display: grid; gap: 6px; }
+.sj-cphase-body b { font-size: calc(16px * var(--ts, 1)); }
+.sj-cphase-body ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: nowrap; gap: 6px; } /* every pill in one row */
+.sj-cphase-body li { display: contents; } /* the pill is an SSX Badge, like every pill inside the cards */
+/* m-web: the track runs down the left */
+/* too narrow for one row of pills: back to equal columns that wrap */
+@container sj (max-width: 960px) { .sj-career-track { grid-template-columns: auto repeat(3, minmax(0, 1fr)); justify-content: normal; } .sj-cphase-body ul { flex-wrap: wrap; } }
+@container sj (max-width: 640px) {
+  .sj-career-track { grid-template-columns: 1fr; gap: 18px; padding-left: calc(var(--node) + 14px); }
+  .sj-career-track::before { left: calc(var(--node) / 2); right: auto; top: 12px; bottom: 12px; width: 2px; height: auto; translate: -1px 0; background: linear-gradient(to bottom, var(--border-strong), var(--surface-brand-solid)); }
+  .sj-ctrack-start { padding-top: 0; margin-left: calc((var(--node) + 14px) * -1); }
+  .sj-cphase-node { position: absolute; left: calc((var(--node) + 14px) * -1); top: 0; }
+  .sj-cphase { justify-items: stretch; min-height: var(--node); }
+  .sj-cphase-body { padding-top: 2px; }
+}
+
+/* project carousel (desktop stack modal): three cards in view, snapping */
+.sj-carousel { position: relative; display: grid; gap: 12px; }
+.sj-carousel-ctrl { display: flex; justify-content: flex-end; gap: 8px; }
+.sj-carousel-track { --gap: 16px; list-style: none; margin: 0; padding: 2px 2px 6px; display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - var(--gap) * 2) / 3); gap: var(--gap);
+  overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: 2px; scrollbar-width: none;
+  /* soft edges show there is more; they drop at each end */
+  mask-image: linear-gradient(to right, transparent 0, #000 28px, #000 calc(100% - 28px), transparent 100%); }
+.sj-carousel-track::-webkit-scrollbar { display: none; }
+.sj-carousel-track[data-start] { mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent 100%); }
+.sj-carousel-track[data-end] { mask-image: linear-gradient(to right, transparent 0, #000 28px); }
+.sj-carousel-track[data-start][data-end] { mask-image: none; }
+.sj-carousel-track:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 4px; border-radius: var(--radius-lg); }
+.sj-carousel-track > li { display: flex; min-width: 0; scroll-snap-align: start; }
+.sj-carousel-track .sj-mcard { width: 100%; }
+@container sj (max-width: 720px) { .sj-carousel-track { grid-auto-columns: calc((100% - var(--gap)) / 2); } }
+
+/* ── fork · transform: steps stream into the axis, two paths come out ────── */
+.sj-mt { --beat: 1.4s; --cycle: calc(var(--beat) * var(--n)); display: grid; gap: calc(var(--sj-space) * 0.75); }
+.sj-mt .sj-fork-head { flex-wrap: wrap; }
+.sj-mt-pause { all: unset; box-sizing: border-box; cursor: pointer; margin-left: auto; display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 12px; border-radius: var(--sj-ctl-r);
+  border: 1px solid var(--border-subtle); color: var(--content-secondary); font-size: 13px; }
+.sj-mt-pause:hover { color: var(--content-primary); border-color: var(--border-strong); }
+.sj-mt-pause:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+.sj-mt-stage { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 112px minmax(0, 1.25fr); min-height: 420px;
+  border-radius: var(--sj-card-r); background: var(--surface-sunken); border: 1px solid var(--border-subtle); overflow: hidden; }
+
+/* in: the left side of the stage, where the one card travels */
+/* soft edges at the axis instead of a hard cut: the card fades as it goes in,
+   and the pair fades up as it comes out on the other side */
+.sj-mt-in { position: relative; overflow: hidden; mask-image: linear-gradient(to right, #000 calc(100% - 56px), transparent); }
+
+/* the axis: the moment you choose */
+.sj-mt-axis { position: relative; z-index: 2; display: grid; place-items: center; }
+.sj-mt-axis::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; translate: -1px 0;
+  background: linear-gradient(to bottom, transparent, var(--surface-brand-solid) 20%, var(--surface-brand-solid) 80%, transparent);
+  box-shadow: 0 0 18px 2px color-mix(in srgb, var(--surface-brand-solid) 45%, transparent); }
+.sj-mt-tile { all: unset; box-sizing: border-box; cursor: pointer; position: relative; z-index: 1; display: grid; place-items: center; width: 60px; height: 60px; border-radius: var(--sj-card-r);
+  background: var(--surface-brand-solid); color: var(--content-on-brand-solid); font-size: 26px;
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--surface-brand-solid) 18%, transparent), 0 10px 30px color-mix(in srgb, var(--surface-brand-solid) 40%, transparent);
+  animation: sj-mt-pulse var(--beat) ease-out infinite; }
+.sj-mt-tile:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 4px; }
+@keyframes sj-mt-pulse { 0%, 100% { transform: scale(1); } 12% { transform: scale(1.08); } 30% { transform: scale(1); } }
+
+/* out: one line splits in two and a card rides out along each branch */
+.sj-mt-out { --split: 1.1s; --ride: cubic-bezier(0.22, 1, 0.36, 1); position: relative; overflow: hidden; mask-image: linear-gradient(to right, transparent, #000 44px); display: grid; grid-template-rows: 1fr 1fr; gap: 14px; padding: 18px 20px 18px 11%; }
+.sj-mt-branches { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.sj-mt-branches path { fill: none; stroke: var(--surface-brand-solid); stroke-width: 2; stroke-linecap: round; opacity: 0.6; }
+.sj-mt-path { position: relative; display: grid; overflow: hidden;
+  border-radius: var(--radius-lg); background: var(--surface-raised); border: 1px solid var(--border-subtle); box-shadow: var(--shadow-raised); }
+.sj-mt-path[data-photo] { grid-template-columns: minmax(120px, 34%) minmax(0, 1fr); }
+.sj-mt-body { display: grid; align-content: start; gap: 6px 0; padding: calc(var(--sj-space) * 1) calc(var(--sj-space) * 1.1); }
+/* photos fill their slot, whatever the card's height */
+.sj-mt-media, .sj-mt-major-media { position: relative; min-height: 100%; }
+.sj-mt-media .sj-visual, .sj-mt-major-media .sj-visual { position: absolute; inset: 0; aspect-ratio: auto; border-radius: 0; }
+.sj-mt-path[data-lane='founder'] { border-top: 3px solid var(--surface-brand-solid); }
+.sj-mt-path[data-lane='placement'] { border-top: 3px solid var(--border-strong); }
+.sj-mt-chips { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.sj-mt-chips li { padding: 5px 11px; border-radius: var(--radius-md); /* the SSX badge's corners, like every other pill */ font-size: 13px; line-height: 1.3; font-weight: 500;
+  background: var(--surface-brand-subtle); color: var(--content-brand); border: 1px solid color-mix(in srgb, var(--surface-brand-solid) 22%, transparent); }
+.sj-mt-path[data-lane='placement'] .sj-mt-chips li { background: var(--surface-subtle, var(--surface-sunken)); color: var(--content-primary); border-color: var(--border-subtle); }
+
+/* each run: the one card travels into the axis (0–4.5s, unhurried);
+   from 3.6s the two path cards come out of the light on the other side and
+   travel apart while the line branches after them; the points follow */
+.sj-mt-out { --open: 3.6s; }
+/* the pass is over: the tile's pulse comes to rest */
+.sj-mt[data-rested] .sj-mt-tile { animation-play-state: paused; }
+/* between passes the settled cards fade out before the next single card comes through */
+.sj-mt-out[data-leaving] .sj-mt-path, .sj-mt-out[data-leaving] .sj-mt-branches { opacity: 0 !important; transition: opacity 400ms ease; }
+.sj-mt-out[data-run] .sj-mt-branch { stroke-dasharray: 1; animation: sj-mt-draw 700ms var(--ride) both; animation-delay: var(--open); }
+@keyframes sj-mt-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+
+/* the one card: both photos (founder over
+   placement); it rides in from the left edge and fades into the axis (the
+   pane's soft edge), then the pair comes out of the other side */
+.sj-mt-major { position: absolute; z-index: 1; top: 50%; left: -400px; translate: 0 -50%; box-sizing: border-box; width: 380px; height: 270px;
+  display: grid; grid-template-columns: 42% 1fr; overflow: hidden;
+  border-radius: var(--radius-lg); background: var(--surface-raised); border: 1px solid var(--border-subtle); border-top: 3px solid var(--surface-brand-solid);
+  box-shadow: var(--shadow-overlay, 0 18px 40px rgb(0 0 0 / 0.16)); animation: sj-mt-major 4.5s cubic-bezier(0.4, 0, 0.65, 1) both; }
+@keyframes sj-mt-major { from { left: -400px; } to { left: 100%; } }
+.sj-mt-major-media { display: grid; grid-template-rows: 1fr 1fr; gap: 2px; background: var(--surface-raised); position: relative; }
+.sj-mt-major-media > * { position: relative; }
+.sj-mt-major-media > .sj-visual { position: relative; inset: auto; height: 100%; aspect-ratio: auto; border-radius: 0; }
+.sj-mt-major-text { display: grid; align-content: center; gap: 10px; padding: 0 18px; }
+.sj-mt-major svg { width: 28px; height: 28px; color: var(--content-brand); }
+.sj-mt-major b { font-size: calc(22px * var(--ts, 1)); line-height: 1.2; }
+.sj-mt-major i { font-style: normal; font-weight: 400; color: var(--content-secondary); }
+
+/* the two cards start stacked inside the one, on the axis, and travel out to their places */
+/* ease in-out: they part slowly, like the card cracking open, then glide apart */
+.sj-mt-out[data-run] .sj-mt-path { animation: sj-mt-open 1100ms cubic-bezier(0.25, 0.8, 0.3, 1) both; animation-delay: var(--open); }
+@keyframes sj-mt-open {
+  /* solid from the start: the pane's edge (the light) reveals them, like the steps going in */
+  0% { opacity: 1; transform: translate(var(--at-axis, 0px), var(--to-center)) scale(0.7); }
+  100% { opacity: 1; transform: none; }
+}
+/* the surfaces part first, their words arrive once they are apart */
+.sj-mt-out[data-run] .sj-mt-path > .sj-mt-body { animation: sj-mt-words 360ms ease-out both; animation-delay: calc(var(--open) + 480ms); }
+@keyframes sj-mt-words { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+.sj-mt-out[data-run] .sj-mt-chips li { animation: sj-mt-pop 420ms var(--ride) both; animation-delay: calc(var(--open) + 950ms + var(--i) * 70ms); }
+@keyframes sj-mt-pop { from { opacity: 0; transform: translateY(6px) scale(0.9); } to { opacity: 1; transform: none; } }
+
+.sj-mt[data-paused] *, .sj-mt[data-paused] *::before, .sj-mt[data-paused] *::after { animation-play-state: paused !important; }
+@media (prefers-reduced-motion: reduce) {
+  .sj-mt *, .sj-mt *::before, .sj-mt *::after { animation: none !important; }
+  .sj-mt-pause { display: none; }
+}
+.sj-carousel-ctrl { align-items: center; }
+.sj-carousel-play { all: unset; box-sizing: border-box; cursor: pointer; margin-right: auto; display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 12px; border-radius: var(--sj-ctl-r);
+  border: 1px solid var(--border-subtle); color: var(--content-secondary); font-size: 13px; }
+.sj-carousel-play:hover { color: var(--content-primary); border-color: var(--border-strong); }
+.sj-carousel-play:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+.cs-projects { display: grid; gap: 10px; }
+/* the open Stack card: one compact row of projects (flagship first) rather than
+   a large flagship block over a row of large cards; four in view, 16:9 photos */
+.cs-projects .sj-carousel-track { grid-auto-columns: calc((100% - var(--gap) * 3) / 4); --gap: 14px; }
+.cs-projects .sj-mcard-media { aspect-ratio: 16 / 9 !important; }
+.cs-projects .sj-mcard-body { padding: 12px 14px 14px; gap: 4px; }
+.cs-projects .sj-mcard h5 { font-size: calc(15px * var(--ts, 1)); line-height: 1.3; }
+.cs-projects .sj-mcard-desc { font-size: 13px; -webkit-line-clamp: 2; }
+@container sj (max-width: 720px) { .cs-projects .sj-carousel-track { grid-auto-columns: calc((100% - var(--gap)) / 2); } }
+
+/* the stub from the tile to that edge, so the branches start at the tile */
+.sj-mt-tile::after { content: ''; position: absolute; left: 100%; top: 50%; width: 30px; height: 2px; translate: 0 -1px; background: var(--surface-brand-solid); opacity: 0.6; }
+
+/* ── fork · transform on m-web: the same pass, top to bottom ───────────────── */
+.sj-mt[data-narrow] .sj-mt-stage { grid-template-columns: 1fr; grid-template-rows: 230px 72px auto; min-height: 0; }
+/* in: the one card drops from above and fades into the axis (a soft bottom edge) */
+.sj-mt[data-narrow] .sj-mt-in { mask-image: linear-gradient(to bottom, #000 calc(100% - 48px), transparent); }
+.sj-mt[data-narrow] .sj-mt-major { left: 50%; top: -240px; translate: -50% 0; width: min(300px, 84%); height: 190px; animation-name: sj-mt-major-v; }
+@keyframes sj-mt-major-v { from { top: -240px; } to { top: 100%; } }
+/* the axis lies across */
+.sj-mt[data-narrow] .sj-mt-axis::before { top: 50%; bottom: auto; left: 0; right: 0; width: auto; height: 2px; translate: 0 -1px;
+  background: linear-gradient(to right, transparent, var(--surface-brand-solid) 20%, var(--surface-brand-solid) 80%, transparent); }
+.sj-mt[data-narrow] .sj-mt-tile::after { left: 50%; top: 100%; width: 2px; height: 20px; translate: -1px 0; }
+/* out: the pair comes out under the axis, stacked, photo on top */
+.sj-mt[data-narrow] .sj-mt-out { grid-template-rows: auto auto; padding: 14px 14px 18px; mask-image: linear-gradient(to bottom, transparent, #000 32px); }
+.sj-mt[data-narrow] .sj-mt-branches { display: none; }
+.sj-mt[data-narrow] .sj-mt-path[data-photo] { grid-template-columns: 1fr; }
+.sj-mt[data-narrow] .sj-mt-media { min-height: 0; aspect-ratio: 16 / 8; }
+.sj-mt[data-narrow] .sj-mt-out[data-run] .sj-mt-path { animation-name: sj-mt-open-v; }
+@keyframes sj-mt-open-v { 0% { opacity: 1; transform: translateY(var(--from-top, -300px)) scale(0.85); } 100% { opacity: 1; transform: none; } }
+.sj-mt[data-narrow] .sj-mt-pause { margin-left: 0; }
+/* compact project cards (the open Stack card): the video label stays inside its thumbnail, two lines at most */
+.cs-projects .sj-video[data-tile], .ss-fold .sj-video[data-tile] { left: 8px; right: 8px; bottom: 8px; gap: 6px; align-items: center; }
+.cs-projects .sj-video[data-tile] .sj-video-play, .ss-fold .sj-video[data-tile] .sj-video-play { width: 26px; height: 26px; font-size: 11px; }
+.cs-projects .sj-video[data-tile] > span:last-child, .ss-fold .sj-video[data-tile] > span:last-child { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 11.5px; line-height: 1.3; }
+/* m-web "Out of class": the video leads. One wide card (the next peeks), a taller
+   thumbnail, and quieter text under it */
+.ss-fold .sj-carousel-track { --gap: 12px; grid-auto-columns: 78%; }
+.ss-fold .sj-mcard-media { aspect-ratio: 16 / 10 !important; }
+.ss-fold .sj-mcard-body { padding: 10px 12px 12px; gap: 3px; }
+.ss-fold .sj-mcard h5 { font-size: calc(14px * var(--ts, 1)); line-height: 1.3; }
+.ss-fold .sj-mcard-desc { font-size: 12px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.ss-fold .sj-mcard .sj-badge, .ss-fold .sj-mcard [class*='badge'] { font-size: 11px; }
+.ss-fold .sj-video[data-tile] .sj-video-play { width: 34px; height: 34px; font-size: 13px; }
+.ss-fold .sj-video[data-tile] > span:last-child { font-size: 12px; }
+
+/* speeding numbers: tabular digits so the width never jumps while counting */
+.sj-speed { display: inline-flex; align-items: baseline; font-variant-numeric: tabular-nums; }
+.sj-speed-glyphs { display: inline-block; transform-origin: 0 70%; will-change: filter, transform; }
+/* a separator fades in the moment its digits arrive */
+.sj-speed-sep { animation: sj-speed-sep 360ms ease-out both; }
+@keyframes sj-speed-sep { from { opacity: 0; } }
+
+/* the career track fills with scroll (--p, set in JS): between the start marker and the
+   last phase only (--l0, --len), a light brand line over a faint track; phases light as it arrives */
+.sj-career-track::before, .sj-career-track::after { left: var(--l0, 0) !important; right: auto !important; width: var(--len, 100%) !important; }
+.sj-career-track::before { background: var(--border-subtle) !important; height: 2px !important; }
+.sj-career-track::after { content: ''; position: absolute; top: calc(var(--node) / 2); height: 2px; translate: 0 -1px; border-radius: 2px;
+  background: color-mix(in srgb, var(--surface-brand-solid) 55%, var(--surface-page)); transform-origin: left; transform: scaleX(var(--p, 0)); }
+/* the circles sit over the line: above it, with an opaque fill */
+.sj-cphase-node { z-index: 1; background: var(--surface-raised); border-color: var(--border-subtle); color: var(--content-secondary); transition: background 400ms ease, color 400ms ease, border-color 400ms ease; }
+.sj-cphase[data-lit] .sj-cphase-node { border-color: color-mix(in srgb, var(--surface-brand-solid) 60%, var(--surface-page)); background: linear-gradient(var(--surface-brand-subtle), var(--surface-brand-subtle)), var(--surface-raised); color: var(--content-brand); }
+.sj-cphase-body { transition: opacity 400ms ease; }
+.sj-cphase-n { font-size: calc(15px * var(--ts, 1)); font-weight: 600; letter-spacing: 0.02em; font-variant-numeric: tabular-nums; line-height: 1; }
+.sj-cphase[data-lit] .sj-cphase-n { color: var(--content-brand); }
+.sj-cphase:not([data-lit]) .sj-cphase-body { opacity: 0.5; }
+@container sj (max-width: 640px) {
+  .sj-career-track::before, .sj-career-track::after { left: calc(var(--node) / 2) !important; top: var(--l0, 0) !important; bottom: auto !important; width: 2px !important; height: var(--len, 100%) !important; translate: -1px 0; }
+  .sj-career-track::after { transform-origin: top; transform: scaleY(var(--p, 0)); }
+}
+@media (prefers-reduced-motion: reduce) { .sj-career-track::after, .sj-cphase-node, .sj-cphase-body { transition: none !important; } }
+
+/* ── one card style, everywhere ────────────────────────────────────────────
+   Every card in the section shares these tokens, so corners, edges and depth
+   match across Stack (fan, modal, m-web stack), projects, the fork and career
+   prep. They follow the SSX radius scale (the Lab's Radius control).
+   card-r: a card's corners · card-r-in: anything nested inside a card
+   shadow: only cards that float over something; nested cards stay flat. */
+.sj { --sj-card-r: var(--radius-lg); --sj-card-r-in: var(--radius-md); --sj-ctl-r: var(--radius-md); /* SSX: Card = lg, nested media = md, Badge / Button = md */ --sj-card-bd: 1px solid var(--border-subtle); --sj-card-bg: var(--surface-raised); --sj-card-sh: var(--shadow-raised); }
+
+/* floating cards */
+.sj .cs-inner, .sj .ss-inner, .sj .sj-mt-path, .sj .sj-mt-major, .cs-modal-box {
+  border-radius: var(--sj-card-r) !important; border: var(--sj-card-bd); background: var(--sj-card-bg); box-shadow: var(--sj-card-sh); }
+.cs-modal-box { border-radius: var(--sj-card-r) !important; }
+/* flat cards (on the page or inside another card) */
+.sj .sj-mcard, .sj .sj-flagship, .sj .sj-inline, .sj .sj-path, .sj .sj-pathcover, .sj .sj-panel, .sj .cj-pathone,
+.sj .sj-mt-stage, .sj .sj-cstat, .sj .sj-perk, .sj .sj-split, .sj .sj-threads-wrap {
+  border-radius: var(--sj-card-r) !important; border: var(--sj-card-bd); box-shadow: none; }
+.sj .sj-cstat { background: var(--sj-card-bg); }
+.sj .sj-cstat[data-feature] { background: var(--surface-brand-subtle); }
+/* nested pieces inside a card */
+.sj .sj-outcome, .sj .sj-cstat-icon, .sj .cs-front .sj-visual, .sj .cs-backbody .sj-visual { border-radius: var(--sj-card-r-in) !important; }
+/* a photo that fills a card's edge takes the card's corners, never its own */
+.sj .sj-mcard-media, .sj .ss-hero, .sj .cs-modal-hero, .sj .sj-mt-media, .sj .sj-mt-major-media { border-radius: 0 !important; }
+
+/* ── AI journey (SSB) ──────────────────────────────────────────────────────── */
+.sj-ai { display: grid; gap: calc(var(--sj-space) * 1.25); }
+.sj-ai-head { display: grid; gap: 8px; }
+.sj-ai-accent { color: var(--surface-brand-solid); } /* SSB primary (#068852), the same green as the primary buttons */
+.sj-ai-photo { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* the tools strip: one row, sliding and looping, edges faded */
+.sj-tools-marquee { position: relative; overflow: hidden; margin: 0; padding: 2px 0;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 28px, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(to right, transparent, #000 28px, #000 calc(100% - 28px), transparent); }
+.sj-tools-track { display: flex; width: max-content; animation: sj-tools var(--sj-tools-loop, 20s) linear infinite; }
+.sj-tools-set { list-style: none; margin: 0; padding: 0 8px 0 0; display: flex; align-items: center; gap: 8px; }
+.sj-tools-set > li { display: flex; flex: none; }
+.sj-tools-marquee:hover .sj-tools-track, .sj-tools-marquee:focus-within .sj-tools-track { animation-play-state: paused; }
+@keyframes sj-tools { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .sj-tools-marquee { -webkit-mask-image: none; mask-image: none; }
+  .sj-tools-track { animation: none; width: auto; }
+  .sj-tools-set { flex-wrap: wrap; }
+  .sj-tools-set[aria-hidden] { display: none; }
+}
+/* the outcome carries the card: a light-green panel, the product number as a solid label, the line in larger ink */
+.sj-ai-outcome { margin: 0; display: grid; gap: 8px; padding: 14px 16px; border-radius: var(--sj-card-r-in); background: var(--surface-brand-subtle); color: var(--content-primary); }
+.sj-ai-outcome-top { display: flex; align-items: center; gap: 10px; }
+.sj-ai-outcome-top:empty { display: none; }
+.sj-ai-outcome-top .sj-eyebrow { color: var(--content-brand) !important; }
+.sj-ai-product { padding: 2px 8px; border-radius: var(--sj-ctl-r, var(--radius-md)); background: var(--surface-brand-solid); color: var(--content-on-brand-solid); font-size: 11.5px; font-weight: 600; letter-spacing: 0.02em; }
+.sj-ai-outcome p { margin: 0; font-size: calc(16.5px * var(--ts, 1)); font-weight: 500; line-height: 1.4; letter-spacing: -0.01em; text-wrap: pretty; }
+/* tool tags carry the tool's logo, in the tag's own ink */
+.sj-tool { display: inline-flex; align-items: center; gap: 8px; font-size: 14.5px; line-height: 1; white-space: nowrap; }
+.sj-tool-logo { display: block; width: 19px; height: 19px; flex: none; }
+.sj-tool-logo[data-ink] { color: var(--content-primary); } /* black brand marks: full ink in light, white in dark */
+.sj-tool-mono { display: inline-grid; place-items: center; width: 19px; height: 19px; flex: none; box-sizing: border-box; border-radius: 5px; box-shadow: inset 0 0 0 1.5px currentColor; font-size: 11px; font-weight: 700; line-height: 1; } /* no published mark: the initial, in a small outlined square */
+/* desktop: five cards across */
+/* desktop: a carousel of image-led cards; the outcome and tools fold away */
+.sj-ai-headrow { display: flex; align-items: end; justify-content: space-between; gap: 24px; }
+.sj-ai-nav { display: flex; gap: 8px; flex: none; }
+.sj-ai-track { list-style: none; margin: 0 -8px; padding: 8px 8px 16px; display: flex; gap: 16px; align-items: start; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 8px; scrollbar-width: none; overscroll-behavior-x: contain; }
+.sj-ai-track::-webkit-scrollbar { display: none; }
+/* three whole cards and a peek of the next, so it reads as a carousel */
+/* the AI journey cards, in the term cards' style: an 8px inset photo with a
+   glass term label, the title and line under it, then the folds on a hairline */
+.sj .sj-ai-card { flex: 0 0 calc((100% - 16px * 3) / 3.25); scroll-snap-align: start; display: flex; flex-direction: column; min-width: 0; padding: 8px; border-radius: var(--sj-card-r); border: var(--sj-card-bd); background: var(--sj-card-bg); box-shadow: var(--sj-card-sh);
+  transition: box-shadow 300ms ease, translate 300ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+.sj .sj-ai-card:hover { translate: 0 -4px; box-shadow: 0 14px 32px -12px rgb(0 0 0 / 0.22); }
+.sj-ai-card .sj-ai-media { position: relative; aspect-ratio: 5 / 4; overflow: hidden; border-radius: var(--sj-card-r-in); isolation: isolate; background: var(--surface-subtle, var(--surface-sunken)); }
+.sj-ai-card .sj-ai-media::after { content: ''; position: absolute; inset: 0 0 auto; height: 45%; background: linear-gradient(to bottom, rgb(0 0 0 / 0.28), transparent); pointer-events: none; }
+.sj-ai-card .sj-ai-photo { transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+.sj-ai-card:hover .sj-ai-photo { transform: scale(1.05); }
+/* the term, as the same tinted glass label the term cards carry: a dark tint, so the white type reads on any photo */
+.sj-ai-tag { position: absolute; z-index: 1; left: 10px; top: 10px; display: inline-flex; align-items: center; gap: 7px; padding: 5px 10px; border-radius: var(--sj-ctl-r, var(--radius-md));
+  background: rgb(12 24 16 / 0.55); -webkit-backdrop-filter: blur(10px) saturate(1.4); backdrop-filter: blur(10px) saturate(1.4);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.22);
+  color: #fff; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; text-shadow: 0 1px 2px rgb(0 0 0 / 0.35); }
+.sj-ai-tag svg { width: 14px; height: 14px; color: #fff; filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.3)); }
+.sj-ai-text { display: grid; align-content: start; gap: 6px; padding: 16px 10px 14px; }
+.sj-ai-text h3 { margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+.sj-ai-desc { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2lh; line-height: 1.45; }
+/* the folds sit in the card's foot, under the same hairline as the term cards' */
+.sj-ai-card .ss-body { margin-top: auto; padding: 2px 10px 0; gap: 0; border-top: 1px solid var(--border-subtle); }
+.sj-ai-card .ss-folds { border-top: 0; }
+.sj-ai-card .ss-fold:last-child { border-bottom: 0; }
+.sj-ai-card .ss-fold-head { min-height: 44px; }
+.sj-ai-card .ss-fold-title { font-size: 14px; }
+@media (prefers-reduced-motion: reduce) { .sj .sj-ai-card, .sj-ai-card .sj-ai-photo { transition: none; } .sj .sj-ai-card:hover { translate: none; } }
+/* m-web: in the scroll stack, the photo is the header */
+.ss-hero .sj-ai-photo { position: absolute; inset: 0; }
+.sj-ai-eyebrow { display: flex; align-items: center; gap: 8px; }
+.sj-ai-eyebrow svg { width: 18px; height: 18px; }
+/* the AI journey is its own section after the curriculum: a clear break before it */
+.sj-shell > .sj-ai { margin-top: calc(var(--block-gap, 48px) * 0.5); padding-top: calc(var(--block-gap, 48px) * 0.75); } /* no rule above: space alone opens the section */
+.sj-ai-toolset { display: grid; gap: 8px; padding-top: 12px; border-top: 1px solid var(--border-subtle); }
+
+/* desktop AI journey, split: the heading pinned in the left third, the m-web
+   scroll stack in the right two thirds (its cards pin under the navbar) */
+.sj-ai[data-layout='split'] { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); column-gap: clamp(32px, 5vw, 72px); align-items: start; }
+.sj-ai[data-layout='split'] .sj-ai-aside { position: sticky; top: 100px; align-self: start; }
+.sj-ai[data-layout='split'] .sj-ai-head { gap: 12px; }
+.sj-ai[data-layout='split'] .sj-ai-head h2 { text-wrap: balance; }
+.sj-ai[data-layout='split'] .ss-card { max-width: none; }
+.sj-ai[data-layout='split'] .ss-card + .ss-card { margin-top: 72px; } /* clear air between cards as they scroll */
+/* each card reads text-first: the photo in the left third, the term, title,
+   line and body in the right two thirds, on the card surface in ink */
+.sj-ai[data-layout='split'] .ss-inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); grid-template-rows: auto 1fr; padding: 8px; column-gap: 8px; }
+.sj-ai[data-layout='split'] .ss-hero { display: contents; }
+.sj-ai[data-layout='split'] .ss-hero::after { display: none; }
+.sj-ai[data-layout='split'] .ss-hero .sj-ai-photo { position: relative; inset: auto; grid-column: 1; grid-row: 1 / span 2; width: 100%; height: 100%; min-height: 240px; object-fit: cover; border-radius: var(--sj-card-r-in); }
+.sj-ai[data-layout='split'] .ss-hero[data-photo] .ss-title, .sj-ai[data-layout='split'] .ss-title { grid-column: 2; grid-row: 1; padding: 20px 20px 4px; gap: 6px; color: var(--content-primary); text-shadow: none; }
+.sj-ai[data-layout='split'] .ss-hero[data-photo] .ss-title .sj-eyebrow { color: var(--content-secondary) !important; opacity: 1; }
+/* the term reads as a tag: a soft green chip, no stroke, the glyph and label in brand ink */
+/* the term tag: the term cards' glass label, on the photo's top-left, over a faint shade */
+.sj-ai[data-layout='split'] .ss-inner { position: relative; }
+.sj-ai[data-layout='split'] .ss-inner::before { content: ''; position: absolute; z-index: 1; left: 8px; top: 8px; width: calc((100% - 24px) / 3); height: 40%; border-radius: var(--sj-card-r-in) var(--sj-card-r-in) 0 0; background: linear-gradient(to bottom, rgb(0 0 0 / 0.28), transparent); pointer-events: none; }
+.sj-ai[data-layout='split'] .ss-hero[data-photo] .ss-title { position: static; }
+.sj-ai[data-layout='split'] .ss-title .sj-ai-eyebrow { position: absolute; z-index: 2; left: 18px; top: 18px; padding: 5px 10px; border-radius: var(--sj-ctl-r, var(--radius-md));
+  background: rgb(12 24 16 / 0.55); -webkit-backdrop-filter: blur(10px) saturate(1.4); backdrop-filter: blur(10px) saturate(1.4); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.22); }
+.sj-ai[data-layout='split'] .ss-hero[data-photo] .ss-title .sj-ai-eyebrow .sj-eyebrow { color: #fff !important; text-shadow: 0 1px 2px rgb(0 0 0 / 0.35); }
+.sj-ai[data-layout='split'] .ss-hero .sj-ai-photo { z-index: 0; }
+.sj-ai[data-layout='split'] .ss-title .sj-ai-eyebrow svg { width: 15px; height: 15px; color: var(--content-brand); }
+.sj-ai[data-layout='split'] .ss-title h3 { letter-spacing: -0.015em; }
+.sj-ai[data-layout='split'] .ss-ship { opacity: 1; color: var(--content-secondary); font-size: calc(15px * var(--ts, 1)); line-height: 1.5; max-width: 60ch; }
+.sj-ai[data-layout='split'] .ss-body { grid-column: 2; grid-row: 2; padding: 12px 20px 16px; align-content: start; }
+/* desktop stack: the outcome in two columns, its label (Outcome over the product chip) left, the line right */
+.sj-ai[data-layout='split'] .sj-ai-outcome { grid-template-columns: max-content minmax(0, 1fr); align-items: center; column-gap: 20px; padding: 16px 18px; }
+.sj-ai[data-layout='split'] .sj-ai-outcome-top { flex-direction: column; align-items: flex-start; gap: 6px; padding-right: 20px; border-right: 1px solid color-mix(in srgb, var(--surface-brand-solid) 22%, transparent); }
+.sj-ai[data-layout='split'] .sj-ai-outcome p { text-wrap: balance; }
+/* ── type scale for the desktop AI cards ──────────────────────────────────────
+   labels 11 caps (term tag, Outcome, Tools: one style) · title 24 · outcome 16
+   medium · line 15 · tool tags 12.5 medium. One step per level, one rhythm. */
+.sj-ai[data-layout='split'] .ss-hero[data-photo] .ss-title .sj-ai-eyebrow .sj-eyebrow,
+.sj-ai[data-layout='split'] .sj-ai-outcome .sj-eyebrow,
+.sj-ai[data-layout='split'] .sj-ai-toolset .sj-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; line-height: 16px; }
+.sj-ai[data-layout='split'] .sj-ai-toolset .sj-eyebrow { color: var(--content-secondary); }
+.sj-ai[data-layout='split'] .ss-title { gap: 8px; }
+.sj-ai[data-layout='split'] .ss-title h3 { font-size: calc(24px * var(--ts, 1)); line-height: 1.2; font-weight: 600; letter-spacing: -0.015em; margin-top: 2px; }
+.sj-ai[data-layout='split'] .ss-ship { font-size: calc(15px * var(--ts, 1)); line-height: 1.55; font-weight: 400; }
+.sj-ai[data-layout='split'] .sj-ai-outcome p { font-size: calc(16px * var(--ts, 1)); line-height: 1.45; font-weight: 500; letter-spacing: -0.005em; }
+.sj-ai[data-layout='split'] .ss-body { gap: 16px; }
+.sj-ai[data-layout='split'] .sj-ai-toolset { gap: 10px; padding-top: 14px; }
+.sj-ai[data-layout='split'] .sj-tool { font-size: 14px; font-weight: 500; color: var(--content-primary); }
+/* tools: no chip behind them, just logo + name; 24px tall, as wide as the name */
+.sj-tools-set .sj-tool, .sj-ai[data-layout='split'] .sj-tools-set .sj-tool { height: 28px; min-height: 28px; box-sizing: border-box; width: auto; padding: 0; background: none !important; box-shadow: none !important; border: 0 !important; }
+.sj-tools-set { gap: 20px; padding-right: 20px; }
+
+/* desktop stack: the photo frame is the portrait photos' own 7:9, so the image fits whole; the card grows to it */
+.sj-ai[data-layout='split'] .ss-hero .sj-ai-photo { align-self: start; height: auto; min-height: 0; aspect-ratio: 7 / 9; }
+.sj-ai[data-layout='split'] .ss-inner::before { height: auto; aspect-ratio: 7 / 4; } /* the tag shade: the top 45% of the photo */
+/* breathing room: a touch more air between every element, and a taller card (the 2:3 photo sets its height) */
+.sj-ai[data-layout='split'] .ss-hero[data-photo] .ss-title, .sj-ai[data-layout='split'] .ss-title { padding: 28px 24px 4px; gap: 10px; }
+.sj-ai[data-layout='split'] .ss-body { padding: 16px 24px 20px; gap: 22px; }
+.sj-ai[data-layout='split'] .sj-ai-outcome { padding: 18px 20px; }
+.sj-ai[data-layout='split'] .sj-ai-toolset { gap: 12px; padding-top: 18px; }
+.sj-ai[data-layout='split'] .ss-hero .sj-ai-photo { aspect-ratio: 2 / 3; }
+.sj-ai[data-layout='split'] .ss-inner::before { aspect-ratio: 2 / 1.35; } /* the tag shade: the top 45% of the 2:3 photo */
+/* the text column spreads over the card's full height: title + line at the top,
+   the outcome in the middle, the tools at the bottom, with even space between */
+.sj-ai[data-layout='split'] .ss-inner { grid-template-rows: auto minmax(0, 1fr); align-items: stretch; }
+.sj-ai[data-layout='split'] .ss-body { display: flex; flex-direction: column; justify-content: space-between; gap: 24px; padding-top: 24px; padding-bottom: 24px; }
+.sj-ai[data-layout='split'] .ss-title { gap: 12px; }
+.sj-ai[data-layout='split'] .sj-ai-toolset { margin-top: 0; }
+/* even rhythm: any spare height is shared equally above the outcome, between it and the tools, and under the tools */
+.sj-ai[data-layout='split'] .ss-body { justify-content: space-evenly; gap: 20px; padding-top: 4px; padding-bottom: 12px; }
+.sj-ai[data-layout='split'] .ss-body { gap: 0; padding-top: 0; padding-bottom: 8px; }
+.sj-ai[data-layout='split'] .ss-hero[data-photo] .ss-title, .sj-ai[data-layout='split'] .ss-title { padding-bottom: 0; }
+/* term tags: clean white type on the glass, no text shadow */
+.cs-chip .sj-eyebrow, .cs-chip .sj-eyebrow *, .sj-ai-tag,
+.sj-ai[data-layout='split'] .ss-hero[data-photo] .ss-title .sj-ai-eyebrow .sj-eyebrow { text-shadow: none !important; }
+.sj-ai-tag svg { filter: none; }
+/* no shade behind the term tags: the photo shows clean to its top edge */
+.sj-ai[data-layout='split'] .ss-inner::before, .cs-hero::after, .sj-ai-card .sj-ai-media::after { content: none !important; display: none !important; }
+
+/* ── SSB Learn by doing: two challenge videos, YouTube-style ─────────────────
+   The curriculum's card: 8px card, 8px inset, 16:9 media on the inner radius,
+   a glass label on the photo. The media is a YouTube facade: channel and title
+   along the top, the red play button, the duration badge; a click plays it. */
+.sj-learn { display: grid; gap: calc(var(--sj-space) * 1.25); }
+.sj-shell > .sj-learn { margin-top: calc(var(--block-gap, 48px) * 0.5); padding-top: calc(var(--block-gap, 48px) * 0.75); border-top: 1px solid var(--border-subtle); }
+.sj-learn-head { display: grid; gap: 8px; max-width: 70ch; }
+.sj-learn-head h2 { text-wrap: balance; }
+.sj-learn-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+@container sj (max-width: 760px) { .sj-learn-grid { grid-template-columns: minmax(0, 1fr); gap: 16px; } }
+.sj .lv-card { display: flex; flex-direction: column; min-width: 0; padding: 8px; border-radius: var(--sj-card-r); border: var(--sj-card-bd); background: var(--sj-card-bg); box-shadow: var(--sj-card-sh); }
+.lv-media { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--sj-card-r-in); background: #0f0f0f; isolation: isolate; }
+.lv-thumb { all: unset; box-sizing: border-box; position: absolute; inset: 0; display: block; cursor: pointer; }
+.lv-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 600ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+.lv-thumb:hover img { transform: scale(1.03); }
+.lv-thumb:focus-visible { outline: 2px solid var(--border-focus); outline-offset: -3px; border-radius: var(--sj-card-r-in); }
+/* YouTube's top bar: a dark fade with the channel avatar and the title */
+.lv-top { position: absolute; inset: 0 0 auto; z-index: 1; display: flex; align-items: center; gap: 10px; padding: 12px 14px 28px; background: linear-gradient(to bottom, rgb(0 0 0 / 0.62), transparent); color: #fff; }
+.lv-top-title { min-width: 0; font-size: 14px; font-weight: 500; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lv-avatar { flex: none; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: #fff; overflow: hidden; }
+.lv-avatar svg, .lv-avatar [data-slot] { height: 20px; width: auto; }
+.lv-avatar-sm { width: 36px; height: 36px; box-shadow: inset 0 0 0 1px var(--border-subtle); }
+/* the challenge, as the curriculum's glass label, bottom-left */
+.lv-tag { position: absolute; z-index: 1; left: 12px; bottom: 12px; padding: 5px 10px; border-radius: var(--sj-ctl-r, var(--radius-md)); background: rgb(255 255 255 / 0.16); -webkit-backdrop-filter: blur(10px) saturate(1.4); backdrop-filter: blur(10px) saturate(1.4);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.38); color: #fff; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+/* YouTube's red play button, centred; it goes full red on hover, as on YouTube */
+.lv-yt { position: absolute; z-index: 1; left: 50%; top: 50%; width: 68px; height: 48px; translate: -50% -50%; transition: transform 200ms ease; }
+.lv-yt-bg { fill: #212121; fill-opacity: 0.8; transition: fill 120ms ease, fill-opacity 120ms ease; }
+.lv-thumb:hover .lv-yt-bg, .lv-thumb:focus-visible .lv-yt-bg { fill: #f00; fill-opacity: 1; }
+.lv-thumb:hover .lv-yt { transform: scale(1.06); }
+/* the duration badge, bottom-right, YouTube's */
+.lv-time { position: absolute; z-index: 1; right: 10px; bottom: 10px; padding: 2px 5px; border-radius: 4px; background: rgb(0 0 0 / 0.8); color: #fff; font-size: 12px; font-weight: 600; line-height: 1.35; font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
+.lv-frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+/* the text: eyebrow, title, line, then the watch row on a hairline */
+.lv-body { display: grid; align-content: start; gap: 10px; padding: 20px 12px 14px; flex: 1; }
+.lv-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: var(--content-secondary); }
+.lv-body h3 { margin: 0; letter-spacing: -0.015em; text-wrap: balance; }
+.lv-desc { line-height: 1.55; max-width: 60ch; }
+.lv-watch { display: flex; align-items: center; gap: 12px; margin-top: 6px; padding-top: 14px; border-top: 1px solid var(--border-subtle); color: inherit; text-decoration: none; border-radius: 2px; }
+.lv-watch:hover .lv-watch-title { color: var(--content-brand); }
+.lv-watch:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 3px; }
+.lv-watch-text { display: grid; gap: 2px; min-width: 0; }
+.lv-watch-title { font-size: 14px; font-weight: 600; line-height: 1.35; color: var(--content-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 160ms ease; }
+.lv-watch-meta { font-size: 12.5px; color: var(--content-secondary); }
+@media (prefers-reduced-motion: reduce) { .lv-thumb img, .lv-yt, .lv-yt-bg { transition: none; } }
+/* Learn by doing, in YouTube's card format: no card frame; a bare thumbnail
+   (8px, the SSX card radius) with only the duration; the details row under it */
+.sj .lv-card { padding: 0; border: 0; background: none; box-shadow: none; border-radius: 0; gap: 12px; }
+.lv-media { border-radius: var(--sj-card-r); }
+.lv-thumb:focus-visible { border-radius: var(--sj-card-r); }
+.lv-yt { opacity: 0; transform: scale(0.9); transition: opacity 180ms ease, transform 200ms ease; }
+.lv-thumb:hover .lv-yt, .lv-thumb:focus-visible .lv-yt { opacity: 1; transform: none; }
+.lv-time { right: 8px; bottom: 8px; padding: 1px 5px; font-size: 12px; font-weight: 500; }
+.lv-details { display: grid; grid-template-columns: 36px minmax(0, 1fr) 28px; gap: 12px; align-items: start; }
+.lv-details .lv-avatar { width: 36px; height: 36px; box-shadow: inset 0 0 0 1px var(--border-subtle); }
+.lv-meta { display: grid; gap: 4px; min-width: 0; }
+.lv-title { margin: 0; font-size: calc(16px * var(--ts, 1)); font-weight: 600; line-height: 1.4; color: var(--content-primary); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.lv-channel, .lv-stats { display: inline-flex; align-items: center; gap: 5px; font-size: 14px; line-height: 1.4; color: var(--content-secondary); }
+.lv-channel svg { width: 14px; height: 14px; color: var(--content-secondary); }
+.lv-stats { gap: 6px; }
+.lv-stats svg { width: 12px; height: 12px; }
+.lv-more { display: grid; place-items: center; width: 28px; height: 28px; margin-top: -2px; border-radius: 50%; color: var(--content-primary); }
+.lv-more:hover { background: var(--surface-subtle, var(--surface-sunken)); }
+.lv-more svg { width: 20px; height: 20px; }
+.lv-more:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 1px; }
+/* the description under the stats: two lines, then "Show more" opens it */
+.lv-more-desc { margin: 4px 0 0; font-size: 13.5px; line-height: 1.5; color: var(--content-secondary); display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+.lv-more-desc[data-open] { display: block; -webkit-line-clamp: unset; overflow: visible; }
+.lv-toggle { all: unset; cursor: pointer; justify-self: start; font-size: 13.5px; font-weight: 600; color: var(--content-primary); border-radius: 2px; }
+.lv-toggle:hover { color: var(--content-brand); }
+.lv-toggle:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+/* a very light frame round each video, so the thumbnail and its details read as one aligned card */
+.sj .lv-card { padding: 8px 8px 16px; border: 1px solid color-mix(in srgb, var(--border-subtle) 60%, transparent); border-radius: var(--sj-card-r); background: var(--sj-card-bg); }
+.sj .lv-card .lv-media, .sj .lv-card .lv-thumb:focus-visible { border-radius: var(--sj-card-r-in); }
+.sj .lv-card .lv-details { padding: 0 4px; }
+.sj-ai-accent { color: inherit; } /* section titles are one colour: no green accent */
+/* the cascade: eyebrow, title, lede, then each card rise and fade in, 90ms apart */
+.sj-learn-head > * , .lv-cascade { transition: opacity 560ms cubic-bezier(0.2, 0.8, 0.2, 1), transform 640ms cubic-bezier(0.2, 0.8, 0.2, 1); transition-delay: calc(var(--i, 0) * 90ms); }
+.sj-learn-head > :nth-child(1) { --i: 0; }
+.sj-learn-head > :nth-child(2) { --i: 1; }
+.sj-learn-head > :nth-child(3) { --i: 2; }
+.sj-learn[data-cascade='wait'] .sj-learn-head > *, .sj-learn[data-cascade='wait'] .lv-cascade { opacity: 0; transform: translateY(18px); }
+.lv-cascade { display: flex; min-width: 0; }
+.lv-cascade > .lv-card { flex: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .sj-learn-head > *, .lv-cascade { transition: none; }
+  .sj-learn[data-cascade='wait'] .sj-learn-head > *, .sj-learn[data-cascade='wait'] .lv-cascade { opacity: 1; transform: none; }
+}
+/* shorter AI cards: the 7:9 portraits (the photo still fills the card height, uncropped) and a tighter text column */
+.sj-ai[data-layout='split'] .ss-hero .sj-ai-photo { aspect-ratio: 7 / 9; }
+.sj-ai[data-layout='split'] .ss-hero[data-photo] .ss-title, .sj-ai[data-layout='split'] .ss-title { padding: 18px 20px 0; gap: 8px; }
+.sj-ai[data-layout='split'] .ss-body { padding: 0 20px 8px; }
+.sj-ai[data-layout='split'] .sj-ai-outcome { padding: 14px 18px; }
+.sj-ai[data-layout='split'] .sj-ai-toolset { padding-top: 14px; gap: 10px; }
+/* m-web swipe deck: the front card on top, the next peeking 12px lower and a touch smaller */
+.lv-deck { position: relative; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.lv-deck-card { position: absolute; inset: 0 0 auto; transform-origin: 50% 100%; transition: transform 300ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 280ms ease; will-change: transform; }
+.lv-deck-card:not([data-front]) { pointer-events: none; }
+.lv-deck-card:not([data-front]) .lv-card { box-shadow: none; }
+.lv-deck-card[data-front] .lv-card { box-shadow: 0 8px 22px -14px rgb(0 0 0 / 0.18); }
+.lv-deck-card img { -webkit-user-drag: none; }
+.lv-deck-dots { display: flex; justify-content: center; gap: 6px; margin-top: 4px; }
+.lv-deck-dots span { width: 6px; height: 6px; border-radius: 999px; background: var(--border-default, var(--border-subtle)); transition: width 240ms ease, background 240ms ease; }
+.lv-deck-dots span[data-on] { width: 18px; background: var(--content-primary); }
+@media (prefers-reduced-motion: reduce) { .lv-deck-card, .lv-deck-dots span { transition: none; } }
+.lv-deck-wrap { flex: 1; min-width: 0; width: 100%; display: grid; gap: 8px; } /* full width: its cards are positioned, so it would shrink to nothing */
+/* the deck: one soft curve for every move (out, back behind, forward) */
+.lv-deck-card { transition: transform 460ms cubic-bezier(0.22, 1, 0.36, 1), opacity 300ms ease; }
+.lv-deck-card[data-front] { transition-duration: 240ms, 300ms; transition-timing-function: cubic-bezier(0.4, 0, 0.7, 0.2), ease; }
+/* the play cue always shows (a phone has no hover): YouTube's button, dark at rest, red on hover or press */
+.lv-yt { opacity: 1; transform: none; }
+.lv-yt-bg { fill: #212121; fill-opacity: 0.82; }
+.lv-thumb:hover .lv-yt-bg, .lv-thumb:focus-visible .lv-yt-bg, .lv-thumb:active .lv-yt-bg { fill: #f00; fill-opacity: 1; }
+@media (hover: none) { .lv-yt-bg { fill: #f00; fill-opacity: 1; } } /* touch: red from the start, as YouTube shows it on phones */
+/* m-web deck: the video runs edge to edge across the top of the card, the text block below it */
+.lv-deck .lv-card { padding: 0 0 16px; overflow: hidden; }
+.lv-deck .lv-card .lv-media, .lv-deck .lv-card .lv-thumb:focus-visible { border-radius: 0; }
+.lv-deck .lv-card .lv-details { padding: 0 14px; }
+/* ── m-web Spotify-style playlist ─────────────────────────────────────────── */
+.sp { flex: 1; min-width: 0; display: grid; overflow: hidden; border-radius: var(--sj-card-r); border: 1px solid color-mix(in srgb, var(--border-subtle) 60%, transparent);
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--surface-brand-solid) 22%, var(--surface-page)) 0, var(--surface-page) 240px); }
+.sp-head { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 16px; align-items: end; padding: 20px 16px 8px; }
+.sp-cover { display: block; aspect-ratio: 1; overflow: hidden; border-radius: var(--sj-card-r-in); box-shadow: 0 10px 24px -8px rgb(0 0 0 / 0.35); }
+.sp-cover img, .sp-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.sp-head-text { display: grid; gap: 4px; min-width: 0; }
+.sp-kind { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--content-secondary); }
+.sp-title { font-size: 26px; font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; color: var(--content-primary); }
+.sp-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 4px; font-size: 12.5px; color: var(--content-secondary); }
+.sp-by { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: inset 0 0 0 1px var(--border-subtle); overflow: hidden; }
+.sp-by svg, .sp-by [data-slot] { height: 13px; width: auto; }
+.sp-controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 16px 12px; }
+.sp-hint { font-size: 12.5px; color: var(--content-secondary); }
+.sp-play { all: unset; cursor: pointer; display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: var(--surface-brand-solid); color: var(--content-on-brand-solid); box-shadow: 0 8px 18px -8px rgb(0 0 0 / 0.4); transition: transform 160ms ease; }
+.sp-play svg { width: 22px; height: 22px; margin-left: 3px; }
+.sp-play:active { transform: scale(0.94); }
+.sp-play:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 3px; }
+.sp-player { aspect-ratio: 16 / 9; margin: 0 16px 8px; overflow: hidden; border-radius: var(--sj-card-r-in); background: #000; }
+.sp-player iframe { width: 100%; height: 100%; border: 0; display: block; }
+.sp-list { list-style: none; margin: 0; padding: 0 8px 10px; display: grid; }
+.sp-track { all: unset; box-sizing: border-box; cursor: pointer; width: 100%; display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 8px; border-radius: var(--sj-card-r-in); }
+.sp-track:active, .sp-track:hover { background: var(--surface-subtle, var(--surface-sunken)); }
+.sp-track:focus-visible { outline: 2px solid var(--border-focus); outline-offset: -2px; }
+.sp-thumb { position: relative; width: 52px; height: 52px; overflow: hidden; border-radius: 4px; background: var(--surface-subtle, var(--surface-sunken)); }
+.sp-track-text { display: grid; gap: 2px; min-width: 0; }
+.sp-track-title { font-size: 15px; font-weight: 600; line-height: 1.3; color: var(--content-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sp-track[data-now] .sp-track-title { color: var(--content-brand); }
+.sp-track-sub { font-size: 12.5px; color: var(--content-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sp-time { font-size: 12.5px; color: var(--content-secondary); font-variant-numeric: tabular-nums; }
+/* the equaliser on the playing track's thumbnail */
+.sp-eq { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; gap: 3px; padding-bottom: 14px; background: rgb(0 0 0 / 0.45); }
+.sp-eq i { width: 4px; height: 20px; border-radius: 1px; background: #1ed760; transform-origin: bottom; animation: sp-eq 900ms ease-in-out infinite; }
+.sp-eq i:nth-child(2) { animation-delay: -300ms; }
+.sp-eq i:nth-child(3) { animation-delay: -600ms; }
+@keyframes sp-eq { 0%, 100% { transform: scaleY(0.3); } 50% { transform: scaleY(1); } }
+@media (prefers-reduced-motion: reduce) { .sp-eq i { animation: none; transform: scaleY(0.7); } }
+.sp-meta { flex-wrap: nowrap; font-weight: 600; color: var(--content-primary); font-size: 12.5px; }
+.sp-count { font-size: 12.5px; color: var(--content-secondary); }
+.sp-head { grid-template-columns: 104px minmax(0, 1fr); gap: 14px; }
+.sp-title { font-size: 24px; }
+/* ── m-web term projects as a Spotify-style playlist ─────────────────────── */
+.pp { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.pp-row { display: grid; grid-template-columns: 16px 64px minmax(0, 1fr); gap: 12px; align-items: start; padding: 8px 0; }
+.pp-n { padding-top: 22px; font-size: 13px; color: var(--content-secondary); font-variant-numeric: tabular-nums; text-align: center; }
+.pp-cover { position: relative; width: 64px; height: 64px; overflow: hidden; border-radius: var(--sj-card-r-in); background: var(--surface-subtle, var(--surface-sunken)); }
+.pp-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pp-cover-play { position: absolute; right: 4px; bottom: 4px; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--surface-brand-solid); color: var(--content-on-brand-solid); box-shadow: 0 2px 6px rgb(0 0 0 / 0.3); }
+.pp-cover-play svg { width: 10px; height: 10px; margin-left: 1px; }
+.pp-text { display: grid; gap: 3px; min-width: 0; justify-items: start; }
+.pp-flag { margin-bottom: 2px; }
+.pp-title { font-size: 15px; font-weight: 600; line-height: 1.3; color: var(--content-primary); }
+.pp-desc { font-size: 13px; line-height: 1.4; color: var(--content-secondary); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.pp-video { font-size: 12px; line-height: 1.35; color: var(--content-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+/* no track numbers; the brief and the video name show in full */
+.pp-row { grid-template-columns: 64px minmax(0, 1fr); }
+.pp-desc { display: block; -webkit-line-clamp: unset; overflow: visible; }
+.pp-video { white-space: normal; overflow: visible; }
+/* the brief cut to two lines until "Show more" */
+.pp-desc { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.pp-desc[data-open] { display: block; overflow: visible; }
+.pp-toggle { font-size: 13px; margin-top: 2px; }
+/* ── Career prep stats: a light bento in SSB green (after a glowing chart card) ── */
+.sj-bento { margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: minmax(150px, auto); gap: 12px; }
+.sj-bento-card { --glow: color-mix(in srgb, var(--surface-brand-solid) 30%, transparent);
+  position: relative; isolation: isolate; overflow: hidden; display: grid; align-content: space-between; gap: 16px; padding: 18px;
+  border-radius: var(--sj-card-r); border: 1px solid color-mix(in srgb, var(--surface-brand-solid) 14%, var(--border-subtle));
+  background:
+    radial-gradient(120% 70% at 50% 118%, var(--glow), transparent 70%),
+    linear-gradient(to bottom, var(--sj-card-bg, var(--surface-page)), color-mix(in srgb, var(--surface-brand-subtle) 60%, var(--sj-card-bg, var(--surface-page)))); }
+/* a faint grid in the lower half, fading upward */
+.sj-bento-card::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image: linear-gradient(to right, color-mix(in srgb, var(--surface-brand-solid) 12%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in srgb, var(--surface-brand-solid) 12%, transparent) 1px, transparent 1px);
+  background-size: 28px 28px; background-position: center bottom;
+  -webkit-mask-image: linear-gradient(to top, #000 0, transparent 70%); mask-image: linear-gradient(to top, #000 0, transparent 70%); }
+/* a bright brand rim along the bottom edge */
+.sj-bento-card::after { content: ''; position: absolute; left: 8%; right: 8%; bottom: -1px; height: 2px; border-radius: 2px; background: linear-gradient(to right, transparent, var(--surface-brand-solid), transparent); opacity: 0.55; }
+.sj-bento-card[data-feature] { grid-column: span 2; grid-row: span 2; padding: 20px 22px 26px; align-content: stretch; grid-template-rows: auto 1fr auto; text-align: center; --glow: color-mix(in srgb, var(--surface-brand-solid) 42%, transparent); }
+.sj-bento-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--content-secondary); text-align: left; }
+.sj-bento-pill { padding: 4px 10px; border-radius: var(--sj-ctl-r, 4px); font-size: 12.5px; font-weight: 500; color: var(--content-brand); background: color-mix(in srgb, var(--surface-brand-solid) 10%, transparent); }
+.sj-bento-curve { width: 100%; height: 100%; min-height: 120px; overflow: visible; filter: drop-shadow(0 6px 10px color-mix(in srgb, var(--surface-brand-solid) 35%, transparent)); }
+.sj-bento-curve path { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1600ms cubic-bezier(0.22, 1, 0.36, 1) 200ms; }
+.sj-reveal-in .sj-bento-curve path, .sj-bento[data-in] .sj-bento-curve path { stroke-dashoffset: 0; }
+/* the peak's dot: the curve's high point at (250, 26) of a 400 × 150 box */
+.sj-bento-dot { position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: #fff; border: 3px solid var(--surface-brand-solid);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--surface-brand-solid) 18%, transparent), 0 0 18px 2px color-mix(in srgb, var(--surface-brand-solid) 55%, transparent); animation: sj-bento-pulse 2.4s ease-in-out infinite; }
+@keyframes sj-bento-pulse { 50% { box-shadow: 0 0 0 10px color-mix(in srgb, var(--surface-brand-solid) 8%, transparent), 0 0 24px 4px color-mix(in srgb, var(--surface-brand-solid) 40%, transparent); } }
+.sj-bento-figure { display: grid; gap: 4px; }
+.sj-bento-card dt { font-size: 13px; line-height: 1.35; color: var(--content-secondary); }
+.sj-bento-card dd { margin: 0; font-size: calc(30px * var(--ts, 1)); font-weight: 700; line-height: 1; letter-spacing: -0.02em; color: var(--content-primary); font-variant-numeric: tabular-nums; }
+.sj-bento-card[data-feature] dt { font-size: 15px; color: var(--content-primary); }
+.sj-bento-card[data-feature] dd { position: relative; display: inline-flex; justify-self: center; align-items: flex-start; gap: 4px; font-size: calc(64px * var(--ts, 1)); letter-spacing: -0.035em; }
+.sj-bento-up { width: 18px; height: 18px; margin-top: 4px; color: var(--content-brand); }
+.sj-bento-icon { display: grid; place-items: center; width: 40px; height: 40px; border-radius: var(--sj-card-r-in); background: color-mix(in srgb, var(--surface-brand-solid) 12%, transparent); color: var(--content-brand); font-size: 22px; }
+@container sj (max-width: 767px) {
+  .sj-bento { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: auto; gap: 10px; }
+  .sj-bento-card { padding: 14px; gap: 18px; }
+  .sj-bento-card dd { font-size: calc(24px * var(--ts, 1)); }
+  .sj-bento-card dt { font-size: 12.5px; }
+  .sj-bento-card[data-feature] { grid-row: auto; padding: 16px 16px 22px; }
+  .sj-bento-card[data-feature] dd { font-size: calc(48px * var(--ts, 1)); }
+  .sj-bento-curve { min-height: 96px; }
+}
+@media (prefers-reduced-motion: reduce) { .sj-bento-curve path { transition: none; stroke-dashoffset: 0; } .sj-bento-dot { animation: none; } }
+.sj-bento-plot { position: relative; min-height: 120px; margin: 0 -22px; }
+.sj-bento-plot .sj-bento-curve { position: absolute; inset: 0; min-height: 0; }
+.sj-bento-dot { left: 62.5%; top: 17.33%; opacity: 0; transition: opacity 300ms ease 1500ms; }
+.sj-bento[data-in] .sj-bento-dot { opacity: 1; }
+@container sj (max-width: 767px) { .sj-bento-plot { min-height: 100px; margin: 0 -16px; } }
+@media (prefers-reduced-motion: reduce) { .sj-bento-dot { opacity: 1; transition: none; } }
+/* ── desktop: stats left, phases right, half each; each half is its own container,
+   so the bento takes its two-column layout and the track runs down (the m-web rules) ── */
+.sj-career-split { display: grid; gap: calc(var(--sj-space) * 1.25); }
+@container sj (min-width: 768px) {
+  .sj-career-split { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: center; }
+  .sj-career-col { container: sj / inline-size; min-width: 0; }
+}
+.sj-career-col > .sj-career-track { align-content: center; }
+/* the right half: the phases spread to sit level with the bento (queried against the half itself) */
+@container sj (min-width: 480px) {
+  .sj-career-split .sj-career-track { gap: 44px; }
+  .sj-career-split .sj-cphase-body { gap: 10px; }
+  .sj-career-split .sj-cphase-body b { font-size: calc(18px * var(--ts, 1)); }
+}
+/* tile illustrations: faint brand line art in the top-right corner, cropped by the tile */
+.sj-bento-illo { position: absolute; top: -14px; right: -14px; width: 92px; height: 92px; z-index: -1; pointer-events: none; opacity: 0.9; }
+.sj-bento-illo svg { width: 100%; height: 100%; fill: none; stroke: color-mix(in srgb, var(--surface-brand-solid) 32%, transparent); stroke-width: 2; }
+.sj-bento-illo .fill { fill: color-mix(in srgb, var(--surface-brand-solid) 30%, transparent); stroke: none; }
+.sj-bento-illo .soft { fill: color-mix(in srgb, var(--surface-brand-solid) 10%, transparent); stroke: color-mix(in srgb, var(--surface-brand-solid) 32%, transparent); }
+/* desktop half: a compact bento as tall as the timeline beside it; the chart card
+   runs across the top, the four tiles in one row under it */
+@container sj (min-width: 480px) {
+  .sj-career-col .sj-bento { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .sj-career-col .sj-bento-card { padding: 12px; gap: 14px; }
+  .sj-career-col .sj-bento-card[data-feature] { grid-column: 1 / -1; grid-row: auto; padding: 14px 18px 16px; gap: 0; }
+  .sj-career-col .sj-bento-plot { min-height: 58px; margin: 2px -18px 0; }
+  .sj-career-col .sj-bento-card[data-feature] dd { font-size: calc(42px * var(--ts, 1)); }
+  .sj-career-col .sj-bento-card[data-feature] dt { font-size: 14px; }
+  .sj-career-col .sj-bento-card dd { font-size: calc(22px * var(--ts, 1)); }
+  .sj-career-col .sj-bento-card dt { font-size: 12px; }
+  .sj-career-col .sj-bento-icon { width: 32px; height: 32px; font-size: 18px; }
+  .sj-career-col .sj-bento-illo { width: 76px; height: 76px; top: -12px; right: -12px; }
+}
+/* the tile numbers sit on one line across the row (labels reserve two lines); lighter line art */
+@container sj (min-width: 480px) { .sj-career-col .sj-bento-card:not([data-feature]) dt { min-height: 2.7em; } }
+.sj-bento-illo svg { stroke: color-mix(in srgb, var(--surface-brand-solid) 24%, transparent); }
+.sj-bento-illo .fill { fill: color-mix(in srgb, var(--surface-brand-solid) 22%, transparent); }
+.sj-bento-illo .soft { fill: color-mix(in srgb, var(--surface-brand-solid) 8%, transparent); stroke: color-mix(in srgb, var(--surface-brand-solid) 24%, transparent); }
+/* ── tile illustrations, soft glass: frosted shapes over a blurred green glow ── */
+.sj-bento-illo { top: -6px; right: -6px; width: 84px; height: 84px; opacity: 1; }
+.sj-career-col .sj-bento-illo { width: 76px; height: 76px; top: -6px; right: -6px; }
+.sj-bento-glow { position: absolute; left: 50%; top: 52%; width: 56%; height: 56%; translate: -50% -50%; border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--surface-brand-solid) 85%, #7dffb0) 0, var(--surface-brand-solid) 45%, transparent 72%);
+  filter: blur(6px); opacity: 0.55; }
+.sj-bento-illo[data-k='oneToOne'] .sj-bento-glow { width: 44%; height: 70%; top: 50%; }
+.sj-bento-illo[data-k='behaviour'] .sj-bento-glow { left: 48%; top: 56%; width: 50%; height: 50%; }
+.sj-bento-illo svg { position: relative; overflow: visible; filter: drop-shadow(0 6px 8px rgb(0 0 0 / 0.07)) drop-shadow(0 1px 1px rgb(0 0 0 / 0.04)); }
+.sj-bento-illo svg path, .sj-bento-illo svg circle { fill: color-mix(in srgb, var(--surface-raised, #fff) 74%, transparent); stroke: color-mix(in srgb, #fff 80%, transparent); stroke-width: 0.8; }
+:root[data-theme='dark'] .sj-bento-illo svg path, :root[data-theme='dark'] .sj-bento-illo svg circle { stroke: color-mix(in srgb, #fff 12%, transparent); }
+/* stronger glow through a milkier glass; the drawing sits whole inside the tile */
+.sj-bento-illo, .sj-career-col .sj-bento-illo { top: 10px; right: 10px; width: 64px; height: 64px; }
+.sj-bento-glow { width: 62%; height: 62%; opacity: 0.95; filter: blur(7px);
+  background: radial-gradient(circle, color-mix(in srgb, var(--surface-brand-solid) 70%, #6dff9f) 0, var(--surface-brand-solid) 50%, transparent 74%); }
+.sj-bento-illo[data-k='oneToOne'] .sj-bento-glow { width: 50%; height: 64%; }
+.sj-bento-illo svg path, .sj-bento-illo svg circle { fill: color-mix(in srgb, var(--surface-raised, #fff) 62%, transparent); }
+/* ── glass tiles (the ones with an illustration): no grid, a white glass face with
+   a bright inner rim and a soft lifted shadow, a lime-to-green glow in the corner;
+   the drawings are glossy gradient solids with a green glow under them ── */
+.sj-bento-card[data-glass] { border-color: color-mix(in srgb, #fff 70%, var(--border-subtle));
+  background:
+    radial-gradient(70% 60% at 88% 12%, color-mix(in srgb, #d9f59e 55%, transparent), transparent 70%),
+    radial-gradient(60% 50% at 70% 30%, color-mix(in srgb, var(--surface-brand-solid) 14%, transparent), transparent 70%),
+    linear-gradient(170deg, #fff, color-mix(in srgb, #fff 88%, var(--surface-brand-subtle)));
+  box-shadow: inset 0 1px 0 #fff, inset 0 0 0 1px color-mix(in srgb, #fff 70%, transparent), inset 0 -10px 24px -14px color-mix(in srgb, var(--surface-brand-solid) 22%, transparent), 0 14px 28px -18px rgb(18 60 32 / 0.22); }
+.sj-bento-card[data-glass]::before { display: none; }
+.sj-bento-card[data-glass]::after { opacity: 0.3; }
+.sj-bento-card[data-glass] .sj-bento-glow { display: none; }
+.sj-bento-illo[data-k='hours'] svg * { fill: url(#sjb-hours); }
+.sj-bento-illo[data-k='oneToOne'] svg * { fill: url(#sjb-oneToOne); }
+.sj-bento-illo[data-k='behaviour'] svg * { fill: url(#sjb-behaviour); }
+.sj-bento-illo svg defs *, .sj-bento-illo svg stop { fill: none; }
+.sj-bento-illo svg path, .sj-bento-illo svg circle { stroke: color-mix(in srgb, #fff 75%, transparent); stroke-width: 1.2; opacity: 0.92; }
+.sj-bento-illo svg { filter: drop-shadow(0 8px 10px color-mix(in srgb, var(--surface-brand-solid) 30%, transparent)) drop-shadow(0 2px 3px color-mix(in srgb, #9fdc8a 45%, transparent)); }
+/* the glass icon tile: frosted white with a rim, not a tinted square */
+.sj-bento-card[data-glass] .sj-bento-icon { background: color-mix(in srgb, #fff 70%, transparent); box-shadow: inset 0 1px 0 #fff, 0 2px 6px -2px rgb(18 60 32 / 0.18); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+/* the chart card keeps its grid but gets the same glass rim and lift */
+.sj-bento-card[data-feature] { box-shadow: inset 0 1px 0 #fff, inset 0 0 0 1px color-mix(in srgb, #fff 60%, transparent), 0 14px 28px -18px rgb(18 60 32 / 0.22); }
+/* dark theme: a darker glass, no white glare */
+:root[data-theme='dark'] .sj-bento-card[data-glass] { border-color: var(--border-subtle);
+  background: radial-gradient(70% 60% at 88% 12%, color-mix(in srgb, var(--surface-brand-solid) 30%, transparent), transparent 70%), var(--sj-card-bg, var(--surface-raised));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06), 0 14px 28px -18px rgb(0 0 0 / 0.6); }
+:root[data-theme='dark'] .sj-bento-card[data-glass] .sj-bento-icon { background: rgb(255 255 255 / 0.06); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08); }
+:root[data-theme='dark'] .sj-bento-card[data-feature] { box-shadow: none; }
+/* ── bento, quieted to the page: the same hairline cards as the rest of the page,
+   SSB green tints only, a whisper of shadow; the grid stays on the chart card alone ── */
+.sj-bento-card, .sj-bento-card[data-glass] {
+  border: 1px solid color-mix(in srgb, var(--border-subtle) 60%, transparent);
+  background: linear-gradient(to bottom, var(--sj-card-bg, var(--surface-page)) 55%, color-mix(in srgb, var(--surface-brand-subtle) 45%, var(--sj-card-bg, var(--surface-page))));
+  box-shadow: 0 1px 2px rgb(16 24 20 / 0.04); }
+.sj-bento-card::after { display: none; }
+.sj-bento-card:not([data-feature])::before { display: none; }
+.sj-bento-card[data-feature] { box-shadow: 0 1px 2px rgb(16 24 20 / 0.04);
+  background: radial-gradient(90% 60% at 50% 120%, color-mix(in srgb, var(--surface-brand-solid) 16%, transparent), transparent 70%), var(--sj-card-bg, var(--surface-page)); }
+.sj-bento-card[data-feature]::before { background-image: linear-gradient(to right, color-mix(in srgb, var(--surface-brand-solid) 7%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in srgb, var(--surface-brand-solid) 7%, transparent) 1px, transparent 1px); }
+.sj-bento-curve { filter: drop-shadow(0 4px 6px color-mix(in srgb, var(--surface-brand-solid) 18%, transparent)); }
+.sj-bento-dot { box-shadow: 0 0 0 5px color-mix(in srgb, var(--surface-brand-solid) 12%, transparent); animation: none; }
+.sj-bento-pill { background: var(--surface-brand-subtle); }
+/* one icon tile for every card, as elsewhere on the page */
+.sj-bento-icon, .sj-bento-card[data-glass] .sj-bento-icon { background: var(--surface-brand-subtle); box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; color: var(--content-brand); }
+/* the drawings: soft brand-tint solids with a faint lift, no glare */
+.sj-bento-illo svg path, .sj-bento-illo svg circle { stroke: color-mix(in srgb, #fff 55%, transparent); stroke-width: 1; opacity: 0.7; }
+.sj-bento-illo svg { filter: drop-shadow(0 4px 6px color-mix(in srgb, var(--surface-brand-solid) 14%, transparent)); }
+.sj-bento-illo, .sj-career-col .sj-bento-illo { width: 56px; height: 56px; top: 12px; right: 12px; }
+:root[data-theme='dark'] .sj-bento-card, :root[data-theme='dark'] .sj-bento-card[data-glass] { background: var(--sj-card-bg, var(--surface-raised)); box-shadow: none; }
+:root[data-theme='dark'] .sj-bento-illo svg path, :root[data-theme='dark'] .sj-bento-illo svg circle { stroke: none; opacity: 0.55; }
+/* ══ bento v2: five cards, no two alike ══════════════════════════════════════
+   chart (light, grid) · solid SSB green with a dial · photo · type-led · footer band */
+.sj-bento[data-v2] { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: auto; gap: 10px; }
+.sj-bento[data-v2] .sj-bento-card[data-feature] { grid-column: 1 / -1; grid-row: auto; }
+.sj-bento[data-v2] .sj-bento-card[data-v='solid'] { grid-row: span 2; }
+.sj-bento[data-v2] .sj-bento-card[data-v='band'] { grid-column: 1 / -1; }
+.sj-bento[data-v2] .sj-bento-card:not([data-feature]) { padding: 14px; gap: 10px; align-content: space-between; min-height: 104px; }
+.sj-bento[data-v2] .sj-bento-card:not([data-feature]) dt { min-height: 0; }
+/* desktop half: chart 2×2 on the left, the tall green card on the right, three small cards under */
+@container sj (min-width: 480px) {
+  .sj-career-col .sj-bento[data-v2] { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: repeat(3, 104px); }
+  .sj-career-col .sj-bento[data-v2] .sj-bento-card[data-feature] { grid-column: 1 / 3; grid-row: 1 / 3; }
+  .sj-career-col .sj-bento[data-v2] .sj-bento-card[data-v='solid'] { grid-column: 3; grid-row: 1 / 3; }
+  .sj-career-col .sj-bento[data-v2] .sj-bento-card[data-v='band'] { grid-column: auto; }
+  .sj-career-col .sj-bento[data-v2] .sj-bento-card:not([data-feature]) { min-height: 0; }
+  .sj-career-col .sj-bento[data-v2] .sj-bento-plot { min-height: 70px; }
+}
+
+/* solid: the one deep SSB green card, white type, a faint clock dial */
+.sj-bento[data-v2] .sj-bento-card[data-v='solid'] { border-color: transparent; color: #fff;
+  background: radial-gradient(90% 70% at 80% 0%, rgb(255 255 255 / 0.14), transparent 60%), var(--surface-brand-solid);
+  box-shadow: 0 10px 24px -16px color-mix(in srgb, var(--surface-brand-solid) 70%, transparent); }
+.sj-bento[data-v2] .sj-bento-card[data-v='solid'] dd { color: #fff; font-size: calc(30px * var(--ts, 1)); }
+.sj-bento[data-v2] .sj-bento-card[data-v='solid'] dt { color: rgb(255 255 255 / 0.78); }
+.sj-bento-dial { width: 78%; max-width: 120px; justify-self: center; margin-top: 4px; }
+.sj-bento-dial line { stroke: rgb(255 255 255 / 0.28); stroke-width: 1.4; stroke-linecap: round; }
+.sj-bento-dial line[data-h] { stroke: rgb(255 255 255 / 0.7); stroke-width: 2; }
+.sj-bento-dial .hands { fill: none; stroke: #fff; stroke-width: 3; stroke-linecap: round; }
+.sj-bento-dial .hub { fill: #fff; }
+
+/* photo: the picture fills the card, a dark fade under white type */
+.sj-bento[data-v2] .sj-bento-card[data-v='photo'] { border-color: transparent; background: #1c2a22; align-content: end; }
+.sj-bento-photo { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
+.sj-bento[data-v2] .sj-bento-card[data-v='photo']::after { display: block; content: ''; position: absolute; inset: 0; z-index: -1; left: 0; right: 0; bottom: 0; height: auto; border-radius: 0; opacity: 1;
+  background: linear-gradient(to top, rgb(10 20 14 / 0.82), rgb(10 20 14 / 0.1) 75%); }
+.sj-bento[data-v2] .sj-bento-card[data-v='photo'] dd { color: #fff; }
+.sj-bento[data-v2] .sj-bento-card[data-v='photo'] dt { color: rgb(255 255 255 / 0.82); }
+
+/* type: plain white, the number set large in brand green, the icon in a hairline ring */
+.sj-bento[data-v2] .sj-bento-card[data-v='type'] { background: var(--sj-card-bg, var(--surface-page)); }
+.sj-bento[data-v2] .sj-bento-card[data-v='type'] .sj-bento-icon { justify-self: end; width: 28px; height: 28px; font-size: 15px; border-radius: 50%; background: none; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--surface-brand-solid) 30%, transparent); }
+.sj-bento[data-v2] .sj-bento-card[data-v='type'] dd { color: var(--content-brand); font-size: calc(30px * var(--ts, 1)); font-weight: 600; letter-spacing: -0.03em; }
+
+/* band: the number on white, its label in a tinted footer band (after a status strip) */
+.sj-bento[data-v2] .sj-bento-card[data-v='band'] { padding: 0; gap: 0; grid-template-rows: 1fr auto; background: var(--sj-card-bg, var(--surface-page)); }
+.sj-bento[data-v2] .sj-bento-card[data-v='band'] .sj-bento-figure { padding: 14px 14px 10px; align-self: center; }
+.sj-bento-band { display: flex; align-items: center; gap: 6px; padding: 8px 12px; font-size: 12px !important; line-height: 1.3; color: var(--content-brand) !important; background: var(--surface-brand-subtle); border-top: 1px solid color-mix(in srgb, var(--surface-brand-solid) 14%, transparent); }
+.sj-bento-band-icon { display: inline-grid; font-size: 14px; flex: none; }
+
+:root[data-theme='dark'] .sj-bento[data-v2] .sj-bento-card[data-v='type'], :root[data-theme='dark'] .sj-bento[data-v2] .sj-bento-card[data-v='band'] { background: var(--sj-card-bg, var(--surface-raised)); }
+.sj-bento[data-v2] .sj-bento-card[data-v='photo']:not([data-feature]) { align-content: end; }
+@container sj (max-width: 479px) { .sj-bento[data-v2] .sj-bento-card[data-v='photo'] { min-height: 150px; } }
+/* ── bento: design-system pass (tokens, one radius family, one type scale) ── */
+/* radii: cards --sj-card-r (8px), anything inside --sj-card-r-in (4px), pills --sj-ctl-r */
+.sj-bento[data-v2] .sj-bento-card { border-radius: var(--sj-card-r); }
+.sj-bento[data-v2] .sj-bento-icon, .sj-bento[data-v2] .sj-bento-card[data-v='type'] .sj-bento-icon { border-radius: var(--sj-card-r-in); }
+.sj-bento[data-v2] .sj-bento-pill { border-radius: var(--sj-ctl-r, 4px); }
+/* colours from tokens: type on the green card and the photo uses the on-brand ink */
+.sj-bento[data-v2] .sj-bento-card[data-v='solid'] { color: var(--content-on-brand-solid); box-shadow: none; }
+.sj-bento[data-v2] .sj-bento-card[data-v='solid'] dd, .sj-bento[data-v2] .sj-bento-card[data-v='photo'] dd { color: var(--content-on-brand-solid); }
+.sj-bento[data-v2] .sj-bento-card[data-v='solid'] dt, .sj-bento[data-v2] .sj-bento-card[data-v='photo'] dt { color: color-mix(in srgb, var(--content-on-brand-solid) 80%, transparent); }
+.sj-bento-dial line { stroke: color-mix(in srgb, var(--content-on-brand-solid) 28%, transparent); }
+.sj-bento-dial line[data-h] { stroke: color-mix(in srgb, var(--content-on-brand-solid) 70%, transparent); }
+.sj-bento-dial .hands { stroke: var(--content-on-brand-solid); }
+.sj-bento-dial .hub { fill: var(--content-on-brand-solid); }
+.sj-bento[data-v2] .sj-bento-card { box-shadow: none; }
+/* one type scale: every tile number the same size and weight, labels the same */
+.sj-bento[data-v2] .sj-bento-card:not([data-feature]) dd { font-size: calc(26px * var(--ts, 1)); font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+.sj-bento[data-v2] .sj-bento-card:not([data-feature]) dt, .sj-bento[data-v2] .sj-bento-band { font-size: 12.5px !important; line-height: 1.35; }
+.sj-bento[data-v2] .sj-bento-card[data-v='type'] dd { color: var(--content-brand); }
+
+/* ── m-web: a compact bento, half the scroll: a short chart card, then the
+   four tiles in a 2 × 2 grid (the green card loses its dial here) ── */
+@container sj (max-width: 479px) {
+  .sj-bento[data-v2] { gap: 8px; }
+  .sj-bento[data-v2] .sj-bento-card[data-feature] { padding: 14px 14px 16px; gap: 0; }
+  .sj-bento[data-v2] .sj-bento-plot { min-height: 56px; margin: 0 -14px; }
+  .sj-bento[data-v2] .sj-bento-card[data-feature] dd { font-size: calc(38px * var(--ts, 1)); }
+  .sj-bento[data-v2] .sj-bento-card[data-feature] dt { font-size: 13px; }
+  .sj-bento[data-v2] .sj-bento-card[data-v='solid'] { grid-row: auto; }
+  .sj-bento[data-v2] .sj-bento-card[data-v='band'] { grid-column: auto; }
+  .sj-bento[data-v2] .sj-bento-card:not([data-feature]) { min-height: 96px; padding: 12px; }
+  .sj-bento[data-v2] .sj-bento-card[data-v='band'] { padding: 0; }
+  .sj-bento[data-v2] .sj-bento-card[data-v='band'] .sj-bento-figure { padding: 12px 12px 8px; }
+  .sj-bento[data-v2] .sj-bento-card[data-v='photo'] { min-height: 96px; }
+  .sj-bento-dial { display: none; }
+  .sj-bento[data-v2] .sj-bento-card[data-v='type'] .sj-bento-icon { display: none; }
+  .sj-bento[data-v2] .sj-bento-card:not([data-feature]) dd { font-size: calc(22px * var(--ts, 1)); }
+}
+/* the photo card wears the same hairline as the others (no dark edge) */
+.sj-bento[data-v2] .sj-bento-card[data-v='photo'] { border-color: color-mix(in srgb, var(--border-subtle) 60%, transparent); background-clip: padding-box; }
+/* ── bento: a slight glass finish (a bright top rim, a soft sheen, a whisper of lift) ── */
+.sj-bento[data-v2] .sj-bento-card { box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.9), inset 0 0 0 1px rgb(255 255 255 / 0.45), 0 1px 2px rgb(16 24 20 / 0.04), 0 10px 22px -16px rgb(16 40 24 / 0.16); }
+.sj-bento[data-v2] .sj-bento-card[data-v='type'], .sj-bento[data-v2] .sj-bento-card[data-v='band'] {
+  background: linear-gradient(to bottom, rgb(255 255 255 / 0.9), transparent 45%), linear-gradient(160deg, var(--sj-card-bg, var(--surface-page)) 40%, color-mix(in srgb, var(--surface-brand-subtle) 55%, var(--sj-card-bg, var(--surface-page)))); }
+.sj-bento[data-v2] .sj-bento-card[data-v='solid'] {
+  background: linear-gradient(to bottom, rgb(255 255 255 / 0.16), transparent 42%), radial-gradient(90% 70% at 85% 0%, rgb(255 255 255 / 0.12), transparent 60%), var(--surface-brand-solid);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.28), inset 0 0 0 1px rgb(255 255 255 / 0.08), 0 10px 22px -16px color-mix(in srgb, var(--surface-brand-solid) 60%, transparent); }
+.sj-bento[data-v2] .sj-bento-card[data-v='band'] .sj-bento-band { background: color-mix(in srgb, var(--surface-brand-subtle) 80%, transparent); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+:root[data-theme='dark'] .sj-bento[data-v2] .sj-bento-card { box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06); }
+:root[data-theme='dark'] .sj-bento[data-v2] .sj-bento-card[data-v='type'], :root[data-theme='dark'] .sj-bento[data-v2] .sj-bento-card[data-v='band'] { background: var(--sj-card-bg, var(--surface-raised)); }
+
+/* the photo: its type on a frosted glass plate, raised off the bottom edge, so it reads over any part of the picture */
+.sj-bento[data-v2] .sj-bento-card[data-v='photo'] { padding: 8px; }
+.sj-bento[data-v2] .sj-bento-card[data-v='photo']::after { background: linear-gradient(to top, rgb(10 20 14 / 0.55), transparent 70%); }
+.sj-bento[data-v2] .sj-bento-card[data-v='photo'] .sj-bento-figure { padding: 8px 10px; margin-bottom: 2px; border-radius: var(--sj-card-r-in);
+  background: rgb(12 24 16 / 0.42); -webkit-backdrop-filter: blur(12px) saturate(1.2); backdrop-filter: blur(12px) saturate(1.2);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.18), inset 0 0 0 1px rgb(255 255 255 / 0.1); }
+.sj-bento[data-v2] .sj-bento-card[data-v='photo'] dd { text-shadow: 0 1px 2px rgb(0 0 0 / 0.25); }
+
+/* the numbers sit a little higher off the bottom edge */
+.sj-bento[data-v2] .sj-bento-card[data-v='solid'], .sj-bento[data-v2] .sj-bento-card[data-v='type'], .sj-bento[data-v2] .sj-bento-card[data-v='plain'] { padding-bottom: 18px; }
+.sj-bento[data-v2] .sj-bento-card[data-v='band'] .sj-bento-figure { padding-bottom: 12px; }
+
+/* the peak's dot: a glass bead sitting on the line, lit from above, with a soft green glow (no flat grey halo) */
+.sj-bento[data-v2] .sj-bento-dot { width: 14px; height: 14px; margin: -7px 0 0 -7px; border: 2.5px solid var(--surface-brand-solid);
+  background: radial-gradient(circle at 35% 30%, #fff 0, #fff 45%, color-mix(in srgb, var(--surface-brand-subtle) 80%, #fff) 100%);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--surface-brand-solid) 10%, transparent), 0 0 14px 2px color-mix(in srgb, var(--surface-brand-solid) 30%, transparent), 0 2px 4px rgb(16 40 24 / 0.2); }
+/* (specificity to beat the tile padding) the numbers sit higher; the photo's glass plate hugs its type */
+.sj-bento[data-v2] .sj-bento-card[data-v='solid']:not([data-feature]), .sj-bento[data-v2] .sj-bento-card[data-v='type']:not([data-feature]), .sj-bento[data-v2] .sj-bento-card[data-v='plain']:not([data-feature]) { padding-bottom: 20px; }
+.sj-bento[data-v2] .sj-bento-card[data-v='photo']:not([data-feature]) { padding: 10px; }
+.sj-bento[data-v2] .sj-bento-card[data-v='photo'] .sj-bento-figure { justify-self: start; padding: 6px 10px 7px; gap: 2px; }
+.sj-bento[data-v2] .sj-bento-card[data-v='photo'] dd { font-size: calc(22px * var(--ts, 1)) !important; }
+/* the domain card: its icon floats top-right so the number and label sit clear of the bottom edge */
+.sj-bento[data-v2] .sj-bento-card[data-v='type']:not([data-feature]) { align-content: end; padding-bottom: 16px; }
+.sj-bento[data-v2] .sj-bento-card[data-v='type'] .sj-bento-icon { position: absolute; top: 12px; right: 12px; }
+/* ── bento: a touch more glass (brighter rim, a top sheen, a soft diagonal light, a little more lift) ── */
+.sj-bento[data-v2] .sj-bento-card { box-shadow: inset 0 1px 0 #fff, inset 0 0 0 1px rgb(255 255 255 / 0.6), inset 0 -8px 16px -12px rgb(16 40 24 / 0.08), 0 1px 2px rgb(16 24 20 / 0.05), 0 14px 28px -18px rgb(16 40 24 / 0.22); }
+.sj-bento[data-v2] .sj-bento-card[data-feature] {
+  background: linear-gradient(115deg, rgb(255 255 255 / 0.7) 0, transparent 30%), radial-gradient(90% 60% at 50% 120%, color-mix(in srgb, var(--surface-brand-solid) 16%, transparent), transparent 70%), var(--sj-card-bg, var(--surface-page)); }
+/* the domain card: a slight green glass */
+.sj-bento[data-v2] .sj-bento-card[data-v='type'] {
+  border-color: color-mix(in srgb, var(--surface-brand-solid) 16%, var(--border-subtle));
+  background: linear-gradient(115deg, rgb(255 255 255 / 0.75) 0, transparent 38%), linear-gradient(160deg, color-mix(in srgb, var(--surface-brand-subtle) 70%, var(--sj-card-bg, #fff)), var(--surface-brand-subtle)); }
+.sj-bento[data-v2] .sj-bento-card[data-v='type'] .sj-bento-icon { background: rgb(255 255 255 / 0.6); box-shadow: inset 0 1px 0 #fff, inset 0 0 0 1px color-mix(in srgb, var(--surface-brand-solid) 22%, transparent); }
+/* the behavioural card: white glass throughout, the footer band a frosted white strip */
+.sj-bento[data-v2] .sj-bento-card[data-v='band'] { background: linear-gradient(115deg, rgb(255 255 255 / 0.8) 0, transparent 40%), linear-gradient(to bottom, var(--sj-card-bg, #fff), color-mix(in srgb, #fff 92%, var(--surface-brand-subtle))); }
+.sj-bento[data-v2] .sj-bento-card[data-v='band'] .sj-bento-band { color: var(--content-primary) !important; background: rgb(255 255 255 / 0.7); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border-top: 1px solid color-mix(in srgb, var(--border-subtle) 70%, transparent); box-shadow: inset 0 1px 0 #fff; }
+.sj-bento[data-v2] .sj-bento-card[data-v='band'] .sj-bento-band-icon { color: var(--content-brand); }
+:root[data-theme='dark'] .sj-bento[data-v2] .sj-bento-card, :root[data-theme='dark'] .sj-bento[data-v2] .sj-bento-card[data-feature] { box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.07); background: var(--sj-card-bg, var(--surface-raised)); }
+:root[data-theme='dark'] .sj-bento[data-v2] .sj-bento-card[data-v='band'] .sj-bento-band { background: rgb(255 255 255 / 0.04); box-shadow: none; }
+:root[data-theme='dark'] .sj-bento[data-v2] .sj-bento-card[data-v='solid'] { background: var(--surface-brand-solid); }
+/* the timeline's pills: the SSX md badge (was sm), a touch more room */
+.sj-career-track .sj-cphase-body ul { gap: 8px; flex-wrap: wrap; }
+/* the photo's glass plate: more room round and between its lines */
+.sj-bento[data-v2] .sj-bento-card[data-v='photo'] .sj-bento-figure { padding: 10px 14px 11px; gap: 5px; }
+.sj-bento[data-v2] .sj-bento-card[data-v='photo']:not([data-feature]) { padding: 12px; }
+/* rows a touch taller so the bento stays level with the timeline (its pills grew) */
+@container sj (min-width: 480px) { .sj-career-col .sj-bento[data-v2] { grid-template-rows: repeat(3, 108px); } }
+/* ── the chart card, no header (it repeated the section title): the graph and the number only ──
+   the line gets a blurred green glow and a soft area under it */
+.sj-bento[data-v2] .sj-bento-card[data-feature] { grid-template-rows: 1fr auto; padding-top: 10px; }
+.sj-bento-curve { filter: none; }
+.sj-bento-curve .glow { opacity: 0.35; }
+.sj-bento-curve .area { opacity: 0; transition: opacity 900ms ease 900ms; }
+.sj-bento[data-in] .sj-bento-curve .area { opacity: 1; }
+.sj-bento-curve .glow { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1600ms cubic-bezier(0.22, 1, 0.36, 1) 200ms; }
+.sj-bento[data-in] .sj-bento-curve .glow { stroke-dashoffset: 0; }
+@container sj (min-width: 480px) { .sj-career-col .sj-bento[data-v2] .sj-bento-plot { min-height: 110px; } }
+@container sj (max-width: 479px) { .sj-bento[data-v2] .sj-bento-plot { min-height: 80px; } }
+.sj-bento[data-v2] .sj-bento-dot { box-shadow: 0 0 0 5px color-mix(in srgb, var(--surface-brand-solid) 12%, transparent), 0 0 20px 4px color-mix(in srgb, var(--surface-brand-solid) 40%, transparent), 0 2px 4px rgb(16 40 24 / 0.2); }
+@media (prefers-reduced-motion: reduce) { .sj-bento-curve .glow, .sj-bento-curve .area { transition: none; stroke-dashoffset: 0; opacity: 0.35; } .sj-bento-curve .area { opacity: 1; } }
+/* the photo shows through: a lighter, less blurred plate (the fade under it carries the contrast) */
+.sj-bento[data-v2] .sj-bento-card[data-v='photo'] .sj-bento-figure { background: rgb(12 24 16 / 0.26); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+.sj-bento[data-v2] .sj-bento-card[data-v='photo']::after { background: linear-gradient(to top, rgb(10 20 14 / 0.6), rgb(10 20 14 / 0.05) 80%); }
+.sj-bento[data-v2] .sj-bento-card[data-v='photo'] dt { text-shadow: 0 1px 2px rgb(0 0 0 / 0.35); color: var(--content-on-brand-solid); }
+/* a slightly softer glow; the moving dot's glow eased too */
+.sj-bento-curve .glow { opacity: 0.2; }
+.sj-bento[data-v2] .sj-bento-dot { box-shadow: 0 0 0 4px color-mix(in srgb, var(--surface-brand-solid) 10%, transparent), 0 0 12px 2px color-mix(in srgb, var(--surface-brand-solid) 28%, transparent), 0 2px 4px rgb(16 40 24 / 0.18); }
+/* ══ career prep, premium-restraint pass ═════════════════════════════════════
+   one accent (SSB green) · hairline borders, no card shadows · radius 8px outer,
+   4px nested · thin single-colour icons · one confident number (Mock Interviews) ·
+   decoration used once: the glowing line and its moving dot are the one exception;
+   every other card is flat. */
+.sj-bento[data-v2] .sj-bento-card,
+.sj-bento[data-v2] .sj-bento-card[data-feature],
+.sj-bento[data-v2] .sj-bento-card[data-v='solid'] { box-shadow: none; border-radius: var(--sj-card-r); }
+.sj-bento[data-v2] .sj-bento-card { border: 1px solid color-mix(in srgb, var(--border-subtle) 70%, transparent); }
+/* flat faces: no sheens, no inner glows */
+.sj-bento[data-v2] .sj-bento-card[data-feature] { background: var(--sj-card-bg, var(--surface-page)); }
+.sj-bento[data-v2] .sj-bento-card[data-v='band'] { background: var(--sj-card-bg, var(--surface-page)); }
+.sj-bento[data-v2] .sj-bento-card[data-v='type'] { background: color-mix(in srgb, var(--surface-brand-subtle) 55%, var(--sj-card-bg, var(--surface-page))); border-color: color-mix(in srgb, var(--surface-brand-solid) 12%, var(--border-subtle)); }
+.sj-bento[data-v2] .sj-bento-card[data-v='solid'] { background: var(--surface-brand-solid); border-color: transparent; }
+.sj-bento[data-v2] .sj-bento-card[data-v='band'] .sj-bento-band { background: none; -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none; border-top: 1px solid color-mix(in srgb, var(--border-subtle) 70%, transparent); }
+/* the photo carries itself: a plain fade for the type, no glass plate */
+.sj-bento[data-v2] .sj-bento-card[data-v='photo'] .sj-bento-figure { background: none; -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none; padding: 0 4px 2px; }
+.sj-bento[data-v2] .sj-bento-card[data-v='photo']::after { background: linear-gradient(to top, rgb(10 20 14 / 0.72), rgb(10 20 14 / 0) 72%); }
+/* the chart: its grid goes quiet so the line is the one moment */
+.sj-bento[data-v2] .sj-bento-card[data-feature]::before { opacity: 0.6; }
+/* icons: line only, in brand ink, no filled tiles */
+.sj-bento[data-v2] .sj-bento-icon, .sj-bento[data-v2] .sj-bento-card[data-v='type'] .sj-bento-icon { background: none; box-shadow: none; width: auto; height: auto; font-size: 20px; color: var(--content-brand); }
+/* one confident number: the hero stays large, every tile number one quiet size */
+.sj-bento[data-v2] .sj-bento-card:not([data-feature]) dd { font-size: calc(22px * var(--ts, 1)); font-weight: 600; }
+.sj-bento[data-v2] .sj-bento-card[data-v='type'] dd { color: var(--content-primary); }
+/* nested radii: pills, tags and the start marker on the 4px inner radius */
+.sj-career-track [data-slot='badge'], .sj-ctrack-start span, .sj-bento-pill { border-radius: var(--sj-card-r-in); }
+:root[data-theme='dark'] .sj-bento[data-v2] .sj-bento-card { box-shadow: none; }
+/* m-web playlist: the brief cut to two lines, no "Show more"; the play is the desktop's
+   small frosted glass button, centred over a soft scrim */
+.pp-desc, .pp-desc[data-open] { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.pp-cover[data-video]::after { content: ''; position: absolute; inset: 0; background: rgb(0 0 0 / 0.22); }
+.pp-cover-play { left: 50%; top: 50%; right: auto; bottom: auto; z-index: 1; translate: -50% -50%; width: 26px; height: 26px; border-radius: var(--sj-ctl-r, var(--radius-md));
+  background: rgb(255 255 255 / 0.2); color: #fff; -webkit-backdrop-filter: blur(8px) saturate(1.4); backdrop-filter: blur(8px) saturate(1.4);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.45), 0 4px 12px rgb(0 0 0 / 0.2); }
+.pp-cover-play svg { width: 10px; height: 10px; margin-left: 1px; filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.3)); }
+/* ── Career prep stats: a glass bento, three cards over two wide ones. No strokes:
+   frosted white faces over soft brand light, a bright top edge and a lifted
+   shadow. One system in every card: the art the same size top-right, the
+   number and its label under it at the foot left, the same type sizes.
+   The art acts out its stat on hover (scene.tsx). ── */
+.sj-pbento { --pb-h: 264px; --pb-pad: 24px; --pb-num: 42px; --pb-label: 13px; --pb-art: 68%;
+  position: relative; isolation: isolate; margin: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 18px; }
+/* the light the glass frosts: two soft brand pools behind the grid */
+.sj-pbento::before { content: ''; position: absolute; inset: -6% -4%; z-index: -1; pointer-events: none; filter: blur(48px);
+  background:
+    radial-gradient(40% 55% at 18% 30%, color-mix(in srgb, var(--surface-brand-solid) 8%, transparent), transparent 70%),
+    radial-gradient(45% 60% at 82% 78%, color-mix(in srgb, var(--surface-brand-solid) 6%, transparent), transparent 70%); }
+.sj-pb-card { --face: var(--surface-raised, #fff);
+  position: relative; overflow: hidden; isolation: isolate; grid-column: span 2; height: var(--pb-h); border-radius: max(20px, calc(var(--sj-card-r) * 1.5));
+  background:
+    radial-gradient(90% 70% at 50% 100%, color-mix(in srgb, var(--surface-brand-solid) 9%, transparent), transparent 70%),
+    linear-gradient(165deg, color-mix(in srgb, var(--face) 86%, transparent), color-mix(in srgb, var(--face) 58%, transparent));
+  -webkit-backdrop-filter: blur(22px) saturate(1.5); backdrop-filter: blur(22px) saturate(1.5);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, #fff 90%, transparent), inset 0 -1px 0 color-mix(in srgb, #fff 30%, transparent),
+    0 1px 2px rgb(0 0 0 / 0.03), 0 6px 16px -12px color-mix(in srgb, var(--surface-brand-solid) 24%, rgb(0 0 0 / 0.12));
+  transition: box-shadow 300ms ease, translate 400ms cubic-bezier(0.22, 1, 0.36, 1); }
+.sj-pb-card:nth-child(n + 4) { grid-column: span 3; }
+.sj-pb-card:hover { translate: 0 -3px; box-shadow: inset 0 1px 0 color-mix(in srgb, #fff 90%, transparent), inset 0 -1px 0 color-mix(in srgb, #fff 30%, transparent),
+    0 1px 2px rgb(0 0 0 / 0.03), 0 12px 24px -16px color-mix(in srgb, var(--surface-brand-solid) 30%, rgb(0 0 0 / 0.12)); }
+:root[data-theme='dark'] .sj-pb-card { box-shadow: inset 0 1px 0 color-mix(in srgb, #fff 14%, transparent), 0 8px 18px -12px rgb(0 0 0 / 0.5); }
+
+/* the art: the same height in every card, top-right, fading out at its cut edges */
+.sj-pb-art { position: absolute; z-index: 0; display: block; width: auto; height: var(--pb-art); top: 4%; right: 4%; transform-origin: 50% 100%;
+  -webkit-mask-image: linear-gradient(to top, transparent 0, #000 22%), linear-gradient(to right, transparent 0, #000 14%, #000 86%, transparent 100%);
+  mask-image: linear-gradient(to top, transparent 0, #000 22%), linear-gradient(to right, transparent 0, #000 14%, #000 86%, transparent 100%);
+  -webkit-mask-composite: source-in; mask-composite: intersect;
+  transition: scale 500ms cubic-bezier(0.22, 1, 0.36, 1); }
+.sj-pb-card:hover .sj-pb-art { scale: 1.035; }
+
+/* the text: the number, then its label under it, at the foot left (dt stays first in the DOM) */
+.sj-pb-text { position: absolute; z-index: 1; left: var(--pb-pad); right: var(--pb-pad); bottom: var(--pb-pad); display: flex; flex-direction: column; align-items: flex-start; gap: 6px; pointer-events: none; }
+.sj-pb-text dd { order: -1; margin: 0; font-size: calc(var(--pb-num) * var(--ts, 1)); font-weight: 600; line-height: 0.92; letter-spacing: -0.05em; font-variant-numeric: tabular-nums;
+  background: linear-gradient(175deg, color-mix(in srgb, var(--content-primary) 62%, var(--surface-page)) 35%, color-mix(in srgb, var(--surface-brand-solid) 45%, var(--content-secondary)));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 3px 6px color-mix(in srgb, var(--surface-brand-solid) 10%, transparent));
+  transition: translate 500ms cubic-bezier(0.22, 1, 0.36, 1); }
+.sj-pb-text dt { font-size: var(--pb-label); font-weight: 500; line-height: 1.35; color: color-mix(in srgb, var(--content-secondary) 72%, var(--surface-page)); max-width: 26ch; }
+.sj-pb-card:hover .sj-pb-text dd { translate: 0 -3px; }
+/* the "+" is a small brand superscript */
+.sj-pb-text .sj-speed { display: inline-flex; align-items: flex-start; }
+.sj-pb-text .sj-speed > span:last-child { font-size: 0.5em; line-height: 1; margin: 0.08em 0 0 0.06em; letter-spacing: 0; color: color-mix(in srgb, var(--content-brand) 70%, var(--surface-page)); -webkit-text-fill-color: color-mix(in srgb, var(--content-brand) 70%, var(--surface-page)); }
+
+@container sj (max-width: 960px) { .sj-pbento { --pb-h: 228px; --pb-pad: 20px; --pb-num: 36px; gap: 14px; } }
+@container sj (max-width: 760px) { .sj-pbento { --pb-h: 206px; --pb-pad: 18px; --pb-num: 31px; --pb-label: 12px; gap: 12px; } }
+@container sj (max-width: 560px) {
+  .sj-pbento { --pb-h: 184px; --pb-pad: 14px; --pb-num: 25px; --pb-label: 11.5px; --pb-art: 60%; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .sj-pb-card, .sj-pb-card:nth-child(n + 4) { grid-column: span 1; }
+  .sj-pb-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .sj-pb-text { gap: 4px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sj-pb-card, .sj-pb-art, .sj-pb-text dd { transition: none; }
+  .sj-pb-card:hover, .sj-pb-card:hover .sj-pb-text dd { translate: none; }
+  .sj-pb-card:hover .sj-pb-art { scale: none; }
+}
+/* bento left, the phases down the right: the bento gets the wider share */
+@container sj (min-width: 768px) { .sj-career-split { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 40px; } }
+/* each phase: its name, then one sentence (no pills) */
+.sj-cphase-desc { margin: 0; max-width: 42ch; font-size: calc(14px * var(--ts, 1)); line-height: 1.5; color: var(--content-secondary); text-wrap: pretty; }
+/* the career card: the title and the phases in one card, matched to the bento cards (plain face,
+   light hairline, 8px). Desktop: beside the bento and as tall as it, the phases spread down it.
+   m-web: it comes first, then the bento. A small desk calendar sits off its bottom-right corner. */
+.sj-career-card { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 22px; padding: 24px;
+  border-radius: 8px; background: var(--sj-card-bg, var(--surface-page)); border: 1px solid color-mix(in srgb, var(--border-subtle) 60%, transparent); box-shadow: 0 1px 2px rgb(0 0 0 / 0.03); }
+.sj-career-head { margin: 0; position: relative; z-index: 1; }
+.sj-career-card > .sj-career-track { position: relative; z-index: 1; flex: 1; align-content: space-between; gap: 20px; }
+.sj-career-card .sj-cphase-desc { max-width: 31ch; }
+@container sj (min-width: 768px) { .sj-career-split { align-items: stretch; } }
+@container sj (max-width: 767px) { .sj-career-card { order: -1; } }
+.sj-cal { position: absolute; z-index: 0; right: -5%; bottom: -6%; height: 42%; max-height: 200px; pointer-events: none; transition: scale 500ms cubic-bezier(0.22, 1, 0.36, 1); transform-origin: 100% 100%; }
+.sj-cal img, .sj-cal svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.sj-cal circle { fill: transparent; stroke: transparent; stroke-width: 3; transition: fill 300ms ease, stroke 300ms ease; mix-blend-mode: multiply; }
+.sj-cal circle[data-s='past'] { fill: color-mix(in srgb, var(--surface-brand-solid) 16%, transparent); }
+.sj-cal circle[data-s='now'] { fill: color-mix(in srgb, var(--surface-brand-solid) 30%, transparent); stroke: color-mix(in srgb, var(--surface-brand-solid) 80%, transparent); }
+.sj-career-card:hover .sj-cal { scale: 1.04; }
+@container sj (max-width: 560px) { .sj-career-card { padding: 18px; gap: 18px; } .sj-cal { height: auto; width: 34%; } }
+@media (prefers-reduced-motion: reduce) { .sj-cal, .sj-cal circle { transition: none; } .sj-career-card:hover .sj-cal { scale: none; } }
+/* the phases in neutral ink: the bento carries the brand green */
+.sj-career-track::after { background: color-mix(in srgb, var(--content-primary) 40%, var(--surface-page)); }
+.sj-cphase-node { border-color: var(--border-subtle); color: var(--content-secondary); }
+.sj-cphase[data-lit] .sj-cphase-node { border-color: color-mix(in srgb, var(--content-primary) 45%, var(--surface-page)); background: var(--surface-raised); color: var(--content-primary); }
+.sj-cphase[data-lit] .sj-cphase-n { color: var(--content-primary); }
+/* ── the bento, matched to the curriculum's other cards (the Learn-by-doing video
+   cards): a plain face, the same light hairline, an 8px radius, barely any
+   shadow. The text sits top-left (number, its label under it); the art bleeds
+   off the bottom-right corner. Solid dark-green numbers, no gradient. ── */
+.sj-pbento::before { content: none; }
+.sj-pb-card { border-radius: 8px; background: var(--sj-card-bg, var(--surface-page)); border: 1px solid color-mix(in srgb, var(--border-subtle) 60%, transparent);
+  -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: 0 1px 2px rgb(0 0 0 / 0.03); }
+.sj-pb-card:hover { translate: none; box-shadow: 0 4px 12px -8px rgb(0 0 0 / 0.12); }
+:root[data-theme='dark'] .sj-pb-card { box-shadow: none; }
+.sj-pb-art { top: auto; right: -5%; bottom: -5%; height: calc(var(--pb-art) + 5%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 7%); mask-image: linear-gradient(to right, transparent 0, #000 7%); -webkit-mask-composite: source-over; mask-composite: add; }
+.sj-pb-card:hover .sj-pb-art { scale: 1.03; transform-origin: 100% 100%; }
+.sj-pb-text { top: var(--pb-pad); bottom: auto; }
+.sj-pb-text dd { background: none; -webkit-background-clip: border-box; background-clip: border-box; color: var(--content-brand); filter: none; }
+.sj-pb-text .sj-speed > span:last-child { color: var(--content-brand); -webkit-text-fill-color: var(--content-brand); }
+.sj-pb-text dt { color: var(--content-secondary); }
+/* the art box carries the size and placement; the canvas (and any decoration) fills it */
+.sj-pb-art { pointer-events: none; }
+.sj-pb-art > .sj-pb-canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+
+/* the two wide cards break the grid on purpose: bigger art, and details that fill the width.
+   Mock interviews: the art larger, cropped at the foot; a voice waveform runs under the text */
+.sj-pb-card[data-k='interviews'] .sj-pb-art { height: calc(var(--pb-art) + 34%); bottom: -22%; right: -4%; }
+.sj-pb-wave { position: absolute; z-index: 1; left: var(--pb-pad); bottom: var(--pb-pad); display: flex; align-items: center; gap: 3px; height: 34px; pointer-events: none; }
+.sj-pb-wave i { display: block; width: 3px; height: calc(var(--h) * 1%); border-radius: 2px; background: color-mix(in srgb, var(--surface-brand-solid) 55%, var(--surface-page));
+  transform-origin: center; animation: sj-pb-wave 1.1s ease-in-out infinite alternate; animation-delay: calc(var(--d) * -0.13s); animation-play-state: paused; }
+.sj-pb-card[data-play] .sj-pb-wave i { animation-play-state: running; }
+@keyframes sj-pb-wave { from { scale: 1 0.35; } to { scale: 1 1; } }
+/* behavioural sessions: the mirror, the art off the bottom-left corner, the text top-right,
+   and speech bubbles over the two of them that take turns */
+.sj-pb-card[data-k='behaviour'] .sj-pb-art { height: calc(var(--pb-art) + 34%); bottom: -22%; right: auto; left: -4%;
+  -webkit-mask-image: linear-gradient(to left, transparent 0, #000 7%); mask-image: linear-gradient(to left, transparent 0, #000 7%); }
+.sj-pb-card[data-k='behaviour']:hover .sj-pb-art { transform-origin: 0 100%; }
+.sj-pb-card[data-k='behaviour'] .sj-pb-text { align-items: flex-end; text-align: right; }
+/* its label breaks after "Behavioural" ("Sessions" drops to a second line), so it stays clear of her head with the art at full size */
+.sj-pb-card[data-k='behaviour'] .sj-pb-text dt { max-width: 16ch; }
+.sj-pb-bubble { position: absolute; z-index: 1; display: flex; gap: 3px; padding: 7px 9px; border-radius: 12px; background: var(--surface-raised, #fff);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 4px 12px -6px rgb(0 0 0 / 0.12); }
+.sj-pb-bubble::after { content: ''; position: absolute; bottom: -4px; width: 8px; height: 8px; rotate: 45deg; background: inherit; }
+.sj-pb-bubble[data-who='a'] { left: 30%; top: 7%; border-bottom-left-radius: 4px; }
+.sj-pb-bubble[data-who='a']::after { left: 10px; }
+.sj-pb-bubble[data-who='b'] { left: 55%; top: 9%; border-bottom-right-radius: 4px; }
+.sj-pb-bubble[data-who='b']::after { right: 10px; }
+.sj-pb-bubble i { width: 5px; height: 5px; border-radius: 50%; background: color-mix(in srgb, var(--surface-brand-solid) 60%, var(--surface-page)); animation: sj-pb-dot 1.2s ease-in-out infinite; animation-play-state: paused; }
+.sj-pb-bubble i:nth-child(2) { animation-delay: 0.15s; }
+.sj-pb-bubble i:nth-child(3) { animation-delay: 0.3s; }
+@keyframes sj-pb-dot { 0%, 60%, 100% { opacity: 0.35; translate: 0 0; } 30% { opacity: 1; translate: 0 -2px; } }
+/* while playing they take turns: one speaks, then the other */
+.sj-pb-card[data-play] .sj-pb-bubble { animation: sj-pb-turn 5s ease-in-out infinite; }
+.sj-pb-card[data-play] .sj-pb-bubble[data-who='b'] { animation-delay: -2.5s; }
+.sj-pb-card[data-play] .sj-pb-bubble i { animation-play-state: running; }
+@keyframes sj-pb-turn { 0%, 45% { opacity: 1; scale: 1; } 55%, 92% { opacity: 0.25; scale: 0.92; } 100% { opacity: 1; scale: 1; } }
+@container sj (max-width: 560px) {
+  .sj-pb-wave { height: 24px; gap: 2px; }
+  .sj-pb-wave i { width: 2px; }
+  .sj-pb-bubble { padding: 5px 7px; gap: 2px; }
+  .sj-pb-bubble i { width: 4px; height: 4px; }
+}
+@media (prefers-reduced-motion: reduce) { .sj-pb-wave i, .sj-pb-bubble, .sj-pb-bubble i { animation: none !important; } }
+/* hover only plays the animations: nothing scales, lifts or shifts */
+.sj-pb-card:hover, .sj-career-card:hover { translate: none; }
+.sj-pb-card:hover .sj-pb-art, .sj-career-card:hover .sj-cal { scale: none; }
+.sj-pb-card:hover .sj-pb-text dd { translate: none; }
+.sj-pb-card:hover { box-shadow: 0 1px 2px rgb(0 0 0 / 0.03); }
+/* the career card sits in the bento: the same gap as between the bento's cards */
+@container sj (min-width: 768px) { .sj-career-split { column-gap: 12px; } }
+@container sj (min-width: 761px) { .sj-pbento { gap: 12px; } }
+/* the row of three: the art a touch smaller, for more air around it */
+.sj-pb-card:nth-child(-n + 3) .sj-pb-art { height: calc(var(--pb-art) + 1%); }
+/* the phases: an icon in each node, the activities as pills with room around them */
+.sj-cphase-icon { font-size: 20px; color: var(--content-secondary); }
+.sj-cphase[data-lit] .sj-cphase-icon { color: var(--content-primary); }
+.sj-career-card .sj-cphase-body { gap: 10px; }
+.sj-career-card .sj-cphase-body ul { display: flex; flex-wrap: wrap; gap: 8px; }
+/* only the last phase shares its row with the calendar */
+.sj-career-card .sj-cphase:last-child .sj-cphase-body ul { max-width: calc(100% - 96px); }
+/* sized to sit level with the bento */
+.sj-career-card { padding: 20px 22px; gap: 16px; }
+/* the career card: a still, quiet line between the nodes; the icons in light green */
+.sj-career-card .sj-career-track::before, .sj-career-card .sj-career-track::after { background: var(--border-subtle) !important; }
+.sj-career-card .sj-cphase-node, .sj-career-card .sj-cphase[data-lit] .sj-cphase-node { border-color: color-mix(in srgb, var(--surface-brand-solid) 28%, var(--surface-page));
+  background: color-mix(in srgb, var(--surface-brand-solid) 9%, var(--surface-raised, #fff)); color: color-mix(in srgb, var(--content-brand) 80%, var(--surface-page)); }
+.sj-career-card .sj-cphase-icon, .sj-career-card .sj-cphase[data-lit] .sj-cphase-icon { color: color-mix(in srgb, var(--content-brand) 80%, var(--surface-page)); }
+.sj-career-card .sj-cphase .sj-cphase-body { opacity: 1; transition: none; }
+/* more room around the text in every card (the art keeps its place); labels and pills in regular weight */
+.sj-pbento { --pb-pad: 30px; }
+@container sj (max-width: 960px) { .sj-pbento { --pb-pad: 26px; } }
+@container sj (max-width: 760px) { .sj-pbento { --pb-pad: 24px; } }
+@container sj (max-width: 560px) { .sj-pbento { --pb-pad: 16px; } }
+.sj-pb-text dt { font-weight: 400; }
+.sj-career-card { padding: 28px 30px; gap: 30px; }
+.sj-career-card .sj-cphase-body ul [data-slot='badge'], .sj-career-card .sj-cphase-body ul > li > * { font-weight: 400; }
+@container sj (max-width: 560px) { .sj-career-card { padding: 20px; gap: 22px; } }
+/* the stat numbers set exactly like the section title (the SSX h3 token: size, weight, tracking) */
+.sj-pb-text dd { font-size: var(--type-h3-size); font-weight: var(--type-h3-weight); letter-spacing: var(--type-h3-tracking); line-height: var(--type-h3-lh); }
+.sj-pb-text .sj-speed > span:last-child { font-size: 0.62em; margin-top: 0.05em; }
+.sj-pb-text dd { font-variant-numeric: normal; } /* the title's own figures, so the two set identically */
+/* SpeedNumber sets tabular figures and a compositing hint on its own spans: in the bento the
+   digits must set like the title (proportional figures, ordinary text rendering) */
+.sj-pb-text .sj-speed { font-variant-numeric: normal; }
+.sj-pb-text .sj-speed-glyphs { will-change: auto; }
+/* one type system across the bento and the career card:
+   titles (the stat numbers, the phase names): the SSX h3 token, semibold, dark green;
+   subtext (the stat labels, the phase pills): 13px regular, secondary ink (12px on phones).
+   Sizes follow the viewport, not each card's container, so every card agrees. */
+.sj-career-card .sj-cphase-body b { font-size: var(--type-h3-size); font-weight: var(--type-h3-weight); letter-spacing: var(--type-h3-tracking); line-height: var(--type-h3-lh); color: var(--content-brand); }
+.sj-pb-text dt, .sj-career-card .sj-cphase-body ul > li > * { font-size: 13px; font-weight: 400; line-height: 1.35; color: var(--content-secondary); }
+@media (max-width: 767px) { .sj-pb-text dt, .sj-career-card .sj-cphase-body ul > li > * { font-size: 12px; } }
+/* desktop: whichever side is taller sets the height. The bento's rows stretch to the
+   career card (cards keep --pb-h as their minimum), so the two always end level */
+@container sj (min-width: 768px) { .sj-career-split > .sj-career-col:first-of-type { display: flex; flex-direction: column; } }
+/* (outside the query: the bento's own container is its narrower column) */
+.sj-career-split > .sj-career-col:first-of-type > .sj-pbento { flex: 1; grid-auto-rows: minmax(var(--pb-h), 1fr); }
+.sj-career-split > .sj-career-col:first-of-type .sj-pb-card { height: auto; min-height: var(--pb-h); }
+/* the career card's phases always run down (on a tablet the card is full width, wide
+   enough for the across layout, which then collides) */
+.sj-career-card > .sj-career-track { grid-template-columns: 1fr; justify-content: normal; padding-left: calc(var(--node) + 14px); }
+.sj-career-card > .sj-career-track::before, .sj-career-card > .sj-career-track::after { left: calc(var(--node) / 2) !important; right: auto !important; top: var(--l0, 0) !important; bottom: auto !important; width: 2px !important; height: var(--len, 100%) !important; translate: -1px 0; }
+.sj-career-card > .sj-career-track::after { transform-origin: top; transform: scaleY(var(--p, 0)); }
+.sj-career-card .sj-cphase { justify-items: stretch; min-height: var(--node); }
+.sj-career-card .sj-cphase-node { position: absolute; left: calc((var(--node) + 14px) * -1); top: 0; }
+.sj-career-card .sj-cphase-body { padding-top: 2px; }
+/* phones: the half-width mock-interviews card can't take the oversized art; it scales back
+   so the head clears the label */
+@container sj (max-width: 560px) {
+  .sj-pb-card[data-k='interviews']:not(:last-child) .sj-pb-art { height: calc(var(--pb-art) + 8%); bottom: -6%; right: -5%; }
+  .sj-pb-card[data-k='interviews']:not(:last-child) .sj-pb-wave { display: none; }
+}
+/* the phase names (Clarity / Building / Executing): 16px, still semibold dark green */
+.sj-career-card .sj-cphase-body b { font-size: 16px; line-height: 1.3; }
+/* the phase icons in the page's icon-tile style: a soft green tile, no stroke, the icon in brand
+   green (the ring in the card's colour keeps the track line clear of the tile) */
+.sj-career-card .sj-cphase-node, .sj-career-card .sj-cphase[data-lit] .sj-cphase-node {
+  border-radius: var(--sj-ctl-r, var(--radius-md)); border: 0; background: var(--surface-brand-subtle);
+  box-shadow: 0 0 0 5px var(--sj-card-bg, var(--surface-page)); color: var(--content-brand); }
+.sj-career-card .sj-cphase-icon, .sj-career-card .sj-cphase[data-lit] .sj-cphase-icon { color: var(--content-brand); font-size: 22px; }
+/* the art carries the green: numbers, their "+" and the phase names in dark grey (the title's ink) */
+.sj-pb-text dd, .sj-career-card .sj-cphase-body b { color: var(--content-primary); }
+.sj-pb-text .sj-speed > span:last-child { color: var(--content-primary); -webkit-text-fill-color: var(--content-primary); }
+/* the line under a card title (term / year subtitles) is regular everywhere, desktop and m-web;
+   it sits inside the semibold title and used to inherit its weight */
+.ss-ship { font-weight: 400; }
+/* m-web: the career card and the bento sit as one grid (the bento's gap between them);
+   shorter cards with slightly smaller art; the wide behavioural card's art rises to the text */
+@container sj (max-width: 767px) { .sj-career-split { row-gap: 10px; } }
+@container sj (max-width: 560px) {
+  .sj-pbento { --pb-h: 164px; --pb-art: 58%; }
+  .sj-pb-card[data-k='behaviour']:last-child .sj-pb-art { height: 96%; bottom: -6%; }
+}
+/* m-web: shorter cards (148px), the illustrations held at the size they had at 164px
+   (fixed px, cropped a little more at the foot instead of shrinking) */
+@container sj (max-width: 560px) {
+  .sj-pbento { --pb-h: 148px; }
+  .sj-pb-card:nth-child(-n + 3) .sj-pb-art { height: 97px; bottom: -14px; }
+  .sj-pb-card[data-k='oneToOne'] .sj-pb-art { bottom: -26px; } /* its label runs to two lines */
+  .sj-pb-card[data-k='interviews']:not(:last-child) .sj-pb-art { height: 108px; bottom: -20px; }
+  .sj-pb-card[data-k='behaviour']:last-child .sj-pb-art { height: 157px; bottom: -24px; }
+}
+/* m-web heading scale: section titles 24 · card titles 20 · small titles 16.
+   The career card's title and the stat numbers join the card titles at 20px */
+@media (max-width: 767px) { .sj-career-head, .sj-pb-text dd { font-size: 20px; line-height: 1.33; } }
+/* m-web term cards: no hairline between the outcome and the In class / Out of class rows (the
+   rows keep the line between them) */
+.ss-body > .ss-folds { border-top: 0; } /* (two classes: concepts.css loads after this file) */
+/* the sheet / dialog close: the SSX secondary IconButton (as the term arrows); this only places it */
+.cs-close { position: absolute; z-index: 5; top: calc(var(--sj-space) * 0.75); right: calc(var(--sj-space) * 0.75); }
+/* the bento is two rows of two: career prep + domain prep (one card, two stats) | 1:1 problem-solving;
+   mock interviews | behavioural sessions */
+.sj-pb-card, .sj-pb-card:nth-child(n + 4) { grid-column: span 3; }
+/* the top-row trim above targets the first three cards; mock interviews, now third, keeps its larger art */
+.sj-pb-card[data-k='interviews'] .sj-pb-art { height: calc(var(--pb-art) + 34%); bottom: -22%; right: -4%; }
+.sj-pb-stat { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.sj-pb-card[data-k='behaviour'] .sj-pb-stat { align-items: flex-end; } /* right-aligned card: the number sits flush with its label */
+.sj-pb-text[data-pair] { flex-direction: row; flex-wrap: wrap; gap: 8px 40px; }
+.sj-pb-text[data-pair] .sj-pb-stat { flex: none; }
+@container sj (max-width: 560px) {
+  .sj-pb-card, .sj-pb-card:nth-child(n + 4) { grid-column: span 1; }
+  /* phones: the joined card and behavioural sessions run full width, the two between pair up */
+  .sj-pb-card[data-k='hours'], .sj-pb-card[data-k='behaviour'] { grid-column: 1 / -1; }
+  .sj-pb-card:nth-child(-n + 3) .sj-pb-art { height: 97px; bottom: -14px; }
+  .sj-pb-card[data-k='oneToOne'] .sj-pb-art { height: 97px; bottom: -26px; }
+  .sj-pb-card[data-k='interviews'] .sj-pb-art { height: 108px; bottom: -20px; }
+  .sj-pb-card[data-k='interviews'] .sj-pb-wave { display: none; }
+  .sj-pb-text[data-pair] { gap: 4px 28px; }
+  .sj-pb-stat { gap: 4px; }
+}
+/* the open sheet / dialog holds focus itself (no ring); the play glyphs sit dead centre in their badges */
+.cs-modal-box:focus { outline: none; }
+.cm-still-play svg, .pp-cover-play svg { margin-left: 0; }
+/* the joined card: its two stats one below the other (the art stays on the right) */
+.sj-pb-text[data-pair] { flex-direction: column; flex-wrap: nowrap; gap: 24px; }
+@container sj (max-width: 560px) { .sj-pb-text[data-pair] { gap: 16px; } }
+/* Phosphor's Play triangle spans x 64–240 of its 256 box (it sits right of centre): shift the glyph
+   left by that offset so the triangle itself is centred in every play badge */
+.cm-still-play svg, .pp-cover-play svg, .sj-video-play svg, .sp-play svg, .lv-yt svg, .lv-thumb .lv-play svg { margin-left: 0; translate: -9.4% 0; }
+/* every card takes the Learn-by-doing (YouTube) card's hairline: 1px, the subtle border at 60% */
+.sj .cs-inner, .sj .ss-inner, .sj .lv-card, .sj-pb-card, .sj-career-card { border: 1px solid color-mix(in srgb, var(--border-subtle) 60%, transparent); }
+/* stat numbers at 40px (32px on phones); the "+" a full-size plus beside the number, not a superscript */
+.sj-pb-text dd, .sj-pb-text dd .sj-speed { font-size: 40px; line-height: 1.1; letter-spacing: -0.02em; }
+@media (max-width: 767px) { .sj-pb-text dd, .sj-pb-text dd .sj-speed { font-size: 32px; } }
+.sj-pb-text .sj-speed { align-items: baseline; }
+.sj-pb-text .sj-speed > span:last-child { font-size: 1em; line-height: inherit; margin: 0 0 0 0.02em; letter-spacing: 0; }
+/* the top row splits 60 / 40: the two-stat card wider than 1:1 problem-solving; the bottom row halves */
+.sj-pbento { grid-template-columns: repeat(10, minmax(0, 1fr)); }
+.sj-pb-card, .sj-pb-card:nth-child(n + 4) { grid-column: span 5; }
+.sj-pb-card[data-k='hours'] { grid-column: span 6; }
+.sj-pb-card[data-k='oneToOne'] { grid-column: span 4; }
+/* the desk scene is wide (the whole table, 2:1): it sits across the foot of its card, off the right edge */
+.sj-pb-card[data-k='hours'] .sj-pb-art { height: 81%; right: -2%; bottom: -3%; }
+@container sj (max-width: 560px) {
+  .sj-pbento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sj-pb-card, .sj-pb-card:nth-child(n + 4), .sj-pb-card[data-k='oneToOne'] { grid-column: span 1; }
+  .sj-pb-card[data-k='hours'], .sj-pb-card[data-k='behaviour'] { grid-column: 1 / -1; }
+  .sj-pb-card[data-k='hours'] .sj-pb-art { height: 115px; bottom: -8px; right: -6px; }
+}
+/* 1:1 problem-solving, now the narrower 40% card: its art sits a little lower so it clears the label */
+@container sj (min-width: 561px) { .sj-pb-card[data-k='oneToOne'] .sj-pb-art { height: 60%; bottom: -8%; } }
+/* premium restraint: every card carries the same barely-there edge, at rest and on hover; the
+   hairline does the separating, not the shadow */
+.sj .cs-inner, .sj .cs-inner:hover, .sj .ss-inner, .sj .lv-card, .sj .lv-card:hover,
+.sj-pb-card, .sj-pb-card:hover, .sj-career-card, .sj-career-card .sj-cphase-node { box-shadow: 0 1px 2px rgb(0 0 0 / 0.02); }
+.sj-career-card .sj-cphase-node, .sj-career-card .sj-cphase[data-lit] .sj-cphase-node { box-shadow: 0 1px 2px rgb(0 0 0 / 0.02), 0 0 0 5px var(--sj-card-bg, var(--surface-page)); }
+/* (the term cards' own rules are more specific and load later: matched here at higher specificity) */
+.sj .cs-deck .cs-card .cs-inner:has(> .cs-front[data-cover]),
+.sj .cs-deck .cs-card:not([data-open]):not([data-piled]):hover .cs-inner:has(> .cs-front[data-cover]) { box-shadow: 0 1px 2px rgb(0 0 0 / 0.02); }
+/* 1:1 problem-solving: a bigger puzzle scene, pushed further off the foot so it still clears the label */
+@container sj (min-width: 561px) { .sj-pb-card[data-k='oneToOne'] .sj-pb-art { height: 80%; bottom: -26%; right: -3%; } }
+@container sj (max-width: 560px) { .sj-pb-card[data-k='oneToOne'] .sj-pb-art { height: 120px; bottom: -56px; right: -6px; } }
+/* m-web: the stat numbers at 24px */
+@media (max-width: 767px) { .sj-pb-text dd, .sj-pb-text dd .sj-speed { font-size: 24px; } }
+/* career prep: the phases as a swipe deck of three cards (the Learn-by-doing deck), under the title */
+.sj-career-card .lv-deck-wrap { position: relative; z-index: 1; flex: none; gap: 10px; }
+.sj-career-card .lv-deck-dots { justify-content: flex-start; }
+.sj-phase-card { box-sizing: border-box; display: grid; gap: 20px; align-content: start; min-height: 196px; padding: 20px;
+  border-radius: 8px; background: var(--sj-card-bg, var(--surface-page)); border: 1px solid color-mix(in srgb, var(--border-subtle) 60%, transparent); box-shadow: 0 1px 2px rgb(0 0 0 / 0.02); }
+.lv-deck-card[data-front] .sj-phase-card { box-shadow: 0 1px 2px rgb(0 0 0 / 0.02), 0 6px 16px -12px rgb(0 0 0 / 0.12); }
+.sj-phase-top { display: flex; align-items: center; justify-content: space-between; }
+.sj-phase-card .sj-cphase-node { position: static; }
+.sj-phase-step { font-size: 12px; font-variant-numeric: tabular-nums; letter-spacing: 0.04em; color: var(--content-secondary); }
+.sj-phase-name { font-size: 16px; font-weight: 600; line-height: 1.3; color: var(--content-primary); }
+.sj-phase-tags { list-style: none; margin: -4px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.sj-phase-tags li { display: contents; }
+.sj-phase-tags li > * { font-size: 13px; font-weight: 400; color: var(--content-secondary); }
+/* the tags sit on a lighter grey than the Badge's own, so they read as quiet labels on the white card */
+[data-theme='light'] .sj-phase-tags li > * { background: var(--surface-sunken); }
+@media (max-width: 767px) { .sj-phase-tags li > * { font-size: 12px; } }
+/* the calendar shrinks to the card's bottom-right corner, under the deck's dots */
+/* the art sits in the card's bottom-right corner and spills a little past both edges, like the bento art */
+.sj-career-card .sj-cal { height: 112px; max-height: none; right: -14px; bottom: -14px; }
+/* phones: the card is short; smaller, so it stays in the corner under the phase cards instead of behind them */
+@media (max-width: 767px) { .sj-career-card .sj-cal { height: 50px; width: auto; right: -6px; bottom: -6px; } }
+.sj-career-card { justify-content: flex-start; }
+.sj-phase-card { --node: 44px; min-height: 216px; }
+.sj-phase-card .sj-cphase-node { display: grid; place-items: center; width: var(--node); height: var(--node); box-shadow: 0 1px 2px rgb(0 0 0 / 0.02); }
+/* (by screen width: the career column is a narrow container even on desktop) */
+@media (max-width: 767px) { .sj-phase-card { min-height: 206px; padding: 16px; } }
