@@ -1,0 +1,57 @@
+/* Live projects cards: the faculty card's shell (.ssx-card, story-card.css) with a
+   company line, a hairline, then the brief. Tokens only; follows data-brand / data-theme. */
+
+/* these photos are not portraits shot on a dark base, so the card deepens the shell's
+   own fade: clear at the top, near-black behind the text */
+.lp-card .ssx-card__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgb(0 0 0 / 0) 30%, rgb(0 0 0 / 0.5) 60%, rgb(0 0 0 / 0.78) 100%);
+  pointer-events: none;
+}
+.lp-card .ssx-card__media > img {
+  object-position: 50% 50%;
+}
+
+.lp-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-top: auto;
+  padding: var(--space-6) var(--space-5);
+  text-align: start;
+}
+/* the company, as the wordmark on a case card: large, then a hairline under it */
+.lp-company {
+  margin: 0 0 var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid color-mix(in srgb, var(--on-image-ink) 28%, transparent);
+  font-size: var(--type-h2-size);
+  line-height: var(--type-h2-lh);
+  letter-spacing: var(--type-h2-tracking);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-image-ink);
+}
+/* the brief: its name in the body size, semibold, then one quiet line */
+.lp-title {
+  margin: 0;
+  font-size: var(--type-body-size, 1rem);
+  line-height: var(--type-body-lh, 1.5);
+  font-weight: 600;
+  color: var(--on-image-ink);
+}
+.lp-desc {
+  margin: 0;
+  font-size: var(--type-body-sm-size);
+  line-height: var(--type-body-sm-lh);
+  color: var(--on-image-ink-secondary);
+  text-wrap: pretty;
+}
+
+/* no photo yet: the card stands on the brand's dark surface, lit from its top corner */
+.lp-card:not([data-photo]) {
+  background:
+    radial-gradient(120% 80% at 0% 0%, color-mix(in srgb, var(--surface-brand-solid) 55%, transparent), transparent 70%),
+    var(--surface-inverse, #0f1512);
+}

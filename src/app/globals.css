@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 @import '@kishanscaler/ssx-ui/styles.css';
+/* the curriculum, navbar and footer are plain CSS, not Tailwind: scanning them would add theme
+   variables the design never used (a second mono font, which changes the eyebrow) */
+@source not '../sections/curriculum';
+@source not '../sections/site';
 
 /*
  * next/font self-hosts the two system families (see layout.tsx). Point the
