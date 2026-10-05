@@ -1857,3 +1857,20 @@ button.sj-mcard:hover .sj-mcard-media img, a.sj-mcard:hover .sj-mcard-media img 
 .sj-phase-card .sj-cphase-node { display: grid; place-items: center; width: var(--node); height: var(--node); box-shadow: 0 1px 2px rgb(0 0 0 / 0.02); }
 /* (by screen width: the career column is a narrow container even on desktop) */
 @media (max-width: 767px) { .sj-phase-card { min-height: 206px; padding: 16px; } }
+
+/* ── career prep: a soft wash of the brand colour behind each illustration ──
+   The drawings sat on bare white and read as hanging. Each card now has a glow that rises from
+   the corner its drawing stands in and fades out before the numbers. It is the theme's own brand
+   colour (tokens only, so it follows the brand and light or dark), and the cards tell apart by
+   how the wash is cut, not by hue: --wash-k is its strength, --wash-w and --wash-h its reach. */
+.sj-pb-card, .sj-career-card { --wash: var(--surface-brand-solid); --wash-at: 100% 100%; --wash-k: 1; --wash-w: 78%; --wash-h: 92%;
+  background-image:
+    radial-gradient(var(--wash-w) var(--wash-h) at var(--wash-at), color-mix(in srgb, var(--wash) calc(18% * var(--wash-k)), transparent) 0%, color-mix(in srgb, var(--wash) calc(8% * var(--wash-k)), transparent) 46%, transparent 74%),
+    linear-gradient(to top, color-mix(in srgb, var(--wash) calc(6% * var(--wash-k)), transparent), transparent 55%); }
+.sj-pb-card[data-k='hours'] { --wash-k: 1.25; --wash-w: 70%; --wash-h: 110%; } /* the lead card: the deepest wash */
+.sj-pb-card[data-k='oneToOne'] { --wash-k: 0.8; --wash-w: 96%; --wash-h: 78%; }
+.sj-pb-card[data-k='interviews'] { --wash-k: 1; --wash-w: 62%; --wash-h: 100%; }
+.sj-pb-card[data-k='behaviour'] { --wash-k: 0.9; --wash-at: 0% 100%; --wash-w: 84%; --wash-h: 88%; } /* its drawing stands on the left */
+.sj-career-card { --wash-k: 1; --wash-w: 46%; --wash-h: 42%; }
+/* dark theme: the brand colour on a dark card needs more of itself to show */
+:root[data-theme='dark'] .sj-pb-card, :root[data-theme='dark'] .sj-career-card, [data-theme='dark'] .sj-pb-card, [data-theme='dark'] .sj-career-card { --wash: var(--content-brand); }

@@ -15,3 +15,44 @@
   --font-family-mono: var(--ssx-font-mono), SFMono-Regular, Menlo, Consolas, 'Liberation Mono',
     monospace;
 }
+
+/* The lab's carousel rows (alumni, faculty, live projects, the impact foundation) start on the
+   page's content edge but run off to the right edge of the window. Here they are capped to the
+   page's column, as every other section is: from the `sm` breakpoint the row is the content
+   width (the container less its gutters) and its cards are clipped at that edge. Phones keep the
+   lab's layout, the next card peeking in from the screen's edge. */
+@media (min-width: 672px) {
+  main .h-scroller, main .alumni-row {
+    max-width: calc(min(100%, var(--size-container-max)) - 2 * var(--space-gutter));
+    margin-inline: auto;
+    padding-inline: 0;
+    scroll-padding-inline: 0;
+  }
+}
+
+/* ── One visual language down the page ───────────────────────────────────────
+   The lab's sections share a header (green eyebrow, display heading, grey sub-line, 48px to the
+   content) and a rhythm (96px above and below a section, 48px on phones). Our curriculum blocks
+   and main's Placements showcase were built apart and differed; here they are brought in line.
+   Scoped to the home page (.pv-home), so the curriculum's own page and lab are unchanged. */
+
+/* rhythm: each curriculum block is a section like the rest; its own inner padding is dropped */
+.pv-page.pv-home { padding-top: 48px; padding-bottom: 48px; }
+@media (min-width: 672px) { .pv-page.pv-home { padding-top: 96px; padding-bottom: 96px; } }
+.pv-home .sj-shell { padding-top: 0; padding-bottom: 0; }
+.pv-home .sj-shell > .sj-ai, .pv-home .sj-shell > .sj-learn { margin-top: 0; padding-top: 0; }
+/* no rule above Learn by doing: no other section on the page opens with a line */
+.pv-home .sj-shell > .sj-learn { border-top: 0; }
+
+/* header: Learn by doing and the AI curriculum take the page's header */
+.pv-home .sj-learn-head, .pv-home .sj-ai-head { gap: 12px; }
+.pv-home .sj-learn-head > :first-child, .pv-home .sj-ai-head > :first-child { color: var(--content-brand); }
+.pv-home .sj-learn-head h2, .pv-home .sj-ai-head h2 { font-size: var(--type-display-size); line-height: var(--type-display-lh); letter-spacing: var(--type-display-tracking); font-weight: var(--type-display-weight); }
+.pv-home .sj-learn-head .sj-lede, .pv-home .sj-ai-head .sj-lede { color: var(--content-secondary); }
+/* 48px (40 on phones) from the header to the content, as under every other header */
+.pv-home .sj-learn { gap: 40px; }
+@media (min-width: 672px) { .pv-home .sj-learn { gap: 48px; } }
+
+/* corners: main's Placements showcase uses a larger corner than every other card (8px) */
+main section[aria-labelledby^='placements'] { --story-radius: var(--radius-lg); }
+main section[aria-labelledby^='placements'] :is(.rounded-2xl, .rounded-xl, .pl-figure-box, .pl-story) { border-radius: var(--radius-lg); }

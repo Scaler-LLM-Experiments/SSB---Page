@@ -1,0 +1,52 @@
+/* The internship section. Tokens only; follows data-brand / data-theme. */
+
+.in-visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* ── the numbers: the Placements grid's stat panel (its classes), three cells ──
+   One column on a phone, a row of three from the `sm` breakpoint; a hairline between cells. */
+@media (min-width: 672px) { .in-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.in-stat[data-rule] { border-top-width: 1px; border-top-style: solid; }
+@media (min-width: 672px) { .in-stat[data-rule] { border-top-width: 0; border-left-width: 1px; border-left-style: solid; } }
+.in-stat { --card-radius: 0px; }
+.in-functions-line { margin-top: var(--space-3); }
+.in-carousel { min-width: 0; margin-top: var(--space-12, 3rem); }
+
+/* ── the learner card: the alumni card (alumni.css), with what it does not cover ── */
+/* no portrait yet: the initials, plain, where the person would stand in the empty room */
+.in-lc-badge { position: absolute; left: 23%; top: 50%; translate: -50% -50%; color: var(--on-image-ink); font-size: 3.5rem; line-height: 1; font-weight: var(--font-weight-medium); letter-spacing: -0.01em; }
+/* our lines can run longer than the alumni set's (a role and a company before SSB): the text
+   column sits a little tighter so a three-line headline and a two-line "pre SSB" both fit */
+.in-lc .alumni-card__body { gap: var(--space-3); padding-top: var(--space-6); padding-bottom: var(--space-5); }
+.in-lc .alumni-card__value { text-wrap: balance; }
+/* a company with no mark: its initial, in ink, on the white tile */
+.in-lc .alumni-card__tile[data-letter] { color: #171717; font-size: 1.25rem; font-weight: var(--font-weight-bold); }
+.in-lc-link { position: absolute; inset: 0; display: grid; color: inherit; text-decoration: none; }
+.in-lc-link:focus-visible { outline: 2px solid var(--border-focus); outline-offset: -2px; }
+
+/* ── the carousel: the lab's card stack ─────────────────────────────────────
+   The stack sets its own layout (card-stack.css). Here: the slot the alumni card scales into,
+   and the stage's width, so the front card (86% of it) is as wide as an alumni card. */
+.in-slot { position: relative; aspect-ratio: 3 / 2; }
+.in-stack { max-width: calc(30rem / 0.86); margin-inline: auto; }
+/* the glass arrows are for phones (m-web) only */
+@media (min-width: 672px) { .in-stack .fc-arrow { display: none; } }
+/* desktop: spread out. The stage is the full column; the front card stays 30rem, and each
+   neighbour's outer edge meets the stage's edge, so most of it shows. (The stack sets its
+   --fc-* values inline as shares of the stage; these replace them with lengths.) */
+@media (min-width: 960px) {
+  .in-stack { max-width: none; container-type: inline-size; --fc-card-w: 30rem !important; --fc-shift: calc(50cqi - 30rem * 0.43) !important; }
+  .in-stack .fc-slide[data-pos='-1'], .in-stack .fc-slide[data-pos='1'] { filter: brightness(0.72) saturate(0.8); }
+}
+/* phones: the stage runs edge to edge, so the front card is 86vw, as in the alumni row */
+@media (max-width: 671px) { .in-stack { margin-inline: calc(var(--space-gutter) * -1); } }
+
+/* ── the companies: the Placements grid's logo frame (its classes), one logo to a cell ── */
+.in-companies { margin-top: var(--space-12, 3rem); }
+.in-logos { list-style: none; margin: 0; padding: 0; }
+.in-logos > li { display: grid; place-items: center; padding: 0 var(--space-3); }
+/* every logo in the same box, as the Placements tiles: at most 128 x 36 */
+.in-logos img { display: block; max-width: min(128px, 72%); max-height: 36px; width: auto; height: auto; object-fit: contain; }
+
+/* the stats panel and the logo frame take the cards' corner (the alumni, faculty and curriculum
+   cards' --radius-lg), not the Placements panels' larger one */
+.in-stats, .in-logos { border-radius: var(--radius-lg); }
