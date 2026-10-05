@@ -1,0 +1,134 @@
+/* =========================================================
+   Phone card stack (CardStack): one card in front, its neighbours tucked
+   behind it, smaller and dimmed; glass arrows on the front card's edges;
+   optional progress dots underneath. The cards stack in one grid cell, so
+   the stage is as tall as the tallest card. Set on the root by CardStack:
+   --fc-card-w, --fc-shift, --fc-side-scale, --fc-interval.
+   ========================================================= */
+.fc-stage {
+  position: relative;
+  display: grid;
+  touch-action: pan-y;
+}
+.fc-slide {
+  grid-area: 1 / 1;
+  justify-self: center;
+  width: var(--fc-card-w);
+  transition:
+    transform var(--motion-duration-slower) var(--motion-easing-expressive-in-out),
+    filter var(--motion-duration-slower) var(--motion-easing-expressive-in-out),
+    opacity var(--motion-duration-slower) var(--motion-easing-expressive-in-out);
+  will-change: transform;
+}
+.fc-slide > * {
+  height: 100%;
+}
+.fc-slide[data-pos='0'] {
+  z-index: 3;
+}
+.fc-slide[data-pos='-1'],
+.fc-slide[data-pos='1'] {
+  z-index: 2;
+  filter: brightness(0.55) saturate(0.6);
+}
+.fc-slide[data-pos='-1'] {
+  transform: translateX(calc(var(--fc-shift) * -1)) scale(var(--fc-side-scale));
+}
+.fc-slide[data-pos='1'] {
+  transform: translateX(var(--fc-shift)) scale(var(--fc-side-scale));
+}
+.fc-slide[data-pos='far-left'],
+.fc-slide[data-pos='far-right'] {
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+}
+.fc-slide[data-pos='far-left'] {
+  transform: translateX(calc(var(--fc-shift) * -1)) scale(0.7);
+}
+.fc-slide[data-pos='far-right'] {
+  transform: translateX(var(--fc-shift)) scale(0.7);
+}
+.fc-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 4;
+  transform: translate(-50%, -50%);
+}
+.fc-arrow[data-side='prev'] {
+  left: calc((100% - var(--fc-card-w)) / 2);
+}
+.fc-arrow[data-side='next'] {
+  left: calc((100% + var(--fc-card-w)) / 2);
+}
+
+/* ---- Progress dots: one per card. The current one stretches into a pill
+   that fills: over the autoplay interval in a card stack (CardStack), or
+   with the row's scroll position (ScrollDots). ---- */
+.fc-dots {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-5);
+}
+.fc-dot {
+  display: grid;
+  place-items: center;
+  /* a comfortable tap area around a tiny dot */
+  padding: var(--space-2) var(--space-1);
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.fc-dot__fill {
+  position: relative;
+  display: block;
+  width: var(--space-1-5);
+  height: var(--space-1-5);
+  overflow: hidden;
+  border-radius: var(--radius-full);
+  background: var(--border-control);
+  opacity: 0.45;
+  transition:
+    width var(--motion-duration-normal) var(--motion-easing-productive-in-out),
+    opacity var(--motion-duration-normal) var(--motion-easing-productive-in-out);
+}
+.fc-dot[aria-current='true'] .fc-dot__fill {
+  width: var(--space-5);
+  opacity: 1;
+  background: var(--border-decorative);
+}
+.fc-dot[aria-current='true'] .fc-dot__fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--content-brand);
+  transform-origin: left center;
+}
+/* A scroller's dots: the current fill follows the row's position. */
+.fc-dot[data-progress] .fc-dot__fill::after {
+  transform: scaleX(var(--fc-dot-progress, 0));
+}
+.fc-dot[data-playing] .fc-dot__fill::after {
+  animation: fc-dot-fill var(--fc-interval) linear both;
+}
+@keyframes fc-dot-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.fc-dot:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-full);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fc-slide,
+  .fc-dot__fill {
+    transition: none;
+  }
+}

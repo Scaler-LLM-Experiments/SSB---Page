@@ -1,0 +1,65 @@
+/* =========================================================
+   Scaler Innovation Lab: the startups row inside its panel.
+   ========================================================= */
+.sil-row {
+  display: flex;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.sil-row::-webkit-scrollbar {
+  display: none;
+}
+.sil-row > li {
+  flex: none;
+  /* phones: one card, the gap, then a fifth of the next: w + gap + w/5 = the row */
+  width: calc((100% - var(--space-4)) / 1.2);
+  scroll-snap-align: start;
+}
+@media (min-width: 672px) {
+  /* two cards, two gaps, then a fifth of the third: 2.2w + 2 gaps = the row */
+  .sil-row > li {
+    width: calc((100% - 2 * var(--space-4)) / 2.2);
+  }
+}
+
+/* The startup's banner keeps its own shape (1133x542) in the card's media frame. */
+.sil-banner {
+  border-bottom: 0;
+}
+
+/* The dashed rule between founders and description. The package Divider is a
+   1px fill with no dashed option, so it becomes a dashed top border instead. */
+.sil-rule {
+  height: 0;
+  background: transparent;
+  border-top: var(--border-hair) dashed var(--border-control);
+}
+
+/* Phones: the card is narrower than on the web row, so its type steps down
+   one size (title to body-lg, founders and description to caption). */
+@media (max-width: 671px) {
+  .sil-card__body {
+    padding: var(--space-3);
+  }
+  .sil-card__title {
+    font-size: var(--type-body-lg-size);
+    line-height: var(--type-body-lg-lh);
+  }
+  .sil-card__meta {
+    font-size: var(--type-caption-size);
+    line-height: var(--type-caption-lh);
+    letter-spacing: var(--type-caption-tracking);
+  }
+  .sil-card__body .sil-rule {
+    margin-block: var(--space-3);
+  }
+  .sil-card__body [data-part='action'] {
+    padding-top: var(--space-4);
+  }
+}
