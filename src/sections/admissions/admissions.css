@@ -1,0 +1,88 @@
+/* =========================================================
+   Admissions: the process as a numbered timeline, the fee table.
+   ========================================================= */
+
+/* The seven steps: a number in a ring, joined by a line down the left. */
+.adm-steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.adm-steps > li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.adm-steps > li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: var(--space-8);
+  left: calc(var(--space-8) / 2);
+  height: calc(100% - var(--space-8) + var(--space-3));
+  border-left: var(--border-hair) dashed var(--border-control);
+}
+.adm-steps__n {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--space-8);
+  height: var(--space-8);
+  border: var(--border-hair) solid var(--border-brand);
+  border-radius: var(--radius-full);
+  background: var(--surface-brand-subtle);
+  color: var(--content-brand);
+  font-size: var(--type-caption-size);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* The fast-track route, set apart under the steps. */
+.adm-fasttrack {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  margin-top: var(--space-5);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--surface-subtle);
+}
+
+/* The fee: a table on the web; on phones, a list (the table's four columns
+   don't fit, and scrolling hid the course fee). */
+.adm-table {
+  display: none;
+}
+.adm-intakes {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.adm-intakes > li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-block: var(--space-3);
+  border-bottom: var(--border-hair) solid var(--border-subtle);
+}
+.adm-intakes > li:first-child {
+  padding-top: 0;
+}
+.adm-intakes-note {
+  margin-top: var(--space-3);
+}
+@media (min-width: 672px) {
+  .adm-table {
+    display: block;
+  }
+  .adm-intakes,
+  .adm-intakes-note {
+    display: none;
+  }
+}

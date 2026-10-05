@@ -1,0 +1,159 @@
+/* =========================================================
+   Strong Alumni Base: a row of cards, photo left, the move
+   from the role before SSB up to the role after it.
+   ========================================================= */
+
+/* The row starts on the page's content edge and runs off the right, like Faculty's. */
+.alumni-row {
+  --scroller-inset: calc(max(0px, (100% - var(--size-container-max)) / 2) + var(--space-gutter));
+  display: flex;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0 var(--scroller-inset) var(--space-2);
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-padding-inline: var(--scroller-inset);
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.alumni-row::-webkit-scrollbar {
+  display: none;
+}
+.alumni-row > li {
+  flex: none;
+  /* phones: the next card peeks in */
+  width: min(86vw, 28rem);
+  scroll-snap-align: start;
+}
+
+.alumni-card {
+  display: grid;
+  grid-template-columns: 38% 1fr;
+  height: 100%;
+  overflow: hidden;
+}
+.alumni-card__photo {
+  position: relative;
+  min-height: 100%;
+  background: var(--surface-subtle);
+}
+.alumni-card__photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+.alumni-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+  padding: var(--space-5);
+}
+.alumni-card__path {
+  display: flex;
+  flex-direction: column;
+}
+.alumni-card__step {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* The square well for a company mark or the briefcase. */
+.alumni-card__tile {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--space-12);
+  height: var(--space-12);
+  overflow: hidden;
+  border: var(--border-hair) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface-subtle);
+  color: var(--content-secondary);
+}
+.alumni-card__tile img {
+  width: 62%;
+  height: 62%;
+  object-fit: contain;
+}
+/* An icon on its own coloured square fills the tile. */
+.alumni-card__tile[data-fill] {
+  border: 0;
+}
+.alumni-card__tile[data-fill] img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.alumni-card__tile svg {
+  width: 45%;
+  height: 45%;
+}
+
+/* The rising marker, centred under the tiles. */
+.alumni-card__rise {
+  display: grid;
+  place-items: center;
+  width: var(--space-12);
+  padding-block: var(--space-2);
+  color: var(--content-brand);
+}
+.alumni-card__rise svg {
+  width: var(--space-4);
+  height: var(--space-4);
+}
+
+.alumni-card__label {
+  text-transform: uppercase;
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-lh);
+  letter-spacing: var(--type-eyebrow-tracking);
+}
+
+/* Web: a taller, narrower card; the name at the top, the move at the foot. */
+@media (min-width: 672px) {
+  .alumni-row > li {
+    width: 25rem;
+  }
+  .alumni-card {
+    /* 400 x 255: 15% shorter than 4:3 */
+    aspect-ratio: 400 / 255;
+  }
+  .alumni-card__body {
+    justify-content: space-between;
+    padding: var(--space-6) var(--space-5);
+  }
+}
+
+/* Phones: a narrower card, so the tiles and padding tighten. */
+@media (max-width: 671px) {
+  .alumni-card {
+    grid-template-columns: 36% 1fr;
+  }
+  .alumni-card__body {
+    gap: var(--space-3);
+    padding: var(--space-4);
+  }
+  .alumni-card__tile,
+  .alumni-card__rise {
+    width: var(--space-10);
+  }
+  .alumni-card__tile {
+    height: var(--space-10);
+  }
+}
+
+/* Your peers come from: the hero's ticker, in colour. Its sizes give square marks (EY,
+   Apollo, Jio) the same ink as the wordmarks, which makes them taller than the
+   row; cap them so nothing is clipped (object-contain keeps their shape). */
+.peers-ticker .hero-ticker-logo {
+  max-height: var(--space-10);
+  /* in their own colours here, not the hero's one tone */
+  filter: none;
+  opacity: 1;
+}

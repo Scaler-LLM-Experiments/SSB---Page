@@ -129,7 +129,16 @@ export function useHScroller({ speed = 32 }: { speed?: number } = {}) {
     el.scrollBy({ left: dir * step, behavior: 'smooth' });
   };
 
-  return { ref, page };
+  // Straight to item `i` of the first set (the progress dots).
+  const goTo = (i: number) => {
+    const el = ref.current;
+    const card = el?.firstElementChild as HTMLElement | null;
+    if (!el || !card) return;
+    holdUntil.current = performance.now() + 2500;
+    el.scrollTo({ left: i * (card.offsetWidth + parseFloat(getComputedStyle(el).columnGap || '0')), behavior: 'smooth' });
+  };
+
+  return { ref, page, goTo };
 }
 
 export function HScrollerControls({ label, page }: { label: string; page: (dir: 1 | -1) => void }) {
