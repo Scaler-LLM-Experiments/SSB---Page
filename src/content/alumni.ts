@@ -10,8 +10,9 @@ export type CompanyMark = { name: string; src: string; fill?: boolean };
 
 export type Alumnus = {
   name: string;
-  /** File in /public/alumni, without the extension (WebP, 480x600). */
-  photo: string;
+  /** File in /public/alumni, without the extension (WebP, 948x631, the person on
+   * the left, a dark blur on the right). Absent until a photo in this style is supplied. */
+  photo?: string;
   /** Role before SSB. */
   before: string;
   /** Role after SSB, and where. */
@@ -40,21 +41,21 @@ export const alumni: Alumnus[] = [
   },
   {
     name: 'Sagnik Banerjee',
-    photo: 'sagnik-banerjee',
+    // photo: 'sagnik-banerjee', (awaiting a photo in the new landscape style)
     before: 'Project Lead',
     role: 'Sr. Strategy Manager',
     company: marks.urbancompany,
   },
   {
     name: 'Suhaas Sastry',
-    photo: 'suhaas-sastry',
+    // photo: 'suhaas-sastry', (awaiting a photo in the new landscape style)
     before: 'Sales Engineer',
     role: 'Partnerships',
     company: marks.razorpay,
   },
   {
     name: 'Pranav Bagla',
-    photo: 'pranav-bagla',
+    // photo: 'pranav-bagla', (awaiting a photo in the new landscape style)
     before: 'Investment Analyst',
     role: 'Investment Advisor',
     company: marks.avendus,

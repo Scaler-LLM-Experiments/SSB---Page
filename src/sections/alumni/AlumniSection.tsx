@@ -3,12 +3,15 @@
 import * as React from 'react';
 import { Container, Heading, Section, Text } from '@kishanscaler/ssx-ui';
 
-import { alumni } from '@/content/alumni';
+import { alumni as allAlumni } from '@/content/alumni';
 import { HScrollerControls } from '@/sections/faculty/HScroller';
 import { useSectionEntrance } from '@/sections/faculty/useSectionEntrance';
 import { ScrollDots } from '@/sections/shared/ScrollDots';
 import { AlumniCard } from './AlumniCard';
 import './alumni.css';
+
+// Only those with a photo in the card's landscape style.
+const alumni = allAlumni.filter((a) => a.photo);
 
 /** `peers` is the logo ticker under the cards (a server component, so it comes in from the page). */
 export function AlumniSection({ peers }: { peers?: React.ReactNode }) {
@@ -43,8 +46,8 @@ export function AlumniSection({ peers }: { peers?: React.ReactNode }) {
               Strong Alumni Base
             </Heading>
             <Text size="lg" tone="secondary" data-enter="sub">
-              From engineers and analysts to strategy, growth and investment roles at Blinkit, Urban Company,
-              Razorpay and more.
+              From engineers and analysts to program, growth and marketing roles at Blinkit, Emergent, BharatPe
+              and more.
             </Text>
           </div>
           <div data-enter="controls" className="hidden sm:block">

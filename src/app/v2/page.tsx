@@ -7,6 +7,7 @@ import { FacultySection } from '@/sections/faculty/FacultySection';
 import { FaqSection } from '@/sections/faq/FaqSection';
 import { HeroV2 } from '@/sections/hero/v2/HeroV2';
 import { Curriculum, FooterShell, HomeNav, ScrollRefresh } from '@/sections/home/client';
+import { ImmersionsSection } from '@/sections/immersions/ImmersionsSection';
 import { ImpactSection } from '@/sections/impact/ImpactSection';
 import { InnovationLabSection } from '@/sections/innovation-lab/InnovationLabSection';
 import { LiveProjectsSection } from '@/sections/live-projects/LiveProjectsSection';
@@ -15,7 +16,7 @@ export const metadata: Metadata = { title: 'V2 hero · SSB home page lab' };
 
 /**
  * The home page, assembled. In order: the hero, alumni, the 150-hour AI curriculum and Learn
- * by doing, the faculty, the curriculum (the terms, then career prep), live projects, the
+ * by doing, the faculty, the curriculum (the terms, then career prep), immersions, live projects, the
  * innovation lab, the impact foundation, admissions and the FAQ; all lifting off the footer.
  */
 export default function V2Page() {
@@ -34,6 +35,7 @@ export default function V2Page() {
         <FacultySection />
         {/* the curriculum (the terms), then career prep */}
         <Curriculum part="main" />
+        <ImmersionsSection />
         <LiveProjectsSection />
         <InnovationLabSection />
         <ImpactSection />
