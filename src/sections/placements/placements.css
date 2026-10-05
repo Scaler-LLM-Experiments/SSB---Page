@@ -1,0 +1,495 @@
+/* The green a stat comes up in, clear at rest (PlacementsMotion). */
+.pl-tint {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, var(--surface-brand-solid), var(--content-brand));
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Units (₹, L, %, ×, +) a step down and grey, so the digits carry the figure. */
+.pl-unit {
+  font-size: 0.5em;
+  letter-spacing: 0;
+  color: var(--content-secondary);
+}
+.pl-unit-lead {
+  margin-inline-end: 0.06em;
+  vertical-align: 0.62em;
+}
+
+/* ---- The logo grid: each cell turns over in 3D (PlacementsMotion) ---- */
+
+.pl-cell {
+  perspective: 50rem;
+  overflow: hidden;
+}
+.pl-flipper {
+  transform-style: preserve-3d;
+}
+.pl-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.pl-face-back {
+  transform: rotateX(180deg);
+}
+
+/* Pointing at a logo steps the others back, so the turned cell is the one thing lit. */
+.pl-grid img {
+  transition:
+    opacity var(--motion-duration-normal) var(--motion-easing-productive-in-out),
+    filter var(--motion-duration-normal) var(--motion-easing-productive-in-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .pl-grid:has(.pl-cell:hover) .pl-cell:not(:hover) img {
+    opacity: var(--opacity-muted);
+    filter: grayscale(1);
+  }
+}
+
+/* ---- The stories carousel (StoriesMotion) ---- */
+
+/* A real scroller that snaps a card to the page margin; the next card peeks in. */
+.pl-carousel {
+  --carousel-inset: calc(max(0px, (100% - var(--size-container-max)) / 2) + var(--space-gutter));
+  display: flex;
+  gap: var(--space-4);
+  /* No margin here: unlayered, it would beat the margin utilities on the element. */
+  padding: 0 var(--carousel-inset);
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--carousel-inset);
+  scrollbar-width: none;
+}
+.pl-carousel::-webkit-scrollbar {
+  display: none;
+}
+.pl-carousel > li {
+  flex: none;
+  /* Wide, the next card peeking in (54rem: 80% of the first cut's 68rem, the team's call). */
+  width: min(88%, 54rem);
+  scroll-snap-align: start;
+}
+/* A mouse can drag the row too (carousel.ts). */
+@media (pointer: fine) {
+  .pl-carousel {
+    cursor: grab;
+  }
+  .pl-carousel[data-dragging] {
+    cursor: grabbing;
+    user-select: none;
+  }
+}
+
+.pl-story {
+  --story-radius: var(--radius-2xl);
+  border-radius: var(--story-radius);
+}
+/* The proof's height on a phone and a tablet, under the copy (off the spacing
+   scale, so not a utility: h-64 would compile to nothing). On desktop it sits
+   beside the copy and takes the card's height. */
+.pl-story-media {
+  height: 16rem;
+}
+@media (width >= 672px) {
+  .pl-story-media {
+    height: 20rem;
+  }
+}
+@media (width >= 1056px) {
+  .pl-story {
+    min-height: 26rem;
+  }
+  .pl-story-media {
+    height: auto;
+  }
+}
+
+/* A card's wall of logos: two columns drifting in opposite directions, faded at both ends. */
+.pl-wall {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  overflow: hidden;
+  mask-image: linear-gradient(transparent, #000 18%, #000 82%, transparent);
+}
+/* Two copies of a column's logos, moved by one copy's height. Each tile carries
+   its own gap below it (not the track's `gap`), so one copy is exactly half. */
+/* Out of the flow, so a column is as tall as its box, not its tiles. */
+.pl-wall-track {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  animation: pl-wall-up var(--wall-duration) linear infinite;
+}
+.pl-wall-track[data-dir='down'] {
+  animation-name: pl-wall-down;
+}
+.pl-wall:hover .pl-wall-track {
+  animation-play-state: paused;
+}
+.pl-wall-tile {
+  margin-block-end: var(--space-3);
+}
+@keyframes pl-wall-up {
+  to {
+    transform: translateY(-50%);
+  }
+}
+@keyframes pl-wall-down {
+  from {
+    transform: translateY(-50%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pl-wall-track {
+    animation: none;
+  }
+}
+
+/* A role tile's company logo: the secondary line under the role, so it is drawn
+   at about half its size. `zoom` scales its layout box too (a transform
+   would leave the full-size gap), and scales every logo alike, so they keep
+   their equal visual weight. */
+.pl-role-logo {
+  display: flex;
+  zoom: 0.55;
+}
+.pl-role-logo-large {
+  zoom: 0.4;
+}
+
+/* ---- Rolling figures (RollingFigure; StoriesMotion spins the reels) ---- */
+
+.pl-figure {
+  font-variant-numeric: tabular-nums;
+}
+/* A digit's slot: as wide as its digit, one line tall, the reel faded out at its
+   top and bottom edges as it spins. Clipped with a mask, not overflow, which would
+   move an inline-block's baseline to its bottom edge. */
+.pl-roll {
+  position: relative;
+  display: inline-block;
+  mask-image: linear-gradient(transparent, #000 14%, #000 86%, transparent);
+}
+.pl-roll-ghost {
+  visibility: hidden;
+}
+.pl-roll-reel {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  text-align: center;
+}
+.pl-roll-reel > span {
+  display: block;
+}
+/* The drawn figure (its reels, its units) can't be selected, so copying it gives
+   the plain value (the screen readers' copy) and not every reel's digits. */
+.pl-figure > [aria-hidden] {
+  user-select: none;
+}
+
+/* A figure on a light-grey box of its own (FigureStrip boxed): the card frame's grey and radius. */
+.pl-figure-box {
+  padding: var(--space-5);
+  border-radius: var(--radius-2xl);
+  background: var(--surface-sunken);
+}
+@media (width >= 672px) {
+  .pl-figure-box {
+    padding: var(--space-6);
+  }
+}
+
+/* ---- The showcase variation (ShowcaseMotion) ---- */
+
+/* One card at a time, inside the page margins (the carousel sits in the Container). */
+.pl-carousel-full {
+  --carousel-inset: 0px;
+}
+.pl-carousel-full > li {
+  width: 100%;
+}
+
+/* The card, after the App Store's Today cards. The frame is grey (the team's
+   call: a coloured card was too much); the photo sits inside it with rounded
+   corners, the floating column on it and the claim at its foot. The tab is cut out of the frame at the top left:
+   the frame's colour, with a concave fillet where it meets the photo's top
+   edge and another where it meets its left edge. */
+.pl-app {
+  --app-tone: var(--surface-sunken);
+  --app-frame: 0.375rem;
+  --app-fillet: 1rem;
+  position: relative;
+  height: 100%;
+  padding: var(--app-frame);
+  background: var(--app-tone);
+  color: var(--content-primary);
+}
+.pl-app-inner {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: calc(var(--story-radius) - var(--app-frame));
+}
+.pl-app-visual {
+  position: relative;
+  flex: none;
+  height: 18rem;
+}
+/* The photo fills the card behind the floating column and the copy; it blurs
+   progressively, not by fading to grey (the team's call). Three blurred copies
+   sit on it, each revealed by its own gradient: behind the logos, then softly
+   and deeply toward the copy, under a light frost that keeps the text legible.
+   The copies are static (no backdrop-filter, which would re-run as the page
+   scrolls); every layer is scaled up a little alike, so they stay aligned
+   while each blur's soft, transparent rim falls outside the card. The layer
+   is composited (will-change) so the entrance's zoom never re-blurs. */
+.pl-app-media {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+.pl-app-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.2);
+}
+.pl-app-blur-side {
+  filter: blur(10px);
+  mask-image: linear-gradient(to right, transparent 42%, #000 70%);
+}
+.pl-app-blur-soft {
+  filter: blur(6px);
+  mask-image: linear-gradient(to bottom, transparent 40%, #000 60%);
+}
+.pl-app-blur-deep {
+  filter: blur(18px);
+  mask-image: linear-gradient(to bottom, transparent 55%, #000 80%);
+}
+.pl-app-frost {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 45%,
+    color-mix(in oklab, var(--surface-sunken) 70%, transparent) 75%
+  );
+}
+/* The floating column: two columns of tiles on the photo's right side, ending
+   above the copy so it never runs into the figure. */
+.pl-app-drift {
+  position: absolute;
+  inset-block: 0 var(--space-10);
+  inset-inline-end: var(--space-3);
+  /* Narrower on a phone, so the photo still shows beside it. */
+  width: 52%;
+}
+.pl-app-copy {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: 0 var(--space-6) var(--space-6);
+}
+.pl-app-muted {
+  color: var(--content-secondary);
+}
+.pl-app-ink {
+  color: var(--content-primary);
+}
+.pl-app-tab {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: calc(var(--app-frame) + var(--space-2)) var(--space-4) var(--space-2)
+    calc(var(--app-frame) + var(--space-4));
+  border-radius: var(--story-radius) 0 var(--app-fillet) 0;
+  background: var(--app-tone);
+  color: var(--content-secondary);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.pl-app-tab::before,
+.pl-app-tab::after {
+  content: '';
+  position: absolute;
+  width: var(--app-fillet);
+  height: var(--app-fillet);
+  background: radial-gradient(
+    circle at 100% 100%,
+    transparent calc(var(--app-fillet) - 0.5px),
+    var(--app-tone) var(--app-fillet)
+  );
+}
+/* Along the photo's top edge, to the tab's right. */
+.pl-app-tab::before {
+  top: var(--app-frame);
+  left: 100%;
+}
+/* Along the photo's left edge, under the tab. */
+.pl-app-tab::after {
+  top: 100%;
+  left: var(--app-frame);
+}
+@media (width >= 672px) {
+  .pl-app-visual {
+    height: 20rem;
+  }
+  .pl-app-drift {
+    inset-inline-end: var(--space-4);
+    width: min(64%, 26rem);
+  }
+  .pl-app-copy {
+    padding: 0 var(--space-10) var(--space-10);
+  }
+}
+/* On desktop the floating column runs the card's full height (the team's call)
+   and the copy settles at the foot of the card's left side. */
+@media (width >= 1056px) {
+  .pl-app-inner {
+    min-height: 34rem;
+    justify-content: flex-end;
+  }
+  .pl-app-visual {
+    position: absolute;
+    inset: 0;
+    height: auto;
+  }
+  .pl-app-drift {
+    inset-block: 0;
+    inset-inline-end: var(--space-10);
+    width: min(40%, 26rem);
+  }
+  .pl-app-copy {
+    flex: none;
+    max-width: 55%;
+  }
+}
+
+/* The showcase's header: eyebrow, title and lead in one column, the report in the
+   title's row at the right, centred on it. On a phone the report follows the lead. */
+.pl-header-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+/* The long lead in three lines on desktop (the team's call). */
+.pl-header-grid > [data-enter='sub'] {
+  max-width: var(--size-panel-2xl);
+}
+.pl-header-aside {
+  margin-top: var(--space-3);
+}
+@media (width >= 672px) {
+  .pl-header-grid {
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: var(--space-10);
+  }
+  .pl-header-grid > :not(.pl-header-aside) {
+    grid-column: 1;
+  }
+  .pl-header-aside {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: center;
+    margin-top: 0;
+  }
+}
+
+/* The switcher: segmented pill tabs. The dark pill is a copy of the tabs in
+   light ink on dark, clipped to the active tab; sliding the clip moves it,
+   with each label turning light exactly where the pill covers it. */
+.pl-switch {
+  position: relative;
+  display: inline-flex;
+  max-width: 100%;
+  padding: var(--space-1);
+  border-radius: var(--radius-full);
+  background: var(--surface-sunken);
+}
+.pl-switch-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  color: var(--content-secondary);
+  white-space: nowrap;
+  transition: color var(--motion-duration-fast) var(--motion-easing-productive-in-out);
+}
+button.pl-switch-tab:hover {
+  color: var(--content-primary);
+}
+button.pl-switch-tab:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+.pl-switch-pill {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  padding: var(--space-1);
+  border-radius: var(--radius-full);
+  background: var(--surface-inverse);
+  pointer-events: none;
+  /* Hidden until the motion places it on the active tab. */
+  clip-path: inset(0 100% 0 0 round var(--radius-full));
+}
+.pl-switch-pill .pl-switch-tab {
+  color: var(--content-inverse);
+}
+/* Until the motion has placed the pill (or without it), the first tab is lit. */
+.pl-switch:not([data-ready]) > button.pl-switch-tab:first-child {
+  background: var(--surface-inverse);
+  color: var(--content-inverse);
+}
+/* The active card's time, filling the pill. */
+.pl-switch-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: color-mix(in oklab, var(--content-inverse) 16%, transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.pl-switch-icon {
+  position: relative;
+  display: inline-flex;
+  width: var(--size-icon-sm);
+  height: var(--size-icon-sm);
+}
+.pl-switch-icon svg {
+  width: 100%;
+  height: 100%;
+}
+/* On a phone the tabs share the width equally, labels a step down and free to wrap. */
+@media (width < 672px) {
+  .pl-switch {
+    display: flex;
+    width: 100%;
+  }
+  .pl-switch-tab {
+    flex: 1 1 0;
+    padding: var(--space-2);
+    font-size: var(--type-caption-size);
+    line-height: 1.25;
+    text-align: center;
+    text-wrap: balance;
+    white-space: normal;
+  }
+  .pl-switch-icon {
+    display: none;
+  }
+}

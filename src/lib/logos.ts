@@ -22,20 +22,21 @@ export type ResolvedLogo = HeroLogo & {
  * is its box (width × height) times `ink`, the share of the box its artwork
  * fills; so a thin, wide wordmark (Bain, McKinsey) is drawn larger than a heavy,
  * compact mark (BCG). Equal heights made the wordmarks shout or vanish; equal
- * boxes still made BCG twice the weight of Bain. INK_AREA is a logo of ink 0.4
- * at 3:1 drawn LOGO_HEIGHT tall; never wider than LOGO_MAX_WIDTH.
+ * boxes still made BCG twice the weight of Bain. The ink area is that of a logo
+ * of ink 0.4 at 3:1 drawn `height` tall; none is drawn wider than `maxWidth`
+ * (or taller than `maxHeight`, where a box is fixed, as in a grid cell).
  */
-const LOGO_HEIGHT = 30;
-const LOGO_MAX_WIDTH = 196;
-const INK_AREA = 0.4 * 3 * LOGO_HEIGHT ** 2;
+export type LogoSizing = { height: number; maxWidth: number; maxHeight?: number };
 
-function displaySize(ratio: number, ink = 0.4) {
-  let height = Math.sqrt(INK_AREA / (ink * ratio));
+/** The hero's ticker. */
+export const TICKER_SIZING: LogoSizing = { height: 30, maxWidth: 196 };
+
+function displaySize(ratio: number, ink = 0.4, { height: base, maxWidth, maxHeight = Infinity }: LogoSizing) {
+  let height = Math.sqrt((0.4 * 3 * base ** 2) / (ink * ratio));
   let width = height * ratio;
-  if (width > LOGO_MAX_WIDTH) {
-    height *= LOGO_MAX_WIDTH / width;
-    width = LOGO_MAX_WIDTH;
-  }
+  const fit = Math.min(1, maxWidth / width, maxHeight / height);
+  height *= fit;
+  width *= fit;
   return { width: Math.round(width), height: Math.round(height) };
 }
 
@@ -73,7 +74,10 @@ const API = 'https://www.wikidata.org/w/api.php';
 // Wikimedia asks API clients to identify themselves.
 const USER_AGENT = 'SSB-home-lab/0.1 (+https://www.scaler.com/school-of-business/)';
 
-export async function resolveLogos(logos: HeroLogo[]): Promise<ResolvedLogo[]> {
+export async function resolveLogos(
+  logos: HeroLogo[],
+  sizing: LogoSizing = TICKER_SIZING,
+): Promise<ResolvedLogo[]> {
   const ids = logos.filter((logo) => !logo.logoUrl && logo.wikidataId).map((logo) => logo.wikidataId!);
 
   let files: Record<string, string> = {};
@@ -90,7 +94,7 @@ export async function resolveLogos(logos: HeroLogo[]): Promise<ResolvedLogo[]> {
       const file = logo.wikidataId ? files[logo.wikidataId] : undefined;
       const src = logo.logoUrl ?? (file ? commonsUrl(file) : undefined);
       const ratio = src ? await localRatio(src) : undefined;
-      return { ...logo, src, ...(ratio ? displaySize(ratio, logo.ink) : {}) };
+      return { ...logo, src, ...(ratio ? displaySize(ratio, logo.ink, sizing) : {}) };
     }),
   );
 }

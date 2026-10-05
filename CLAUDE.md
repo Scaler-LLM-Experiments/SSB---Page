@@ -1,3 +1,7 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 @AGENTS.md
 
 # SSB home page lab
@@ -8,8 +12,10 @@ built on the Scaler Design System package `@kishanscaler/ssx-ui`. The bar the te
 
 ## Where this is going
 
-1. **Now:** the home page, section by section. The hero is V2; the Faculty section below it was
-   ported from a teammate's build. Section copy comes from the content deck
+1. **Now:** the home page, section by section, in the deck's order. The hero is V2, then
+   Placements (deck slide 3), then the Faculty section, ported from a teammate's build. Placements
+   is in three variations on /v2 for comparison (2026-10-01): the stories carousel above Faculty,
+   then the logo grid and the showcase below it; keep the one the team picks. Section copy comes from the content deck
    `ssb-website/SSB Website vF _ Sep'26.pdf` (internal, so gitignored: the repo is public).
 2. **Later (not yet):** winning sections become Storyblok bloks so other projects can reuse them.
 
@@ -31,8 +37,12 @@ This is design exploration, not a live A/B test. Nothing here serves production 
 npm run dev        # http://localhost:3000 (the lab index lists every variation)
 npm run build      # production build (also type-checks)
 npm run typecheck
+npm start          # serves the production build (use it for frame-time and layout-shift checks)
 npx prettier --write <files>   # .prettierrc: single quotes, 110 wide (the code's style)
 ```
+
+There are no tests and no linter. A change is checked by `npm run typecheck` / `npm run build`, then
+in the browser (see "Checking changes visually").
 
 Prettier with no config uses double quotes and 80 wide, and rewrites whole files; the `.prettierrc`
 is there so it matches the code.
@@ -49,9 +59,11 @@ src/
   content/
     home.ts             hero copy, shared by every variation
     people.ts           faculty, mentors and founding team (deck slide 13)
+    placements.ts       placement figures and recruiter names (deck slide 3)
     company-logos.ts    company wordmarks for the faculty cards (files in public/logos)
   lib/
-    logos.ts            the ticker's logos: our own files sized to equal ink, or Wikidata (P154) lookups
+    logos.ts            logos sized to equal ink (`LogoSizing`: the ticker's, the placements grid's),
+                        from our own files or Wikidata (P154) lookups
   sections/hero/
     types.ts            HeroContent: the content contract every variation shares
     HeroTitle.tsx       title with a pure-white phrase; keeps "B-school" unbroken
@@ -69,6 +81,8 @@ src/
                         columns (title + ticker + CTAs | description + facts). Scroll brings the
                         video down into a frame inside the page margins, then the black fades to
                         the white page below
+      HeroV2.tsx          the markup (server component); HeroV2Motion.tsx: intro media + scroll moment
+      moment.ts           the scroll moment's phases, in screens of scroll; the track height from them
       FilmPlayer.tsx      the big play button, and the YouTube film with YouTube's controls rebuilt
       film-player.css     those controls, in YouTube's own values (not the design system)
   sections/faculty/
@@ -76,6 +90,25 @@ src/
     HScroller.tsx       the row: a real scroller that loops, pauses on hover/focus/touch, arrow buttons
     StoryCard.tsx       photo card: name, role, one company logo in white
     useSectionEntrance.ts  the section's entrance (below)
+  sections/placements/  three variations on one PlacementsContent (all async server components)
+    types.ts            PlacementsContent: four stats, a lead, the stories, the showcases, the logos (with
+                        placeholder hires counts), the report CTA, every recruiter's name
+    shared.tsx          the faculty-style header (aside at its end, or level with the title), Figure,
+                        RollingFigure, FigureStrip (the strip of figures, or `boxed`), LogoImage, Drift
+                        (two drifting columns of tiles), LogoTile, RoleTile
+    carousel.ts         motion both carousels share: card entrance, strip roll (rollIn), carousel controls
+                        (stops, autoplay, mouse drag)
+    PlacementsStories.tsx  the stories variation: wide claim cards (drifting logos or roles, or a photo),
+                        arrows, no indicator, then a strip of figures
+    StoriesMotion.tsx      its motion (carousel.ts)
+    PlacementsShowcase.tsx the showcase variation: lead with the report CTA level with the title, a
+                        segmented pill switcher, App Store-style photo cards (Bengaluru, San Francisco),
+                        then the four figures on grey boxes
+    ShowcaseMotion.tsx     its motion (carousel.ts, plus the switcher's sliding pill)
+    PlacementsSection.tsx  the grid variation: one tight panel of four stats, then a 12-logo grid
+    PlacementsMotion.tsx   its motion: the stats' green wipe, the logos' cycle and 3D flip
+    placements.css      all three: tint, units, the flip, the carousel, the logo wall, the reels, the
+                        showcase's header grid, blur, switcher and figure boxes
 ```
 
 ## Adding a hero variation
@@ -99,7 +132,9 @@ Status section are out of date (it lists as "unreleased" things that ship in 0.7
 it links to are not in the package. The `.d.ts` files are the reliable source for props.
 
 - **Brand and theme** are attributes on `<html>`: `data-brand="ssb"` is set; `data-theme` is left
-  unset so the page follows the OS. Always check both light and dark.
+  unset so the lab index follows the OS. Variation pages pin light on their `<main>`
+  (`data-brand="ssb" data-theme="light"`, `src/app/v2/page.tsx`), so an OS in dark mode should change
+  nothing there. Always check both light and dark, to catch anything that leaks.
 - **Light site.** The site is light mode. A dark hero is a dark island inside a light page.
 - **Dark island:** put `data-brand="ssb" data-theme="dark"` together on one element to force dark
   tokens inside it (V2's hero). Both attributes must be on the same element.
@@ -107,7 +142,8 @@ it links to are not in the package. The `.d.ts` files are the reliable source fo
 - **Tokens only, and wrong names fail silently.** Tailwind's stock colours, spacing, radius, shadow
   and type scales are switched off, so an off-scale class compiles to nothing with no error:
   - Spacing has no 7, 9, 11, 14 … (`0 px 0.5 1 1.5 2 2.5 3 4 5 6 8 10 12 16 20 24 32 40`).
-    `h-7` once collapsed every logo to 0×0.
+    `h-7` once collapsed every logo to 0×0; `h-56`/`h-64`/`h-72` once left a photo box 0 tall and a
+    logo wall unbounded on phones. Taller fixed sizes go in CSS.
   - Colour utilities are named after `--color-*` in `theme.css`: the page background is `bg-page`,
     **not** `bg-surface-page` (that one silently produced a transparent splash and a white V2).
   - After adding classes, check the built CSS actually contains them.
@@ -148,7 +184,7 @@ squashes and shows whole once framed 16:9; its overlays (`data-video-overlay`: c
 YouTube film) are laid out at the scroll frame's size and scaled back to 1:1; its corners are drawn
 elliptical in the card so they look round on screen. `clearCard` hands it back to CSS at rest.
 
-**The sticky nav** (`HeroNav`) is lead-gen: logo and Apply now (a plain button, no icon), always on
+**The sticky nav** (`HeroNav`) is lead-gen: logo and Apply now (its arrow after the label), always on
 screen. It lives at page level because a sticky element only sticks inside its parent. On V2 it
 starts dark and turns light with the page. Hovering the logo plays the package's loading mark
 (`LogoLoader`: the shield traces and inks itself) over the static shield, which steps aside; the
@@ -172,16 +208,141 @@ open bottom to top, one after another) when their row is at 75%. One trigger for
 fired while the cards were still below the fold. Starts use `clamp()` so they stay reachable when
 the section is the last thing on the page.
 
+**Placements is neutral at rest; green is only motion** (the team's call: green figures and green
+icons read dated, "2016", as did grey-bordered cards with icons in pale tiles, a dashed logo grid,
+and a bezel tray around each card). Both variations use the faculty section's header, in type and
+motion: the same markup hooks (`data-enter="header|eyebrow|headline|sub|controls"`, in
+`PlacementsHeader`) and `useSectionEntrance` itself (it finds no `.ssx-card` there, so it only plays
+the header; don't give the cards that class, `story-card.css` styles it globally). Their own fades
+use `data-fade` so the two never both animate a block.
+
+**The stories variation** (the team's idea: logos alone are what every school shows) makes claims
+about who hires, wide cards in a carousel (`min(88%, 54rem)`: 80% of the first cut, the team's
+call; the next card peeks in), each with its proof beside it: those recruiters' logos, or the
+career-switch card's roles (the role over its company's logo, small, as the secondary line;
+only where we have the logo; kept light: a short tile, the role at the label size, the logo at
+`zoom` 0.55, 0.4 for the showcase's larger logos, which shrinks the layout box too and keeps the
+logos' equal weight; an h3 role over a big logo read heavy), drifting past in two columns (`Drift`: tiles drift opposite ways, CSS, each tile carrying its
+own gap so one copy is exactly half the track, tracks out of the flow so a column is as tall as its
+box; short lists repeat to at least 6 a column), or a photo (a still from the campus film, standing
+in for the report asset). Copy sits with the kicker at the top and the claim at the bottom. The
+cards on screen open as the faculty cards do. No indicator (the team's call): arrows, swipe,
+trackpad and a mouse drag; it moves on every 5s (`DWELL`, both carousels), wrapping, but waits on hover, focus inside, 3s
+after a swipe, wheel or drag, during the entrance (`data-hold`) and off screen. Tried: narrow
+cards like the faculty row (the team kept the wide ones). Under it, the outcomes as a quiet strip
+(`FigureStrip`; the team's reference: Apple's camera spec row, a big figure over a one-line
+caption), supporting the claims rather than leading. **The figures roll in like counter reels: a count-up, which the
+motion rules otherwise forbid; the team asked for it.** Each digit is a slot the width of its
+final digit (tabular figures) over a reel of two turns of 0–9, drawn landed so no-JS and reduced
+motion show the value; the reel is masked at its edges, not clipped with `overflow` (that moves an
+inline-block's baseline to its bottom edge). The drawn figure is `user-select: none`, so copying it
+gives the screen readers' value ("₹19L"), not every reel's digits (a copy once pasted 40 of them).
+
+**The carousels' controls** (`carouselControls`) work in stops, not cards: where the row can rest,
+one per card until the end of the scroll (a row reaches its end before its last cards reach the
+margin, so it can have fewer stops than cards; at 4 cards of 24rem on 1440 it had 2, and two of
+four dots could never light). Segments past the last stop are hidden; stops are measured again on
+resize. A mouse drags the row: snapping off while dragging, then it settles on the next stop in the
+drag's direction and snapping comes back on `scrollend`; the click that ends a drag is swallowed.
+
+**The showcase variation** (the team's references: Apple's "Power on full display" for the order,
+the App Store's Today cards, Apple's pill tabs) reads top to bottom: the header (left-aligned; a
+longer `lead`, held to three lines on desktop by `panel-2xl`; the report CTA at the right, centred
+on the title's line, by a grid (`asideAt="title"`): the hero's secondary CTA, large, with its
+download icon), then the switcher at the top left of the cards, the carousel, and the four `stats`
+on light-grey boxes (`FigureStrip boxed`: the card frame's grey and radius, figures at `type-h1`,
+a step under `type-billboard-md`'s card figure, so they don't fight it; all the team's calls). Each
+card: a photo of the place (Bengaluru's Vidhana Soudha, San Francisco's Golden Gate; CC0 from
+Wikimedia Commons, `public/media/CREDITS.md`; 1280 and 2560px with `srcset`, so a retina desktop
+gets it sharp and a phone small) in a grey frame (a coloured frame, brand green or ink, was too
+much), a tab cut out of the frame at the top left (the frame's grey, with concave fillets drawn by
+radial gradients where it meets the photo), a column of large logos (or the alumni's roles, by
+name: role over company, centred on tiles the logo tiles' size, all eight; logos there read
+heavy and set that card apart, the team's call) floating the card's full height on desktop (in the photo
+above the copy on a phone), and at its foot the figure with the claim reading on from it as one
+statement, all near-black ("50+" / "startups from Bengaluru…"; the team's call: no label under the
+figure, no grey-and-black title). **The photo blurs
+progressively, not by fading to grey** (the team's call): three blurred copies of it (10px behind
+the logos, 6px then 18px toward the copy), each revealed by its own gradient, under a light frost
+for the text. Copies, not `backdrop-filter`, which would re-run as the page scrolls: measured
+60fps (p95 16.7ms) at 2× through a card change. Every layer is scaled up alike (1.2) so they stay
+aligned while each blur's transparent rim falls outside the card (CSS blur fades an element's edges
+to transparent, which would show the sharp photo there), and the layer is composited
+(`will-change`) so the entrance's zoom never re-blurs. Each card comes round with its floating column rising in
+and its figure rolling. The switcher's dark pill is a copy of the tabs in light ink on dark,
+clipped (`clip-path: inset(… round)`) to the active tab; sliding the clip moves the pill and turns
+each label light exactly where it covers it, with no layout. It is placed again whenever the
+switcher's size changes (a ResizeObserver: fonts, resizes, new styles); until it is placed, CSS
+lights the first tab. Its tabs share the width on a phone. Tried on 2026-10-01, in one sitting:
+the report as a detached fourth pill beside the switcher (the team: a CTA, not a tab); the
+switcher centred, under the cards, at their top right (it went top left); three figures under the
+lead; Apple's chip-fact layout under the cards (icon, figure and label, hairline, sentence; the
+team swapped it for the stories' strip, then boxes). Earlier: everything centred (the
+line-by-line headline jumped 1px at 320 when SplitText reverted, a 0.006 layout shift; left-aligned
+headers don't); a white panel on a campus photo; logos on tiles over a washed-out photo.
+
+**"The carousel is not working" (2026-10-01)** was a page left open while its server-rendered markup
+changed under a hot reload: the client motion had bound to the old nodes, so the tabs did nothing
+and the pill stayed hidden. A reload fixes it; production never does this. The ResizeObserver and
+the CSS fallback above make the switcher survive it anyway.
+
+**The grid variation's moment** is the stats: each cell comes up one after another (like the
+faculty cards), wiped open from the bottom in the brand green (a `data-card-tint` layer, a
+deep-green gradient), which clears to white as its content fades in. The panel's `overflow:
+hidden` rounds the outer corners, so the wipe needs no radius. `ScrollTrigger.batch` groups the
+cells by arrival, so the desktop row of four staggers and a phone's column brings each up as it is
+reached. Cells are tight (icon, figure, label, one short line).
+
+**The logo grid** (solid hairlines: a 1px gap over the line colour) holds twelve logos (6 × 2,
+4 × 3, 3 × 4); every 4s all of them cross-fade to their cell's next logo together. Pointing at a
+logo turns its cell over in one 3D move (rotateX to 180°, `preserve-3d`, both faces drawn, the back
+hidden by `backface-visibility`) to "N students placed" on one line, while the other logos fade to
+grey; a tap does it on a touch screen; under reduced motion it turns at once. The cycle waits while
+the pointer is on the grid. The logos cross-fade inside the front face, never on the flipper or its
+parents: opacity below 1 flattens an element's 3D children, which would show both faces mid-turn.
+Earlier versions flipped random cells on a timer (busy at 1.2s; the team asked for hover only).
+Logos are in their own colours (the team's call), sized to equal ink in a 128 × 36 box. Measured
+(both variations): no layout shift, no horizontal overflow at 320 and 390; 60fps through the
+stats' entrance (p95 16.8ms).
+
+Tried and dropped on 2026-10-01, at the team's request: stat bars drawn to scale (each grew at one
+speed to its value), edge-to-edge rows of recruiter names drifting with the scroll, per-stat SVG
+drawings (coin stack, before/after bars, a ring, a dot sphere), a report callout, green figures
+and icons, cards in a bezel tray, timed random flips, and a grey line beside the recruiters'
+heading ("MNCs, AI companies and top startups", a hover hint). The team's
+reference was a stat card with its figure big in the brand colour, a rule, then a sentence.
+
+The grid's 24 logos came from Wikidata (P154) and, where Wikidata has none, English Wikipedia's
+article images (`Special:FilePath`, on Commons or, for non-free logos, on en.wikipedia). Dropped:
+Edelweiss (a tiny boxed lockup), Meesho and Rapido (app icons on solid boxes), Reckitt (Wikipedia
+still has the old Reckitt Benckiser mark). Each was trimmed to its ink in headless Chrome (render,
+find the ink's bounds, crop the viewBox) and its `ink` measured the same way. Myntra's SVG wraps a
+raster (139 KB). **Placeholders in `placements.ts`, to replace before anything ships:** the hires
+counts; the stories' and showcases' copy (only the first card's claim is the team's), the `lead`,
+and the report link; "50+ startups" (the deck lists 62 recruiters, about 43 of them startups);
+"10+ MNCs" (our count of the deck's list). The `roles` are real (the deck's "Strong Alumni Base"),
+but only Emergent is an AI company: "AI titles" need the team's data. No logo on Wikidata for
+Emergent, Avendus, Ninjacart or The Whole Truth, so the stories' career-switch card shows the four of
+the eight whose logos we have (the showcase's roles card names all eight).
+Campus photos are stills from the campus film until the team's arrive.
+
 ## Motion rules
 
 - GSAP through `@kishanscaler/ssx-ui/motion`: `useMotion` for scoped setup and cleanup, and
   `motionTokens`, `ease()`, `entrance()`, `stagger()` for every duration, curve and distance.
 - The package's `Reveal` / `TextReveal` / `CountUp` only trigger on mount or in-view, which fires
   under a splash. Sequences that must wait for something use one timeline (see `intro.ts`).
+- **Plain CSS beats Tailwind's utilities whatever the specificity:** utilities sit in a cascade
+  layer, a section's own `.css` doesn't. `margin: 0` on `.pl-carousel` once cancelled its `mt-24`.
+  Don't set in a class what the markup sets with a utility.
+- **Don't start a GSAP-scaled or -rotated element with Tailwind's `scale-*`/`rotate-*`.** v4 writes
+  them as the separate `scale`/`rotate` properties, which multiply with the `transform` GSAP writes
+  (a `scale-x-0` bar never fills). Set the start state inline (`transform: scaleX(0)`) instead.
 - **Never tween a package `Button` directly.** Its `transition-all` corrupts GSAP's end values and
   the button stays invisible. Animate a wrapper.
 - **Content enters with one gentle fade, not part by part.** No word splits, no staggered pieces,
-  no count-ups on numbers: they read as the page stuttering in.
+  no count-ups on numbers: they read as the page stuttering in. (Exception, the team's ask: the
+  Placements stories strip rolls its figures in.)
 - **Never let the DOM move under a CSS animation.** Re-inserting an element restarts its CSS
   animations (the ticker jumped back). ScrollTrigger `pin` does this; use CSS sticky instead.
 - **Never lock scrolling with `overflow: hidden`.** On screens that always show a scrollbar it hides
@@ -219,7 +380,9 @@ opens the full film from YouTube (`media.youtubeId`, via youtube-nocookie) in th
 the loop; scrolling back out of the frame or the hero off screen closes it and the loop resumes.
 The hero's type: title `type-hero` (48px desktop, 28px phone; one step under `type-billboard-sm`'s
 56/32) and the eyebrow in pure white (`text-on-image-ink`); eyebrow at the label size, description
-`Text size="lg"`; plain CTAs (no icon wells).
+`Text size="lg"`; CTAs without icon wells, but each with a trailing icon (`HeroCta.icon`,
+`CtaIcon`: an arrow for Apply now, a download for the brochure and the report; the team's call,
+2026-10-01). A CTA anywhere on the page takes one.
 
 ### Logos
 
@@ -287,7 +450,8 @@ had to build themselves, as requests for the package: `design-team-requests.md` 
 **Already fine here, keep it that way:**
 - Marquee (`LogoTicker`): one set must be wider than its box or a gap opens before the copy
   arrives (theirs: a 485px row on a 1584px screen). Ours: 734px in a 640px box on desktop, 726px in
-  358px on a phone. If the ticker is widened or loses logos, repeat the set to fill. The copy is
+  358px on a phone, measured before the 2026-10-01 logo swap; the box is now 560px (`panel-lg`) and
+  the logos sit 48px apart, so re-measure. If the ticker is widened or loses logos, repeat the set to fill. The copy is
   `aria-hidden` with empty alts (one accessible copy); it pauses on hover; under reduced motion it
   is still and scrollable.
 - No flash before the script: the splash is server-rendered over everything at first paint, with a
@@ -329,7 +493,8 @@ hover; the ticker's logos changed (Swiggy and Cars24 for ISB and IIMA), self-hos
 ink, real colours on hover, 48px apart; YouTube-style controls on the film, on the framed loop
 the scrubber (spanning the film's 4:48; click to open the film there), play and the time, an 80px play button; the scroll moment zippy and generic
 (phases in screens of scroll in `moment.ts`, the track computed from them); no gradient under the
-player's controls; YouTube's auto-captions off.
+player's controls; YouTube's auto-captions off; then a trailing icon on every CTA (an arrow on
+Apply now, in the hero and the nav; a download on the brochure).
 
 ## Checking changes visually
 
