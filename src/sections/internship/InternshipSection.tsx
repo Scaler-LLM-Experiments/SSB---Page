@@ -254,6 +254,45 @@ function Stories() {
   );
 }
 
+/**
+ * The companies, one logo to a cell. When the grid is scrolled to, the logos come in as a cascade:
+ * each rises a little and fades in, one after another along the rows (`data-in` on the grid, set
+ * once it is a quarter on screen; the delay is each logo's place in the list). Under reduced
+ * motion, and with no observer, they are simply there.
+ */
+function LogoGrid() {
+  const ref = React.useRef<HTMLUListElement>(null);
+  const [shown, setShown] = React.useState(false);
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      setShown(true);
+      return undefined;
+    }
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setShown(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.25 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return (
+    <ul ref={ref} data-in={shown || undefined} className="in-logos grid grid-cols-3 gap-px overflow-hidden border border-border-subtle bg-border-subtle sm:grid-cols-4 md:grid-cols-6">
+      {COMPANIES.map((name, i) => (
+        <li key={name} className="relative h-20 bg-surface sm:h-24" style={{ '--i': i } as React.CSSProperties}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={`/internship/logos/${name.toLowerCase().replace(/ /g, '-')}.png`} alt={name} loading="lazy" />
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export function InternshipSection() {
   return (
     <Section id="internship" density="roomy" aria-labelledby="internship-title" className="overflow-x-clip">
@@ -312,14 +351,7 @@ export function InternshipSection() {
           <Heading as="h3" size="eyebrow" className="mb-4 text-content-secondary">
             Our learners are now creating impact at
           </Heading>
-          <ul className="in-logos grid grid-cols-3 gap-px overflow-hidden border border-border-subtle bg-border-subtle sm:grid-cols-4 md:grid-cols-6">
-            {COMPANIES.map((name) => (
-              <li key={name} className="relative h-20 bg-surface sm:h-24">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={`/internship/logos/${name.toLowerCase().replace(/ /g, '-')}.png`} alt={name} loading="lazy" />
-              </li>
-            ))}
-          </ul>
+          <LogoGrid />
         </div>
       </Container>
       </PlacementsMotion>

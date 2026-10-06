@@ -6,9 +6,9 @@
  * The card follows scaler.com/online-pgp-in-business-and-ai's case cards: the
  * photo fills it, the company sits on the photo's dark base over a hairline, the brief
  * under it. Content from the SSB concept site (ssb-school-concept.vercel.app, "Live
- * projects"). A card shows its photo when `image` names a file in public/live-projects;
- * none are committed yet (brand imagery to be supplied), so the cards sit on the dark
- * surface alone.
+ * projects"). A card shows its photo when `image` names a file in public/live-projects: the
+ * photos are generated stand-ins (Magnific, 2026-10-06), one still life per brief, no people and
+ * no brand marks, until brand imagery is supplied.
  */
 import * as React from 'react';
 import { Container, Heading, Section, Text } from '@kishanscaler/ssx-ui';
@@ -20,12 +20,12 @@ import '@/sections/faculty/story-card.css';
 import './live-projects.css';
 
 const PROJECTS: Project[] = [
-  { company: 'Mokobara', title: 'International expansion', desc: 'Design the APAC strategy for a ₹200Cr business and pitch to its founders.' },
-  { company: 'AJIO', title: 'Product teardown', desc: 'Map conversion friction from discovery and search to product page and checkout.' },
-  { company: 'Practo', title: 'Healthcare growth', desc: 'Grow healthcare GMV across primary, secondary and tertiary care.' },
-  { company: 'Meolaa', title: 'Launch strategy', desc: 'Build onboarding flows, brand campaigns and an app-launch roadmap.' },
-  { company: 'Quenzy', title: 'Product-market fit', desc: 'Build a PMF and go-to-market strategy across culture, distribution and positioning.' },
-  { company: 'StockGro', title: 'Stockathon', desc: 'Trade in a live mock-market simulation under real market conditions.' },
+  { company: 'Mokobara', title: 'International expansion', desc: 'Design the APAC strategy for a ₹200Cr business and pitch to its founders.', image: 'mokobara' },
+  { company: 'AJIO', title: 'Product teardown', desc: 'Map conversion friction from discovery and search to product page and checkout.', image: 'ajio' },
+  { company: 'Practo', title: 'Healthcare growth', desc: 'Grow healthcare GMV across primary, secondary and tertiary care.', image: 'practo' },
+  { company: 'Meolaa', title: 'Launch strategy', desc: 'Build onboarding flows, brand campaigns and an app-launch roadmap.', image: 'meolaa' },
+  { company: 'Quenzy', title: 'Product-market fit', desc: 'Build a PMF and go-to-market strategy across culture, distribution and positioning.', image: 'quenzy' },
+  { company: 'StockGro', title: 'Stockathon', desc: 'Trade in a live mock-market simulation under real market conditions.', image: 'stockgro' },
 ];
 
 type Project = { company: string; title: string; desc: string; /** a file name in public/live-projects, without the extension */ image?: string };

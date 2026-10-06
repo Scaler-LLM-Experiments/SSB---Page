@@ -1865,8 +1865,25 @@ button.sj-mcard:hover .sj-mcard-media img, a.sj-mcard:hover .sj-mcard-media img 
    how the wash is cut, not by hue: --wash-k is its strength, --wash-w and --wash-h its reach. */
 .sj-pb-card, .sj-career-card { --wash: var(--surface-brand-solid); --wash-at: 100% 100%; --wash-k: 1; --wash-w: 78%; --wash-h: 92%;
   background-image:
-    radial-gradient(var(--wash-w) var(--wash-h) at var(--wash-at), color-mix(in srgb, var(--wash) calc(18% * var(--wash-k)), transparent) 0%, color-mix(in srgb, var(--wash) calc(8% * var(--wash-k)), transparent) 46%, transparent 74%),
+    radial-gradient(calc(var(--wash-w) * (1 + 0.14 * var(--wash-b))) calc(var(--wash-h) * (1 + 0.1 * var(--wash-b))) at var(--wash-at), color-mix(in srgb, var(--wash) calc(18% * var(--wash-k) * (0.82 + 0.4 * var(--wash-b))), transparent) 0%, color-mix(in srgb, var(--wash) calc(8% * var(--wash-k) * (0.82 + 0.4 * var(--wash-b))), transparent) 46%, transparent 74%),
     linear-gradient(to top, color-mix(in srgb, var(--wash) calc(6% * var(--wash-k)), transparent), transparent 55%); }
+/* the glow breathes, lightly: --wash-b (0 to 1) swells it a little and deepens it a little, then
+   lets it go. Each card keeps its own slow time, so they never pulse together. Registered as a
+   number so it can be animated; still under reduced motion. */
+@property --wash-b { syntax: '<number>'; inherits: false; initial-value: 0; }
+.sj-pb-card, .sj-career-card { animation: sj-wash-breathe 7s ease-in-out infinite alternate; }
+.sj-pb-card[data-k='oneToOne'] { animation-duration: 9s; animation-delay: -3s; }
+.sj-pb-card[data-k='interviews'] { animation-duration: 8s; animation-delay: -5s; }
+.sj-pb-card[data-k='behaviour'] { animation-duration: 10s; animation-delay: -2s; }
+.sj-career-card { animation-duration: 11s; animation-delay: -6s; }
+@keyframes sj-wash-breathe { from { --wash-b: 0; } to { --wash-b: 1; } }
+@media (prefers-reduced-motion: reduce) { .sj-pb-card, .sj-career-card { animation: none; } }
+/* the drawings are blended into the glow: each has a soft white haze round its figure, which sat
+   on the green as a paler patch. Multiplied, white takes the colour under it, so the haze becomes
+   the glow and only the figure's own colours stand on it. (Light theme only: on a dark card
+   multiplying would darken the drawing.) */
+.sj-pb-art > .sj-pb-canvas, .sj-career-card .sj-cal { mix-blend-mode: multiply; }
+:root[data-theme='dark'] .sj-pb-art > .sj-pb-canvas, :root[data-theme='dark'] .sj-career-card .sj-cal, [data-theme='dark'] .sj-pb-art > .sj-pb-canvas, [data-theme='dark'] .sj-career-card .sj-cal { mix-blend-mode: normal; }
 .sj-pb-card[data-k='hours'] { --wash-k: 1.25; --wash-w: 70%; --wash-h: 110%; } /* the lead card: the deepest wash */
 .sj-pb-card[data-k='oneToOne'] { --wash-k: 0.8; --wash-w: 96%; --wash-h: 78%; }
 .sj-pb-card[data-k='interviews'] { --wash-k: 1; --wash-w: 62%; --wash-h: 100%; }

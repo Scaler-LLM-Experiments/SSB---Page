@@ -72,17 +72,22 @@ function CampusFoot({ footRef, content }: { footRef: React.Ref<HTMLElement>; con
       <div className="sfc-top">
         <div className="sfc-lead">
           <p className="sfc-statement">{content.tagline}</p>
-          <div className="sfc-actions">
+          {/* the page's own pair of actions, exactly as in the "next step" card above: the solid
+              primary and the outline secondary, both buttons, in the light theme's colours (the
+              footer's dark theme would mute the green and turn the second into a text link) */}
+          <div className="sfc-actions" data-brand="ssb" data-theme="light">
             <Button asChild variant="primary" size="lg">
               <a href={cta.primary.href}>
                 {cta.primary.label}
                 <ArrowRight weight="bold" aria-hidden="true" />
               </a>
             </Button>
-            <a className="sfc-brochure" href={cta.secondary.href}>
-              <DownloadSimple weight="bold" aria-hidden="true" />
-              {cta.secondary.label}
-            </a>
+            <Button asChild variant="secondary" size="lg">
+              <a href={cta.secondary.href}>
+                <DownloadSimple weight="bold" aria-hidden="true" />
+                {cta.secondary.label}
+              </a>
+            </Button>
           </div>
         </div>
         <nav className="sfc-links" aria-label={content.navLabel}>
