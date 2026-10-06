@@ -12,16 +12,12 @@ const { duration: d, stagger: st, offset } = motionTokens;
 /** Seconds each role holds before the next turns over it. */
 const ROLE_HOLD = 2.2;
 
-/** Seconds the clip's playback bar takes to run its length, then it starts again. */
-const CLIP_RUN = 12;
-
 /**
  * Why SSB's motion, on the server-rendered markup in WhySection:
  *
  *   data-enter         the header: the faculty section's entrance (useSectionEntrance)
- *   data-why-evidence  the clip and the figures: one gentle fade as they arrive, each figure
- *                      (data-slide) sliding up into its line; the clip's bar (data-clip-bar) runs
- *                      while it is on screen
+ *   data-why-evidence  the coda and the figures: one gentle fade as they arrive, each figure
+ *                      (data-slide) sliding up into its line
  *   data-why-roles     the line's roles (data-role) turning over, one up and out as the next
  *                      comes up into the slot, while it is on screen
  *   data-why-chapter   a chapter (sticky, CSS): as the next one slides up over it, its card
@@ -29,7 +25,8 @@ const CLIP_RUN = 12;
  *                      (data-why-dim) fading over it, scrubbed to the scroll
  *
  * Transforms and opacity only. Under reduced motion nothing moves: the first
- * role shows, the bar stands, and the chapters don't stack (CSS).
+ * role shows, and the chapters don't stack (CSS). The breaker above the
+ * section moves itself (WhyBreaker).
  */
 export function WhyMotion({ children }: { children: React.ReactNode }) {
   const scope = React.useRef<HTMLDivElement>(null);
@@ -59,22 +56,6 @@ export function WhyMotion({ children }: { children: React.ReactNode }) {
           { yPercent: 0, duration: d.slower, stagger: st.base * 1.5, clearProps: 'transform' },
           d.slow * 0.4,
         );
-        // The playback bar runs, from where it was paused, while the clip is on screen.
-        const bar = evidence.querySelector('[data-clip-bar]');
-        if (bar) {
-          const run = gsap.fromTo(
-            bar,
-            { scaleX: 0 },
-            { scaleX: 1, duration: CLIP_RUN, ease: ease('linear'), repeat: -1, paused: true },
-          );
-          run.progress(0.38);
-          ScrollTrigger.create({
-            trigger: evidence,
-            start: 'top bottom',
-            end: 'bottom top',
-            onToggle: (self) => (self.isActive ? run.play() : run.pause()),
-          });
-        }
       }
 
       // The roles turn over in their slot, each holding ROLE_HOLD seconds, while the line is on screen.

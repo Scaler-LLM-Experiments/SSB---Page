@@ -67,6 +67,7 @@ src/
   lib/
     logos.ts            logos sized to equal ink (`LogoSizing`: the ticker's, the placements grid's),
                         from our own files or Wikidata (P154) lookups
+    youtube.ts          the YouTube IFrame API loader and types, shared by the hero film and the breaker
   sections/hero/
     types.ts            HeroContent: the content contract every variation shares
     HeroTitle.tsx       title with a pure-white phrase; keeps "B-school" unbroken
@@ -105,9 +106,10 @@ src/
                         (banners in public/startups) on the right; same entrance as Faculty
     StoryCard.tsx       photo card: name, role, one company logo in white
     useSectionEntrance.ts  the section's entrance (below)
-  sections/why/         WhySection.tsx (server): faculty-style header, the quote as a paused clip with
-                        two figures, a line whose last words cycle the roles, three stacking chapters;
-                        WhyMotion.tsx; why.css; types.ts (WhyContent)
+  sections/why/         WhyBreaker.tsx (client): the breaker that opens it, Kamath's clip with the words
+                        and figures beside it; WhySection.tsx (server): the breaker, then a line whose
+                        last words cycle the roles, three stacking chapters; WhyMotion.tsx; why.css;
+                        types.ts (WhyContent)
   sections/placements/  three variations on one PlacementsContent (all async server components)
     types.ts            PlacementsContent: four stats, a lead, the stories, the showcases, the logos (with
                         placeholder hires counts), the report CTA, every recruiter's name
@@ -349,25 +351,48 @@ label, hairline, sentence). Earlier: everything centred (the line-by-line headli
 320 when SplitText reverted, a 0.006 layout shift; left-aligned headers don't); a white panel on a
 campus photo; logos on tiles over a washed-out photo; claims in near-black over a light frost.
 
-**Why SSB** (deck slide 4, 2026-10-05) is an argument in three beats under the faculty-style header
-(its entrance via `useSectionEntrance`; the title's last phrase in the brand green; the eyebrow
-grey), on a faint grey band (`bg-surface-subtle`). The team asked for something creative in place
-of their mock's two rows of white cards; a second take (an editorial band, then three steps beside
-one photo, taking turns) wasn't it either. **The receipt:** the Kamath remark as a paused clip (the
-deck asks for a still from the AMA video; a dark frame stands in), the deck's words as a white
-caption, only the quoted part in quote marks, a playback bar running along its foot while it is on
-screen; beside it "He isn't alone in that read." and the 60% and 62% figures (each sliding up into
-its line), hairlines between. **The turn:** the deck's "Nobody is preparing you for emerging roles
-like", large, its last words turning over in green through the deck's four roles (a slot as wide
-as the longest, every role stacked in it, so the line never moves; screen readers get the list
-once). **The answer:** three chapters (01 Build, 02 Ship, 03 Grow) that stack as the page
-scrolls: each card is CSS-sticky under the nav, a step lower than the one before so their tops
-show; as the next slides up over it, it settles back (scale 0.94, scrubbed), the section's grey
-fading over it on a layer of its own. Fading the card itself let the card under it show through.
-Not sticky under reduced motion. The mock's figure captions said "as cited in the brief", a
-placeholder: these are the deck's own sentences. 60fps scrolling the stack once its photos have
-loaded (an instant jump onto lazy photos stalled one frame 417ms, decoding). **The photos are
-cropped from the mock's screenshot (742 × 428) until the team sends the originals.**
+**Why SSB** (deck slide 4) opens with **the page's first breaker** (2026-10-06, `WhyBreaker`), after
+Apple's product blocks ("Power on full display", the team's reference): Nikhil Kamath's remark,
+the clip of it the full width of the page with him on its left looking right, and the words on
+the right where he is looking (the team's call), the clip melting into the page under them (a
+progressive blur, a `backdrop-filter` masked left to right, then the page's grey) and at its top
+and bottom. An eyebrow ("Why the traditional MBA doesn't work", the team's line), the words as the
+title at the display size and medium weight (several lines: kept quiet, the team's call), lit
+from grey to ink top line first as they scroll up, then who said it in one Apple-style line (grey,
+the name and "He isn't alone in that read." in ink), "Watch the clip" (plays it once with sound),
+and the 60% and 62% as Apple's spec figures (source over, figure, line under). On a phone the clip
+is a block above the words, re-centred on his face. Tried that day: a dark full-bleed scene with
+the clip faded behind white words (the team: "doesn't look good"). Below it the section has no
+header (the deck's "MBA is not dead…" and the mock's description were cut: the breaker makes that
+argument). Things learnt:
+
+- **Check a quote against its source.** The deck had Kamath "telling students" that an MBA at 25
+  "must be some kind of **an** idiot" and that it "went viral this year". The video (Zerodha's
+  15th-anniversary AMA, uploaded 24 October 2025) has, at 1:43:21: "If you're 25 and going to a
+  MBA college today, you must be some kind of idiot, if you ask me." Found by fetching only its
+  captions (`yt-dlp --skip-download --write-auto-subs`); no video downloaded.
+- **The clip is YouTube's player, not a copy** (the footage is Zerodha's and the repo is public):
+  youtube-nocookie, muted, made a screen away, played only on screen. The video has subtitles burned
+  in (no caption track to switch off) in its bottom 12%, and YouTube's title bar covers its top 7%:
+  the frame is drawn 35% larger than covering and hung 9% above the top, so both fall outside. It
+  loops by polling the time and seeking back 0.3s before its end: letting it reach `end` showed
+  YouTube's end screen (a still of the founders) for a moment each loop.
+- **Lighting text with `background-clip: text` needs a block.** On an inline span the gradient
+  restarts on every line (so the lines light at once, not in order) and clips the descenders.
+- 60fps (p95 16.7ms) scrolling past it while the clip plays; one 67ms frame as the video starts.
+
+Then the section answers it. **The turn:** the deck's "Nobody is preparing you for emerging roles
+like" (now the section's heading), large, its last words turning over in green through the deck's
+four roles (a slot as wide as the longest, every role stacked in it, so the line never moves;
+screen readers get the list once). **The answer:** three chapters (01 Build, 02 Ship, 03 Grow) that
+stack as the page scrolls: each card is CSS-sticky under the nav, a step lower than the one before
+so their tops show; as the next slides up over it, it settles back (scale 0.94, scrubbed), the
+section's grey fading over it on a layer of its own. Fading the card itself let the card under it
+show through. Not sticky under reduced motion. 60fps scrolling the stack once its photos have
+loaded (an instant jump onto lazy photos stalled one frame 417ms, decoding). Earlier takes
+(2026-10-05): the mock's two rows of white cards; an editorial band with three steps beside one
+photo; the remark as a dark "paused clip" card. **The chapters' photos are cropped from the mock's
+screenshot (742 × 428) until the team sends the originals.**
 
 **"The carousel is not working" (2026-10-01)** was a page left open while its server-rendered markup
 changed under a hot reload: the client motion had bound to the old nodes, so the tabs did nothing

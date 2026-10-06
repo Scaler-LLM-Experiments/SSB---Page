@@ -1,118 +1,179 @@
 /* Why SSB (WhySection), on the section's faint grey. */
 
-/* ---- The receipt: the clip, and the figures beside it ---- */
+/* ---- The breaker (WhyBreaker): the clip on the left, the words on the right ---- */
 
-.why-evidence {
-  display: grid;
-  gap: var(--space-8);
+/* On the section's faint grey, so the breaker and the section read as one. The
+   clip fills the breaker on desktop, Nikhil on its left, and melts into the
+   page on the right under the words (a progressive blur, then the page's
+   colour), and at its top and bottom. On a phone it is a block above the
+   words, fading into the page at its foot. */
+.why-breaker {
+  --why-ground: var(--surface-subtle);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--why-ground);
+}
+.why-breaker-media {
+  position: relative;
+  height: min(52svh, 26rem);
+  overflow: hidden;
 }
 @media (width >= 1056px) {
-  .why-evidence {
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    gap: var(--space-12);
-    align-items: stretch;
+  .why-breaker {
+    display: flex;
+    align-items: center;
+    min-height: clamp(40rem, 100svh, 56rem);
+  }
+  .why-breaker-media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    height: auto;
   }
 }
-/* A paused clip: a dark frame (the deck asks for a still from the video; this
-   stands in for it), a chip naming where it was said, the caption in white
-   like a subtitle, and a playback bar along its foot that runs while it is on
-   screen (WhyMotion). */
-.why-clip {
-  --why-clip-muted: color-mix(in oklab, var(--content-on-image) 62%, transparent);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: var(--space-12);
+.why-breaker-stage {
+  position: absolute;
+  inset: 0;
+  container-type: size;
   overflow: hidden;
-  padding: var(--space-6) var(--space-6) var(--space-10);
-  border-radius: var(--radius-2xl);
-  background:
-    radial-gradient(
-      120% 90% at 85% 0%,
-      color-mix(in oklab, var(--content-on-image) 9%, transparent),
-      transparent 60%
-    ),
-    var(--color-neutral-dark-2);
-  color: var(--content-on-image);
+  will-change: transform;
 }
-@media (width >= 672px) {
-  .why-clip {
-    min-height: 22rem;
-    padding: var(--space-8) var(--space-10) var(--space-12);
+/* The clip at 16:9, drawn 35% larger than covering the stage and hung 9% above
+   its top, so YouTube's title bar (the top 7%) and the burned-in subtitles (the
+   bottom 12%) fall outside at every size. On a phone it is shifted so Nikhil's
+   face, a little under half way in, is centred. */
+.why-breaker-frame {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: calc(max(100cqw, 177.78cqh) * 1.35);
+  height: calc(max(100cqh, 56.25cqw) * 1.35);
+  translate: -44% -9%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--motion-duration-slowest) var(--motion-easing-productive-in-out);
+}
+@media (width >= 1056px) {
+  .why-breaker-frame {
+    translate: -50% -9%;
   }
 }
-.why-clip-chip {
+.why-breaker[data-rolling] .why-breaker-frame {
+  opacity: 1;
+}
+.why-breaker-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+/* The progressive blur: the clip sharp at its left, blurring toward the words. */
+.why-breaker-blur {
+  position: absolute;
+  inset: 0;
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  mask-image: linear-gradient(to bottom, transparent 55%, #000 100%);
+}
+/* Then the page's colour over it, so the clip melts into the page. */
+.why-breaker-fade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, var(--why-ground), transparent 14%),
+    linear-gradient(to top, var(--why-ground), transparent 45%);
+}
+@media (width >= 1056px) {
+  .why-breaker-blur {
+    mask-image: linear-gradient(to right, transparent 40%, #000 62%);
+  }
+  .why-breaker-fade {
+    background:
+      linear-gradient(
+        to right,
+        transparent 38%,
+        color-mix(in oklab, var(--why-ground) 70%, transparent) 54%,
+        var(--why-ground) 68%
+      ),
+      linear-gradient(to bottom, var(--why-ground), transparent 14%, transparent 86%, var(--why-ground));
+  }
+}
+/* The words: under the clip on a phone, on its right on desktop, where Nikhil looks. */
+.why-breaker-copy {
+  padding-block: var(--space-2) var(--space-16);
+}
+@media (width >= 1056px) {
+  .why-breaker-copy {
+    width: min(46%, 36rem);
+    margin-left: auto;
+    padding-block: var(--space-24);
+  }
+}
+/* The words at the display size, medium (several lines: kept quiet, the team's
+   call), lit top to bottom as --lit runs 0% to 100% (WhyBreaker scrubs it), so
+   the lines light in reading order with no split. Lit by default, so they read
+   without the script and under reduced motion. */
+.why-breaker-words {
+  margin-top: var(--space-4);
+  font-size: var(--type-display-size);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.2;
+  letter-spacing: var(--type-display-tracking);
+  text-wrap: pretty;
+}
+/* A block, so the gradient spans all the lines at once (on an inline box it
+   restarts on each line and clips the descenders). */
+.why-breaker-words > span {
+  --lit: 100%;
+  display: block;
+  padding-bottom: 0.12em;
+  color: transparent;
+  background: linear-gradient(
+    to bottom,
+    var(--content-primary) calc(var(--lit) - 8%),
+    color-mix(in oklab, var(--content-primary) 22%, transparent) calc(var(--lit) + 8%)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+/* Apple's "Watch the film": a dark disc with the play mark, then the words. */
+.why-breaker-watch {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
-  align-self: flex-start;
-  padding: var(--space-1) var(--space-3);
-  border: var(--border-width-hair) solid color-mix(in oklab, var(--content-on-image) 22%, transparent);
-  border-radius: var(--radius-full);
-  color: var(--why-clip-muted);
+  gap: var(--space-3);
+  color: var(--content-primary);
+  cursor: pointer;
 }
-.why-clip-chip svg {
+.why-breaker-watch-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-full);
+  background: var(--content-primary);
+  color: var(--surface-default);
+  transition: transform var(--motion-duration-fast) var(--motion-easing-productive-in-out);
+}
+.why-breaker-watch-icon svg {
   width: var(--size-icon-sm);
   height: var(--size-icon-sm);
 }
-.why-clip-caption {
-  max-width: 30ch;
-  font-size: var(--type-h1-size);
-  font-weight: var(--font-weight-medium);
-  line-height: var(--type-h1-lh);
-  letter-spacing: var(--type-h1-tracking);
-  text-wrap: balance;
+.why-breaker-watch:hover .why-breaker-watch-icon {
+  transform: scale(1.06);
 }
-@media (width >= 1056px) {
-  .why-clip-caption {
-    font-size: var(--type-display-size);
-    line-height: 1.2;
-  }
-}
-.why-clip-who {
-  color: var(--why-clip-muted);
-}
-.why-clip-bar {
-  position: absolute;
-  inset: auto var(--space-6) var(--space-5);
-  height: 3px;
-  overflow: hidden;
+.why-breaker-watch:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 4px;
   border-radius: var(--radius-full);
-  background: color-mix(in oklab, var(--content-on-image) 20%, transparent);
 }
-@media (width >= 672px) {
-  .why-clip-bar {
-    inset-inline: var(--space-10);
-  }
-}
-.why-clip-played {
-  position: absolute;
-  inset: 0;
-  background: var(--content-on-image);
-  transform: scaleX(0.38);
-  transform-origin: left;
+/* The figures, as Apple sets its spec figures: source, figure, a line. */
+.why-breaker-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-8);
+  margin-top: var(--space-10);
 }
 
-/* The coda, then the two figures, a hairline above each. */
-.why-figures {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: var(--space-6);
-}
-.why-figure {
-  padding-top: var(--space-6);
-  border-top: var(--border-width-hair) solid var(--border-subtle);
-}
-@media (width >= 672px) {
-  .why-figure {
-    display: grid;
-    grid-template-columns: 9rem minmax(0, 1fr);
-    gap: var(--space-6);
-    align-items: start;
-  }
-}
 /* A figure's line clips it, so it slides up into place (WhyMotion). */
 .why-slide {
   overflow: hidden;
@@ -124,12 +185,12 @@
 /* ---- The turn: a line ending in a role that keeps changing ---- */
 
 .why-roles {
-  margin-block: var(--space-20) var(--space-12);
+  margin-bottom: var(--space-12);
   max-width: 52rem;
 }
 @media (width >= 1056px) {
   .why-roles {
-    margin-block: var(--space-32) var(--space-16);
+    margin-bottom: var(--space-16);
   }
 }
 /* As wide as the longest role (every role stacked in one cell), so turning over

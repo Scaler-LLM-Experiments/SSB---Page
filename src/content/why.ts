@@ -1,36 +1,37 @@
 import type { WhyContent } from '@/sections/why/types';
 
-// Section 3, "Why SSB": the title, the figures and the Kamath quote are the deck's ("SSB Website
-// vF _ Sep'26", slide 4). The description, the three chapters' copy and the labels are the
-// team's mock (2026-10-05). Its figure captions read "as cited in the brief", a placeholder; these
-// are the deck's own sentences.
+// Section 3, "Why SSB": the figures, the Kamath quote and the roles are the deck's ("SSB Website
+// vF _ Sep'26", slide 4); the three chapters' copy is the team's mock (2026-10-05). The deck's
+// title ("MBA is not dead…") and the mock's description were cut (2026-10-06): the breaker makes
+// that argument.
 export const why: WhyContent = {
-  eyebrow: 'Why SSB',
-  title: 'MBA is not dead. But the ‘traditional’ MBA is outdated for the new world.',
-  titleHighlight: 'outdated for the new world.',
-  description:
-    'Business fundamentals still matter. Here, you also learn to use AI, work with founders and show what you can make.',
-  // The deck's quote card. Its words, split into a caption and its attribution; only the quoted part
-  // is in quote marks, as the deck has it.
+  // The deck's quote card, checked against the video (Zerodha's 15th-anniversary AMA, uploaded
+  // 24 October 2025, youtube.com/watch?v=fzTWpjAAUe0, at 1:43:21): his words, verbatim but for "a"
+  // MBA, as the auto-captions have it. The deck's "went viral this year" and "telling students"
+  // don't hold (2025; an AMA), so they are not used.
   quote: {
-    source: 'Zerodha AMA',
-    caption: 'Pursuing a traditional MBA at 25 today “must be some kind of an idiot.”',
-    attribution:
-      'Zerodha co-founder Nikhil Kamath, telling students at a company AMA. It went viral this year.',
+    // The team's line (2026-10-06).
+    eyebrow: 'Why the traditional MBA doesn’t work',
+    caption: 'If you’re 25 and going to an MBA college today, you must be some kind of idiot, if you ask me.',
+    attribution: 'Nikhil Kamath, co-founder of Zerodha,',
+    context: 'said this at the company’s 15th-anniversary AMA in October 2025.',
     coda: 'He isn’t alone in that read.',
+    youtubeId: 'fzTWpjAAUe0',
+    // 1:43:21 to 1:43:34: "In my personal opinion, colleges are dead. If you're 25…"
+    start: 6201,
+    end: 6214,
   },
+  // The deck's figures and sources, shortened to Apple's spec lines.
   figures: [
     {
-      label: 'MBA students question AI readiness',
+      source: 'Forbes, 2026',
       value: '60%',
-      description:
-        'A 2026 study reported by Forbes found that 60% of MBA students believe their own coursework isn’t built for an AI-first workforce.',
+      description: 'of MBA students say their own coursework isn’t built for an AI-first workforce',
     },
     {
-      label: 'AI skills wage premium',
-      value: '62%',
-      description:
-        'PwC’s 2026 Global AI Jobs Barometer found that workers with AI skills now earn 62% more than peers in the same role without them.',
+      source: 'PwC Global AI Jobs Barometer, 2026',
+      value: '62% more',
+      description: 'pay for workers with AI skills than for peers in the same role without them',
     },
   ],
   // The deck's "Nobody is preparing you for emerging roles like:", and its four roles.

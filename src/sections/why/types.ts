@@ -5,18 +5,25 @@
  */
 
 /**
- * The remark that started the argument, set as a paused clip (the deck asks for
- * a still from the video): a caption over a dark frame.
+ * The remark that started the argument: the breaker that opens the section
+ * (after Apple's product blocks): an eyebrow, the words as the title, who said
+ * it in a line, the figures, then the clip of it.
  */
 export type WhyQuote = {
-  /** Where it was said, on the frame's chip, e.g. "Zerodha AMA". */
-  source: string;
-  /** The caption: the deck's words, its quoted part in quote marks. */
+  /** Over the title, e.g. "Why the traditional MBA doesn't work". */
+  eyebrow: string;
+  /** The words, verbatim (no quote marks: the breaker sets them). */
   caption: string;
-  /** Who said it and when, under the caption. */
+  /** Who said it, set dark at the start of the line under the title. */
   attribution: string;
-  /** A short line leading into the figures, e.g. "He isn't alone in that read." */
+  /** The rest of that line, e.g. "said this at the company's 15th-anniversary AMA…". */
+  context: string;
+  /** The line's last words, set dark, leading into the figures: "He isn't alone in that read." */
   coda?: string;
+  /** The clip: a YouTube video id, and the seconds it starts and ends at. Unset: no clip. */
+  youtubeId?: string;
+  start?: number;
+  end?: number;
 };
 
 /** The deck's turn from the evidence to SSB: a line ending in a role that keeps changing. */
@@ -26,11 +33,13 @@ export type WhyRoles = {
   roles: string[];
 };
 
-/** A figure that backs the argument, with its source in its sentence. */
+/** A figure that backs the argument, set as Apple's spec figures: its source over it, a line under it. */
 export type WhyFigure = {
-  label: string;
-  /** As shown, e.g. "60%". Slides up into its line as the section arrives. */
+  /** Who found it, small over the figure, e.g. "Forbes, 2026". */
+  source: string;
+  /** As shown, e.g. "60%" or "62% more". Slides up into its line as it arrives. */
   value: string;
+  /** Under the figure, reading on from it: "of MBA students say their coursework…". */
   description: string;
 };
 
@@ -46,11 +55,6 @@ export type WhyPillar = {
 };
 
 export type WhyContent = {
-  eyebrow: string;
-  title: string;
-  /** A phrase inside `title` set in the brand colour. Must appear in `title` verbatim. */
-  titleHighlight?: string;
-  description: string;
   quote: WhyQuote;
   figures: WhyFigure[];
   roles: WhyRoles;
