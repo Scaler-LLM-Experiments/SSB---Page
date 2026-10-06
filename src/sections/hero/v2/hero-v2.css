@@ -23,14 +23,32 @@
   display: none;
 }
 
-/* md: the video fills the top of the hero, edge to edge, and fades down into
-   the black where the copy sits. Its top and sides are hard: straight under the
-   nav's line and out to the edges of the screen. */
+/* The fold's copy (shared/fold.css) over the black: the package's own CTAs (brand
+   green, then the dark secondary), and the line held to two lines. */
+.hero-v2-copy .fold-line {
+  max-width: 30rem;
+}
+/* A little more air between the line and the CTAs than the split's. */
+.hero-v2-copy .fold-actions {
+  margin-top: var(--space-4);
+}
+
+/* md: the video fills the top of the hero, from the nav's foot, edge to edge,
+   and fades down into the black where the copy sits. Its top and sides are
+   hard: straight under the nav's line and out to the edges of the screen. */
 @media (min-width: 1056px) {
   .hero-v2-video {
     --feather-left: 0%;
     --feather-right: 0%;
     --feather-top: 0%;
     --feather-bottom: 50%;
+  }
+
+  /* The leaders, left-aligned like the copy, the foot of their marks level with the
+     CTAs': up from the copy's foot by the facts' line and the copy's gap. */
+  .fold-leaders.hero-v2-leaders {
+    align-items: flex-start;
+    text-align: left;
+    margin-bottom: calc(var(--type-body-sm-size) * var(--type-body-sm-lh) + var(--space-4));
   }
 }

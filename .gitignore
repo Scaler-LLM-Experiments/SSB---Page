@@ -46,3 +46,6 @@ next-env.d.ts
 # the campus film's source GIF (313 MB, over GitHub's 100 MB limit); the page
 # uses the MP4 cut in public/media
 /src/Gif.gif
+
+# the Kamath clip's source GIF (57 MB); the page uses the MP4 cut in public/media
+/src/Nikhil Gif.gif

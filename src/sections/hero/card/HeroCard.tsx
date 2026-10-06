@@ -1,11 +1,6 @@
-import { Button, Heading, Text } from '@kishanscaler/ssx-ui';
-
-import { MarkTicker, type Mark } from '@/sections/shared/MarkTicker';
-import { CtaIcon } from '../CtaIcon';
+import { FoldCopy, FoldLeaders } from '../shared/FoldCopy';
 import type { HeroContent } from '../types';
 import './hero-card.css';
-
-type Leader = Mark;
 
 /**
  * The "split" first fold, a variant of the hero (?hero=split), after the team's
@@ -14,20 +9,12 @@ type Leader = Mark;
  * At its bottom left: the eyebrow, a short, large title, the line, the actions
  * and the facts. At its bottom right, right-aligned: "Built by 100+ industry
  * leaders from" over the leaders running past, each a colour mark with its name
- * (as the AI curriculum's tools). One gentle entrance (CSS): the card settles in,
+ * (as the AI curriculum's tools); both are the shared `FoldCopy`, which the
+ * cinematic V2 lays out the same. One gentle entrance (CSS): the card settles in,
  * then the copy fades up.
  */
-export function HeroCard({
-  eyebrow,
-  title,
-  description,
-  primaryCta,
-  secondaryCta,
-  facts,
-  media,
-  leadersLine,
-  leaders,
-}: HeroContent & { leadersLine: string; leaders: Leader[] }) {
+export function HeroCard(hero: HeroContent) {
+  const { media, leadersLine, leaders } = hero;
   return (
     <section className="hc" aria-labelledby="hc-title">
       <div className="hc-card" data-brand="ssb" data-theme="dark">
@@ -46,54 +33,10 @@ export function HeroCard({
         <div className="hc-wash" aria-hidden="true" />
 
         <div className="hc-body">
-          <div className="hc-copy">
-            <Heading as="p" size="eyebrow" className="hc-eyebrow">
-              {eyebrow}
-            </Heading>
-            <Heading as="h1" id="hc-title" className="type-billboard-sm text-on-image-ink">
-              {title}
-            </Heading>
-            {/* Each phrase kept whole; a line breaks only after a "·", never before one. */}
-            <Text size="lg" className="hc-line">
-              {description.split(' · ').map((part, i, all) => (
-                <span key={part} className="hc-phrase">
-                  {part}
-                  {i < all.length - 1 ? ' ·' : ''}
-                </span>
-              ))}
-            </Text>
-            <div className="hc-actions">
-              <Button asChild size="lg" className="hc-primary">
-                <a href={primaryCta.href}>
-                  {primaryCta.label}
-                  <CtaIcon icon={primaryCta.icon} />
-                </a>
-              </Button>
-              {secondaryCta ? (
-                <Button asChild size="lg" variant="secondary" className="hc-secondary">
-                  <a href={secondaryCta.href}>
-                    {secondaryCta.label}
-                    <CtaIcon icon={secondaryCta.icon} />
-                  </a>
-                </Button>
-              ) : null}
-            </div>
-            {facts?.length ? (
-              <ul className="hc-facts">
-                {facts.map((f) => (
-                  <li key={f.value}>
-                    <b>{f.value}</b>
-                    {f.caption ? <span> {f.caption}</span> : null}
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-          </div>
-
-          <div className="hc-leaders">
-            <p className="hc-leaders-line">{leadersLine}</p>
-            <MarkTicker marks={leaders} label="Industry leaders behind the programme" tone="dark" />
-          </div>
+          <FoldCopy hero={hero} titleId="hc-title" className="hc-copy" />
+          {leaders?.length ? (
+            <FoldLeaders line={leadersLine} leaders={leaders} className="hc-leaders" />
+          ) : null}
         </div>
       </div>
     </section>

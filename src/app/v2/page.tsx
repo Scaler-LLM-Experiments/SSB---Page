@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { hero } from '@/content/home';
-import { heroSplit } from '@/content/hero-card';
 import { placements } from '@/content/placements';
 import { why } from '@/content/why';
 import { AdmissionsSection } from '@/sections/admissions/AdmissionsSection';
@@ -63,7 +62,7 @@ export default async function V2Page({
         {variant === 'split' ? (
           <>
             <CardNav />
-            <HeroCard {...heroSplit} />
+            <HeroCard {...hero} />
           </>
         ) : (
           <>

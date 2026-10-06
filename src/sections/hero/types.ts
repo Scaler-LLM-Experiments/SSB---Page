@@ -2,7 +2,7 @@
  * Content contract shared by every hero variation.
  *
  * Flat fields and plain strings on purpose: each field maps one-to-one onto a
- * future Storyblok blok field (`facts` and `logos` become nested blok lists),
+ * future Storyblok blok field (`facts` and `leaders` become nested blok lists),
  * so a variation can change layout without changing what editors fill in.
  */
 
@@ -37,6 +37,13 @@ export type HeroLogo = {
   ink?: number;
 };
 
+/** An organisation the programme's industry leaders come from: its colour mark and its name. */
+export type HeroLeader = {
+  name: string;
+  /** A square image of its own colour mark (its site or app icon), e.g. `/logos/marks/lead-bcg.png`. */
+  mark: string;
+};
+
 export type HeroMedia = {
   /** A muted, looping video file. Unset: a placeholder frame is shown. */
   videoSrc?: string;
@@ -59,7 +66,9 @@ export type HeroContent = {
   primaryCta: HeroCta;
   secondaryCta?: HeroCta;
   facts?: HeroFact[];
-  /** Organisations the title leads into ("…industry leaders from"). */
-  logos?: HeroLogo[];
+  /** The line over the leaders' marks: "Built by 100+ industry leaders from". */
+  leadersLine?: string;
+  /** Where the programme's industry leaders come from, running past under `leadersLine`. */
+  leaders?: HeroLeader[];
   media?: HeroMedia;
 };

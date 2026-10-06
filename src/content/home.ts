@@ -1,26 +1,25 @@
 import type { HeroContent } from '@/sections/hero/types';
 
 /*
- * Copy from the team's hero mock (2026-09-30). CTA hrefs are placeholders until
- * real destinations are agreed. The campus film is a 15s silent cut of the team's
- * screen recording (campus walk-through, then the programme director), looping.
+ * The first fold's copy, the same in both variants (the cinematic V2 and the split
+ * card, ?hero=split): the deck's (SSB Website vF, Sep '26, slide 1). CTA hrefs are
+ * placeholders until real destinations are agreed. The campus film is a 15s silent
+ * cut of the team's screen recording (campus walk-through, then the programme
+ * director), looping; in V2 its play button opens the full film from YouTube.
+ *
+ * "B‑school" uses a non-breaking hyphen (U+2011), so the title never breaks inside it.
  */
 export const hero: HeroContent = {
-  eyebrow: 'PGP in Management & Technology',
-  title: 'India’s first AI-native B-school built by 100+ industry leaders from',
+  eyebrow: 'PGP in Management & Technology (PGP-MT)',
+  title: 'India’s first AI-native B‑school',
   description:
-    'Learn by doing: build startups and AI products, solve live company challenges, and work with practitioners. No technology background required.',
+    'Learn by doing · Build startups & AI products · No tech background required · Any bachelor’s degree',
   primaryCta: { label: 'Apply now', href: '#apply', icon: 'arrow' },
   secondaryCta: { label: 'Download brochure', href: '#brochure', icon: 'download' },
-  facts: [{ value: '18 months' }, { value: 'Bengaluru campus' }, { value: '150 seats' }],
-  // Our own files, in their own colours, trimmed to their edges (public/logos). `ink` as measured
-  // in one tone (CLAUDE.md, "Logos").
-  logos: [
-    { name: 'Boston Consulting Group', logoUrl: '/logos/bcg.svg', wordmark: 'BCG', ink: 0.52 },
-    { name: 'Swiggy', logoUrl: '/logos/swiggy.svg', wordmark: 'Swiggy', ink: 0.37 },
-    { name: 'McKinsey & Company', logoUrl: '/logos/mckinsey.svg', wordmark: 'McKinsey', ink: 0.13 },
-    { name: 'Cars24', logoUrl: '/logos/cars24.svg', wordmark: 'Cars24', ink: 0.42 },
-    { name: 'Bain & Company', logoUrl: '/logos/bain.svg', wordmark: 'Bain', ink: 0.17 },
+  facts: [
+    { value: '18 months', caption: 'incl. internship & immersions' },
+    { value: 'Bengaluru', caption: 'on-campus' },
+    { value: '150 seats' },
   ],
   media: {
     videoSrc: '/media/campus-film.mp4',
@@ -29,4 +28,20 @@ export const hero: HeroContent = {
     youtubeLength: 288,
     caption: 'Learn by doing. Build alongside the people shaping what comes next.',
   },
+  leadersLine: 'Built by 100+ industry leaders from',
+  // The deck's list, in its order: each organisation's own colour mark (its site or app icon,
+  // public/logos/marks/lead-*.png, 96px) with its name beside it, as the AI curriculum's tools.
+  leaders: [
+    { name: 'BCG', mark: '/logos/marks/lead-bcg.png' },
+    { name: 'ISB', mark: '/logos/marks/lead-isb.png' },
+    { name: 'McKinsey', mark: '/logos/marks/lead-mckinsey.png' },
+    { name: 'IIMA', mark: '/logos/marks/lead-iima.png' },
+    { name: 'Bain', mark: '/logos/marks/lead-bain.png' },
+    { name: 'Kearney', mark: '/logos/marks/lead-kearney.png' },
+    { name: 'Google', mark: '/logos/marks/lead-google.png' },
+    { name: 'Colgate', mark: '/logos/marks/lead-colgate.png' },
+    { name: 'Airtel', mark: '/logos/marks/lead-airtel.png' },
+    { name: 'OpenAI', mark: '/logos/marks/lead-openai.png' },
+    { name: 'Meta', mark: '/logos/marks/lead-meta.png' },
+  ],
 };

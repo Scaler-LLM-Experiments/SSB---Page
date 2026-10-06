@@ -12,24 +12,28 @@ const { duration: d, stagger: st, offset } = motionTokens;
 /** Seconds each role holds before the next turns over it. */
 const ROLE_HOLD = 2.2;
 
-/** Seconds the clip's playback bar takes to run its length, then it starts again. */
-const CLIP_RUN = 12;
+/** The AI journey's stack (concepts/stack.tsx): a card shrinks this much for every card over it, */
+const SHRINK = 0.05;
+/** ...never below this. */
+const MIN_SCALE = 0.8;
+/** px kept clear under a card taller than the screen when it holds. */
+const FOOT = 12;
 
 /**
  * Why SSB's motion, on the server-rendered markup in WhySection:
  *
  *   data-enter         the header: the faculty section's entrance (useSectionEntrance)
- *   data-why-evidence  the clip and the figures: one gentle fade as they arrive, each figure
- *                      (data-slide) sliding up into its line; the clip's bar (data-clip-bar) runs
- *                      while it is on screen
  *   data-why-roles     the line's roles (data-role) turning over, one up and out as the next
  *                      comes up into the slot, while it is on screen
- *   data-why-chapter   a chapter (sticky, CSS): as the next one slides up over it, its card
- *                      (data-why-card) settles back, a little smaller, the section's grey
- *                      (data-why-dim) fading over it, scrubbed to the scroll
+ *   data-why-chapter   a chapter (sticky, CSS), stacking as the AI journey's cards do
+ *                      (curriculum/journey/concepts/stack.tsx): every card that comes up over
+ *                      it shrinks its card (data-why-card) a little more, scrubbed to the
+ *                      scroll, and it is trimmed to the foot of the card over it; nothing
+ *                      dims. A card taller than the screen holds lower, once all of it is seen
  *
  * Transforms and opacity only. Under reduced motion nothing moves: the first
- * role shows, the bar stands, and the chapters don't stack (CSS).
+ * role shows, and the chapters don't stack (CSS). The breaker above the
+ * section moves itself (WhyBreaker).
  */
 export function WhyMotion({ children }: { children: React.ReactNode }) {
   const scope = React.useRef<HTMLDivElement>(null);
@@ -41,41 +45,6 @@ export function WhyMotion({ children }: { children: React.ReactNode }) {
       const root = scope.current;
       if (!root || prefersReducedMotion(root)) return;
       gsap.registerPlugin(ScrollTrigger);
-
-      const evidence = root.querySelector<HTMLElement>('[data-why-evidence]');
-      if (evidence) {
-        const tl = gsap.timeline({
-          defaults: { ease: ease('expressiveEntrance') },
-          scrollTrigger: { trigger: evidence, start: 'clamp(top 85%)', once: true },
-        });
-        tl.fromTo(
-          evidence,
-          { autoAlpha: 0, y: offset.enter },
-          { autoAlpha: 1, y: 0, duration: d.slowest, clearProps: 'transform,opacity,visibility' },
-        );
-        tl.fromTo(
-          evidence.querySelectorAll('[data-slide]'),
-          { yPercent: 110 },
-          { yPercent: 0, duration: d.slower, stagger: st.base * 1.5, clearProps: 'transform' },
-          d.slow * 0.4,
-        );
-        // The playback bar runs, from where it was paused, while the clip is on screen.
-        const bar = evidence.querySelector('[data-clip-bar]');
-        if (bar) {
-          const run = gsap.fromTo(
-            bar,
-            { scaleX: 0 },
-            { scaleX: 1, duration: CLIP_RUN, ease: ease('linear'), repeat: -1, paused: true },
-          );
-          run.progress(0.38);
-          ScrollTrigger.create({
-            trigger: evidence,
-            start: 'top bottom',
-            end: 'bottom top',
-            onToggle: (self) => (self.isActive ? run.play() : run.pause()),
-          });
-        }
-      }
 
       // The roles turn over in their slot, each holding ROLE_HOLD seconds, while the line is on screen.
       const line = root.querySelector<HTMLElement>('[data-why-roles]');
@@ -126,29 +95,63 @@ export function WhyMotion({ children }: { children: React.ReactNode }) {
         );
       }
 
-      // Each chapter but the last settles back as the next slides up over it: from the next one's
-      // top reaching the foot of the screen to its reaching its own sticky place.
+      // The chapters stack as the AI journey's cards do. Each one's arrival runs 0 to 1, from its
+      // top reaching the foot of the screen to its reaching its sticky place; a card shrinks by
+      // SHRINK for every card come up over it, and is trimmed to the foot of the one directly over
+      // it, so a taller card never shows below a shorter one.
       const chapters = gsap.utils.toArray<HTMLElement>('[data-why-chapter]', root);
-      chapters.slice(0, -1).forEach((chapter, i) => {
-        const card = chapter.querySelector('[data-why-card]');
-        const dim = chapter.querySelector('[data-why-dim]');
-        const following = chapters[i + 1];
-        if (!card || !dim || !following) return;
-        const settle = gsap.timeline({
-          defaults: { ease: ease('linear') },
-          scrollTrigger: {
-            trigger: following,
-            start: 'top bottom',
-            end: () => `top ${parseFloat(getComputedStyle(following).top) || 0}px`,
-            scrub: true,
-            invalidateOnRefresh: true,
+      const cards = chapters.map((chapter) => chapter.querySelector<HTMLElement>('[data-why-card]'));
+      const arrived = chapters.map(() => 0);
+      const stack = () => {
+        cards.forEach((card, i) => {
+          const covered = arrived.slice(i + 1).reduce((sum, a) => sum + a, 0);
+          if (card) gsap.set(card, { scale: Math.max(MIN_SCALE, 1 - SHRINK * covered) });
+        });
+        const boxes = cards.map((card) => card?.getBoundingClientRect());
+        cards.forEach((card, i) => {
+          const box = boxes[i];
+          const over = boxes[i + 1];
+          if (!card || !box) return;
+          const cut = over && arrived[i + 1] > 0 && over.top < box.bottom ? box.bottom - over.bottom : 0;
+          // the card is scaled: the inset is in its own units
+          card.style.clipPath =
+            cut > 1
+              ? `inset(0 0 ${(cut / (box.height / card.offsetHeight)).toFixed(1)}px 0 round var(--radius-2xl))`
+              : '';
+        });
+      };
+
+      // A card taller than the room under the nav holds lower, once its foot is on screen (the
+      // AI journey's rule), so all of it is read before the next covers it.
+      const holds = () =>
+        chapters.forEach((chapter, i) => {
+          chapter.style.top = '';
+          const room = window.innerHeight - parseFloat(getComputedStyle(chapter).top) - FOOT;
+          const height = cards[i]?.offsetHeight ?? 0;
+          if (height > room) chapter.style.top = `${window.innerHeight - height - FOOT}px`;
+        });
+      holds();
+      ScrollTrigger.addEventListener('refreshInit', holds);
+
+      chapters.slice(1).forEach((chapter, k) => {
+        ScrollTrigger.create({
+          trigger: chapter,
+          start: 'top bottom',
+          end: () => `top ${parseFloat(getComputedStyle(chapter).top) || 0}px`,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            arrived[k + 1] = self.progress;
+            stack();
           },
         });
-        settle.fromTo(card, { scale: 1 }, { scale: 0.94 }, 0);
-        settle.fromTo(dim, { opacity: 0 }, { opacity: 0.6 }, 0);
       });
 
-      return () => turn?.kill();
+      return () => {
+        turn?.kill();
+        ScrollTrigger.removeEventListener('refreshInit', holds);
+        chapters.forEach((chapter) => (chapter.style.top = ''));
+        cards.forEach((card) => card && (card.style.clipPath = ''));
+      };
     },
     scope,
     [],

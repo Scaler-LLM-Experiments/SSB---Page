@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { GlassButton } from '@kishanscaler/ssx-ui';
 import { Play } from '@phosphor-icons/react';
+import { BUFFERING, ENDED, loadYouTube, PLAYING, type YTPlayer } from '@/lib/youtube';
 import './film-player.css';
 
 /**
@@ -307,69 +308,6 @@ function Controls({
       </div>
     </div>
   );
-}
-
-/* ---- The YouTube IFrame API (only what is used) ---- */
-
-type YTPlayer = {
-  playVideo(): void;
-  pauseVideo(): void;
-  seekTo(seconds: number, allowSeekAhead: boolean): void;
-  getCurrentTime(): number;
-  getDuration(): number;
-  getVideoLoadedFraction(): number;
-  unloadModule?(name: string): void;
-  mute(): void;
-  unMute(): void;
-  isMuted(): boolean;
-  destroy(): void;
-};
-type YTEvent = { target: YTPlayer; data: number };
-type YTNamespace = {
-  Player: new (
-    element: HTMLElement,
-    options: {
-      host?: string;
-      videoId: string;
-      width?: string;
-      height?: string;
-      playerVars?: Record<string, number>;
-      events?: {
-        onReady?: (event: YTEvent) => void;
-        onStateChange?: (event: YTEvent) => void;
-        onApiChange?: (event: YTEvent) => void;
-      };
-    },
-  ) => YTPlayer;
-};
-
-declare global {
-  interface Window {
-    YT?: YTNamespace;
-    onYouTubeIframeAPIReady?: () => void;
-  }
-}
-
-const ENDED = 0;
-const PLAYING = 1;
-const BUFFERING = 3;
-
-let youTube: Promise<YTNamespace> | undefined;
-
-/** Loads the IFrame API once, on the first play. */
-function loadYouTube(): Promise<YTNamespace> {
-  youTube ??= new Promise((resolve) => {
-    if (window.YT?.Player) return resolve(window.YT);
-    const previous = window.onYouTubeIframeAPIReady;
-    window.onYouTubeIframeAPIReady = () => {
-      previous?.();
-      resolve(window.YT!);
-    };
-    const script = document.createElement('script');
-    script.src = 'https://www.youtube.com/iframe_api';
-    document.head.append(script);
-  });
-  return youTube;
 }
 
 /** YouTube's auto-captions repeat the subtitles burned into the film (and garble them): off. */

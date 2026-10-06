@@ -1,0 +1,98 @@
+/* =========================================================
+   The first fold's copy (FoldCopy), the same in both variants:
+   the copy at the left, the leaders at the right. Each variant
+   positions the two blocks, lays the ground under them and styles
+   the CTAs (`fold-primary`, `fold-secondary`) for that ground.
+   ========================================================= */
+
+/* ---- Left: the copy. ---- */
+.fold-copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+  max-width: 44rem;
+}
+.fold-eyebrow {
+  color: var(--on-image-ink);
+  opacity: 0.9;
+}
+.fold-line {
+  color: var(--on-image-ink);
+  opacity: 0.88;
+}
+.fold-phrase {
+  white-space: nowrap;
+}
+.fold-phrase + .fold-phrase::before {
+  content: ' ';
+  white-space: normal;
+}
+
+.fold-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+@media (min-width: 672px) {
+  .fold-actions {
+    flex-direction: row;
+  }
+}
+
+.fold-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--type-body-sm-size);
+  line-height: var(--type-body-sm-lh);
+  color: rgb(255 255 255 / 0.8);
+}
+.fold-facts b {
+  color: #fff;
+  font-weight: var(--font-weight-semibold);
+}
+/* The dot ends a fact rather than starting the next, so a wrapped line starts with a fact. */
+.fold-facts li:not(:last-child)::after {
+  content: '·';
+  margin-left: var(--space-4);
+  color: rgb(255 255 255 / 0.5);
+}
+/* Phones: one fact a line, no dots (wrapped, a dot would start a line). */
+@media (max-width: 671px) {
+  .fold-facts {
+    flex-direction: column;
+  }
+  .fold-facts li:not(:last-child)::after {
+    content: none;
+  }
+}
+
+/* ---- Right: the leaders. ---- */
+.fold-leaders {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+.fold-leaders-line {
+  margin: 0;
+  font-size: var(--type-h3-size);
+  line-height: var(--type-h3-lh);
+  font-weight: var(--font-weight-medium);
+  color: var(--on-image-ink);
+}
+@media (min-width: 1056px) {
+  .fold-leaders {
+    flex: none;
+    width: 28rem;
+    align-items: flex-end;
+    text-align: right;
+    /* level with the actions, as the reference's logos sit by its buttons */
+    margin-bottom: calc(var(--space-12) + var(--space-2));
+  }
+}
