@@ -469,14 +469,30 @@
   opacity: 1;
 }
 
-/* Below desktop, where the photo sits above the copy, the floating logos (or
-   roles) run as two rows across it, drifting sideways one each way and faded
-   at both sides (the team's call: two narrow columns were hard to read on a
-   phone). Each row is a tile tall; the track runs along it, the tiles a fixed
-   width, each carrying its gap to its right so one copy is exactly half. */
+/* Below desktop the card stacks: the photo shows under the chips, then the
+   figure and claim, then the floating logos (or roles) at the card's foot, as
+   two rows drifting sideways one each way and faded at both sides (the team's
+   calls: two narrow columns were hard to read on a phone; the rows went over
+   the photo, then under the claim). Each row is a tile tall; the track runs
+   along it, the tiles a fixed width, each carrying its gap to its right so one
+   copy is exactly half. */
 @media (width < 1056px) {
+  .pl-app-inner {
+    min-height: 30rem;
+    justify-content: flex-end;
+  }
+  .pl-app-copy {
+    flex: none;
+    padding-bottom: var(--space-5);
+  }
+  .pl-app-visual {
+    order: 2;
+    height: auto;
+    padding-bottom: var(--app-pad);
+  }
   .pl-app-drift {
-    inset: auto 0 var(--space-4);
+    position: relative;
+    inset: auto;
     width: auto;
     grid-template-columns: minmax(0, 1fr);
     mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
@@ -503,36 +519,59 @@
   }
 }
 @media (672px <= width < 1056px) {
+  .pl-app-inner {
+    min-height: 34rem;
+  }
   .pl-app-drift > div {
-    height: 6rem;
+    height: 4.5rem;
+  }
+  .pl-app-drift .pl-wall-tile {
+    width: 10rem;
+  }
+  .pl-app-drift .pl-wall-tile > * {
+    height: 100%;
+  }
+  .pl-app-drift .pl-wall-tile img {
+    zoom: 0.75;
   }
 }
 /* The claim reads on from the bold figure at a lighter weight (the team's call). */
 .pl-app-title {
   font-weight: var(--font-weight-medium);
 }
-/* On a phone, a step smaller (the team's call): the claim at the h2 size, and the
-   tiles shorter and narrower, their logos drawn at 75% (zoom, which shrinks the
-   layout box too and every logo alike, so they keep their equal weight). */
+/* On a phone, a step smaller (the team's calls): the claim at the h2 size, and the
+   tiles small (7.5rem × 3.25rem), their logos drawn at 60% (zoom, which shrinks
+   the layout box too and every logo alike, so they keep their equal weight),
+   the roles at the caption size. */
 @media (width < 672px) {
   .pl-app-title {
     font-size: var(--type-h2-size);
     line-height: var(--type-h2-lh);
     letter-spacing: var(--type-h2-tracking);
   }
+  .pl-app-drift {
+    gap: var(--space-2);
+  }
   .pl-app-drift > div {
-    height: 4rem;
+    height: 3.25rem;
   }
   .pl-app-drift .pl-wall-tile {
-    width: 9rem;
+    width: 7.5rem;
     margin-inline-end: var(--space-2);
   }
   .pl-app-drift .pl-wall-tile > * {
     height: 100%;
     padding-inline: var(--space-2);
+    border-radius: var(--radius-lg);
   }
   .pl-app-drift .pl-wall-tile img {
-    zoom: 0.75;
+    zoom: 0.6;
+  }
+  /* Set tight, so a role over two lines and its company fit a tile. */
+  .pl-app-drift .type-label,
+  .pl-app-drift .type-caption {
+    font-size: var(--type-caption-size);
+    line-height: 1.25;
   }
 }
 

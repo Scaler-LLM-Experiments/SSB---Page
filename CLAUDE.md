@@ -261,10 +261,15 @@ place (Bengaluru's Vidhana Soudha, San Francisco's Golden Gate; CC0 from Wikimed
 phone small) in a grey frame (a coloured frame, brand green or ink, was too much), a column of
 large logos (or the alumni's roles, by name: role over company, centred on tiles the logo tiles'
 size, all eight; logos there read heavy and set that card apart, the team's call) floating the
-card's full height on desktop; below desktop, where the photo sits above the copy, they run as two
-rows across it, drifting sideways one each way (the team's call: two narrow columns were hard to
-read on a phone; the same `Drift` markup, its tracks laid out along a row and moved by
-`translateX`; tiles 11rem, 9rem × 4rem on a phone with the logos at `zoom: 0.75`). At its foot the
+card's full height on desktop; below desktop the card stacks (photo, then figure and claim, then
+the logos at its foot) and they run as two rows drifting sideways one each way (the team's calls,
+2026-10-05/06: two narrow columns were hard to read on a phone, and rows over the photo above the
+claim crowded it; the same `Drift` markup, its tracks laid out along a row and moved by
+`translateX`; tiles 10rem × 4.5rem on a tablet, 7.5rem × 3.25rem on a phone, logos at `zoom` 0.75
+and 0.6, roles at the caption size, set tight so a role over two lines fits). Every card's copy
+sits at its foot (`justify-content: flex-end`), so a two-line claim ends where a three-line one
+does and the spare height goes above the figure: the cards share one grid cell, so the tallest
+sets the height. The report CTA is full width on a phone, as the hero's CTAs are. At its foot the
 figure with the claim reading on from it as one statement, **in white** ("50+" / "startups from
 Bengaluru…", the claim at medium weight, `type-h2` on a phone; no line under it; all the team's
 calls). **The photo blurs progressively, not by fading to grey** (the team's call): three blurred

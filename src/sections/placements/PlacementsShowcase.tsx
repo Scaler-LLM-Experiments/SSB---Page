@@ -77,8 +77,9 @@ export async function PlacementsShowcase({
             titleId="placements-showcase-title"
             asideAt="title"
             aside={
-              // The hero's secondary CTA, as it is: large, its download icon after the label.
-              <Button asChild size="lg" variant="secondary">
+              // The hero's secondary CTA, as it is: large, its download icon after the label; the
+              // full width on a phone, as the hero's CTAs are.
+              <Button asChild size="lg" variant="secondary" className="w-full sm:w-auto">
                 <a href={reportHref}>
                   {reportLabel}
                   <CtaIcon icon="download" />
