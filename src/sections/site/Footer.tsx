@@ -19,7 +19,7 @@
  */
 import * as React from 'react';
 import { useDocTheme } from './theme';
-import { Button, ButtonIcon, Heading, Link, Logo, Text } from '@kishanscaler/ssx-ui';
+import { Button, Heading, Link, Logo, Text } from '@kishanscaler/ssx-ui';
 import { ArrowRight, ArrowUp, DownloadSimple } from '@phosphor-icons/react';
 import type { FooterContent, FooterLink } from './data';
 import { SSB_FOOTER } from './data';
@@ -75,24 +75,19 @@ function CampusFoot({ footRef, content }: { footRef: React.Ref<HTMLElement>; con
         <div className="sfc-top-in">
         <div className="sfc-lead">
           <p className="sfc-statement">{content.tagline}</p>
-          {/* the design system's action pair as its Storybook defines it ("With icon well") and as the
-              navbar's Apply Now is built: the label, then the glyph in a trailing well that glides
-              across on hover. In the light theme's colours (the footer's dark theme mutes the green). */}
+          {/* the page's action pair, as the hero's and the navbar's: the label, then a plain trailing
+              glyph (no icon well). In the light theme's colours (the footer's dark theme mutes the green). */}
           <div className="sfc-actions" data-brand="ssb" data-theme="light">
             <Button asChild variant="primary" size="lg">
               <a href={cta.primary.href}>
                 {cta.primary.label}
-                <ButtonIcon>
-                  <ArrowRight weight="bold" aria-hidden="true" />
-                </ButtonIcon>
+                <ArrowRight weight="bold" aria-hidden="true" />
               </a>
             </Button>
             <Button asChild variant="secondary" size="lg">
               <a href={cta.secondary.href}>
                 {cta.secondary.label}
-                <ButtonIcon>
-                  <DownloadSimple weight="bold" aria-hidden="true" />
-                </ButtonIcon>
+                <DownloadSimple weight="bold" aria-hidden="true" />
               </a>
             </Button>
           </div>
@@ -208,17 +203,13 @@ export function SsbFooter({ content = SSB_FOOTER, showCta = true, settled, varia
               <Button asChild variant="primary" size="lg">
                 <a href={cta.primary.href}>
                   {cta.primary.label}
-                  <ButtonIcon>
-                    <ArrowRight weight="bold" aria-hidden="true" />
-                  </ButtonIcon>
+                  <ArrowRight weight="bold" aria-hidden="true" />
                 </a>
               </Button>
               <Button asChild variant="secondary" size="lg">
                 <a href={cta.secondary.href}>
                   {cta.secondary.label}
-                  <ButtonIcon>
-                    <DownloadSimple weight="bold" aria-hidden="true" />
-                  </ButtonIcon>
+                  <DownloadSimple weight="bold" aria-hidden="true" />
                 </a>
               </Button>
             </div>

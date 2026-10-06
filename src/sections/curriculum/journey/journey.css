@@ -2157,3 +2157,11 @@ button.sj-mcard:hover .sj-mcard-media img, a.sj-mcard:hover .sj-mcard-media img 
 /* the prep-hours desk drawing a size up (it still ends inside the card) */
 @media (min-width: 960px) { .sj-ps-card[data-k='hours'] .sj-ps-art { width: 74%; right: 0; } }
 @media (min-width: 960px) and (max-width: 1199px) { .sj-ps-card[data-k='hours'] .sj-ps-art { width: 62%; } }
+
+/* career prep's title is the block's header (2026-10-06): the page's eyebrow and display heading
+   over both halves; the phases start level with the tabs */
+.sj-career-header { display: grid; gap: 12px; margin: 0 0 40px; }
+.sj-career-eyebrow { margin: 0; font-size: 0.75rem; line-height: 1.33; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--content-brand); }
+.sj-career-header .sj-career-head { margin: 0; }
+@media (max-width: 767px) { .sj-career-header { margin-bottom: 24px; } .sj-career-header .sj-career-head { font-size: 24px; line-height: 1.25; } }
+@media (min-width: 960px) { .sj-career-card { padding-top: 6px; } }

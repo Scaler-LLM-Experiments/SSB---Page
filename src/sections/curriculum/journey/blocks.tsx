@@ -556,6 +556,13 @@ export function CareerPrepBlock({ prep, cfg }: { prep: CareerPrep; cfg: JourneyC
     <section className="sj-career" aria-labelledby={id} {...c(cfg, 'career')}>
       {/* desktop: the bento on the left; the title and the phases down the right, as tall as the bento.
           m-web: title, bento, phases */}
+      {/* the block's header, as the page's other sections have: an eyebrow, then the title */}
+      <header className="sj-career-header">
+        <p className="sj-career-eyebrow">Career prep</p>
+        <Heading as="h2" size="display" id={id} className="sj-career-head">
+          {prep.title}
+        </Heading>
+      </header>
       <div className="sj-career-split">
       <div className="sj-career-col">
       {(() => {
@@ -585,10 +592,6 @@ export function CareerPrepBlock({ prep, cfg }: { prep: CareerPrep; cfg: JourneyC
       </div>
       {/* the phases, unframed: a plain list beside the stats */}
       <div ref={card} className="sj-career-col sj-career-card">
-      {/* the title heads the phases (unframed), beside the stats */}
-      <Heading as="h3" size="2" id={id} className="sj-career-head">
-        {prep.title}
-      </Heading>
       {/* the phases as a timeline: one after another down a thin line, each with its icon on the
           line, its step, its name and what happens in it */}
       <ol className="sj-tl" aria-label="Career prep phases">

@@ -164,8 +164,11 @@ export function PeopleTabsSection() {
 
   return (
     <Section ref={sectionRef} id="people" density="roomy" aria-labelledby="people-title" className="overflow-x-clip pt-section" data-live={live || undefined} style={{ '--pt-dwell': `${DWELL}ms` } as React.CSSProperties}>
-      {/* phones: this bar floats under the navbar for as long as this section is on screen (CSS sticky,
-          held inside the section, so it leaves with it) */}
+      {/* keyed: each tab mounts its own panel, so its carousel starts from the first card */}
+      <Panel key={GROUPS[active].id} group={GROUPS[active]} />
+      {/* the tabs, as a floating control at the foot of the window (the first-fold toggle's form) for
+          this section only: sticky to the window's foot and held inside the section, so it appears
+          with the section and stays behind at its end */}
       <Container className="pt-bar">
         <div className="pt-switch-wrap" data-enter="block">
           <div className="pt-switch" role="tablist" aria-label="The people at SSB" onKeyDown={onKey}>
@@ -196,8 +199,6 @@ export function PeopleTabsSection() {
           </div>
         </div>
       </Container>
-      {/* keyed: each tab mounts its own panel, so its carousel starts from the first card */}
-      <Panel key={GROUPS[active].id} group={GROUPS[active]} />
     </Section>
   );
 }

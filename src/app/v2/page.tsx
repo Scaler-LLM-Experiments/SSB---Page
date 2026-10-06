@@ -4,7 +4,7 @@ import { placements } from '@/content/placements';
 import { why } from '@/content/why';
 import { AdmissionsSection } from '@/sections/admissions/AdmissionsSection';
 import { AlumniSection } from '@/sections/alumni/AlumniSection';
-import { PeersTicker } from '@/sections/alumni/PeersTicker';
+import { CurriculumRail } from '@/sections/curriculum/CurriculumRail';
 import { FaqSection } from '@/sections/faq/FaqSection';
 import { HeroV2 } from '@/sections/hero/v2/HeroV2';
 import { Curriculum, FooterShell, HomeNav, ScrollRefresh } from '@/sections/home/client';
@@ -20,7 +20,6 @@ import {
   BeyondPlacementsSection,
   CampusLifeSection,
   InTheNewsSection,
-  SharkTankSection,
   SuperMentorsSection,
 } from '@/sections/community/CommunitySections';
 import { WhySection } from '@/sections/why/WhySection';
@@ -53,30 +52,32 @@ export default function V2Page() {
         {/* why SSB (deck slide 4) */}
         <WhySection {...why} />
         {/* 3 alumni */}
-        <AlumniSection peers={<PeersTicker />} />
+        <AlumniSection />
         {/* student founders (deck p5) */}
         <BeyondPlacementsSection />
         {/* faculty, mentors, the founding team, investors and founders: one section, four tabs;
             then the investor's word */}
         <PeopleTabsSection />
+        {/* investors and founders on campus: one banner carousel (the testimonial and the Shark Tank
+            stories, a person to a slide) */}
         <TestimonialSection />
-        {/* the Shark Tank judge on campus (deck p7) */}
-        <SharkTankSection />
-        {/* 4 learn by doing, 5 the 150-hour AI curriculum */}
-        <Curriculum part="learn" />
-        <Curriculum part="ai" />
-        {/* immersions beyond the classroom (deck p10) */}
-        <ImmersionsSection />
-        {/* 6 projects */}
-        <LiveProjectsSection />
-        {/* 7 innovation lab */}
+        {/* the curriculum, together (the team's call, 2026-10-06): the terms, then learn by doing, career prep, the
+            150-hour AI curriculum, the live projects, the internship and the immersions behind one side navigation */}
+        <Curriculum part="terms" />
+        <CurriculumRail
+          sections={[
+            { id: 'career-prep', label: 'Career prep', icon: 'career', node: <Curriculum part="career" /> },
+            { id: 'ai-journey', label: 'AI journey', icon: 'ai', node: <Curriculum part="ai" /> },
+            { id: 'live-projects-rail', label: 'Live projects', icon: 'projects', node: <LiveProjectsSection /> },
+            { id: 'internship-rail', label: 'Internship', icon: 'internship', node: <InternshipSection /> },
+            { id: 'learn-by-doing', label: 'Learn by doing', icon: 'learn', node: <Curriculum part="learn" /> },
+            { id: 'immersions-rail', label: 'Immersions', icon: 'immersions', node: <ImmersionsSection /> },
+          ]}
+        />
+        {/* innovation lab */}
         <InnovationLabSection />
         {/* Super Mentor Sessions (deck p15) */}
         <SuperMentorsSection />
-        {/* 9 the curriculum (the terms), 10 its stats (career prep) */}
-        <Curriculum part="main" />
-        {/* 11 student testimonials and placements (the internship: stats, stories, where they went) */}
-        <InternshipSection />
         {/* campus life, then in the news (deck p24, p25) */}
         <CampusLifeSection />
         <InTheNewsSection />

@@ -29,11 +29,18 @@ const base = {
  *   main   the curriculum itself (the terms), ending with career prep and its stats
  * Every block is listed so `normalize` adds none back; only the part's own are on.
  */
-type Part = 'learn' | 'ai' | 'main';
-const ON: Record<Part, BlockId[]> = { learn: ['learn'], ai: ['ai'], main: ['frame', 'journey', 'fork', 'portfolio', 'career', 'fine'] };
+// (`terms` and `career` are `main` in two: the home page sets career prep in the curriculum rail)
+type Part = 'learn' | 'ai' | 'main' | 'terms' | 'career';
+const ON: Record<Part, BlockId[]> = {
+  learn: ['learn'],
+  ai: ['ai'],
+  main: ['frame', 'journey', 'fork', 'portfolio', 'career', 'fine'],
+  terms: ['frame', 'journey', 'fork', 'portfolio', 'fine'],
+  career: ['career'],
+};
 const ORDER: BlockId[] = ['frame', 'journey', 'fork', 'portfolio', 'career', 'fine', 'ai', 'learn'];
 const cfgFor = (part: Part) => normalize({ ...base, blocks: ORDER.map((id) => ({ id, on: ON[part].includes(id) })) });
-const CFG = { learn: cfgFor('learn'), ai: cfgFor('ai'), main: cfgFor('main') };
+const CFG = { learn: cfgFor('learn'), ai: cfgFor('ai'), main: cfgFor('main'), terms: cfgFor('terms'), career: cfgFor('career') };
 
 export default function SsbCurriculum({ part = 'main' }: { part?: Part }) {
   return (

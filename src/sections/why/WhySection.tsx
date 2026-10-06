@@ -97,12 +97,12 @@ function Chapter({ pillar, index }: { pillar: WhyPillar; index: number }) {
   return (
     <article data-why-card className="why-card">
       <div className="why-card-copy">
-        <p className="why-card-num" aria-hidden>
-          {String(index + 1).padStart(2, '0')}
-        </p>
+        {/* The chapter's word large and faint at the head (where its number was); its number as the
+            small label over the title (where the word was). Swapped, 2026-10-06. */}
+        <p className="why-card-num">{pillar.kicker}</p>
         <div>
-          <Heading as="p" size="eyebrow" className="text-content-secondary">
-            {pillar.kicker}
+          <Heading as="p" size="eyebrow" className="text-content-secondary" aria-hidden>
+            {String(index + 1).padStart(2, '0')}
           </Heading>
           <Heading as="h3" size="display" className="mt-3">
             {pillar.title}

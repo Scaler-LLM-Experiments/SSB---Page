@@ -32,3 +32,11 @@
   .pt-bar .pt-switch { pointer-events: auto; --pt-glass: blur(14px) saturate(1.4); -webkit-backdrop-filter: var(--pt-glass); backdrop-filter: var(--pt-glass);
     background: color-mix(in srgb, var(--surface-sunken) 82%, transparent); box-shadow: 0 0 0 1px color-mix(in srgb, var(--border-subtle) 80%, transparent), 0 10px 24px -12px rgb(0 0 0 / 0.28); }
 }
+
+/* ── The tabs as a floating control (the first-fold toggle's form), for this section only ──
+   The bar sits at the section's end and sticks to the foot of the window while the section is on
+   screen: a raised white pill, centred, with a soft shadow. All widths (this replaces the phone's
+   bar under the navbar). */
+.pt-bar, .pt-bar[class] { position: sticky; top: auto; bottom: 16px; z-index: 20; display: flex; justify-content: center; margin-top: var(--space-8); pointer-events: none; }
+.pt-bar .pt-switch-wrap { margin: 0; max-width: 100%; }
+.pt-bar .pt-switch { pointer-events: auto; border: 1px solid var(--border-subtle); background: var(--surface-raised, #fff); box-shadow: 0 10px 30px -12px rgb(0 0 0 / 0.35); -webkit-backdrop-filter: none; backdrop-filter: none; }

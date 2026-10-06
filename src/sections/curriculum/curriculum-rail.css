@@ -1,0 +1,71 @@
+/* The curriculum rail: a list that stays at the left, the sections scrolling at the right. */
+.cr-section { scroll-margin-top: calc(var(--sn-h, 69px) + 16px); }
+.cr-list { margin: 0; padding: 0; list-style: none; }
+.cr-item { all: unset; box-sizing: border-box; display: flex; align-items: center; gap: 12px; cursor: pointer; white-space: nowrap; color: var(--content-primary); font-weight: var(--font-weight-medium); transition: background-color 200ms ease, color 200ms ease; }
+.cr-item svg { flex: none; width: 20px; height: 20px; }
+.cr-item:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+
+/* ── Desktop: two columns ── */
+@media (min-width: 1056px) {
+  .cr { display: grid; grid-template-columns: 13rem minmax(0, 1fr); column-gap: var(--space-12); align-items: start;
+    box-sizing: border-box; max-width: var(--size-container-max); margin-inline: auto; padding-inline: var(--space-gutter); }
+  .cr-nav { grid-column: 1; grid-row: 1; position: sticky; top: calc(var(--sn-h, 69px) + 40px); padding-top: var(--space-16); }
+  .cr-main { grid-column: 2; grid-row: 1; min-width: 0;
+    /* the sections' own containers and carousels measure from this gutter: none inside the column */
+    --space-gutter: 0px; --size-container-max: 100%; }
+  .cr-list { display: grid; gap: 4px; }
+  .cr-item { width: 100%; padding: 12px 14px; border-radius: var(--radius-lg); font-size: 1rem; line-height: 1.3; }
+  .cr-item:hover { background: var(--surface-subtle, var(--surface-sunken)); }
+  .cr-item[aria-current='true'] { background: var(--surface-sunken); color: var(--content-brand); }
+
+  /* the sections in the narrower column */
+  .cr-main .pv-page { max-width: none; padding-inline: 0; }
+  .cr-main .h-scroller { --scroller-inset: 0px; }
+  /* the AI journey: its heading over the cards (it has no column of its own to pin in here) */
+  .cr-main .sj-ai[data-layout='split'] { grid-template-columns: minmax(0, 1fr); row-gap: var(--space-8); }
+  .cr-main .sj-ai[data-layout='split'] .sj-ai-aside { position: static; }
+}
+
+/* ── Below desktop: the sections as they were; the list a floating pill at the window's foot ── */
+@media (max-width: 1055px) {
+  .cr-nav { position: sticky; bottom: 16px; z-index: 20; display: flex; justify-content: center; padding-inline: var(--space-gutter); pointer-events: none; }
+  .cr-list { display: flex; max-width: 100%; padding: 4px; overflow-x: auto; scrollbar-width: none; pointer-events: auto;
+    border: 1px solid var(--border-subtle); border-radius: 999px; background: var(--surface-raised, #fff); box-shadow: 0 10px 30px -12px rgb(0 0 0 / 0.35); }
+  .cr-list::-webkit-scrollbar { display: none; }
+  .cr-item { padding: 9px 16px; border-radius: 999px; font-size: 0.875rem; color: var(--content-secondary); }
+  .cr-item svg { display: none; }
+  .cr-item[aria-current='true'] { background: var(--content-primary); color: var(--surface-page); }
+}
+/* career prep in the narrower column: the stat card is about 440px wide, so its drawings step down
+   and stay clear of the numbers and their labels */
+@media (min-width: 1056px) {
+  .cr-main .sj-ps-art, .cr-main .sj-ps-card[data-k='behaviour'] .sj-ps-art { height: 54%; }
+  .cr-main .sj-ps-card[data-k='hours'] .sj-ps-art { width: 58%; height: auto; }
+  .cr-main .sj-ps-stat dd { font-size: 3.25rem; }
+  .cr-main .sj-career-split { column-gap: 48px; }
+}
+/* the list, a little more open: room between the items, taller rows, the icon further from its label */
+@media (min-width: 1056px) {
+  .cr-list { gap: 10px; }
+  .cr-item { padding: 14px 16px; gap: 14px; }
+}
+/* career prep, lower: the stat card and the phases beside it (they end level) */
+@media (min-width: 1056px) {
+  .cr-main .sj-ps { min-height: 360px; }
+  .cr-main .sj-tl { --tl-gap: 44px; }
+  .cr-main .sj-career-card { gap: 28px; }
+  .cr-main .sj-ps-copy { gap: 22px; bottom: 28px; }
+  .cr-main .sj-ps-art, .cr-main .sj-ps-card[data-k='behaviour'] .sj-ps-art { height: 62%; }
+}
+/* career prep: the three phases span the stat card's height exactly. The list starts level with
+   the card's top (under the tabs' row) and ends at its foot, a third of the height to each phase;
+   the line runs from each dot to the next. */
+@media (min-width: 1056px) {
+  .cr-main .sj-career-card { padding-top: 64px; gap: 0; }
+  .cr-main .sj-tl { flex: 1; grid-template-rows: repeat(3, minmax(0, 1fr)); gap: 0; margin: 0; }
+  .cr-main .sj-tl-item { align-content: start; }
+  .cr-main .sj-tl-item:not(:last-child)::before { top: 26px; bottom: -8px; }
+  /* the behavioural-sessions drawing, larger */
+  .cr-main .sj-ps-card[data-k='behaviour'] .sj-ps-art { height: 84%; right: -2%; }
+  .cr-main .sj-ps-card[data-k='behaviour'] .sj-ps-stat dt { max-width: 12ch; }
+}

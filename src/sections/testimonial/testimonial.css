@@ -1,155 +1,453 @@
 /* =========================================================
-   The investor's word, in the Why SSB breaker's form: a band
-   the full width of the page, the photo filling it, the quote
-   standing on the photo's soft right side. No panel.
+   Investors and founders on campus: a banner carousel the
+   full width of the page. Each slide: the photo or video still
+   at the left, fading into the band's green; the person, their
+   designation and the story at the right. The controls are
+   frosted chips nested in the image.
    ========================================================= */
 
-.tq-band {
-  margin-block: var(--space-12);
-}
-.tq-card {
+.oc-band {
   position: relative;
-  display: flex;
   overflow: hidden;
-  margin: 0;
-  background: #0d3a26;
+  margin-block: var(--space-12);
+  background: #0b2f1f;
   color: var(--on-image-ink);
 }
-.tq-media {
-  overflow: hidden;
+/* every slide in one cell, so the band is as tall as the tallest; only the one on show is seen */
+.oc-slides {
+  display: grid;
 }
-.tq-photo {
-  display: block;
+.oc-slide {
+  position: relative;
+  grid-area: 1 / 1;
+  display: flex;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 600ms ease, visibility 0s linear 600ms;
+}
+.oc-slide[data-on] {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 600ms ease;
+}
+
+/* ---- the media ---- */
+.oc-media {
+  position: relative;
+  overflow: hidden;
+  background: #0d3a26;
+}
+.oc-media > img,
+.oc-media > iframe {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
+  border: 0;
   object-fit: cover;
-  /* the team's photo has the person at the right: mirrored, so they sit at the left */
-  scale: -1 1;
 }
-.tq-copy {
+.oc-media[data-mirror] > img {
+  scale: -1 1;
+  object-position: 88% 30%;
+}
+/* no photo yet: a green ground */
+.oc-media[data-empty] {
+  background:
+    radial-gradient(90% 120% at 0% 0%, color-mix(in srgb, var(--surface-brand-solid) 70%, transparent), transparent 62%),
+    radial-gradient(80% 110% at 70% 100%, color-mix(in srgb, var(--surface-brand-solid) 45%, transparent), transparent 60%),
+    #0d3a26;
+}
+.oc-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  color: #171717;
+  cursor: pointer;
+  translate: -50% -50%;
+  box-shadow: 0 12px 32px -10px rgb(0 0 0 / 0.5);
+  transition: scale 200ms ease;
+}
+.oc-play:hover {
+  scale: 1.06;
+}
+.oc-play:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+.oc-play svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  translate: 2px 0;
+}
+
+/* ---- the copy: the person, their designation, the story ---- */
+.oc-copy {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--space-3);
 }
-.tq-eyebrow {
-  margin: 0;
+.oc-eyebrow {
+  margin: 0 0 var(--space-2);
   font-size: var(--type-eyebrow-size);
   line-height: var(--type-eyebrow-lh);
   letter-spacing: var(--type-eyebrow-tracking);
   font-weight: var(--type-eyebrow-weight, 700);
   text-transform: uppercase;
-  color: var(--on-image-ink);
+  color: rgb(255 255 255 / 0.75);
 }
-.tq-quote {
+.oc-name {
   margin: 0;
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  font-weight: var(--font-weight-semibold);
 }
-.tq-quote p {
+.oc-role {
   margin: 0;
-  font-size: clamp(1.5rem, 2.3vw, 2.125rem);
-  line-height: 1.25;
-  letter-spacing: -0.02em;
-  font-weight: var(--font-weight-medium);
-  text-wrap: pretty;
-}
-.tq-by {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
-}
-.tq-name {
   font-size: var(--type-body-lg-size);
   line-height: var(--type-body-lg-lh);
-  color: var(--on-image-ink);
+  color: rgb(255 255 255 / 0.8);
 }
-/* "Ex-" and the logos under a hairline, as the breaker sets its sources */
-.tq-logos {
+.oc-logos {
   display: flex;
   align-items: center;
   gap: var(--space-4);
-  padding-top: var(--space-6);
-  border-top: var(--border-hair) solid rgb(255 255 255 / 0.3);
+  margin: var(--space-1) 0 0;
 }
-.tq-ex {
+.oc-ex {
+  margin-right: calc(var(--space-2) * -1);
   font-size: var(--type-body-lg-size);
   line-height: 1;
   font-weight: var(--font-weight-medium);
   color: rgb(255 255 255 / 0.8);
-  /* sits tight to the first logo, as one word */
-  margin-right: calc(var(--space-2) * -1);
 }
-.tq-divider {
+.oc-divider {
   align-self: stretch;
   width: var(--border-hair);
   min-height: var(--space-6);
   background: rgb(255 255 255 / 0.35);
 }
-.tq-logos img {
+.oc-logos img {
   display: block;
-  height: calc(1.125rem * var(--tq-logo-scale, 1));
+  height: calc(1.125rem * var(--oc-logo-scale, 1));
   width: auto;
   max-width: 11rem;
   object-fit: contain;
-  /* white, one tone */
   filter: brightness(0) invert(1);
 }
+.oc-text,
+.oc-text p {
+  margin: 0;
+}
+.oc-text {
+  margin-top: var(--space-4);
+  padding-top: var(--space-5);
+  border-top: var(--border-hair) solid rgb(255 255 255 / 0.25);
+  font-size: var(--type-body-lg-size);
+  line-height: 1.6;
+  color: rgb(255 255 255 / 0.88);
+  text-wrap: pretty;
+}
+.oc-quote {
+  font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+  line-height: 1.5;
+  font-weight: var(--font-weight-medium);
+  color: var(--on-image-ink);
+}
 
-/* Web: the photo fills the band; the copy over its right side. */
+/* ---- the controls, nested in the image: frosted chips ---- */
+.oc-chips {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  pointer-events: none;
+}
+.oc-chips-row {
+  display: flex;
+  gap: var(--space-2);
+  max-width: 100%;
+  padding: var(--space-1);
+  overflow-x: auto;
+  scrollbar-width: none;
+  pointer-events: auto;
+}
+.oc-chips-row::-webkit-scrollbar {
+  display: none;
+}
+.oc-chip {
+  --oc-glass: blur(16px) saturate(1.4);
+  position: relative;
+  flex: none;
+  overflow: hidden;
+  height: 2.5rem;
+  padding: 0 var(--space-4);
+  border: var(--border-hair) solid rgb(255 255 255 / 0.4);
+  border-radius: var(--radius-full);
+  background: rgb(255 255 255 / 0.22);
+  -webkit-backdrop-filter: var(--oc-glass);
+  backdrop-filter: var(--oc-glass);
+  color: rgb(255 255 255 / 0.85);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+.oc-chip:hover {
+  background: rgb(255 255 255 / 0.36);
+  color: #fff;
+}
+.oc-chip:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+.oc-chip[aria-current='true'] {
+  background: rgb(255 255 255 / 0.82);
+  color: #171717;
+}
+/* the time of the person on show, filling along the chip's foot */
+.oc-chip-fill {
+  position: absolute;
+  inset: auto 0 0;
+  height: 2px;
+  background: var(--surface-brand-solid);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: oc-fill var(--oc-dwell, 7000ms) linear forwards;
+  animation-play-state: paused;
+}
+.oc-band[data-live] .oc-chip-fill {
+  animation-play-state: running;
+}
+.oc-band[data-live]:hover .oc-chip-fill,
+.oc-band[data-live]:focus-within .oc-chip-fill,
+.oc-band[data-playing] .oc-chip-fill {
+  animation-play-state: paused;
+}
+@keyframes oc-fill {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ---- Web: the media at the left, fading into the band; the copy at the right ---- */
 @media (min-width: 672px) {
-  .tq-card {
-    min-height: clamp(30rem, 46vw, 42rem);
+  .oc-slide {
     align-items: center;
+    min-height: clamp(30rem, 44vw, 40rem);
   }
-  .tq-media {
+  .oc-media {
     position: absolute;
-    inset: 0;
+    inset: 0 auto 0 0;
+    width: 60%;
+    -webkit-mask-image: linear-gradient(to right, #000 68%, transparent);
+    mask-image: linear-gradient(to right, #000 68%, transparent);
   }
-  /* the person (mirrored to the left) kept in frame; a soft shade toward the right so white type holds */
-  .tq-photo {
-    object-position: 82% 30%;
+  /* a video plays whole, unfaded */
+  .oc-band[data-playing] .oc-slide[data-on] .oc-media {
+    -webkit-mask-image: none;
+    mask-image: none;
   }
-  .tq-media::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to right, transparent 34%, rgb(4 32 21 / 0.5) 58%, rgb(4 32 21 / 0.62) 100%);
-    pointer-events: none;
-  }
-  .tq-inner {
+  .oc-inner {
     position: relative;
     display: flex;
     justify-content: flex-end;
     padding-block: var(--space-16);
+    pointer-events: none;
   }
-  .tq-copy {
-    width: min(46%, 36rem);
+  .oc-copy {
+    width: min(38%, 30rem);
+    pointer-events: auto;
+  }
+  .oc-chips {
+    top: var(--space-6);
+    left: max(var(--space-gutter), calc((100% - var(--size-container-max)) / 2 + var(--space-gutter)));
+    max-width: 56%;
   }
 }
 
-/* Phones: the photo on top (cropped to the person), the copy under it on the photo's green. */
+/* ---- Phones: the media on top, the copy under it ---- */
 @media (max-width: 671px) {
-  .tq-card {
+  .oc-slide {
     flex-direction: column;
   }
-  .tq-media {
+  .oc-media {
+    flex: none;
     aspect-ratio: 4 / 3;
   }
-  .tq-photo {
-    object-position: 78% center;
-  }
-  .tq-inner {
+  .oc-inner {
     padding-block: var(--space-8);
   }
-  .tq-logos {
+  .oc-chips {
+    top: var(--space-3);
+    inset-inline: 0;
+  }
+  .oc-chips-row {
+    padding-inline: var(--space-gutter);
+  }
+  .oc-play {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+  .oc-logos {
     gap: var(--space-3);
   }
-  .tq-logos img {
-    height: calc(0.9rem * var(--tq-logo-scale, 1));
+  .oc-logos img {
+    height: calc(0.9rem * var(--oc-logo-scale, 1));
     max-width: 8.5rem;
   }
-  .tq-ex {
-    font-size: var(--type-body-size);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .oc-slide,
+  .oc-slide[data-on] {
+    transition: none;
   }
-  .tq-divider {
-    min-height: var(--space-5);
+  .oc-chip-fill {
+    animation: none;
   }
+}
+
+/* ── The internship video cards' palette (2026-10-06): warm charcoal, not green ──
+   The band and the fade the photo runs into are a near-black neutral; a slide with no photo stands
+   on the internship cards' dark plate with the person's initial; the chips are neutral glass and
+   sit at the foot of the image (they move to its head while a video plays, clear of its controls). */
+.oc-band { background: #1a1917; }
+.oc-media { background: #1a1917; }
+.oc-media[data-empty] { background: #1f1e1c url('/internship/plate.webp') center / cover no-repeat; }
+.oc-initial { position: absolute; top: 50%; left: 50%; translate: -50% -50%; font-size: clamp(4rem, 9vw, 7.5rem); line-height: 1; font-weight: var(--font-weight-medium); color: rgb(255 255 255 / 0.82); }
+.oc-eyebrow { color: rgb(255 255 255 / 0.6); }
+.oc-role, .oc-ex { color: rgb(255 255 255 / 0.72); }
+.oc-text { color: rgb(255 255 255 / 0.8); border-top-color: rgb(255 255 255 / 0.16); }
+.oc-quote { color: rgb(255 255 255 / 0.92); }
+.oc-chip { border-color: rgb(255 255 255 / 0.28); background: rgb(40 38 36 / 0.5); color: rgb(255 255 255 / 0.82); box-shadow: 0 8px 24px -12px rgb(0 0 0 / 0.5); }
+.oc-chip:hover { background: rgb(70 67 63 / 0.6); color: #fff; }
+.oc-chip[aria-current='true'] { background: rgb(255 255 255 / 0.9); color: #171717; }
+.oc-chip-fill { background: #171717; opacity: 0.55; }
+@media (min-width: 672px) {
+  .oc-chips { top: auto; bottom: var(--space-6); }
+  .oc-band[data-playing] .oc-chips { top: var(--space-6); bottom: auto; }
+}
+@media (max-width: 671px) {
+  /* at the foot of the 4:3 image (the band is as wide as the screen) */
+  .oc-chips { top: calc(75vw - 2.5rem - var(--space-4)); }
+  .oc-band[data-playing] .oc-chips { top: var(--space-3); }
+}
+
+/* ── The Why SSB breaker's layout and fade (2026-10-06) ──
+   Web: the photo fills the whole band, edge to edge. Its right side goes soft under the copy (a
+   blurred copy of the photo, let in from the middle, with a light shade so white type holds), and
+   the band's foot fades out into the page, as the breaker's does. No hard right-hand panel. */
+.oc-soft { display: none; }
+@media (min-width: 672px) {
+  .oc-band { margin-bottom: 0; background: var(--surface-page); }
+  .oc-media { width: 100%; -webkit-mask-image: none; mask-image: none; }
+  .oc-media > .oc-soft { display: block; filter: blur(28px) saturate(1.1); scale: 1.08;
+    -webkit-mask-image: linear-gradient(to right, transparent 38%, #000 62%); mask-image: linear-gradient(to right, transparent 38%, #000 62%); }
+  .oc-media[data-mirror] > .oc-soft { scale: -1.08 1.08; }
+  /* the shade under the copy, then the fade into the page at the foot */
+  .oc-media::after { content: ''; position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(to bottom, transparent 78%, color-mix(in srgb, var(--surface-page) 70%, transparent) 92%, var(--surface-page) 100%),
+      linear-gradient(to right, transparent 36%, rgb(20 16 12 / 0.42) 64%, rgb(20 16 12 / 0.5) 100%); }
+  .oc-inner { padding-bottom: calc(var(--space-16) + 4%); }
+  .oc-chips { bottom: 17%; }
+  /* a video plays whole: no frost, shade or fade over it, the copy out of its way */
+  .oc-band[data-playing] .oc-slide[data-on] .oc-media::after, .oc-band[data-playing] .oc-slide[data-on] .oc-soft { display: none; }
+  .oc-band[data-playing] .oc-slide[data-on] .oc-inner { visibility: hidden; }
+  .oc-band[data-playing] { background: #000; }
+}
+/* (the band carries the dark theme, so the page's colour is named here; a mirrored photo's frost
+   is masked the other way round, since the flip turns the mask with it) */
+@media (min-width: 672px) {
+  .oc-band { --oc-page: #fff; background: var(--oc-page); }
+  .oc-media::after { background:
+      linear-gradient(to bottom, transparent 78%, rgb(255 255 255 / 0.7) 92%, var(--oc-page) 100%),
+      linear-gradient(to right, transparent 36%, rgb(20 16 12 / 0.42) 64%, rgb(20 16 12 / 0.5) 100%); }
+  .oc-media[data-mirror] > .oc-soft { -webkit-mask-image: linear-gradient(to left, transparent 38%, #000 62%); mask-image: linear-gradient(to left, transparent 38%, #000 62%); }
+}
+@media (min-width: 672px) { .oc-initial { left: 28%; } .oc-play { left: 30%; } }
+
+/* the chips centred on the band (web), and the placeholder's initial clear of the copy */
+@media (min-width: 672px) {
+  .oc-chips { left: 0; right: 0; max-width: none; justify-content: center; }
+  .oc-initial { left: 30%; }
+}
+.oc-role + .oc-logos { margin-top: var(--space-2); }
+/* room under the copy for the centred chips and the fade (the chips at a fixed height off the foot) */
+@media (min-width: 672px) {
+  .oc-inner { padding-top: var(--space-12); padding-bottom: 12rem; }
+  .oc-chips { bottom: 6.5rem; }
+}
+
+/* ── The copy as the Why SSB breaker sets it (2026-10-06): the eyebrow, the story or the quote
+   large in two or three lines, then the person on a glass card: name and designation at the left,
+   their company at the right, its logo large (the emphasis). ── */
+.oc-copy { gap: var(--space-5); }
+.oc-eyebrow { margin: 0; }
+.oc-lead, .oc-lead p { margin: 0; }
+.oc-lead { font-size: clamp(1.375rem, 2.2vw, 2rem); line-height: 1.25; letter-spacing: -0.02em; font-weight: var(--font-weight-medium); color: #fff; text-wrap: balance; }
+.oc-card { --oc-card-glass: blur(18px) saturate(1.3); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4) var(--space-6); margin-top: var(--space-3); padding: var(--space-4) var(--space-5);
+  border: var(--border-hair) solid rgb(255 255 255 / 0.18); border-radius: var(--radius-lg); background: rgb(255 255 255 / 0.08); -webkit-backdrop-filter: var(--oc-card-glass); backdrop-filter: var(--oc-card-glass); }
+.oc-who { display: grid; gap: 2px; min-width: 0; }
+.oc-name { font-size: var(--type-body-lg-size); line-height: 1.3; letter-spacing: 0; font-weight: var(--font-weight-semibold); }
+.oc-role { font-size: var(--type-body-sm-size); line-height: 1.4; color: rgb(255 255 255 / 0.68); }
+.oc-co { flex: none; padding-left: var(--space-6); border-left: var(--border-hair) solid rgb(255 255 255 / 0.22); }
+.oc-logos, .oc-role + .oc-logos { margin: 0; }
+.oc-logos img { height: calc(1.5rem * var(--oc-logo-scale, 1)); max-width: 9rem; }
+.oc-logos .oc-ex { font-size: var(--type-body-size); }
+.oc-company { margin: 0; font-size: var(--type-body-lg-size); line-height: 1.25; font-weight: var(--font-weight-semibold); color: #fff; max-width: 12rem; }
+@media (min-width: 672px) { .oc-copy { width: min(44%, 36rem); } }
+@media (max-width: 671px) { .oc-co { padding-left: 0; border-left: 0; } }
+
+/* the foot's fade, eased: a long run of small steps into the page, so there is no visible edge */
+@media (min-width: 672px) {
+  .oc-media::after { background:
+      linear-gradient(to bottom, transparent 58%, rgb(255 255 255 / 0.04) 64%, rgb(255 255 255 / 0.12) 70%, rgb(255 255 255 / 0.26) 76%, rgb(255 255 255 / 0.45) 82%, rgb(255 255 255 / 0.66) 88%, rgb(255 255 255 / 0.85) 94%, var(--oc-page) 100%),
+      linear-gradient(to right, transparent 36%, rgb(20 16 12 / 0.42) 64%, rgb(20 16 12 / 0.5) 100%); }
+  .oc-inner { padding-bottom: 14rem; }
+  .oc-chips { bottom: 9rem; }
+}
+.oc-copy { min-width: 0; max-width: 100%; } .oc-card { box-sizing: border-box; max-width: 100%; } .oc-lead { overflow-wrap: anywhere; }
+.oc-slides { grid-template-columns: minmax(0, 1fr); } .oc-slide { min-width: 0; } .oc-inner { min-width: 0; width: 100%; box-sizing: border-box; } @media (max-width: 671px) { .oc-logos { flex-wrap: wrap; } .oc-co { max-width: 100%; } }
+/* the chips with the copy (web): under the person's card, on the copy column's left edge and as
+   wide as it (they wrap to a second row). The copy is set from the foot up, so the card always
+   ends just above them whatever the lead's length. */
+@media (min-width: 672px) {
+  .oc-slide { align-items: flex-end; }
+  .oc-inner { padding-bottom: 15.5rem; }
+  .oc-chips { left: auto; right: max(var(--space-gutter), calc((100% - var(--size-container-max)) / 2 + var(--space-gutter)));
+    width: min(calc((min(100%, var(--size-container-max)) - 2 * var(--space-gutter)) * 0.44), 36rem); max-width: none;
+    bottom: auto; top: calc(100% - 14.25rem); justify-content: flex-start; }
+  .oc-chips-row { flex-wrap: wrap; padding: 0; overflow: visible; }
+  .oc-chip { height: 2.25rem; padding: 0 var(--space-3); font-size: 0.875rem; }
+  .oc-band[data-playing] .oc-chips { top: var(--space-6); }
+}
+/* the chips on one line, with more room between them and above them: the copy column (and the
+   chips with it) is wider so the five names fit; on a narrower screen the row scrolls */
+@media (min-width: 672px) {
+  .oc-copy { width: min(55%, 44rem); }
+  .oc-chips { width: min(calc((min(100%, var(--size-container-max)) - 2 * var(--space-gutter)) * 0.55), 44rem); top: calc(100% - 12.5rem); }
+  .oc-chips-row { flex-wrap: nowrap; gap: var(--space-3); overflow-x: auto; padding: var(--space-1) 0; }
+  .oc-chip { padding: 0 var(--space-4); }
+  .oc-inner { padding-bottom: 14.5rem; }
+  .oc-initial { left: 22%; }
+}
+
+/* (the five names need about 716px: the column is wide enough for them from a 1280px container) */
+@media (min-width: 672px) {
+  .oc-copy { width: min(58%, 46rem); }
+  .oc-chips { width: min(calc((min(100%, var(--size-container-max)) - 2 * var(--space-gutter)) * 0.58), 46rem); }
+  .oc-chips-row { gap: 10px; }
+  .oc-chip { padding: 0 14px; }
+  .oc-initial { left: 20%; }
 }
