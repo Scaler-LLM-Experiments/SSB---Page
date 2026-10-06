@@ -11,11 +11,12 @@ import './why.css';
  * breaker (WhyBreaker): Nikhil Kamath's remark, the clip of it, and the two
  * figures that say he isn't alone. Then the section answers it.
  *
- *   The turn: the deck's "Nobody is preparing you for emerging roles like",
+ *   The turn: "He's right about the old MBA. Ours prepares you for roles
+ *   like" (answering the breaker; the deck had "Nobody is preparing you…"),
  *   large, its last words turning over through the four roles, in green.
  *   The answer: three chapters (01 Build, 02 Ship, 03 Grow) that stack as the
- *   page scrolls: each card holds under the nav while the next slides up over
- *   it, the one beneath settling back.
+ *   page scrolls, as the AI journey's cards do: each card holds under the nav
+ *   while the next slides up over it, the ones beneath shrinking back.
  *
  * The deck's title ("MBA is not dead…") and the mock's description were cut
  * (the team's call, 2026-10-06): the breaker makes that argument. All motion
@@ -60,6 +61,12 @@ function Roles({ roles }: { roles: WhyRoles }) {
   return (
     <div data-why-roles className="why-roles">
       <h2 id="why-roles" className="type-display text-content">
+        {roles.setup ? (
+          <>
+            <span>{roles.setup}</span>
+            <br />
+          </>
+        ) : null}
         <span>{roles.lead} </span>
         <span className="sr-only">{roles.roles.join(', ')}.</span>
         <span aria-hidden className="why-roll">
@@ -105,8 +112,6 @@ function Chapter({ pillar, index }: { pillar: WhyPillar; index: number }) {
           decoding="async"
         />
       </div>
-      {/* The section's grey, faded in over the card as the next one covers it (WhyMotion). */}
-      <span data-why-dim aria-hidden className="why-card-dim" />
     </article>
   );
 }

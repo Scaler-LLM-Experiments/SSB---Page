@@ -14,29 +14,37 @@ export type WhyQuote = {
   eyebrow: string;
   /** The words, verbatim (no quote marks: the breaker sets them). */
   caption: string;
-  /** Who said it, under the words: just the name (the team's call). */
+  /** Who said it: his name, in the footnote under the words. */
   attribution: string;
-  /** The clip: a YouTube video id, and the seconds it starts and ends at. Unset: no clip. */
-  youtubeId?: string;
-  start?: number;
-  end?: number;
+  /** His designation, e.g. "Co-founder, Zerodha"; the footnote names its last part (the company). */
+  role?: string;
+  /** The clip: a silent loop (an MP4 in public/media, played like a GIF) and its first frame. */
+  video?: string;
+  poster?: string;
 };
 
 /** The deck's turn from the evidence to SSB: a line ending in a role that keeps changing. */
 export type WhyRoles = {
-  /** e.g. "Nobody is preparing you for emerging roles like". */
+  /** A line on its own before the lead, e.g. "He’s right about the old MBA." */
+  setup?: string;
+  /** e.g. "But ours prepares you for roles like". */
   lead: string;
   roles: string[];
 };
 
-/** A figure that backs the argument, set as Apple's spec figures: its source over it, a line under it. */
+/** A figure that backs the argument, set as Apple's spec figures: a line, the figure, a line of text, its source. */
 export type WhyFigure = {
-  /** Who found it, small over the figure, e.g. "Forbes, 2026". */
-  source: string;
   /** As shown, e.g. "60%" or "62% more". Slides up into its line as it arrives. */
   value: string;
   /** Under the figure, reading on from it: "of MBA students say their coursework…". */
   description: string;
+  /** Who found it: the logo's alt text, e.g. "Forbes". */
+  source: string;
+  /** The source's logo, a file in public/logos, and its height in px (sized so the logos weigh alike). */
+  sourceLogo?: string;
+  sourceLogoHeight?: number;
+  /** Beside the logo, e.g. "2026" or "Global AI Jobs Barometer, 2026". */
+  sourceNote?: string;
 };
 
 /** One of the three chapters (what SSB does differently), each with its photo. */

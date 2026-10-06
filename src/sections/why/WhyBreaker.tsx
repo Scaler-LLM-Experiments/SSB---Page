@@ -3,124 +3,56 @@
 import * as React from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Container, Heading, Text } from '@kishanscaler/ssx-ui';
+import { Container, Heading } from '@kishanscaler/ssx-ui';
 import { ease, motionTokens, prefersReducedMotion, useMotion } from '@kishanscaler/ssx-ui/motion';
 
-import { PLAYING, loadYouTube, type YTPlayer } from '@/lib/youtube';
 import type { WhyFigure, WhyQuote } from './types';
 import './why.css';
 
 const { duration: d, stagger: st, offset } = motionTokens;
 
-/** No YouTube captions: the words are set beside the clip already. */
-function noCaptions(player: YTPlayer) {
-  player.unloadModule?.('captions');
-  player.unloadModule?.('cc');
-}
-
 /**
  * The breaker that opens Why SSB, after Apple's product blocks: the clip of
- * the remark the full width of the page, Nikhil Kamath on its left looking
- * right, and the words on the right where he is looking, the clip fading and
- * blurring into the page under them (a progressive blur, then the page's
- * colour). An eyebrow, the words as the title (lighting from grey to ink as
- * they scroll up: the one moment), who said it in one line, "Watch the clip",
- * then the two figures that say he isn't alone, as Apple sets its spec
- * figures. On a phone the clip sits above the words, fading into the page.
+ * the remark full bleed, Nikhil Kamath on its left looking right, and the
+ * words on the right where he is looking, in white (a dark island), over a
+ * progressive blur (a dark frost that strengthens toward the right). The
+ * section's eyebrow, the words as the title, then the two figures that say he
+ * isn't alone, as Apple sets its spec figures: a line over each, the figure, a
+ * line of text, the source's logo. Who said it is a footnote under the words.
+ * The clip fades out (its opacity, eased) into the page's colour under them. The
+ * copy fades up as it arrives, part by part (eyebrow, words, footnote), then
+ * the figures one after the other: each one's line and figure (sliding up into
+ * its line), then its text and source.
  *
- * The clip is YouTube's player (youtube-nocookie), not a copy: the footage is
- * Zerodha's. It loads a screen away, plays muted and looping its 13 seconds
- * only while on screen, cut just before its end so YouTube's end screen never
- * shows, and framed so YouTube's title bar and the burned-in subtitles fall
- * outside. Under reduced
- * motion it holds on its first frame.
+ * On a phone: the clip at the top, sharp, and under it a blurred copy of it
+ * running to the breaker's foot; the words and the figures over its
+ * lower part on a dark frost, all in white; then it fades out into the page.
+ *
+ * The clip is the team's cut (a silent loop, like a GIF; Zerodha's footage,
+ * used with their permission), playing only while on screen. Under reduced
+ * motion it holds on its first frame (the poster).
  */
 export function WhyBreaker({ quote, figures }: { quote: WhyQuote; figures: WhyFigure[] }) {
   const scope = React.useRef<HTMLElement>(null);
-  const frame = React.useRef<HTMLDivElement>(null);
-  const player = React.useRef<YTPlayer | null>(null);
-  const [rolling, setRolling] = React.useState(false);
-  const { youtubeId, start = 0, end } = quote;
+  const { video, poster } = quote;
 
+  // Both copies (the sharp clip, the blurred one under it on a phone) play only while on screen;
+  // the blurred one only where it is shown.
   React.useEffect(() => {
     const root = scope.current;
-    const host = frame.current;
-    if (!youtubeId || !root || !host) return;
+    if (!video || !root) return;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let alive = true;
-    let made = false;
-    let seen = false;
-    let ready = false;
-    const make = () => {
-      if (made) return;
-      made = true;
-      // YouTube replaces the element it is given with its iframe: one outside React's tree.
-      const element = document.createElement('div');
-      host.append(element);
-      loadYouTube().then((YT) => {
-        if (!alive) return;
-        player.current = new YT.Player(element, {
-          host: 'https://www.youtube-nocookie.com',
-          videoId: youtubeId,
-          width: '100%',
-          height: '100%',
-          playerVars: {
-            autoplay: 0,
-            mute: 1,
-            controls: 0,
-            disablekb: 1,
-            fs: 0,
-            iv_load_policy: 3,
-            playsinline: 1,
-            rel: 0,
-            cc_load_policy: 0,
-            start,
-          },
-          events: {
-            onReady: (event) => {
-              ready = true;
-              event.target.mute();
-              noCaptions(event.target);
-              if (seen && !reduce) event.target.playVideo();
-            },
-            onStateChange: (event) => {
-              if (event.data === PLAYING) setRolling(true);
-            },
-            onApiChange: (event) => noCaptions(event.target),
-          },
-        });
-      });
-    };
-    // The loop: back to the start just before the end, so YouTube's end screen never shows.
-    const loop = window.setInterval(() => {
-      const p = player.current;
-      if (!ready || !p || !end) return;
-      if (p.getCurrentTime() < end - 0.3) return;
-      p.seekTo(start, true);
-      if (reduce) p.pauseVideo();
-    }, 200);
-    const near = new IntersectionObserver(([entry]) => entry.isIntersecting && make(), {
-      rootMargin: '100% 0px',
-    });
+    const clips = Array.from(root.querySelectorAll<HTMLVideoElement>('[data-breaker-clip]'));
     const onScreen = new IntersectionObserver(([entry]) => {
-      seen = entry.isIntersecting;
-      const p = player.current;
-      if (!ready || !p) return;
-      if (seen && !reduce) p.playVideo();
-      else if (!seen) p.pauseVideo();
+      for (const clip of clips) {
+        const shown = getComputedStyle(clip).display !== 'none';
+        if (entry.isIntersecting && shown && !reduce) clip.play().catch(() => {});
+        else clip.pause();
+      }
     });
-    near.observe(root);
     onScreen.observe(root);
-    return () => {
-      alive = false;
-      window.clearInterval(loop);
-      near.disconnect();
-      onScreen.disconnect();
-      player.current?.destroy();
-      player.current = null;
-      host.replaceChildren();
-    };
-  }, [youtubeId, start, end]);
+    return () => onScreen.disconnect();
+  }, [video]);
 
   useMotion(
     () => {
@@ -128,8 +60,8 @@ export function WhyBreaker({ quote, figures }: { quote: WhyQuote; figures: WhyFi
       if (!root || prefersReducedMotion(root)) return;
       gsap.registerPlugin(ScrollTrigger);
       const q = gsap.utils.selector(root);
-      const words = q('[data-breaker-words]')[0];
-      // The copy comes up block by block, one gentle fade each, as it arrives.
+      const enter = ease('expressiveEntrance');
+      // The words come up one after another (eyebrow, words, footnote), a gentle fade each.
       gsap.fromTo(
         q('[data-breaker-part]'),
         { autoAlpha: 0, y: offset.reveal },
@@ -137,37 +69,47 @@ export function WhyBreaker({ quote, figures }: { quote: WhyQuote; figures: WhyFi
           autoAlpha: 1,
           y: 0,
           duration: d.slower,
-          stagger: st.base * 1.5,
-          ease: ease('expressiveEntrance'),
+          stagger: st.base * 2,
+          ease: enter,
           clearProps: 'transform,opacity,visibility',
           scrollTrigger: { trigger: root, start: 'clamp(top 70%)', once: true },
         },
       );
-      // The figures slide up into their lines as their row arrives.
-      gsap.fromTo(
-        q('[data-slide]'),
-        { yPercent: 110 },
-        {
-          yPercent: 0,
-          duration: d.slower,
-          stagger: st.base * 1.5,
-          ease: ease('expressiveEntrance'),
-          clearProps: 'transform',
-          scrollTrigger: { trigger: q('[data-breaker-stats]')[0], start: 'clamp(top 90%)', once: true },
-        },
-      );
-      // The words light from grey to ink, top line first, as they scroll up the screen.
-      if (words) {
-        gsap.fromTo(
-          words,
-          { '--lit': '0%' },
-          {
-            '--lit': '100%',
-            ease: ease('linear'),
-            scrollTrigger: { trigger: words, start: 'top 80%', end: 'bottom 40%', scrub: true },
-          },
-        );
-      }
+      // Then the figures as their row arrives, one after the other: each one's line and figure
+      // (sliding up into its line), then its text and source fading up behind it.
+      const row = q('[data-breaker-stats]')[0];
+      const figures = gsap.timeline({
+        scrollTrigger: { trigger: row, start: 'clamp(top 90%)', once: true },
+      });
+      q('[data-breaker-stat]').forEach((stat, i) => {
+        const at = i * st.base * 3;
+        figures
+          .fromTo(
+            stat,
+            { autoAlpha: 0 },
+            { autoAlpha: 1, duration: d.slow, ease: enter, clearProps: 'opacity,visibility' },
+            at,
+          )
+          .fromTo(
+            stat.querySelector('[data-slide]'),
+            { yPercent: 110 },
+            { yPercent: 0, duration: d.slower, ease: enter, clearProps: 'transform' },
+            at,
+          )
+          .fromTo(
+            stat.querySelectorAll('[data-stat-part]'),
+            { autoAlpha: 0, y: offset.reveal },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: d.slower,
+              stagger: st.base * 2,
+              ease: enter,
+              clearProps: 'transform,opacity,visibility',
+            },
+            at + st.base * 2,
+          );
+      });
       // The clip settles from a slight zoom as the breaker crosses the screen.
       gsap.fromTo(
         q('[data-breaker-stage]'),
@@ -184,43 +126,91 @@ export function WhyBreaker({ quote, figures }: { quote: WhyQuote; figures: WhyFi
   );
 
   return (
-    <section
-      ref={scope}
-      aria-labelledby="why-breaker-title"
-      className="why-breaker"
-      data-rolling={rolling || undefined}
-    >
+    <section ref={scope} aria-labelledby="why-breaker-title" className="why-breaker">
       <div className="why-breaker-media" aria-hidden>
         <div data-breaker-stage className="why-breaker-stage">
-          <div ref={frame} className="why-breaker-frame" />
+          {video ? (
+            <>
+              {/* Phone: a blurred copy under the sharp clip, carrying it to the breaker's foot. */}
+              <video
+                data-breaker-clip
+                className="why-breaker-haze"
+                src={video}
+                poster={poster}
+                muted
+                loop
+                playsInline
+                preload="metadata"
+              />
+              <video
+                data-breaker-clip
+                className="why-breaker-clip"
+                src={video}
+                poster={poster}
+                muted
+                loop
+                playsInline
+                preload="metadata"
+              />
+            </>
+          ) : null}
         </div>
         <span className="why-breaker-blur" />
-        <span className="why-breaker-fade" />
       </div>
 
-      <Container className="relative">
+      {/* The page's width (the nav's edges): his name at its left edge, the copy at its right. */}
+      <Container className="why-breaker-inner">
         <div className="why-breaker-copy">
-          <Heading as="p" size="eyebrow" className="text-content-brand" data-breaker-part>
-            {quote.eyebrow}
-          </Heading>
-          <h2 id="why-breaker-title" data-breaker-part className="why-breaker-words">
-            <span data-breaker-words>“{quote.caption}”</span>
-          </h2>
-          <Text size="lg" tone="secondary" data-breaker-part className="mt-4">
-            {quote.attribution}
-          </Text>
+          <div className="why-breaker-top">
+            {/* The words: a dark island, white over the clip (the team's call). */}
+            <div className="why-breaker-lead" data-brand="ssb" data-theme="dark">
+              {/* White, like the words (the team's call), not the brand green other sections use. */}
+              <Heading as="p" size="eyebrow" className="text-on-image-ink" data-breaker-part>
+                {quote.eyebrow}
+              </Heading>
+              <h2 id="why-breaker-title" data-breaker-part className="why-breaker-words">
+                “{quote.caption}”
+              </h2>
+              {/* Who said it, a small footnote (the team's call). */}
+              <p data-breaker-part className="why-breaker-credit type-body">
+                — {[quote.attribution, quote.role?.split(', ').pop()].filter(Boolean).join(', ')}
+              </p>
+            </div>
+          </div>
 
-          <ul data-breaker-stats data-breaker-part className="why-breaker-stats">
-            {figures.map((figure) => (
-              <li key={figure.value}>
-                <p className="type-caption text-content-secondary">{figure.source}</p>
-                <p className="why-slide type-display text-content">
-                  <span data-slide>{figure.value}</span>
-                </p>
-                <p className="mt-1 type-body-sm text-content-secondary">{figure.description}</p>
-              </li>
-            ))}
-          </ul>
+          {/* The figures, white over the clip. */}
+          <div className="why-breaker-foot">
+            <ul data-breaker-stats className="why-breaker-stats">
+              {figures.map((figure) => (
+                <li key={figure.value} data-breaker-stat className="why-breaker-stat">
+                  <p className="why-slide type-display why-breaker-ink">
+                    <span data-slide>{figure.value}</span>
+                  </p>
+                  <p data-stat-part className="mt-3 type-body-sm why-breaker-ink">
+                    {figure.description}
+                  </p>
+                  <p data-stat-part className="why-breaker-source">
+                    {figure.sourceLogo ? (
+                      // eslint-disable-next-line @next/next/no-img-element -- a small static logo, sized by its height
+                      <img
+                        src={figure.sourceLogo}
+                        alt={figure.source}
+                        height={figure.sourceLogoHeight ?? 18}
+                        style={{ height: figure.sourceLogoHeight ?? 18 }}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    ) : (
+                      <span className="type-label why-breaker-ink">{figure.source}</span>
+                    )}
+                    {figure.sourceNote ? (
+                      <span className="type-caption why-breaker-note">{figure.sourceNote}</span>
+                    ) : null}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </Container>
     </section>

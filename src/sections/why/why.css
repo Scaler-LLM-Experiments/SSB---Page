@@ -1,36 +1,55 @@
 /* Why SSB (WhySection), on the section's faint grey. */
 
-/* ---- The breaker (WhyBreaker): the clip on the left, the words on the right ---- */
+/* ---- The breaker (WhyBreaker): the clip full bleed, the words white over it ---- */
 
-/* On the section's faint grey, so the breaker and the section read as one. The
-   clip fills the breaker on desktop, Nikhil on its left, and melts into the
-   page on the right under the words (a progressive blur, then the page's
-   colour), and at its foot. On a phone it is a block above the words, fading
-   into the page at its foot. */
+/* Desktop: the clip fills the breaker, Nikhil on its left; the words sit over
+   it at the right in white (a dark island) on a progressive blur, a dark frost
+   strengthening toward them, who said it a footnote under them; the clip fades out into the page under them. Both edges are the page's
+   (Container: the nav's). Phone: the clip at the top, a blurred copy of it
+   under it to the foot; the words and the figures over its lower
+   part on a frost rising behind them, all white; then it fades out into the
+   page (the team's calls). */
 .why-breaker {
   --why-ground: var(--surface-subtle);
+  --why-shade: var(--color-neutral-dark-2);
+  --why-line: color-mix(in oklab, var(--on-image-ink) 35%, transparent);
+  /* Phone: the height the clip is framed for (its face clear above the words). */
+  --why-clip: max(40rem, 92svh);
+  /* How far the clip takes to fade out into the page at the breaker's foot. */
+  --why-fade: 6rem;
   position: relative;
   isolation: isolate;
   overflow: hidden;
   background: var(--why-ground);
 }
-.why-breaker-media {
-  position: relative;
-  height: min(52svh, 26rem);
-  overflow: hidden;
-}
 @media (width >= 1056px) {
   .why-breaker {
-    display: flex;
-    align-items: center;
-    min-height: clamp(40rem, 100svh, 56rem);
+    --why-fade: 8rem;
+    display: grid;
+    min-height: clamp(34rem, 80svh, 46rem);
   }
-  .why-breaker-media {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    height: auto;
-  }
+}
+.why-breaker-media {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+/* The clip's own opacity eases out over its foot (a mask, not a colour laid
+   over it), so it melts into the page instead of greying. */
+.why-breaker-media {
+  mask-image: linear-gradient(
+    to top,
+    transparent 0,
+    rgb(0 0 0 / 0.05) calc(var(--why-fade) * 0.125),
+    rgb(0 0 0 / 0.15) calc(var(--why-fade) * 0.25),
+    rgb(0 0 0 / 0.3) calc(var(--why-fade) * 0.375),
+    rgb(0 0 0 / 0.5) calc(var(--why-fade) * 0.5),
+    rgb(0 0 0 / 0.7) calc(var(--why-fade) * 0.625),
+    rgb(0 0 0 / 0.85) calc(var(--why-fade) * 0.75),
+    rgb(0 0 0 / 0.95) calc(var(--why-fade) * 0.875),
+    #000 var(--why-fade)
+  );
 }
 .why-breaker-stage {
   position: absolute;
@@ -39,80 +58,143 @@
   overflow: hidden;
   will-change: transform;
 }
-/* The clip at 16:9, drawn 35% larger than covering the stage and hung 9% above
-   its top, so YouTube's title bar (the top 7%) and the burned-in subtitles (the
-   bottom 12%) fall outside at every size. On a phone it is shifted so Nikhil's
-   face, a little under half way in, is centred. */
-.why-breaker-frame {
+/* The clip at 16:9. Phone: framed for --why-clip, a little larger than the
+   screen is tall, centred on his face (35% across) and raised 10%, so his face
+   sits in the top half, clear of the words; its foot melts into the copy under
+   it. Desktop: drawn 25% larger than covering the breaker, shifted so he sits
+   in its left third, his face about 21% across, his hands short of the words
+   (the team's call). Shifting a frame needs that much: at 15% larger, moved
+   that far, it stopped short of the right edge and left a strip uncovered. */
+.why-breaker-clip {
   position: absolute;
   top: 0;
   left: 50%;
-  width: calc(max(100cqw, 177.78cqh) * 1.35);
-  height: calc(max(100cqh, 56.25cqw) * 1.35);
-  translate: -44% -9%;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--motion-duration-slowest) var(--motion-easing-productive-in-out);
+  display: block;
+  width: calc(var(--why-clip) * 1.1 * 16 / 9);
+  height: calc(var(--why-clip) * 1.1);
+  max-width: none;
+  object-fit: cover;
+  translate: -35% -10%;
+  mask-image: linear-gradient(to bottom, #000 70%, transparent 90%);
 }
-/* On desktop shifted left, so his face clears the words (the team's call). */
 @media (width >= 1056px) {
-  .why-breaker-frame {
-    translate: -60% -9%;
+  .why-breaker-clip {
+    width: calc(max(100cqw, 177.78cqh) * 1.25);
+    height: calc(max(100cqh, 56.25cqw) * 1.25);
+    translate: -58% -8%;
+    mask-image: none;
   }
 }
-.why-breaker[data-rolling] .why-breaker-frame {
-  opacity: 1;
-}
-.why-breaker-frame iframe {
+/* Phone: the copy under it, covering the whole breaker. It is blurred by the
+   frost over it (.why-breaker-copy::before), so it needs no filter of its own;
+   above the frost the sharp clip covers it. Hidden (and not played) on desktop. */
+.why-breaker-haze {
+  position: absolute;
+  inset: 0;
+  display: block;
   width: 100%;
   height: 100%;
-  border: 0;
+  max-width: none;
+  object-fit: cover;
 }
-/* The progressive blur: the clip sharp at its left, blurring toward the words. */
+@media (width >= 1056px) {
+  .why-breaker-haze {
+    display: none;
+  }
+}
+/* Desktop's layers over the clip: the progressive blur behind the words
+   (blurred and darkened, clear over Nikhil, full under the words). On a phone the copy's own layers
+   do this (.why-breaker-top, .why-breaker-foot). */
 .why-breaker-blur {
+  display: none;
   position: absolute;
   inset: 0;
-  -webkit-backdrop-filter: blur(18px);
-  backdrop-filter: blur(18px);
-  mask-image: linear-gradient(to bottom, transparent 55%, #000 100%);
-}
-/* Then the page's colour over it, so the clip melts into the page. */
-/* Only at its foot (the team's call: no top fade). */
-.why-breaker-fade {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, var(--why-ground), transparent 45%);
 }
 @media (width >= 1056px) {
   .why-breaker-blur {
-    mask-image: linear-gradient(to right, transparent 44%, #000 64%);
+    display: block;
   }
-  .why-breaker-fade {
-    background:
-      linear-gradient(
-        to right,
-        transparent 42%,
-        color-mix(in oklab, var(--why-ground) 70%, transparent) 56%,
-        var(--why-ground) 70%
-      ),
-      linear-gradient(to top, var(--why-ground), transparent 16%);
+  .why-breaker-blur {
+    background: color-mix(in oklab, var(--why-shade) 45%, transparent);
+    -webkit-backdrop-filter: blur(24px) saturate(1.2);
+    backdrop-filter: blur(24px) saturate(1.2);
+    mask-image: linear-gradient(to right, transparent 42%, #000 64%);
   }
 }
-/* The words: under the clip on a phone, on its right on desktop, where Nikhil looks. */
+
+/* The page's width; on desktop the breaker's height, the copy centred in it
+   (a touch above centre: more room under it, where the clip fades). */
+.why-breaker-inner {
+  position: relative;
+}
+@media (width >= 1056px) {
+  .why-breaker-inner {
+    display: flex;
+    align-items: center;
+    container-type: inline-size;
+  }
+}
+/* Phone: the clip's top half clear above the copy. Desktop: two columns, who
+   he is at the left level with the figures, the words and figures at the right
+   (the right edge the page's), the fade under them. */
 .why-breaker-copy {
-  padding-block: var(--space-2) var(--space-16);
+  padding-block: calc(var(--why-clip) * 0.48) var(--why-fade);
 }
 @media (width >= 1056px) {
   .why-breaker-copy {
-    width: min(46%, 36rem);
-    margin-left: auto;
-    padding-block: var(--space-24);
+    display: grid;
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr) min(46%, 36rem);
+    grid-template-areas:
+      '. lead'
+      '. foot';
+    /* Less room above than below, so the centred copy sits a little high, level
+       with the clip's picture above its faded foot. */
+    padding-block: var(--space-16) var(--why-fade);
+  }
+  .why-breaker-top {
+    display: contents;
+  }
+  .why-breaker-lead {
+    grid-area: lead;
   }
 }
+
+/* Phone: the words, then the figures, all on a frost rising from clear over his face to a
+   blurred dark, on to the breaker's foot. */
+@media (width < 1056px) {
+  .why-breaker-copy {
+    position: relative;
+  }
+  .why-breaker-copy::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: calc(var(--why-clip) * 0.48 - 6rem) calc(var(--space-gutter) * -1) 0;
+    background: color-mix(in oklab, var(--why-shade) 55%, transparent);
+    -webkit-backdrop-filter: blur(20px) saturate(1.2);
+    backdrop-filter: blur(20px) saturate(1.2);
+    mask-image: linear-gradient(
+      to bottom,
+      transparent,
+      #000 6rem,
+      #000 calc(100% - var(--why-fade)),
+      transparent
+    );
+  }
+  .why-breaker-top {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* Who said it, a footnote under the words, a step over the figures' text size, white. */
+.why-breaker-credit {
+  margin-top: var(--space-3);
+  color: var(--on-image-ink);
+}
 /* The words at the display size, medium (several lines: kept quiet, the team's
-   call), lit top to bottom as --lit runs 0% to 100% (WhyBreaker scrubs it), so
-   the lines light in reading order with no split. Lit by default, so they read
-   without the script and under reduced motion. */
+   call), pure white. */
 .why-breaker-words {
   margin-top: var(--space-4);
   font-size: var(--type-display-size);
@@ -120,28 +202,48 @@
   line-height: 1.2;
   letter-spacing: var(--type-display-tracking);
   text-wrap: pretty;
+  color: var(--on-image-ink);
 }
-/* A block, so the gradient spans all the lines at once (on an inline box it
-   restarts on each line and clips the descenders). */
-.why-breaker-words > span {
-  --lit: 100%;
-  display: block;
-  padding-bottom: 0.12em;
-  color: transparent;
-  background: linear-gradient(
-    to bottom,
-    var(--content-primary) calc(var(--lit) - 8%),
-    color-mix(in oklab, var(--content-primary) 22%, transparent) calc(var(--lit) + 8%)
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
+
+/* The figures, white over the clip, a line over each. */
+/* A clear gap between the words and the figures (the team's call); on desktop
+   wider, which lifts the words (the figures hold their place at the foot). */
+.why-breaker-foot {
+  margin-top: var(--space-12);
 }
-/* The figures, as Apple sets its spec figures: source, figure, a line. */
+@media (width >= 1056px) {
+  .why-breaker-foot {
+    grid-area: foot;
+    margin-top: var(--space-20);
+  }
+}
+/* As Apple sets its spec figures: a line over each, the figure, a line of
+   text, then the source's logo (one tone) and its note. */
 .why-breaker-stats {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-8);
-  margin-top: var(--space-10);
+}
+.why-breaker-stat {
+  padding-top: var(--space-5);
+  border-top: var(--border-width-hair) solid var(--why-line);
+}
+.why-breaker-ink {
+  color: var(--on-image-ink);
+}
+.why-breaker-note {
+  color: var(--on-image-ink-secondary);
+}
+.why-breaker-source {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
+  margin-top: var(--space-4);
+}
+.why-breaker-source img {
+  width: auto;
+  filter: brightness(0) invert(1);
 }
 
 /* A figure's line clips it, so it slides up into place (WhyMotion). */
@@ -158,8 +260,12 @@
   margin-bottom: var(--space-12);
   max-width: 52rem;
 }
+/* Desktop: the page's full width, so "But ours prepares you for roles like"
+   and the role fit on one line (the team's call; ~1,080px with the longest role
+   at 36px). Where they don't (up to ~1,130px wide), the role wraps whole. */
 @media (width >= 1056px) {
   .why-roles {
+    max-width: none;
     margin-bottom: var(--space-16);
   }
 }
@@ -182,7 +288,9 @@
 /* ---- The answer: three chapters that stack as the page scrolls ---- */
 
 /* Each card holds under the sticky nav (4rem), a step lower than the one
-   before, so the stack shows each card's top edge; the next scrolls up over it.
+   before, so the stack shows each card's top edge; the next scrolls up over it
+   (the AI journey's scroll: WhyMotion shrinks the covered cards and, for a card
+   taller than the screen, lowers its hold so all of it is seen first).
    The space under each card is how long it holds. Under reduced motion they
    simply follow one another. */
 .why-chapters {
@@ -217,7 +325,7 @@
   border: var(--border-width-hair) solid var(--border-subtle);
   border-radius: var(--radius-2xl);
   background: var(--surface-default);
-  box-shadow: var(--shadow-overlay);
+  /* no shadow (the AI journey's cards have none): the hairline edge carries it */
   transform-origin: 50% 0;
 }
 @media (width >= 1056px) {
@@ -245,15 +353,6 @@
   letter-spacing: var(--type-billboard-md-tracking);
   color: var(--border-subtle);
   font-variant-numeric: tabular-nums;
-}
-/* Settling back, a card fades toward the section's grey: a layer over it, so the
-   card itself stays opaque (fading the card let the one under it show through). */
-.why-card-dim {
-  position: absolute;
-  inset: 0;
-  background: var(--surface-subtle);
-  opacity: 0;
-  pointer-events: none;
 }
 .why-card-photo {
   order: -1;

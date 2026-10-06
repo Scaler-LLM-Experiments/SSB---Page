@@ -8,3 +8,4 @@
 | `why-build.webp`, `why-ship.webp`, `why-grow.webp` | cropped from the team's Why SSB mock (2026-10-05), 742 × 428; stand-ins until the originals arrive | Scaler | ours |
 
 Resized to 1600px wide, WebP. CC0 asks for no attribution; it is recorded here anyway.
+| `kamath-clip.mp4`, `kamath-clip.webp` | the team's cut of Nikhil Kamath's remark (Zerodha's 15th-anniversary AMA), from their GIF, cropped and encoded as H.264 (2026-10-06) | Zerodha | used with Zerodha's permission |

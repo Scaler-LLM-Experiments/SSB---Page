@@ -14,27 +14,38 @@ export const why: WhyContent = {
     eyebrow: 'Why the traditional MBA doesn’t work',
     caption: 'If you’re 25 and going to an MBA college today, you must be some kind of idiot, if you ask me.',
     attribution: 'Nikhil Kamath',
-    youtubeId: 'fzTWpjAAUe0',
-    // 1:43:21 to 1:43:34: "In my personal opinion, colleges are dead. If you're 25…"
-    start: 6201,
-    end: 6214,
+    role: 'Co-founder, Zerodha',
+    // The team's cut of the remark (2026-10-06), used with Zerodha's permission: their GIF
+    // (src/Nikhil Gif.gif, 57 MB, gitignored) cropped of the screen recorder's cursor and edge
+    // mark, as H.264 at full quality for now (CRF 12, 36 MB; the team's call: 1.3 MB looked soft).
+    video: '/media/kamath-clip.mp4',
+    poster: '/media/kamath-clip.webp',
   },
-  // The deck's figures and sources, shortened to Apple's spec lines.
+  // The deck's figures and sources, shortened to Apple's spec lines. Source logos from Wikidata
+  // (P154), trimmed to their ink; heights set so the two weigh alike (Forbes ink 0.38, PwC 0.27).
   figures: [
     {
-      source: 'Forbes, 2026',
       value: '60%',
       description: 'of MBA students say their own coursework isn’t built for an AI-first workforce',
+      source: 'Forbes',
+      sourceLogo: '/logos/forbes.svg',
+      sourceLogoHeight: 16,
+      sourceNote: '2026',
     },
     {
-      source: 'PwC Global AI Jobs Barometer, 2026',
       value: '62% more',
       description: 'pay for workers with AI skills than for peers in the same role without them',
+      source: 'PwC',
+      sourceLogo: '/logos/pwc.svg',
+      sourceLogoHeight: 24,
+      sourceNote: 'Global AI Jobs Barometer, 2026',
     },
   ],
-  // The deck's "Nobody is preparing you for emerging roles like:", and its four roles.
+  // The deck's four roles. Its lead ("Nobody is preparing you for emerging roles like:") rewritten
+  // to answer the breaker's Kamath quote (the team's call, 2026-10-06).
   roles: {
-    lead: 'Nobody is preparing you for emerging roles like',
+    setup: 'He’s right about the old MBA.',
+    lead: 'But ours prepares you for roles like',
     roles: ['Founder’s Office', 'AI Product Manager', 'Growth Manager', 'Category Manager'],
   },
   // PLACEHOLDER photos: cropped from the team's mock until the originals arrive (public/media/CREDITS.md).
