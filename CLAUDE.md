@@ -100,6 +100,8 @@ src/
   sections/innovation-lab/
     InnovationLabSection.tsx  sticky pitch on the left; stat cards (count up) and a framed startups row
                         (banners in public/startups) on the right; same entrance as Faculty
+    StoryCard.tsx       photo card: name, role, one company logo in white
+    useSectionEntrance.ts  the section's entrance (below)
   sections/placements/  three variations on one PlacementsContent (all async server components)
     types.ts            PlacementsContent: four stats, a lead, the stories, the showcases, the logos (with
                         placeholder hires counts), the report CTA, every recruiter's name

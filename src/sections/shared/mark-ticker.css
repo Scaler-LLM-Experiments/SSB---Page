@@ -1,0 +1,66 @@
+/* MarkTicker: colour marks with their names, running past. */
+.mt {
+  width: 100%;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+.mt-track {
+  display: flex;
+  width: max-content;
+  animation: mt-marquee 45s linear infinite;
+}
+.mt:hover .mt-track {
+  animation-play-state: paused;
+}
+.mt-list {
+  display: flex;
+  flex: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.mt-list > li {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-2-5);
+  padding-right: var(--space-8);
+  white-space: nowrap;
+  font-size: var(--type-body-lg-size);
+  line-height: 1;
+  font-weight: var(--font-weight-medium);
+}
+.mt-list img {
+  flex: none;
+  width: var(--space-8);
+  height: var(--space-8);
+  border-radius: var(--radius-md);
+  background: #fff;
+  object-fit: cover;
+}
+/* On the page: dark names, the tiles edged so white marks hold on white. */
+.mt[data-tone='light'] .mt-list > li {
+  color: var(--content-primary);
+}
+.mt[data-tone='light'] .mt-list img {
+  box-shadow: inset 0 0 0 1px var(--border-subtle);
+  outline: var(--border-hair) solid var(--border-subtle);
+  outline-offset: -1px;
+}
+/* Over a photo or film: white names. */
+.mt[data-tone='dark'] .mt-list > li {
+  color: var(--on-image-ink);
+}
+@keyframes mt-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mt-track {
+    animation: none;
+  }
+  .mt {
+    overflow-x: auto;
+  }
+}

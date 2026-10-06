@@ -43,7 +43,8 @@ export async function HeroV2({
 
   return (
     <HeroV2Motion>
-      <div data-brand="ssb" data-theme="dark" className="bg-page text-content">
+      {/* Pulled up under the site navbar (--sn-h, its height), so the film runs behind its frosted glass. */}
+      <div data-brand="ssb" data-theme="dark" className="-mt-(--sn-h) bg-page text-content">
         <Splash />
 
         {/* The scroll track for the desktop video moment: tall, with the hero stuck
@@ -55,10 +56,10 @@ export async function HeroV2({
           className="motion-safe:md:h-(--hero-track)"
           style={{ '--hero-track': TRACK_HEIGHT } as React.CSSProperties}
         >
-          {/* One screen under the sticky nav (HeroNav is h-16). */}
+          {/* One screen, from the top of the window: the nav floats over its top (--sn-h). */}
           <section
             data-hero
-            className="relative flex min-h-[calc(100svh-var(--space-16))] flex-col motion-safe:md:sticky motion-safe:md:top-16 overflow-hidden bg-page"
+            className="relative flex min-h-[100svh] flex-col motion-safe:md:sticky motion-safe:md:top-0 overflow-hidden bg-page"
           >
             {/* The light page, faded in behind the video once it has opened (desktop scroll only). */}
             <div
@@ -78,7 +79,7 @@ export async function HeroV2({
                 left edges line up too. Static, so the video slot positions against the section. */}
             <Container
               data-hero-body
-              className="relative flex flex-1 flex-col gap-8 pb-12 pt-12 md:static md:grid md:grid-cols-[minmax(0,1fr)_auto] md:content-end md:gap-x-16 md:gap-y-10 md:pb-24 md:pt-16"
+              className="relative flex flex-1 flex-col gap-8 pb-12 pt-[calc(var(--space-12)+var(--sn-h,0px))] md:static md:grid md:grid-cols-[minmax(0,1fr)_auto] md:content-end md:gap-x-16 md:gap-y-10 md:pb-24 md:pt-16"
             >
               <div
                 data-hero-copy

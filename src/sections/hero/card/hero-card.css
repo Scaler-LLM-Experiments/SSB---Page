@@ -1,0 +1,213 @@
+/* =========================================================
+   The "split" first fold: the film in a rounded card under the
+   light nav; copy at the left, the leaders at the right.
+   ========================================================= */
+
+.hc {
+  padding: var(--space-3) var(--space-4) 0;
+}
+@media (min-width: 672px) {
+  .hc {
+    padding: var(--space-4) var(--space-6) 0;
+  }
+}
+
+.hc-card {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  /* the rest of the first screen, under the nav */
+  min-height: calc(100svh - var(--sn-h, 64px) - var(--space-4));
+  border-radius: var(--radius-2xl);
+  background: #0b2416;
+  color: var(--on-image-ink);
+  animation: hc-settle 900ms var(--motion-easing-expressive-entrance, ease-out) both;
+}
+@media (min-width: 672px) {
+  .hc-card {
+    min-height: max(36rem, calc(100svh - var(--sn-h, 64px) - var(--space-6)));
+  }
+}
+.hc-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* A dark wash over the whole film, SSB green at the left, so both sides read. */
+.hc-wash {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--ssx-logo-ssb-accent-light) 70%, #000 30%) 0%,
+      color-mix(in srgb, var(--ssx-logo-ssb-accent-light) 30%, transparent) 45%,
+      transparent 70%
+    ),
+    linear-gradient(to top, rgb(0 0 0 / 0.7), rgb(0 0 0 / 0.25) 55%, rgb(0 0 0 / 0.15));
+  pointer-events: none;
+}
+@media (max-width: 671px) {
+  .hc-wash {
+    background:
+      linear-gradient(
+        to top,
+        color-mix(in srgb, var(--ssx-logo-ssb-accent-light) 92%, #000 8%) 0%,
+        color-mix(in srgb, var(--ssx-logo-ssb-accent-light) 70%, transparent) 55%,
+        transparent 85%
+      ),
+      linear-gradient(to bottom, rgb(0 0 0 / 0.35), transparent 30%);
+  }
+}
+
+.hc-body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--space-8);
+  min-width: 0;
+  padding: var(--space-5);
+}
+@media (min-width: 1056px) {
+  .hc-body {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: var(--space-12);
+  }
+}
+
+/* ---- Left: the copy. ---- */
+.hc-copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+  max-width: 44rem;
+  animation: hc-rise 700ms 250ms var(--motion-easing-expressive-entrance, ease-out) both;
+}
+.hc-eyebrow {
+  color: var(--on-image-ink);
+  opacity: 0.9;
+}
+.hc-line {
+  color: var(--on-image-ink);
+  opacity: 0.88;
+}
+.hc-phrase {
+  white-space: nowrap;
+}
+.hc-phrase + .hc-phrase::before {
+  content: ' ';
+  white-space: normal;
+}
+
+.hc-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+@media (min-width: 672px) {
+  .hc-actions {
+    flex-direction: row;
+  }
+}
+/* White, as the reference's pill: the green wash makes the brand-green button disappear. */
+.hc-primary {
+  background: #fff;
+  color: #0f2a1b;
+  border-color: #fff;
+}
+.hc-primary:hover {
+  background: rgb(255 255 255 / 0.9);
+}
+.hc-secondary {
+  --hc-glass: blur(10px);
+  background: rgb(255 255 255 / 0.12);
+  color: #fff;
+  border-color: rgb(255 255 255 / 0.55);
+  -webkit-backdrop-filter: var(--hc-glass);
+  backdrop-filter: var(--hc-glass);
+}
+
+.hc-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--type-body-sm-size);
+  line-height: var(--type-body-sm-lh);
+  color: rgb(255 255 255 / 0.8);
+}
+.hc-facts b {
+  color: #fff;
+  font-weight: var(--font-weight-semibold);
+}
+.hc-facts li + li::before {
+  content: '·';
+  margin-right: var(--space-4);
+  color: rgb(255 255 255 / 0.5);
+}
+/* Phones: one fact a line, no dots (wrapped, a dot would start a line). */
+@media (max-width: 671px) {
+  .hc-facts {
+    flex-direction: column;
+  }
+  .hc-facts li + li::before {
+    content: none;
+  }
+}
+
+/* ---- Right: the leaders. ---- */
+.hc-leaders {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+  animation: hc-rise 700ms 450ms var(--motion-easing-expressive-entrance, ease-out) both;
+}
+.hc-leaders-line {
+  margin: 0;
+  font-size: var(--type-h3-size);
+  line-height: var(--type-h3-lh);
+  font-weight: var(--font-weight-medium);
+  color: var(--on-image-ink);
+}
+@media (min-width: 1056px) {
+  .hc-leaders {
+    flex: none;
+    width: 28rem;
+    align-items: flex-end;
+    text-align: right;
+    /* level with the actions, as the reference's logos sit by its buttons */
+    margin-bottom: calc(var(--space-12) + var(--space-2));
+  }
+}
+
+@keyframes hc-settle {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+}
+@keyframes hc-rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-4));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hc-card,
+  .hc-copy,
+  .hc-leaders {
+    animation: none;
+  }
+}

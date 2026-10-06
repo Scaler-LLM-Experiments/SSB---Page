@@ -1,14 +1,23 @@
 /* SSB navbar (after React Bits' Navbar 5). SSX tokens only. */
+/* the bar's height (.sn-bar and its 1px bottom border), for the hero, which runs up under it */
+:root { --sn-h: 69px; }
+@media (max-width: 1279px) { :root { --sn-h: 61px; } }
 .sn { position: sticky; top: 0; z-index: 50; background: transparent; border-bottom: 1px solid transparent; transition: background 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
   font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif); color: var(--content-primary); }
 /* the blur lives on a layer behind the bar, not on the bar: a backdrop-filter on .sn itself would make it the
    containing block of the fixed m-web panel, which then collapses to the bar's height */
-.sn::before { content: ''; position: absolute; inset: 0; z-index: -1; backdrop-filter: saturate(1.4) blur(14px); -webkit-backdrop-filter: saturate(1.4) blur(14px); pointer-events: none; }
-/* the bar is clear glass: no fill, the page blurred behind it. It turns solid only while a menu is open,
+.sn::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  /* through a variable: written as two plain declarations, the CSS compiler kept only the -webkit- one,
+     which Chrome ignores, so the bar was never blurred there */
+  --sn-blur: saturate(1.4) blur(14px); -webkit-backdrop-filter: var(--sn-blur); backdrop-filter: var(--sn-blur);
+  /* frosted, not clear: a see-through wash of the page colour over the blur, so the page under the bar recedes */
+  background: color-mix(in srgb, var(--surface-page) 72%, transparent); }
+
+/* the bar is frosted glass: a see-through fill over the page blurred behind it. It turns solid only while a menu is open,
    so the panel under it reads as one surface with the bar. */
-.sn[data-open] { background: var(--surface-page); border-bottom-color: var(--border-subtle); }
-/* over the dark hero the bar sits above the hero, not on it, so it keeps the hero's black; it clears once the page turns light */
-.sn[data-hero-nav][data-theme='dark'] { background: var(--surface-page); }
+.sn[data-open] { background: var(--surface-page); }
+/* over the dark hero the bar is the same frosted glass, in the dark theme's colour (the ::before fill follows
+   the bar's data-theme): the hero runs up under the bar, so its film shows softly through it */
 .sn-bar { box-sizing: border-box; max-width: 1280px; margin: 0 auto; padding: 0 24px; height: 68px; display: flex; align-items: center; gap: 20px; }
 .sn-logo { display: inline-flex; flex: none; }
 .sn-logo svg, .sn-logo [data-slot] { height: 36px; width: auto; }
@@ -19,7 +28,7 @@
 .sn-trigger:hover, .sn-link:hover, .sn-trigger[aria-expanded='true'] { background: var(--surface-subtle, var(--surface-sunken)); }
 .sn-trigger[aria-expanded='true'] svg { transform: rotate(180deg); }
 .sn-trigger:focus-visible, .sn-link:focus-visible, .sn-burger:focus-visible, .sn-secondary:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
-.sn-actions { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.sn-actions { margin-left: auto; display: flex; align-items: center; gap: 24px; }
 .sn-secondary { font-size: 14.5px; font-weight: 500; color: var(--content-primary); text-decoration: none; }
 .sn-secondary:hover { color: var(--content-brand); }
 .sn-secondary-btn svg { width: 16px; height: 16px; }

@@ -18,22 +18,24 @@ const base = {
   theme: 'light',
   radius: 1,
   stackOpen: 'sheet',
-  sheetTrigger: 'hover',
+  sheetTrigger: 'click',
   aiLayout: 'stack',
 } as const;
 
 /**
- * The home page shows the curriculum in two parts, with the faculty between them:
- *   ai    the 150-hour AI curriculum, then Learn by doing (the challenge videos)
- *   main  the curriculum itself (the terms), ending with career prep
+ * The home page shows the curriculum in three parts, with other sections between them:
+ *   learn  Learn by doing (the challenge videos)
+ *   ai     the 150-hour AI curriculum
+ *   main   the curriculum itself (the terms), ending with career prep and its stats
  * Every block is listed so `normalize` adds none back; only the part's own are on.
  */
-const ON: Record<'ai' | 'main', BlockId[]> = { ai: ['ai', 'learn'], main: ['frame', 'journey', 'fork', 'portfolio', 'career', 'fine'] };
+type Part = 'learn' | 'ai' | 'main';
+const ON: Record<Part, BlockId[]> = { learn: ['learn'], ai: ['ai'], main: ['frame', 'journey', 'fork', 'portfolio', 'career', 'fine'] };
 const ORDER: BlockId[] = ['frame', 'journey', 'fork', 'portfolio', 'career', 'fine', 'ai', 'learn'];
-const cfgFor = (part: 'ai' | 'main') => normalize({ ...base, blocks: ORDER.map((id) => ({ id, on: ON[part].includes(id) })) });
-const CFG = { ai: cfgFor('ai'), main: cfgFor('main') };
+const cfgFor = (part: Part) => normalize({ ...base, blocks: ORDER.map((id) => ({ id, on: ON[part].includes(id) })) });
+const CFG = { learn: cfgFor('learn'), ai: cfgFor('ai'), main: cfgFor('main') };
 
-export default function SsbCurriculum({ part = 'main' }: { part?: 'ai' | 'main' }) {
+export default function SsbCurriculum({ part = 'main' }: { part?: Part }) {
   return (
     <div className="pv-page pv-home">
       <CurriculumJourney config={CFG[part]} />

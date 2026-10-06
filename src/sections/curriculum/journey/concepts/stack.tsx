@@ -1071,10 +1071,11 @@ export function StackJourney({ j, cfg, width, portal, initialOpen = null }: { j:
   const W = deck.w || width || 1200;
   const cw = Math.min(380, W * 0.3);
   // collapsed: a plain row of equal cards, side by side (no fan, no overlap)
-  const ROW_GAP = 16;
-  // modal / sheet: a carousel showing 3 and a half cards (the half says "more this way")
+  // (wide gaps: the cards have no frame, so the space between them is what sets them apart)
+  const ROW_GAP = 64;
+  // modal / sheet: a carousel showing three whole cards and a slice of the fourth (it says "more this way")
   const carousel = modal && n > 3;
-  const rowW = carousel ? (W - ROW_GAP * 3) / 3.5 : (W - ROW_GAP * (n - 1)) / n;
+  const rowW = carousel ? (W - ROW_GAP * 3) / 3.2 : (W - ROW_GAP * (n - 1)) / n;
   // + a little end room so the last card's border and shadow are never clipped
   const trackW = n * rowW + ROW_GAP * (n - 1) + 8;
   const pileStep = 64; // each piled card shows its eyebrow + name, like a file tab

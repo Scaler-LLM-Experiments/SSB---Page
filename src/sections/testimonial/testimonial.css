@@ -1,0 +1,149 @@
+/* =========================================================
+   The investor's word: a wide photo banner, a frosted panel
+   at the left with the quote.
+   ========================================================= */
+
+.tq-card {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  margin: 0;
+  border-radius: var(--radius-2xl);
+  background: #0d3a26;
+  color: var(--on-image-ink);
+}
+.tq-photo {
+  display: block;
+  object-fit: cover;
+}
+
+/* Web: the photo fills a wide card; the panel floats over its left. */
+@media (min-width: 672px) {
+  .tq-card {
+    /* a wide, short banner (the photo's own 3.2:1 shape covers it, cropping its sides a little) */
+    aspect-ratio: 11 / 4;
+    min-height: 24rem;
+  }
+  .tq-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    /* the person sits at the right; keep them in frame as the card narrows */
+    object-position: 75% center;
+  }
+  .tq-panel {
+    --tq-glass: blur(18px) saturate(1.2);
+    position: relative;
+    margin: var(--space-4);
+    width: min(48%, 36rem);
+    border: var(--border-hair) solid rgb(255 255 255 / 0.12);
+    border-radius: var(--radius-xl);
+    /* the photo's own green, deepened, so it reads as part of the picture */
+    background: rgb(6 40 26 / 0.55);
+    -webkit-backdrop-filter: var(--tq-glass);
+    backdrop-filter: var(--tq-glass);
+  }
+}
+
+.tq-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-6) var(--space-8);
+}
+
+.tq-logos {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-2);
+}
+.tq-ex {
+  font-size: var(--type-body-lg-size);
+  line-height: 1;
+  font-weight: var(--font-weight-medium);
+  color: rgb(255 255 255 / 0.8);
+  /* sits tight to the first logo, as one word */
+  margin-right: calc(var(--space-2) * -1);
+}
+.tq-divider {
+  align-self: stretch;
+  width: var(--border-hair);
+  min-height: var(--space-6);
+  background: rgb(255 255 255 / 0.35);
+}
+.tq-logos img {
+  display: block;
+  height: calc(1.125rem * var(--tq-logo-scale, 1));
+  width: auto;
+  max-width: 11rem;
+  object-fit: contain;
+  /* white, one tone */
+  filter: brightness(0) invert(1);
+}
+
+.tq-quote {
+  margin: 0;
+  flex: 1;
+}
+.tq-quote p {
+  margin: 0;
+  font-size: var(--type-h2-size);
+  /* roomier than a heading's line, for a passage this long */
+  line-height: 1.45;
+  letter-spacing: var(--type-h2-tracking);
+  font-weight: var(--font-weight-medium);
+  text-wrap: pretty;
+}
+
+.tq-by {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-top: var(--space-5);
+  border-top: var(--border-hair) solid rgb(255 255 255 / 0.2);
+}
+.tq-by b {
+  font-size: var(--type-body-lg-size);
+  line-height: var(--type-body-lg-lh);
+  font-weight: var(--font-weight-semibold);
+}
+.tq-by span {
+  font-size: var(--type-body-sm-size);
+  line-height: var(--type-body-sm-lh);
+  color: rgb(255 255 255 / 0.75);
+}
+
+/* Phones: the photo on top (cropped to the person), the panel solid under it. */
+@media (max-width: 671px) {
+  .tq-card {
+    flex-direction: column;
+  }
+  .tq-photo {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-position: 78% center;
+  }
+  .tq-panel {
+    gap: var(--space-5);
+    padding: var(--space-6) var(--space-5);
+  }
+  .tq-quote p {
+    line-height: 1.5;
+  }
+  /* the row a little smaller, so "Ex-", both logos and the divider fit the phone's width */
+  .tq-logos {
+    gap: var(--space-3);
+  }
+  .tq-logos img {
+    height: calc(0.9rem * var(--tq-logo-scale, 1));
+    max-width: 8.5rem;
+  }
+  .tq-ex {
+    font-size: var(--type-body-size);
+  }
+  .tq-divider {
+    min-height: var(--space-5);
+  }
+}

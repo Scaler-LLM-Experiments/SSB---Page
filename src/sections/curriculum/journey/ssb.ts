@@ -46,7 +46,7 @@ const labels: Labels = {
 
 export const SSB_JOURNEY: Journey = {
   eyebrow: 'Future-proof curriculum', // [SSB]
-  title: 'Curriculum: Learn by building, not theory', // [DOC]
+  title: 'Curriculum: Learn by Building, Not Theory', // [DOC]
   lede: 'Build industry-preferred skills through practical learning', // [SSB]
   facts: [
     // [SSB] programme overview

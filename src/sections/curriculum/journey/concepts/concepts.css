@@ -473,3 +473,26 @@
 /* no track numbers on desktop: the still leads each row */
 .cm-track { grid-template-columns: 144px minmax(0, 1fr); }
 @container sj (max-width: 640px) { .cm-track { grid-template-columns: 112px minmax(0, 1fr); } }
+
+/* ── desktop term cards, open and unframed ───────────────────────────────────
+   No card: no border, fill or shadow. The photo stands by itself with rounded corners, the title
+   and the line sit under it with room to breathe, and the counts close the column on a hairline.
+   Three show at a time with a slice of the fourth (stack.tsx sets the widths and the wide gaps). */
+.sj .cs-deck .cs-inner:has(> .cs-front[data-cover]), .sj .cs-deck .cs-card:hover .cs-inner:has(> .cs-front[data-cover]) { border: 0; background: transparent; box-shadow: none !important; border-radius: 0; }
+.sj .cs-deck .cs-front[data-cover] { box-shadow: none; background: transparent; }
+.sj .cs-deck .cs-card:not([data-open]):not([data-piled]):hover .cs-inner:has(> .cs-front[data-cover]) { translate: none; box-shadow: none; }
+.cs-deck .cs-front[data-cover] { padding: 0; overflow: visible; border-radius: 0; }
+.cs-deck .cs-front[data-cover] .cs-hero { aspect-ratio: 4 / 3; border-radius: var(--sj-card-r, var(--radius-lg)); }
+.cs-deck .cs-front[data-cover] .cs-chip { left: 14px; top: 14px; }
+.cs-deck .cs-front[data-cover] .cs-cover-text { gap: 12px; padding: 28px 0 0; }
+.cs-deck .cs-front[data-cover] .cs-cover-text h3 { min-height: 2lh; }
+.cs-deck .cs-front[data-cover] .cs-cover-text .cj-ship { font-size: var(--type-body-size, 16px); line-height: 1.55; min-height: 2lh; }
+.cs-deck .cs-front[data-cover] .cs-cover-foot { margin-top: 24px; padding: 18px 0 6px; }
+.cs-deck .cs-front[data-cover] .cs-meta { font-size: 14px; font-weight: 400; gap: 10px; }
+.cs-deck .cs-front[data-cover] .cs-meta > span { gap: 10px; }
+/* the open cue: a quiet arrow at the end of the line, no tile; it turns green and nudges on hover */
+.cs-deck .cs-front[data-cover] .cs-cover-plus { width: 24px; height: 24px; background: none; color: var(--content-secondary); }
+.cs-deck .cs-card:hover .cs-front[data-cover] .cs-cover-plus, .cs-deck .cs-front[data-cover]:focus-visible .cs-cover-plus { background: none; color: var(--content-brand); }
+.cs-deck .cs-front[data-cover] .cs-cover-plus svg { width: 18px; height: 18px; }
+/* more air round the row itself: under the section header, and before the career prep cards */
+.sj .cs-scroller[data-carousel] .cs-scroll { padding-top: 16px; padding-bottom: 40px; }

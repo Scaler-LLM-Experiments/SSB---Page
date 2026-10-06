@@ -75,7 +75,7 @@
   font-size: var(--type-h2-size);
   line-height: var(--type-h2-lh);
   letter-spacing: var(--type-h2-tracking);
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-semibold);
   text-wrap: balance;
 }
 .meet-card__role {

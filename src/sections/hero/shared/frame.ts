@@ -32,13 +32,16 @@ export function centredFrame(get: Get, within: 'viewport' | 'content' = 'viewpor
         }
       : { left: gutter, width: section.clientWidth - gutter * 2 };
 
-  // The height the pinned section shows: the viewport less the sticky nav.
-  const visible = window.innerHeight - navHeight(get);
+  // The height the pinned section shows: the viewport less the nav. The section may run up
+  // under the nav (its sticky top less than the nav's height); the frame stays below the nav.
+  const nav = navHeight(get);
+  const under = Math.max(0, nav - (parseFloat(getComputedStyle(section).top) || 0));
+  const visible = window.innerHeight - nav;
   const width = Math.min(band.width, (visible - gutter * 2) * (16 / 9));
   const height = width * (9 / 16);
   return {
     left: band.left + (band.width - width) / 2 - (slotBox.left - sectionBox.left),
-    top: (visible - height) / 2 - (slotBox.top - sectionBox.top),
+    top: under + (visible - height) / 2 - (slotBox.top - sectionBox.top),
     width,
     height,
   };

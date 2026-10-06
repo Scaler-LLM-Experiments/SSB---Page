@@ -138,9 +138,10 @@ function videoMoment(get: Get, closeFilm: () => void) {
   const tl = gsap.timeline({
     defaults: { ease: 'none' },
     scrollTrigger: {
-      // The hero sticks under the nav (CSS) while its tall track scrolls past.
+      // The hero sticks at the top of the window, under the floating nav (CSS), while its
+      // tall track scrolls past.
       trigger: get('hero-pin'),
-      start: () => `top top+=${navHeight(get)}`,
+      start: 'top top',
       end: 'bottom bottom',
       // Light smoothing: more lags the scroll, and a quick flick reaches the end
       // of the track (the hero starts scrolling away) before the moment has.

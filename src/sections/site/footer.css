@@ -134,3 +134,103 @@
 @media (max-width: 640px) { .sf-foot > .sf-waves { height: 90px; } }
 /* m-web heading scale: the CTA headline is a section title, 24px like the others */
 @media (max-width: 767px) { .sf-cta-body h2 { font-size: 24px; line-height: 1.27; } }
+
+/* ── the campus footer (variant="campus") ────────────────────────────────────
+   A dark footer on a photo of the campus, edge to edge. --h is the footer's height (never taller
+   than the screen: it is pinned to the screen's foot, so anything above would never be seen). */
+.sf-foot[data-variant='campus'] { --sfc-sky: #0b1424; --sfc-ink: #f6f7fa; --sfc-ink-2: rgb(246 247 250 / 0.7); --sfc-line: rgb(246 247 250 / 0.28);
+  --h: min(100svh, max(640px, 62vw));
+  position: relative; isolation: isolate; overflow: hidden; box-sizing: border-box; height: var(--h); padding: 56px var(--sf-gutter) 28px;
+  display: flex; flex-direction: column; justify-content: space-between; gap: 24px; background: var(--sfc-sky); color: var(--sfc-ink); border-top: 0; }
+/* the classic footer's aurora and gradient do not belong here */
+.sf-foot[data-variant='campus']::before, .sf-foot[data-variant='campus']::after { content: none; }
+.sf[data-lift] .sf-foot[data-variant='campus'] { background: var(--sfc-sky); }
+
+/* the photo fills the footer and is blended into it, so it reads as part of the dark surface and
+   not a picture set on it: its top runs out into the footer's own night blue (which is the photo's
+   sky), its foot into near-black under the name, its sides are drawn in by a vignette, and the whole
+   is washed lightly with the same blue. The building, in the middle, is left clear. */
+.sfc-scene { position: absolute !important; z-index: 0 !important; inset: 0; pointer-events: none; }
+.sfc-scene > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 78%; filter: saturate(0.88) contrast(0.97);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 30%); mask-image: linear-gradient(to bottom, transparent 0, #000 30%); }
+.sfc-scene::after { content: ''; position: absolute; inset: 0;
+  background:
+    linear-gradient(to bottom, color-mix(in srgb, var(--sfc-sky) 72%, transparent) 0, color-mix(in srgb, var(--sfc-sky) 40%, transparent) 24%, transparent 46%, transparent 54%, rgb(7 11 20 / 0.6) 76%, rgb(7 11 20 / 0.94) 100%),
+    radial-gradient(120% 90% at 50% 52%, transparent 42%, rgb(7 11 20 / 0.62) 100%),
+    color-mix(in srgb, var(--sfc-sky) 16%, transparent); }
+
+/* the top: the statement and the action | the link groups, each behind a thin rule | back to top */
+.sfc-top, .sfc-foot { position: relative; z-index: 2; width: 100%; max-width: 1232px; margin: 0 auto; box-sizing: border-box; }
+.sfc-top { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: start; gap: 40px 56px; }
+.sfc-lead { display: grid; gap: 28px; justify-items: start; }
+.sfc-statement { margin: 0; max-width: 16ch; font-size: clamp(2rem, 3.6vw, 3.25rem); line-height: 1.1; letter-spacing: -0.02em; font-weight: 500; text-wrap: balance; }
+.sfc-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.sfc-actions a svg { width: 18px; height: 18px; }
+.sfc-links { display: flex; }
+.sfc-col { display: grid; gap: 16px; align-content: start; min-width: 11rem; padding: 2px 40px 6px 24px; border-left: 1px solid var(--sfc-line); }
+/* the page's own type: the group labels are the page's eyebrow, the closing line its small body text */
+.sfc-label { margin: 0; font-family: inherit; font-size: var(--type-eyebrow-size, 12px); line-height: var(--type-eyebrow-lh, 1.35); font-weight: var(--type-eyebrow-weight, 700); letter-spacing: var(--type-eyebrow-tracking, 0.08em); text-transform: uppercase; color: var(--sfc-ink-2); }
+.sf-foot[data-variant='campus'] { --sf-link: var(--sfc-ink); --sf-link-hover: #7bc99a; }
+.sf-foot[data-variant='campus'] .sf-links { gap: 10px; }
+.sf-foot[data-variant='campus'] .sf-links a { font-size: 17px; }
+.sfc-up { display: grid; place-items: center; width: 48px; height: 48px; border-radius: var(--radius-lg, 8px); border: 1px solid var(--sfc-line); color: var(--sfc-ink); transition: background 180ms ease, border-color 180ms ease; }
+.sfc-up:hover, .sfc-up:focus-visible { background: rgb(246 247 250 / 0.12); border-color: rgb(246 247 250 / 0.5); }
+.sfc-up svg { width: 18px; height: 18px; }
+
+/* the foot: the school's name, the width of the content, then the closing line */
+.sfc-foot { container-type: inline-size; display: grid; gap: 14px; }
+.sfc-wordmark { margin: 0; font-size: calc(100cqi / 11.42); line-height: 0.95; letter-spacing: -0.035em; font-weight: 600; white-space: nowrap; color: #fff; }
+.sfc-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 32px; font-size: var(--type-body-sm-size, 14px); line-height: 1.5; color: var(--sfc-ink-2); }
+.sfc-alt { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* m-web: everything in one column; the name on two lines so it stays large */
+@media (max-width: 760px) {
+  .sf-foot[data-variant='campus'] { --h: min(100svh, 780px); padding-top: 36px; padding-bottom: 20px; }
+  .sfc-scene > img { object-position: 50% 100%; }
+  .sfc-scene > img { -webkit-mask-image: linear-gradient(to bottom, transparent 30%, #000 62%); mask-image: linear-gradient(to bottom, transparent 30%, #000 62%); }
+  .sfc-scene::after { background: linear-gradient(to bottom, transparent 56%, rgb(7 11 20 / 0.55) 80%, rgb(7 11 20 / 0.94) 100%), radial-gradient(140% 70% at 50% 68%, transparent 40%, rgb(7 11 20 / 0.55) 100%), color-mix(in srgb, var(--sfc-sky) 14%, transparent); }
+  .sfc-top { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .sfc-lead { gap: 20px; }
+  .sfc-actions { display: grid; width: 100%; justify-items: start; }
+  .sfc-actions > * { width: 100%; justify-content: center; }
+  .sfc-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sfc-col { min-width: 0; padding: 2px 12px 4px 16px; gap: 12px; }
+  .sf-foot[data-variant='campus'] .sf-links a { font-size: 16px; }
+  .sfc-up { display: none; }
+  .sfc-wordmark { font-size: calc(100cqi / 6.75); white-space: normal; }
+  .sfc-wgroup { display: block; }
+  .sfc-meta { display: grid; gap: 2px; font-size: 12px; }
+}
+
+/* ── the campus footer: motion ───────────────────────────────────────────────
+   Quiet, and played when the footer comes into view: the root gets `data-arrived` once most of the
+   footer is uncovered (Footer.tsx). Each part then moves in its own time; nothing follows the
+   scroll. Scrolling well away takes `data-arrived` off, so it plays again on the next visit. */
+/* the generic reveal (every child rises and brightens with the scroll) is not used here */
+.sf[data-lift] .sf-foot[data-variant='campus'] > * { transform: none; opacity: 1; }
+.sf-foot[data-variant='campus'] { --sfc-ease: cubic-bezier(0.2, 0.7, 0.2, 1); }
+/* 1. the photo settles from a slight zoom and comes up from dark ... */
+.sf[data-lift] .sf-foot[data-variant='campus'] > .sfc-scene { transform: scale(1.08); transform-origin: 50% 70%; opacity: 0.4; transition: transform 1500ms var(--sfc-ease), opacity 900ms ease; }
+.sf[data-lift][data-arrived] .sf-foot[data-variant='campus'] > .sfc-scene { transform: scale(1); opacity: 1; }
+/* ... and at rest drifts, very slowly, so the scene is not a still */
+.sfc-scene > img { animation: sfc-drift 36s ease-in-out infinite alternate; transform-origin: 50% 75%; }
+@keyframes sfc-drift { from { transform: scale(1) translateX(0); } to { transform: scale(1.045) translateX(-0.6%); } }
+/* 2. the name, letter by letter: each letter rises out of the baseline, with no blur or slant,
+   one after another at an even pace (--step apart), each taking --rise to come up. The letter's
+   box clips it below the baseline only (and a little above the caps); its sides are left open,
+   since the tight letter-spacing makes the box narrower than the letter. */
+.sf-foot[data-variant='campus'] { --step: 45ms; --rise: 850ms; }
+.sfc-w { display: inline-block; white-space: nowrap; }
+.sfc-l { display: inline-block; clip-path: inset(-0.12em -0.3em 0 -0.3em); }
+.sfc-l > span { display: inline-block; }
+.sf[data-lift] .sfc-l > span { transform: translateY(102%); transition: transform var(--rise) cubic-bezier(0.22, 0.7, 0.18, 1); }
+.sf[data-lift][data-arrived] .sfc-l > span { transform: none; transition-delay: calc(150ms + var(--i, 0) * var(--step)); }
+/* 3. the top fades up, then the closing line */
+.sf[data-lift] .sf-foot[data-variant='campus'] > .sfc-top { opacity: 0; transform: translateY(16px); transition: opacity 800ms ease, transform 900ms var(--sfc-ease); }
+.sf[data-lift][data-arrived] .sf-foot[data-variant='campus'] > .sfc-top { opacity: 1; transform: none; transition-delay: 800ms; }
+.sf[data-lift] .sf-foot[data-variant='campus'] .sfc-meta { opacity: 0; transition: opacity 700ms ease; }
+.sf[data-lift][data-arrived] .sf-foot[data-variant='campus'] .sfc-meta { opacity: 1; transition-delay: 1200ms; }
+@media (prefers-reduced-motion: reduce) {
+  .sfc-scene > img { animation: none; }
+  .sf[data-lift] .sf-foot[data-variant='campus'] > .sfc-scene, .sf[data-lift] .sf-foot[data-variant='campus'] > .sfc-top, .sf[data-lift] .sfc-l > span, .sf[data-lift] .sf-foot[data-variant='campus'] .sfc-meta { transform: none; opacity: 1; transition: none; }
+}
