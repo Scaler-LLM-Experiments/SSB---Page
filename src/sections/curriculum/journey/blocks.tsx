@@ -462,11 +462,8 @@ function PrepShowcase({ cards }: { cards: [CareerIcon, { value: string; label: s
                   {stats.map((st) => (
                     <div key={st.label} className="sj-ps-stat">
                       <dt>{st.label}</dt>
-                      {/* the number races in each time its card comes on (remounted, so it counts again):
-                          up from 0 with a motion smear that clears as it lands */}
-                      <dd>
-                        <SpeedNumber key={on ? 'on' : 'off'} value={st.value} duration={1200} />
-                      </dd>
+                      {/* the number as it is: no count-up (the team's call, 2026-10-06) */}
+                      <dd>{st.value}</dd>
                     </div>
                   ))}
                 </dl>

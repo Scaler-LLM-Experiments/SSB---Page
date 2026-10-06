@@ -271,7 +271,7 @@
   color: var(--on-image-ink-secondary);
 }
 
-/* The photo's place until the real visit photos arrive: a soft green ground, 16:9. */
-.imm-feature__media { aspect-ratio: 16 / 9; background: radial-gradient(90% 120% at 0% 0%, color-mix(in srgb, var(--surface-brand-solid) 34%, transparent), transparent 62%), radial-gradient(80% 110% at 100% 100%, color-mix(in srgb, var(--surface-brand-solid) 22%, transparent), transparent 60%), var(--surface-brand-subtle); }
-/* the photo's place, lower: 2:1 */
-.imm-feature__media { aspect-ratio: 2 / 1; }
+/* The scenes are back (2026-10-06), in a lower 4:3 frame: the clear left part of each image,
+   set a little above centre so the Jio sign fits whole. */
+.imm-feature__media { aspect-ratio: 4 / 3; }
+.imm-feature__photo { translate: 0 -47%; }

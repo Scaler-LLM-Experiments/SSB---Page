@@ -17,9 +17,17 @@ import './immersions.css';
 function Feature({ item }: { item: Immersion }) {
   return (
     <article className="imm-feature">
-      {/* a green ground where the real visit photo will go (feedback, 2026-10-06: the generated
-          scenes read as fake; `item.image` is kept in the content for when real photos arrive) */}
-      <div className="imm-feature__media" data-part="photo" aria-hidden="true" />
+      <div className="imm-feature__media">
+        <img
+          className="imm-feature__photo"
+          src={`/immersions/${item.image}.webp`}
+          alt=""
+          width={948}
+          height={544}
+          loading="lazy"
+          data-part="photo"
+        />
+      </div>
       <div className="imm-feature__body">
         <Heading as="h3" size="1" className="imm-feature__title" data-part="title">
           {item.title}

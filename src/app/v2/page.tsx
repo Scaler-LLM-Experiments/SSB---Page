@@ -71,7 +71,7 @@ export default async function V2Page({
         {/* 2 placements (main's showcase take) */}
         <PlacementsShowcase {...placements} />
         {/* why SSB (deck slide 4) */}
-        <WhySection {...why} answer={false} />
+        <WhySection {...why} />
         {/* 3 alumni */}
         <AlumniSection peers={<PeersTicker />} />
         {/* student founders (deck p5) */}

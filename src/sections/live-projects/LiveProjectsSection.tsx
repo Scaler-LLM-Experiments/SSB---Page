@@ -30,9 +30,9 @@ const PROJECTS: Project[] = [
 
 type Project = { company: string; title: string; desc: string; /** a file name in public/live-projects, without the extension */ image?: string };
 
-/** The generated stand-in photos are off (feedback, 2026-10-06: they read as fake); each card stands
- * on a green ground until real project imagery arrives. true brings them back. */
-const SHOW_PHOTOS = false;
+/** The generated stand-in photos, on (back on 2026-10-06, the team's call). false: each card stands
+ * on a green ground instead. */
+const SHOW_PHOTOS = true;
 
 function ProjectCard({ project: p, priority = false }: { project: Project; priority?: boolean }) {
   return (
