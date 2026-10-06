@@ -3,7 +3,7 @@
   font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif); color: var(--content-primary); }
 /* the blur lives on a layer behind the bar, not on the bar: a backdrop-filter on .sn itself would make it the
    containing block of the fixed m-web panel, which then collapses to the bar's height */
-.sn::before { content: ''; position: absolute; inset: 0; z-index: -1; backdrop-filter: saturate(1.4) blur(14px); -webkit-backdrop-filter: saturate(1.4) blur(14px); pointer-events: none; }
+.sn::before { content: ''; position: absolute; inset: 0; z-index: -1; -webkit-backdrop-filter: saturate(1.4) blur(14px); backdrop-filter: saturate(1.4) blur(14px); pointer-events: none; }
 /* the bar is clear glass: no fill, the page blurred behind it. It turns solid only while a menu is open,
    so the panel under it reads as one surface with the bar. */
 .sn[data-open] { background: var(--surface-page); border-bottom-color: var(--border-subtle); }
