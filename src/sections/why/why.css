@@ -5,8 +5,8 @@
 /* On the section's faint grey, so the breaker and the section read as one. The
    clip fills the breaker on desktop, Nikhil on its left, and melts into the
    page on the right under the words (a progressive blur, then the page's
-   colour), and at its top and bottom. On a phone it is a block above the
-   words, fading into the page at its foot. */
+   colour), and at its foot. On a phone it is a block above the words, fading
+   into the page at its foot. */
 .why-breaker {
   --why-ground: var(--surface-subtle);
   position: relative;
@@ -54,9 +54,10 @@
   pointer-events: none;
   transition: opacity var(--motion-duration-slowest) var(--motion-easing-productive-in-out);
 }
+/* On desktop shifted left, so his face clears the words (the team's call). */
 @media (width >= 1056px) {
   .why-breaker-frame {
-    translate: -50% -9%;
+    translate: -60% -9%;
   }
 }
 .why-breaker[data-rolling] .why-breaker-frame {
@@ -76,26 +77,25 @@
   mask-image: linear-gradient(to bottom, transparent 55%, #000 100%);
 }
 /* Then the page's colour over it, so the clip melts into the page. */
+/* Only at its foot (the team's call: no top fade). */
 .why-breaker-fade {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(to bottom, var(--why-ground), transparent 14%),
-    linear-gradient(to top, var(--why-ground), transparent 45%);
+  background: linear-gradient(to top, var(--why-ground), transparent 45%);
 }
 @media (width >= 1056px) {
   .why-breaker-blur {
-    mask-image: linear-gradient(to right, transparent 40%, #000 62%);
+    mask-image: linear-gradient(to right, transparent 44%, #000 64%);
   }
   .why-breaker-fade {
     background:
       linear-gradient(
         to right,
-        transparent 38%,
-        color-mix(in oklab, var(--why-ground) 70%, transparent) 54%,
-        var(--why-ground) 68%
+        transparent 42%,
+        color-mix(in oklab, var(--why-ground) 70%, transparent) 56%,
+        var(--why-ground) 70%
       ),
-      linear-gradient(to bottom, var(--why-ground), transparent 14%, transparent 86%, var(--why-ground));
+      linear-gradient(to top, var(--why-ground), transparent 16%);
   }
 }
 /* The words: under the clip on a phone, on its right on desktop, where Nikhil looks. */
@@ -135,36 +135,6 @@
   );
   -webkit-background-clip: text;
   background-clip: text;
-}
-/* Apple's "Watch the film": a dark disc with the play mark, then the words. */
-.why-breaker-watch {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-3);
-  color: var(--content-primary);
-  cursor: pointer;
-}
-.why-breaker-watch-icon {
-  display: inline-grid;
-  place-items: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: var(--radius-full);
-  background: var(--content-primary);
-  color: var(--surface-default);
-  transition: transform var(--motion-duration-fast) var(--motion-easing-productive-in-out);
-}
-.why-breaker-watch-icon svg {
-  width: var(--size-icon-sm);
-  height: var(--size-icon-sm);
-}
-.why-breaker-watch:hover .why-breaker-watch-icon {
-  transform: scale(1.06);
-}
-.why-breaker-watch:focus-visible {
-  outline: 2px solid var(--border-focus);
-  outline-offset: 4px;
-  border-radius: var(--radius-full);
 }
 /* The figures, as Apple sets its spec figures: source, figure, a line. */
 .why-breaker-stats {

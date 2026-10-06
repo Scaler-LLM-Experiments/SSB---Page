@@ -353,16 +353,17 @@ campus photo; logos on tiles over a washed-out photo; claims in near-black over 
 
 **Why SSB** (deck slide 4) opens with **the page's first breaker** (2026-10-06, `WhyBreaker`), after
 Apple's product blocks ("Power on full display", the team's reference): Nikhil Kamath's remark,
-the clip of it the full width of the page with him on its left looking right, and the words on
-the right where he is looking (the team's call), the clip melting into the page under them (a
-progressive blur, a `backdrop-filter` masked left to right, then the page's grey) and at its top
-and bottom. An eyebrow ("Why the traditional MBA doesn't work", the team's line), the words as the
-title at the display size and medium weight (several lines: kept quiet, the team's call), lit
-from grey to ink top line first as they scroll up, then who said it in one Apple-style line (grey,
-the name and "He isn't alone in that read." in ink), "Watch the clip" (plays it once with sound),
-and the 60% and 62% as Apple's spec figures (source over, figure, line under). On a phone the clip
-is a block above the words, re-centred on his face. Tried that day: a dark full-bleed scene with
-the clip faded behind white words (the team: "doesn't look good"). Below it the section has no
+the clip of it the full width of the page with him on its left looking right (shifted left so his
+face clears the words), and the words on the right where he is looking (the team's call), the
+clip melting into the page under them (a progressive blur, a `backdrop-filter` masked left to
+right, then the page's grey) and at its foot only (no top fade, the team's call). The section's
+eyebrow ("Why the traditional MBA doesn't work", uppercase, brand green, as every section's), the
+words as the title at the display size and medium weight (several lines: kept quiet, the team's
+call), lit from grey to ink top line first as they scroll up, then just his name, and the 60% and
+62% as Apple's spec figures (source over, figure, line under). On a phone the clip is a block
+above the words, re-centred on his face. Tried that day: a dark full-bleed scene with the clip
+faded behind white words (the team: "doesn't look good"); a line saying where he said it and "He
+isn't alone in that read."; a "Watch the clip" button that played it with sound (both cut). Below it the section has no
 header (the deck's "MBA is not dead…" and the mock's description were cut: the breaker makes that
 argument). Things learnt:
 

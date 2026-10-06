@@ -5,7 +5,6 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Container, Heading, Text } from '@kishanscaler/ssx-ui';
 import { ease, motionTokens, prefersReducedMotion, useMotion } from '@kishanscaler/ssx-ui/motion';
-import { Play, SpeakerSimpleSlash } from '@phosphor-icons/react';
 
 import { PLAYING, loadYouTube, type YTPlayer } from '@/lib/youtube';
 import type { WhyFigure, WhyQuote } from './types';
@@ -33,22 +32,15 @@ function noCaptions(player: YTPlayer) {
  * Zerodha's. It loads a screen away, plays muted and looping its 13 seconds
  * only while on screen, cut just before its end so YouTube's end screen never
  * shows, and framed so YouTube's title bar and the burned-in subtitles fall
- * outside. "Watch the clip" plays it from the start with sound, once. Under
- * reduced motion it holds on its first frame until asked.
+ * outside. Under reduced
+ * motion it holds on its first frame.
  */
 export function WhyBreaker({ quote, figures }: { quote: WhyQuote; figures: WhyFigure[] }) {
   const scope = React.useRef<HTMLElement>(null);
   const frame = React.useRef<HTMLDivElement>(null);
   const player = React.useRef<YTPlayer | null>(null);
-  const soundRef = React.useRef(false);
   const [rolling, setRolling] = React.useState(false);
-  const [sound, setSound] = React.useState(false);
   const { youtubeId, start = 0, end } = quote;
-
-  const setSoundOn = React.useCallback((on: boolean) => {
-    soundRef.current = on;
-    setSound(on);
-  }, []);
 
   React.useEffect(() => {
     const root = scope.current;
@@ -99,16 +91,11 @@ export function WhyBreaker({ quote, figures }: { quote: WhyQuote; figures: WhyFi
         });
       });
     };
-    // The loop: back to the start just before the end (the end screen never shows); a play with
-    // sound plays once, then the clip goes on muted.
+    // The loop: back to the start just before the end, so YouTube's end screen never shows.
     const loop = window.setInterval(() => {
       const p = player.current;
       if (!ready || !p || !end) return;
       if (p.getCurrentTime() < end - 0.3) return;
-      if (soundRef.current) {
-        p.mute();
-        setSoundOn(false);
-      }
       p.seekTo(start, true);
       if (reduce) p.pauseVideo();
     }, 200);
@@ -120,13 +107,7 @@ export function WhyBreaker({ quote, figures }: { quote: WhyQuote; figures: WhyFi
       const p = player.current;
       if (!ready || !p) return;
       if (seen && !reduce) p.playVideo();
-      else if (!seen) {
-        p.pauseVideo();
-        if (soundRef.current) {
-          p.mute();
-          setSoundOn(false);
-        }
-      }
+      else if (!seen) p.pauseVideo();
     });
     near.observe(root);
     onScreen.observe(root);
@@ -139,21 +120,7 @@ export function WhyBreaker({ quote, figures }: { quote: WhyQuote; figures: WhyFi
       player.current = null;
       host.replaceChildren();
     };
-  }, [youtubeId, start, end, setSoundOn]);
-
-  const toggleSound = () => {
-    const p = player.current;
-    if (!p?.playVideo) return;
-    if (soundRef.current) {
-      p.mute();
-      setSoundOn(false);
-      return;
-    }
-    p.seekTo(start, true);
-    p.unMute();
-    p.playVideo();
-    setSoundOn(true);
-  };
+  }, [youtubeId, start, end]);
 
   useMotion(
     () => {
@@ -222,7 +189,6 @@ export function WhyBreaker({ quote, figures }: { quote: WhyQuote; figures: WhyFi
       aria-labelledby="why-breaker-title"
       className="why-breaker"
       data-rolling={rolling || undefined}
-      data-sound={sound || undefined}
     >
       <div className="why-breaker-media" aria-hidden>
         <div data-breaker-stage className="why-breaker-stage">
@@ -234,26 +200,15 @@ export function WhyBreaker({ quote, figures }: { quote: WhyQuote; figures: WhyFi
 
       <Container className="relative">
         <div className="why-breaker-copy">
-          <Heading as="p" size="3" data-breaker-part>
+          <Heading as="p" size="eyebrow" className="text-content-brand" data-breaker-part>
             {quote.eyebrow}
           </Heading>
           <h2 id="why-breaker-title" data-breaker-part className="why-breaker-words">
             <span data-breaker-words>“{quote.caption}”</span>
           </h2>
-          <Text size="lg" tone="secondary" data-breaker-part className="mt-6">
-            <strong className="font-medium text-content">{quote.attribution}</strong> {quote.context}{' '}
-            {quote.coda ? <strong className="font-medium text-content">{quote.coda}</strong> : null}
+          <Text size="lg" tone="secondary" data-breaker-part className="mt-4">
+            {quote.attribution}
           </Text>
-          {youtubeId ? (
-            <div data-breaker-part className="mt-6">
-              <button type="button" className="why-breaker-watch type-label" onClick={toggleSound}>
-                <span className="why-breaker-watch-icon">
-                  {sound ? <SpeakerSimpleSlash weight="bold" /> : <Play weight="fill" />}
-                </span>
-                {sound ? 'Mute the clip' : 'Watch the clip'}
-              </button>
-            </div>
-          ) : null}
 
           <ul data-breaker-stats data-breaker-part className="why-breaker-stats">
             {figures.map((figure) => (

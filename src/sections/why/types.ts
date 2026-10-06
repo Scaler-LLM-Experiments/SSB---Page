@@ -14,12 +14,8 @@ export type WhyQuote = {
   eyebrow: string;
   /** The words, verbatim (no quote marks: the breaker sets them). */
   caption: string;
-  /** Who said it, set dark at the start of the line under the title. */
+  /** Who said it, under the words: just the name (the team's call). */
   attribution: string;
-  /** The rest of that line, e.g. "said this at the company's 15th-anniversary AMA…". */
-  context: string;
-  /** The line's last words, set dark, leading into the figures: "He isn't alone in that read." */
-  coda?: string;
   /** The clip: a YouTube video id, and the seconds it starts and ends at. Unset: no clip. */
   youtubeId?: string;
   start?: number;

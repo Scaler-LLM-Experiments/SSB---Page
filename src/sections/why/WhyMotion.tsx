@@ -16,8 +16,6 @@ const ROLE_HOLD = 2.2;
  * Why SSB's motion, on the server-rendered markup in WhySection:
  *
  *   data-enter         the header: the faculty section's entrance (useSectionEntrance)
- *   data-why-evidence  the coda and the figures: one gentle fade as they arrive, each figure
- *                      (data-slide) sliding up into its line
  *   data-why-roles     the line's roles (data-role) turning over, one up and out as the next
  *                      comes up into the slot, while it is on screen
  *   data-why-chapter   a chapter (sticky, CSS): as the next one slides up over it, its card
@@ -38,25 +36,6 @@ export function WhyMotion({ children }: { children: React.ReactNode }) {
       const root = scope.current;
       if (!root || prefersReducedMotion(root)) return;
       gsap.registerPlugin(ScrollTrigger);
-
-      const evidence = root.querySelector<HTMLElement>('[data-why-evidence]');
-      if (evidence) {
-        const tl = gsap.timeline({
-          defaults: { ease: ease('expressiveEntrance') },
-          scrollTrigger: { trigger: evidence, start: 'clamp(top 85%)', once: true },
-        });
-        tl.fromTo(
-          evidence,
-          { autoAlpha: 0, y: offset.enter },
-          { autoAlpha: 1, y: 0, duration: d.slowest, clearProps: 'transform,opacity,visibility' },
-        );
-        tl.fromTo(
-          evidence.querySelectorAll('[data-slide]'),
-          { yPercent: 110 },
-          { yPercent: 0, duration: d.slower, stagger: st.base * 1.5, clearProps: 'transform' },
-          d.slow * 0.4,
-        );
-      }
 
       // The roles turn over in their slot, each holding ROLE_HOLD seconds, while the line is on screen.
       const line = root.querySelector<HTMLElement>('[data-why-roles]');

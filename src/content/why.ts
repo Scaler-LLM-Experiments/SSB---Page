@@ -10,12 +10,10 @@ export const why: WhyContent = {
   // MBA, as the auto-captions have it. The deck's "went viral this year" and "telling students"
   // don't hold (2025; an AMA), so they are not used.
   quote: {
-    // The team's line (2026-10-06).
+    // The team's lines (2026-10-06).
     eyebrow: 'Why the traditional MBA doesn’t work',
     caption: 'If you’re 25 and going to an MBA college today, you must be some kind of idiot, if you ask me.',
-    attribution: 'Nikhil Kamath, co-founder of Zerodha,',
-    context: 'said this at the company’s 15th-anniversary AMA in October 2025.',
-    coda: 'He isn’t alone in that read.',
+    attribution: 'Nikhil Kamath',
     youtubeId: 'fzTWpjAAUe0',
     // 1:43:21 to 1:43:34: "In my personal opinion, colleges are dead. If you're 25…"
     start: 6201,
