@@ -1,16 +1,19 @@
 import type { ReactElement } from 'react';
-import { Button, Container, Heading, Section, Text, cn } from '@kishanscaler/ssx-ui';
+import { Button, Container, Heading, Section, cn } from '@kishanscaler/ssx-ui';
 import { GlobeHemisphereWest, RocketLaunch, Sparkle } from '@phosphor-icons/react/ssr';
 
 import { resolveLogos, type LogoSizing, type ResolvedLogo } from '@/lib/logos';
 import { CtaIcon } from '@/sections/hero/CtaIcon';
-import { Drift, FigureStrip, LogoTile, PlacementsHeader, RoleTile, RollingFigure } from './shared';
+import { Drift, LogoImage, LogoTile, PlacementsHeader, RoleTile, TILE_SIZING } from './shared';
 import { ShowcaseMotion } from './ShowcaseMotion';
 import type { PlacementRole, PlacementShowcase, PlacementsContent, ShowcaseIcon } from './types';
 import './placements.css';
 
 /** The floating logos, large: one visual weight (equal ink), at most 160 × 48. */
 const FLOAT_SIZING: LogoSizing = { height: 34, maxWidth: 160, maxHeight: 48 };
+
+/** The recruiters' cells: twelve logos at a time (6 × 2 on desktop, 4 × 3 on a tablet, 3 × 4 on a phone). */
+const BOXES = 12;
 
 /** The sharp photo, then its blurred copies (`pl-app-blur-*`): behind the logos, then soft and deep toward the copy. */
 const PHOTO_LAYERS = ['', 'side', 'soft', 'deep'] as const;
@@ -25,27 +28,28 @@ const ICONS: Record<ShowcaseIcon, ReactElement> = {
  * Placements, the showcase variation: reads top to bottom like a product page
  * (the team's reference: Apple's "Power on full display"): the header with a
  * longer lead and the audited report at its right, level with the title (the
- * team's call); over the cards at their left, a segmented switcher naming
- * each card (Apple's pill tabs), its dark pill sliding to the card on show and
- * filling as the card's time runs; a carousel of claims, after the App Store's
- * Today cards: a photo of the place (Bengaluru's Vidhana Soudha, San
- * Francisco's Golden Gate) framed in the card's grey and fading into it, a tab
- * cut out of the frame naming the card, a column of the recruiters' logos (or
- * the alumni's roles) floating the card's full height over the photo, and the
- * figure over the claim; then the four outcomes, each on a light-grey box, the
- * figures rolling in like counter reels.
+ * team's call); a carousel of claims, after the App Store's Today cards: a
+ * photo of the place (Bengaluru's Vidhana Soudha, San Francisco's Golden Gate)
+ * framed in the card's grey, a column of the recruiters' logos (or the
+ * alumni's roles) floating the card's full height over the photo, and the
+ * figure over the claim in white, the photo darkened and blurred at its foot;
+ * a row of chips naming the cards at their top left (the team's slideshow
+ * card), the chip on show brighter, a line along its foot filling as the
+ * card's time runs. The cards crossfade (the team's call), each figure sliding
+ * up into its line. Then the recruiters, twelve logos at a time in one box of
+ * hairline cells, fading to the next twelve every few seconds.
  *
- * All motion is in ShowcaseMotion; without it the cards are a plain scroller,
- * the switcher's buttons still work, and the figures show their values.
+ * All motion is in ShowcaseMotion; without it only the first card shows and
+ * the cells hold their first twelve logos.
  */
 export async function PlacementsShowcase({
   eyebrow,
   title,
   lead,
-  stats,
   reportLabel,
   reportHref,
   showcases,
+  recruitersTitle,
   roles,
   logos,
   recruiters,
@@ -55,6 +59,12 @@ export async function PlacementsShowcase({
     FLOAT_SIZING,
   );
   const byName = new Map(resolved.map((logo) => [logo.name, logo]));
+  // The recruiters' cells: every logo we have, smaller, at one visual weight, dealt into sets of
+  // twelve; each cell holds its logo from every set, and the cells move on to the next set together.
+  const row = await resolveLogos(
+    logos.map(({ name, logoUrl, ink }) => ({ name, logoUrl, ink, wordmark: name })),
+    TILE_SIZING,
+  );
 
   return (
     <Section density="roomy" aria-labelledby="placements-showcase-title" className="overflow-x-clip">
@@ -77,73 +87,77 @@ export async function PlacementsShowcase({
             }
           />
 
-          {/* The switcher over the cards, at their left, under the header's copy. */}
-          <div className="mb-6 flex">
-            <div data-switch className="pl-switch" role="group" aria-label="Stories">
+          {/* The cards, with the chips that name them laid over the cards' top left (after the team's
+              slideshow card): they stay put as the cards change under them. */}
+          <div data-deck className="pl-deck">
+            <ul data-carousel className="pl-fade" aria-label="Who hires from SSB">
               {showcases.map((showcase, i) => (
-                <button
-                  key={showcase.label}
-                  type="button"
-                  data-carousel-go={i}
-                  className="pl-switch-tab type-label"
-                >
-                  <SwitchLabel showcase={showcase} />
-                </button>
+                <li key={showcase.label} aria-label={`${i + 1} of ${showcases.length}`}>
+                  <ShowcaseCard
+                    showcase={showcase}
+                    logos={(showcase.logos ?? []).flatMap((name) => byName.get(name) ?? [])}
+                    // Every role, by name: no logos here, so the tiles match the other cards' (the team's call).
+                    roles={showcase.roles ? roles : []}
+                  />
+                </li>
               ))}
-              {/* The dark pill: a copy of the tabs in light ink on dark, clipped to the active tab
-                  (ShowcaseMotion slides the clip), so a label turns light exactly where the pill is. */}
-              <div data-switch-pill aria-hidden className="pl-switch-pill">
-                {showcases.map((showcase) => (
-                  <span key={showcase.label} className="pl-switch-tab type-label">
-                    <span data-carousel-fill className="pl-switch-fill" />
-                    <SwitchLabel showcase={showcase} />
-                  </span>
+            </ul>
+            <div data-switch className="pl-chips" role="group" aria-label="Stories">
+              <div data-chip-row className="pl-chips-row">
+                {showcases.map((showcase, i) => (
+                  <button
+                    key={showcase.label}
+                    type="button"
+                    data-carousel-go={i}
+                    className="pl-chip type-label"
+                  >
+                    <span className="pl-chip-icon">{ICONS[showcase.icon]}</span>
+                    {showcase.label}
+                    {/* The card's time, a line along the chip's foot (carousel.ts fills it). */}
+                    <span data-carousel-fill aria-hidden className="pl-chip-fill" />
+                  </button>
                 ))}
               </div>
             </div>
           </div>
 
-          <ul data-carousel className="pl-carousel pl-carousel-full" aria-label="Who hires from SSB">
-            {showcases.map((showcase, i) => (
-              <li key={showcase.label} aria-label={`${i + 1} of ${showcases.length}`}>
-                <ShowcaseCard
-                  showcase={showcase}
-                  logos={(showcase.logos ?? []).flatMap((name) => byName.get(name) ?? [])}
-                  // Every role, by name: no logos here, so the tiles match the other cards' (the team's call).
-                  roles={showcase.roles ? roles : []}
-                />
-              </li>
-            ))}
-          </ul>
-
-          {/* The outcomes under the cards, on four light-grey boxes (the team's call). */}
-          <FigureStrip stats={stats} boxed />
-
-          <ul className="sr-only">
-            {recruiters.map((name) => (
-              <li key={name}>{name}</li>
-            ))}
-          </ul>
+          {/* The recruiters under the cards (the team's call, in place of the four figures' boxes):
+              one box of twelve cells, moving on to the next twelve logos together (ShowcaseMotion).
+              Screen readers get the deck's full list instead. */}
+          <div data-strip className="mt-12 sm:mt-16">
+            <Heading as="h3" size="eyebrow" className="mb-4 text-content-secondary">
+              {recruitersTitle}
+            </Heading>
+            <ul className="sr-only">
+              {recruiters.map((name) => (
+                <li key={name}>{name}</li>
+              ))}
+            </ul>
+            <ul data-logo-boxes aria-hidden className="pl-boxes">
+              {Array.from({ length: BOXES }, (_, i) => (
+                <li key={i} data-logo-box className="pl-box">
+                  {row
+                    .filter((_, j) => j % BOXES === i)
+                    .map((logo) => (
+                      <span key={logo.name} data-logo className="pl-box-logo">
+                        <LogoImage logo={logo} />
+                      </span>
+                    ))}
+                </li>
+              ))}
+            </ul>
+          </div>
         </Container>
       </ShowcaseMotion>
     </Section>
   );
 }
 
-function SwitchLabel({ showcase }: { showcase: PlacementShowcase }) {
-  return (
-    <>
-      <span className="pl-switch-icon">{ICONS[showcase.icon]}</span>
-      <span className="relative">{showcase.label}</span>
-    </>
-  );
-}
-
 /**
- * One card. The frame (`pl-app`, grey) holds the photo, which fades into that
- * grey at its foot, with the logos (or roles) floating over its right side;
- * under it, the claim (grey, its key phrase in near-black) and the figure. The tab is cut out of the frame at the top left.
- * `data-story` is wiped open by the entrance; `data-part` marks what rises in.
+ * One card. The frame (`pl-app`, grey) holds the photo, blurred and darkened
+ * toward its foot, with the logos (or roles) floating over its right side; at
+ * its foot the figure and the claim, in white. `data-story` is wiped open by the entrance; `data-part`
+ * marks what rises in, `data-slide` the figure that slides up.
  */
 function ShowcaseCard({
   showcase,
@@ -192,20 +206,18 @@ function ShowcaseCard({
 
         {/* The figure, and the claim reading on from it as one statement (the team's call). */}
         <div className="pl-app-copy">
+          {/* The figure and the claim, one statement, nothing under it (the team's call). */}
           <div className="max-w-(--size-panel-xl)">
-            <div data-part="title">
-              <RollingFigure value={showcase.statValue} className="pl-app-ink type-billboard-md" />
-              <Heading as="h3" size="1" className="pl-app-ink mt-1">
-                {showcase.title}
-              </Heading>
-            </div>
-            <Text data-part="description" className="pl-app-muted mt-3">
-              {showcase.description}
-            </Text>
+            {/* The figure slides up into its line as the card comes round (ShowcaseMotion). */}
+            <p className="pl-app-ink pl-slide type-billboard-md">
+              <span data-slide>{showcase.statValue}</span>
+            </p>
+            <Heading data-part="title" as="h3" size="1" className="pl-app-ink pl-app-title mt-1">
+              {showcase.title}
+            </Heading>
           </div>
         </div>
       </div>
-      <p className="pl-app-tab type-label">{showcase.label}</p>
     </article>
   );
 }

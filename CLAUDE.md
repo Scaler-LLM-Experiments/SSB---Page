@@ -14,8 +14,10 @@ built on the Scaler Design System package `@kishanscaler/ssx-ui`. The bar the te
 
 1. **Now:** the home page, section by section, in the deck's order. The hero is V2, then
    Placements (deck slide 3), then the Faculty section, ported from a teammate's build. Placements
-   is in three variations on /v2 for comparison (2026-10-01): the stories carousel above Faculty,
-   then the logo grid and the showcase below it; keep the one the team picks. Section copy comes from the content deck
+   was in three variations on /v2 for comparison (2026-10-01); the team picked the showcase
+   (2026-10-05), so /v2 is hero, showcase, Why SSB (deck slide 4), Faculty. The stories and grid variations' files are still
+   in `sections/placements/` but no route renders them (all three are in commit a15a685, so deleting
+   them loses nothing). Section copy comes from the content deck
    `ssb-website/SSB Website vF _ Sep'26.pdf` (internal, so gitignored: the repo is public).
 2. **Later (not yet):** winning sections become Storyblok bloks so other projects can reuse them.
 
@@ -60,6 +62,7 @@ src/
     home.ts             hero copy, shared by every variation
     people.ts           faculty, mentors and founding team (deck slide 13)
     placements.ts       placement figures and recruiter names (deck slide 3)
+    why.ts              Why SSB: the deck's title, figures and quote; the team's mock for the rest (slide 4)
     company-logos.ts    company wordmarks for the faculty cards (files in public/logos)
   lib/
     logos.ts            logos sized to equal ink (`LogoSizing`: the ticker's, the placements grid's),
@@ -90,25 +93,28 @@ src/
     HScroller.tsx       the row: a real scroller that loops, pauses on hover/focus/touch, arrow buttons
     StoryCard.tsx       photo card: name, role, one company logo in white
     useSectionEntrance.ts  the section's entrance (below)
+  sections/why/         WhySection.tsx (server): faculty-style header, the quote as a paused clip with
+                        two figures, a line whose last words cycle the roles, three stacking chapters;
+                        WhyMotion.tsx; why.css; types.ts (WhyContent)
   sections/placements/  three variations on one PlacementsContent (all async server components)
     types.ts            PlacementsContent: four stats, a lead, the stories, the showcases, the logos (with
                         placeholder hires counts), the report CTA, every recruiter's name
     shared.tsx          the faculty-style header (aside at its end, or level with the title), Figure,
                         RollingFigure, FigureStrip (the strip of figures, or `boxed`), LogoImage, Drift
                         (two drifting columns of tiles), LogoTile, RoleTile
-    carousel.ts         motion both carousels share: card entrance, strip roll (rollIn), carousel controls
-                        (stops, autoplay, mouse drag)
+    carousel.ts         motion the carousels share: card entrance, strip roll (rollIn), the scroller's
+                        controls (stops, autoplay, mouse drag), and fadeControls (the crossfading deck)
     PlacementsStories.tsx  the stories variation: wide claim cards (drifting logos or roles, or a photo),
                         arrows, no indicator, then a strip of figures
     StoriesMotion.tsx      its motion (carousel.ts)
-    PlacementsShowcase.tsx the showcase variation: lead with the report CTA level with the title, a
-                        segmented pill switcher, App Store-style photo cards (Bengaluru, San Francisco),
-                        then the four figures on grey boxes
-    ShowcaseMotion.tsx     its motion (carousel.ts, plus the switcher's sliding pill)
+    PlacementsShowcase.tsx the showcase variation (the one on /v2): lead with the report CTA level with
+                        the title, App Store-style photo cards (Bengaluru, San Francisco), crossfading,
+                        chips naming them at their top left, then one box of recruiters' logos
+    ShowcaseMotion.tsx     its motion: the crossfade, the figures sliding in, the chips, the logos' cycle
     PlacementsSection.tsx  the grid variation: one tight panel of four stats, then a 12-logo grid
     PlacementsMotion.tsx   its motion: the stats' green wipe, the logos' cycle and 3D flip
     placements.css      all three: tint, units, the flip, the carousel, the logo wall, the reels, the
-                        showcase's header grid, blur, switcher and figure boxes
+                        showcase's header grid, blur, scrim, chips, sideways logo rows, recruiters' box
 ```
 
 ## Adding a hero variation
@@ -246,45 +252,105 @@ resize. A mouse drags the row: snapping off while dragging, then it settles on t
 drag's direction and snapping comes back on `scrollend`; the click that ends a drag is swallowed.
 
 **The showcase variation** (the team's references: Apple's "Power on full display" for the order,
-the App Store's Today cards, Apple's pill tabs) reads top to bottom: the header (left-aligned; a
-longer `lead`, held to three lines on desktop by `panel-2xl`; the report CTA at the right, centred
-on the title's line, by a grid (`asideAt="title"`): the hero's secondary CTA, large, with its
-download icon), then the switcher at the top left of the cards, the carousel, and the four `stats`
-on light-grey boxes (`FigureStrip boxed`: the card frame's grey and radius, figures at `type-h1`,
-a step under `type-billboard-md`'s card figure, so they don't fight it; all the team's calls). Each
-card: a photo of the place (Bengaluru's Vidhana Soudha, San Francisco's Golden Gate; CC0 from
-Wikimedia Commons, `public/media/CREDITS.md`; 1280 and 2560px with `srcset`, so a retina desktop
-gets it sharp and a phone small) in a grey frame (a coloured frame, brand green or ink, was too
-much), a tab cut out of the frame at the top left (the frame's grey, with concave fillets drawn by
-radial gradients where it meets the photo), a column of large logos (or the alumni's roles, by
-name: role over company, centred on tiles the logo tiles' size, all eight; logos there read
-heavy and set that card apart, the team's call) floating the card's full height on desktop (in the photo
-above the copy on a phone), and at its foot the figure with the claim reading on from it as one
-statement, all near-black ("50+" / "startups from Bengaluru…"; the team's call: no label under the
-figure, no grey-and-black title). **The photo blurs
-progressively, not by fading to grey** (the team's call): three blurred copies of it (10px behind
-the logos, 6px then 18px toward the copy), each revealed by its own gradient, under a light frost
-for the text. Copies, not `backdrop-filter`, which would re-run as the page scrolls: measured
-60fps (p95 16.7ms) at 2× through a card change. Every layer is scaled up alike (1.2) so they stay
-aligned while each blur's transparent rim falls outside the card (CSS blur fades an element's edges
-to transparent, which would show the sharp photo there), and the layer is composited
-(`will-change`) so the entrance's zoom never re-blurs. Each card comes round with its floating column rising in
-and its figure rolling. The switcher's dark pill is a copy of the tabs in light ink on dark,
-clipped (`clip-path: inset(… round)`) to the active tab; sliding the clip moves the pill and turns
-each label light exactly where it covers it, with no layout. It is placed again whenever the
-switcher's size changes (a ResizeObserver: fonts, resizes, new styles); until it is placed, CSS
-lights the first tab. Its tabs share the width on a phone. Tried on 2026-10-01, in one sitting:
-the report as a detached fourth pill beside the switcher (the team: a CTA, not a tab); the
-switcher centred, under the cards, at their top right (it went top left); three figures under the
-lead; Apple's chip-fact layout under the cards (icon, figure and label, hairline, sentence; the
-team swapped it for the stories' strip, then boxes). Earlier: everything centred (the
-line-by-line headline jumped 1px at 320 when SplitText reverted, a 0.006 layout shift; left-aligned
-headers don't); a white panel on a campus photo; logos on tiles over a washed-out photo.
+the App Store's Today cards, the team's slideshow card for the chips) reads top to bottom: the
+header (left-aligned; a longer `lead`, held to three lines on desktop by `panel-2xl`; the report
+CTA at the right, centred on the title's line, by a grid (`asideAt="title"`): the hero's secondary
+CTA, large, with its download icon), the carousel, then the recruiters. Each card: a photo of the
+place (Bengaluru's Vidhana Soudha, San Francisco's Golden Gate; CC0 from Wikimedia Commons,
+`public/media/CREDITS.md`; 1280 and 2560px with `srcset`, so a retina desktop gets it sharp and a
+phone small) in a grey frame (a coloured frame, brand green or ink, was too much), a column of
+large logos (or the alumni's roles, by name: role over company, centred on tiles the logo tiles'
+size, all eight; logos there read heavy and set that card apart, the team's call) floating the
+card's full height on desktop; below desktop, where the photo sits above the copy, they run as two
+rows across it, drifting sideways one each way (the team's call: two narrow columns were hard to
+read on a phone; the same `Drift` markup, its tracks laid out along a row and moved by
+`translateX`; tiles 11rem, 9rem × 4rem on a phone with the logos at `zoom: 0.75`). At its foot the
+figure with the claim reading on from it as one statement, **in white** ("50+" / "startups from
+Bengaluru…", the claim at medium weight, `type-h2` on a phone; no line under it; all the team's
+calls). **The photo blurs progressively, not by fading to grey** (the team's call): three blurred
+copies of it (10px behind the logos, 6px then 18px toward the copy), each revealed by its own
+gradient, under a dark scrim (`surface-image-scrim`, starting higher on a phone) for the white
+type. Copies, not `backdrop-filter`, which would re-run as the page scrolls. Every layer is scaled
+up alike (1.2) so they stay aligned while each blur's transparent rim falls outside the card (CSS
+blur fades an element's edges to transparent, which would show the sharp photo there), and the
+layer is composited (`will-change`) so the entrance's zoom never re-blurs.
+
+**The cards crossfade** (the team's call, 2026-10-05; `fadeControls`): stacked in one grid cell
+(`pl-fade`), the new card fades in over the old, whose photo stays whole under it (two half-faded
+cards let the page show through), while the old card's figure, claim and logos fade out first (or
+they show through the new one); then its photo settles from a slight zoom, **its figure slides up
+into its line** (`data-slide`, clipped by its line: not the counter roll, the team's call), its
+claim and logos rise in. 60fps (p95 16.7ms) at 2× through a change. **Render the stack from the
+server:** turning a scroller into the stack on load moved the hidden cards, a 0.53 layout shift;
+now CSS stacks them from the first paint and holds cards 2 and 3 transparent (not hidden: screen
+readers keep them) until the script marks `data-fade`. The cards' z-indices live inside the stack
+(`isolation: isolate`), or the cards cover the chips laid over them. A sideways touch swipe goes on
+or back (`touch-action: pan-y`, so vertical swipes still scroll); the cards not on show are inert.
+
+**The chips** (after the team's slideshow card, 2026-10-05) name the cards at their top left, in
+line with the copy: one row laid over the deck (`data-deck` holds both), so it stays put as the
+cards change under it. They replaced the tab the cards had cut out of their frame (fewer things on
+the photo, the team's call). Light glass, quiet (the team asked for less contrast than a solid
+white chip on dark glass): the one on show a step brighter, the card's 5s running as a 2px line
+along its foot in the brand green (green only as motion); a small `backdrop-filter`, cheap at that
+size. No check mark on the active chip and no weight change, unlike the reference: either widens
+it, which moves the others, a layout shift on every autoplay step. The row scrolls when it doesn't
+fit (a phone), faded inside the copy's inset so at rest the first chip sits on the copy's edge; the
+active chip is centred in it with the row's own `scrollTo`, never `scrollIntoView` (that scrolls
+the page too). The pointer anywhere on the deck pauses the carousel (`area`); focus on a chip
+doesn't, or a click would stop it. **Nothing between a chip and the photo may have a mask, filter,
+clip-path or opacity below 1**: each makes that ancestor a backdrop root, so the chip's
+`backdrop-filter` blurs only what is inside it (nothing). An edge-fade mask on the row once left
+the chips sharp-backed glass; the row now has none and is clipped at the photo's edges. For the
+same reason each chip fades in itself with the first card, not their row.
+
+**The recruiters** (2026-10-05, in place of four figure boxes): an eyebrow over one box of twelve
+cells, hairlines between them (a 1px gap over the line colour), no fill (6 × 2 on desktop, 4 × 3,
+3 × 4 on a phone, logos at `zoom: 0.75` there; twelve always fill their rows). Each cell stacks its
+logo from each set of twelve (31 logos, three sets; a cell with fewer wraps round); every 4s they
+all crossfade in place to the next set together (`cycleBoxes`; a drift up and out was tried),
+waiting on hover, off screen, a hidden tab, and under reduced motion. Seven of the 31 were added
+on 2026-10-05 from English Wikipedia's article images (Aviva, CKA Birla Group, FNP, ONDC,
+HealthifyMe, Landmark Group, The Times Group), trimmed and measured as before; Wikidata had only
+Aviva's. Not used: Wikidata's "Muthoot FinCorp" logo is Muthoot Finance's (another company), and
+"Noise (company)" on Wikipedia shows a mark that isn't the wearables brand's. The rest of the
+deck's 62 have no logo on either. Grey until the pointer is on one (its own colours, as the hero's ticker). Tried that day: a
+marquee row of the logos; six light-grey boxes with gaps between.
+
+Tried on 2026-10-05: a horizontal scroller (the cards slid); the chips under the copy at the cards'
+foot, frosted dark; the pill switcher over or under the cards (its dark pill a copy of the tabs
+clipped to the active one); a sentence under each claim; the four figures as grey boxes, smaller
+(`type-h1`) so they didn't fight the card's. On 2026-10-01: the report as a detached fourth pill
+beside the switcher (the team: a CTA, not a tab); the switcher centred, under the cards, at their
+top right; three figures under the lead; Apple's chip-fact layout under the cards (icon, figure and
+label, hairline, sentence). Earlier: everything centred (the line-by-line headline jumped 1px at
+320 when SplitText reverted, a 0.006 layout shift; left-aligned headers don't); a white panel on a
+campus photo; logos on tiles over a washed-out photo; claims in near-black over a light frost.
+
+**Why SSB** (deck slide 4, 2026-10-05) is an argument in three beats under the faculty-style header
+(its entrance via `useSectionEntrance`; the title's last phrase in the brand green; the eyebrow
+grey), on a faint grey band (`bg-surface-subtle`). The team asked for something creative in place
+of their mock's two rows of white cards; a second take (an editorial band, then three steps beside
+one photo, taking turns) wasn't it either. **The receipt:** the Kamath remark as a paused clip (the
+deck asks for a still from the AMA video; a dark frame stands in), the deck's words as a white
+caption, only the quoted part in quote marks, a playback bar running along its foot while it is on
+screen; beside it "He isn't alone in that read." and the 60% and 62% figures (each sliding up into
+its line), hairlines between. **The turn:** the deck's "Nobody is preparing you for emerging roles
+like", large, its last words turning over in green through the deck's four roles (a slot as wide
+as the longest, every role stacked in it, so the line never moves; screen readers get the list
+once). **The answer:** three chapters (01 Build, 02 Ship, 03 Grow) that stack as the page
+scrolls: each card is CSS-sticky under the nav, a step lower than the one before so their tops
+show; as the next slides up over it, it settles back (scale 0.94, scrubbed), the section's grey
+fading over it on a layer of its own. Fading the card itself let the card under it show through.
+Not sticky under reduced motion. The mock's figure captions said "as cited in the brief", a
+placeholder: these are the deck's own sentences. 60fps scrolling the stack once its photos have
+loaded (an instant jump onto lazy photos stalled one frame 417ms, decoding). **The photos are
+cropped from the mock's screenshot (742 × 428) until the team sends the originals.**
 
 **"The carousel is not working" (2026-10-01)** was a page left open while its server-rendered markup
 changed under a hot reload: the client motion had bound to the old nodes, so the tabs did nothing
-and the pill stayed hidden. A reload fixes it; production never does this. The ResizeObserver and
-the CSS fallback above make the switcher survive it anyway.
+and the pill stayed hidden. A reload fixes it; production never does this. CSS lights the first
+chip until the motion has set the active one (`data-ready`), so a stale page still reads right.
 
 **The grid variation's moment** is the stats: each cell comes up one after another (like the
 faculty cards), wiped open from the bottom in the brand green (a `data-card-tint` layer, a
@@ -341,8 +407,9 @@ Campus photos are stills from the campus film until the team's arrive.
 - **Never tween a package `Button` directly.** Its `transition-all` corrupts GSAP's end values and
   the button stays invisible. Animate a wrapper.
 - **Content enters with one gentle fade, not part by part.** No word splits, no staggered pieces,
-  no count-ups on numbers: they read as the page stuttering in. (Exception, the team's ask: the
-  Placements stories strip rolls its figures in.)
+  no count-ups on numbers: they read as the page stuttering in. (Exceptions, the team's asks: the
+  stories variation's figures roll in like counter reels; the showcase's and Why SSB's figures
+  slide up into their lines.)
 - **Never let the DOM move under a CSS animation.** Re-inserting an element restarts its CSS
   animations (the ticker jumped back). ScrollTrigger `pin` does this; use CSS sticky instead.
 - **Never lock scrolling with `overflow: hidden`.** On screens that always show a scrollbar it hides

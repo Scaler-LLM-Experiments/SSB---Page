@@ -52,24 +52,23 @@ export type PlacementStory = {
   ctaIcon?: CtaIconName;
 };
 
-/** The icon beside a showcase's name in its switcher (a Phosphor icon, mapped in PlacementsShowcase). */
+/** The icon beside a showcase's name in its chip (a Phosphor icon, mapped in PlacementsShowcase). */
 export type ShowcaseIcon = 'rocket' | 'globe' | 'sparkle';
 
 /**
  * One card of the showcase variation, after the App Store's Today cards: a
- * photo of a place, framed and fading into the card's grey, a tab cut out of
- * the frame naming it, the claim, its figure, and a column of logos (or the
- * alumni roles) floating over the photo.
+ * photo of a place in the card's grey frame, named by its chip, the claim,
+ * its figure, and a column of logos (or the alumni roles) floating over the
+ * photo.
  */
 export type PlacementShowcase = {
-  /** Short: the cut-out tab and its tab in the switcher, e.g. "Indian startups". */
+  /** Short: its chip, e.g. "Indian startups". */
   label: string;
   icon: ShowcaseIcon;
   /** The figure, e.g. "50+", rolled in each time the card comes round; the title reads on from it. */
   statValue: string;
-  /** The claim, continuing the figure ("50+" "startups from Bengaluru…"), in near-black. */
+  /** The claim, continuing the figure ("50+" "startups from Bengaluru…"), in white. Nothing under it. */
   title: string;
-  description: string;
   /** Names from `logos`, floating over the photo. */
   logos?: string[];
   /** Float the alumni roles (`PlacementsContent.roles`) instead. */
