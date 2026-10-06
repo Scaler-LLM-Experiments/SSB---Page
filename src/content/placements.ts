@@ -102,8 +102,6 @@ export const placements: PlacementsContent = {
       // The title reads on from the figure: "50+ startups from Bengaluru…".
       statValue: '50+',
       title: 'startups from Bengaluru, Hyderabad and beyond are picking SSB candidates.',
-      description:
-        'From quick commerce to fintech, startup teams across India hire from the founding cohort.',
       logos: ['Swiggy', 'Zomato', 'Zepto', 'Blinkit', 'Razorpay', 'PhonePe', 'Urban Company', 'Lenskart'],
       imageUrl: '/media/bengaluru-vidhana-soudha-1280.webp',
       imageSrcSet:
@@ -116,7 +114,6 @@ export const placements: PlacementsContent = {
       icon: 'globe',
       statValue: '10+',
       title: 'global MNCs hire from SSB’s founding cohort, too.',
-      description: 'Banks, consultancies and technology companies, from Amazon and Goldman Sachs to Uber.',
       logos: ['Amazon', 'Goldman Sachs', 'EY', 'Nomura', 'Samsung', 'Uber', 'Zendesk', 'ArcelorMittal'],
       imageUrl: '/media/san-francisco-golden-gate-1280.webp',
       imageSrcSet:
@@ -129,7 +126,6 @@ export const placements: PlacementsContent = {
       icon: 'sparkle',
       statValue: '55%+',
       title: 'of the founding cohort went into digital and AI-first roles.',
-      description: 'Our alumni moved into roles like these.',
       roles: true,
       imageUrl: '/media/campus-entrance-1280.webp',
       imageSrcSet: '/media/campus-entrance-1280.webp 1280w, /media/campus-entrance-1920.webp 1920w',
@@ -149,7 +145,9 @@ export const placements: PlacementsContent = {
     { role: 'Brand Marketing', company: 'The Whole Truth' },
     { role: 'Growth Marketing', company: 'BharatPe' },
   ],
-  recruitersTitle: 'Our recruiters',
+  // The team's line (2026-10-06). PLACEHOLDER figure: the deck lists 62 recruiters; "200+" needs a
+  // source before this goes anywhere near production.
+  recruitersTitle: '200+ recruiters hire SSB students on campus.',
   // The grid's logos, best known first (the first twelve are what the grid opens on). Files trimmed
   // to their edges, from Wikidata (P154) and English Wikipedia's article images; `ink` measured
   // as CLAUDE.md, "Logos" says.
@@ -180,6 +178,15 @@ export const placements: PlacementsContent = {
     { name: 'OYO', logoUrl: '/logos/oyo.png', ink: 0.66, placed: 1 },
     { name: 'Zendesk', logoUrl: '/logos/zendesk.svg', ink: 0.27, placed: 1 },
     { name: 'Vedantu', logoUrl: '/logos/vedantu.png', ink: 0.25, placed: 2 },
+    // Added 2026-10-05 for the recruiters' box (no hires counts: the grid variation isn't shown).
+    // From English Wikipedia's article images, trimmed and measured as above.
+    { name: 'Aviva', logoUrl: '/logos/aviva.svg', ink: 0.31 },
+    { name: 'CK Birla Group', logoUrl: '/logos/ck-birla-group.svg', ink: 0.27 },
+    { name: 'FNP', logoUrl: '/logos/fnp.svg', ink: 0.2 },
+    { name: 'ONDC', logoUrl: '/logos/ondc.svg', ink: 0.27 },
+    { name: 'HealthifyMe', logoUrl: '/logos/healthify.png', ink: 0.23 },
+    { name: 'Landmark Group', logoUrl: '/logos/landmark-group.png', ink: 0.15 },
+    { name: 'The Times Group', logoUrl: '/logos/the-times-group.png', ink: 0.36 },
   ],
   recruiters: [
     'Amazon',

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { hero } from '@/content/home';
 import { heroSplit } from '@/content/hero-card';
 import { placements } from '@/content/placements';
+import { why } from '@/content/why';
 import { AdmissionsSection } from '@/sections/admissions/AdmissionsSection';
 import { AlumniSection } from '@/sections/alumni/AlumniSection';
 import { PeersTicker } from '@/sections/alumni/PeersTicker';
@@ -19,6 +20,7 @@ import { InternshipSection } from '@/sections/internship/InternshipSection';
 import { LiveProjectsSection } from '@/sections/live-projects/LiveProjectsSection';
 import { PlacementsShowcase } from '@/sections/placements/PlacementsShowcase';
 import { TestimonialSection } from '@/sections/testimonial/TestimonialSection';
+import { WhySection } from '@/sections/why/WhySection';
 
 export const metadata: Metadata = { title: 'V2 hero · SSB home page lab' };
 
@@ -62,6 +64,8 @@ export default async function V2Page({
         <HeroVariantToggle current={variant} />
         {/* 2 placements (main's showcase take) */}
         <PlacementsShowcase {...placements} />
+        {/* why SSB (deck slide 4) */}
+        <WhySection {...why} />
         {/* 3 alumni */}
         <AlumniSection peers={<PeersTicker />} />
         {/* instructors, then the investor's word (moved up after alumni, the team's call) */}
