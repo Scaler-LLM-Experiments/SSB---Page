@@ -12,13 +12,20 @@ built on the Scaler Design System package `@kishanscaler/ssx-ui`. The bar the te
 
 ## Where this is going
 
-1. **Now:** the home page, section by section, in the deck's order. The hero is V2, then
-   Placements (deck slide 3), then the Faculty section, ported from a teammate's build. Placements
-   was in three variations on /v2 for comparison (2026-10-01); the team picked the showcase
-   (2026-10-05), so /v2 is hero, showcase, Why SSB (deck slide 4), Faculty. The stories and grid variations' files are still
-   in `sections/placements/` but no route renders them (all three are in commit a15a685, so deleting
-   them loses nothing). Section copy comes from the content deck
-   `ssb-website/SSB Website vF _ Sep'26.pdf` (internal, so gitignored: the repo is public).
+1. **Now:** the whole home page on /v2, in the agreed sequence (the doc comment in
+   `src/app/v2/page.tsx` lists it): hero, Placements (the showcase), Why SSB, Alumni, Faculty,
+   Testimonial, the curriculum's Learn by doing and AI parts, Live projects, Innovation Lab, the
+   curriculum's terms and career prep, Internship, Admissions, then (outside the sequence for now)
+   Immersions, Impact Foundation, FAQ, all inside the site footer's lift reveal. Most sections after
+   Why SSB came from a teammate's `ssb-sections` branch (merged through `staging-for-review`); their
+   history lives in their doc comments, not here. The first fold has two variants, switched with
+   `?hero=split` (`HeroVariantToggle`, fixed at the window's foot): the cinematic V2 (default) and the
+   split `HeroCard`. Placements was in three variations (2026-10-01); the team picked the showcase
+   (2026-10-05). The stories and grid variations' components are still in `sections/placements/`
+   but no route renders them (all three are in commit a15a685), **except `PlacementsMotion.tsx` and
+   `placements.css`, which the internship section imports**: don't delete those with them. Section
+   copy comes from the content deck `ssb-website/SSB Website vF _ Sep'26.pdf` (internal, so
+   gitignored: the repo is public).
 2. **Later (not yet):** winning sections become Storyblok bloks so other projects can reuse them.
 
 **No Storyblok work yet.** Don't add the Storyblok SDK, create bloks, or touch the Scaler Storyblok
@@ -57,26 +64,39 @@ src/
     layout.tsx          <html data-brand="ssb">, fonts via next/font
     globals.css         Tailwind + ssx-ui styles, font token wiring
     page.tsx            lab index: links to every variation
-    v2/                 one route per variation: the hero, then the sections below it
-  content/
-    home.ts             hero copy, shared by every variation
-    people.ts           faculty, mentors and founding team (deck slide 13)
-    placements.ts       placement figures and recruiter names (deck slide 3)
-    why.ts              Why SSB: the deck's title, figures and quote; the team's mock for the rest (slide 4)
-    company-logos.ts    company wordmarks for the faculty cards (files in public/logos)
+    v2/                 the home page: the first fold (?hero=split for the split variant), then every section
+  content/              one file per section's copy, from the deck (each file names its slides);
+                        also home.ts (the first fold's copy, both variants),
+                        people.ts (faculty, mentors, founding team), company-logos.ts (faculty cards'
+                        wordmarks, files in public/logos); site/data.ts and site/navdata.ts hold the
+                        footer's and navbar's
   lib/
     logos.ts            logos sized to equal ink (`LogoSizing`: the ticker's, the placements grid's),
                         from our own files or Wikidata (P154) lookups
     youtube.ts          the YouTube IFrame API loader and types, shared by the hero film and the breaker
+  sections/home/client.tsx  the page's client pieces: HomeNav (the site navbar in hero mode), Curriculum
+                        (dynamic, `ssr: false`), FooterShell, ScrollRefresh (below, under Motion rules)
+  sections/site/        Navbar.tsx (SSB navbar: the live site's nav from navdata.ts, mega menus, m-web
+                        accordion; `heroNav` starts it dark with the `hero-nav` hook), Footer.tsx (CTA
+                        band + footer; the page is a sheet scrolled up off the pinned footer, `--lift`),
+                        ParticleText.tsx (canvas text at the footer's foot), theme.ts
+  sections/shared/      CardStack.tsx (phones' carousel: front card, neighbours tucked behind, drag to
+                        swipe, autoplay), ScrollDots.tsx (progress dots), MarkTicker.tsx (colour marks
+                        with names, as the AI curriculum's tools)
   sections/hero/
     types.ts            HeroContent: the content contract every variation shares
     HeroTitle.tsx       title with a pure-white phrase; keeps "B-school" unbroken
+    CtaIcon.tsx         every CTA's trailing icon (arrow or download)
+    HeroVariantToggle.tsx  lab-only links between the first-fold variants (?hero=…)
+    card/               the split first fold: HeroCard (film in a rounded card, light frosted nav via
+                        CardNav, the leaders on a MarkTicker), hero-card.css; CSS entrance only
     shared/             pieces the cinematic variations share
       Splash.tsx          full-screen splash: the SSB shield the camera zooms into
       intro.ts            zoom into the shield and land on campus, then the copy fades in
-      LogoTicker.tsx      marquee of the `logos`: one tone, equal visual weight, own colours on hover
-      FactsStrip.tsx      the facts on a frosted-glass strip (static text, no count-up)
-      HeroNav.tsx         sticky nav: logo (draws itself on hover) + Apply now, line below; page level
+      LogoTicker.tsx      logo marquee: one tone, equal visual weight, own colours on hover (now only
+                          Alumni's PeersTicker; the hero runs the leaders' MarkTicker)
+      FoldCopy.tsx        the first fold's copy and leaders, laid out the same in both variants
+      HeroNav.tsx         the earlier sticky nav (logo draws itself on hover); no route renders it now
       frame.ts            the centred 16:9 frame, and drawCard: moves the video card by transforms only
       VideoOrPlaceholder.tsx  the campus film, or a moving placeholder until there is one
       hero.css            keyframes, masks, the splash's no-JS fallback
@@ -89,23 +109,27 @@ src/
       moment.ts           the scroll moment's phases, in screens of scroll; the track height from them
       FilmPlayer.tsx      the big play button, and the YouTube film with YouTube's controls rebuilt
       film-player.css     those controls, in YouTube's own values (not the design system)
-  content/
-    innovation-lab.ts   Scaler Innovation Lab stats and incubated startups (deck slide 12)
-  sections/faculty/
-    FacultySection.tsx  header, then the looping card row from `sm` up and a card stack on phones
-                        (portraits in public/faculty, 640x800 WebP)
-    HScroller.tsx       the row: a real scroller that loops, pauses on hover/focus/touch, arrow buttons
-    FacultyCarouselMobile.tsx  phones: front card with neighbours tucked behind, glass arrows, drag to
-                        swipe (the card follows the finger and drops to the back), auto-advance
+  sections/faculty/     the source of the page's shared section vocabulary
+    PeopleShowcase.tsx  header (eyebrow, headline, sub, arrows), then the looping card row from `sm` up
+                        and the shared CardStack on phones, with ScrollDots; Faculty and Impact use it
+    FacultySection.tsx  PeopleShowcase over the faculty (portraits in public/faculty, 640x800 WebP)
+    HScroller.tsx       the row: a real scroller that loops, pauses on hover/focus/touch, arrow buttons;
+                        Live projects, Innovation Lab and Alumni reuse it or its controls
     MeetCard.tsx        photo card: "Meet" kicker, name, role in capitals, company logo in white;
                         centred on phones, left-aligned in the row
-    useSectionEntrance.ts  the section's entrance (below); the Innovation Lab uses it too, with three
-                        `decks` (stat cards, startups panel, startup cards), each wiped open on its own trigger
+    useSectionEntrance.ts  the entrance (below) almost every section imports; the Innovation Lab passes
+                        three `decks` (stat cards, startups panel, startup cards), each wiped open on its own trigger
   sections/innovation-lab/
     InnovationLabSection.tsx  sticky pitch on the left; stat cards (count up) and a framed startups row
                         (banners in public/startups) on the right; same entrance as Faculty
-    StoryCard.tsx       photo card: name, role, one company logo in white
-    useSectionEntrance.ts  the section's entrance (below)
+    StartupCard.tsx     banner, name, founders, description, Know more
+  sections/curriculum/  SsbCurriculum renders the curriculum lab's `journey/` code (config-driven:
+                        `config.ts`, saved state in `lab-settings.ts`) in three parts (`part`: learn,
+                        ai, main) placed apart on the page; client-only
+  sections/internship/  stats, a card stack of learners (its own CardStack), companies; reuses the
+                        Placements grid's markup hooks, PlacementsMotion and placements.css
+  sections/{alumni,testimonial,live-projects,immersions,impact,admissions,faq}/  one folder per
+                        section, its doc comment saying what it is and where its design came from
   sections/why/         WhyBreaker.tsx (client): the breaker that opens it, Kamath's clip with the words
                         and figures beside it; WhySection.tsx (server): the breaker, then a line whose
                         last words cycle the roles, three stacking chapters; WhyMotion.tsx; why.css;
@@ -157,7 +181,9 @@ it links to are not in the package. The `.d.ts` files are the reliable source fo
   nothing there. Always check both light and dark, to catch anything that leaks.
 - **Light site.** The site is light mode. A dark hero is a dark island inside a light page.
 - **Dark island:** put `data-brand="ssb" data-theme="dark"` together on one element to force dark
-  tokens inside it (V2's hero). Both attributes must be on the same element.
+  tokens inside it (V2's hero, the footer). Both attributes must be on the same element. The reverse
+  trap: an element with `data-brand="ssb"` alone re-declares light tokens, so a dark ancestor
+  doesn't reach inside it; repeat `data-theme` on it (`site/theme.ts` keeps the live value).
   `data-theme="light"` does the same the other way.
 - **Tokens only, and wrong names fail silently.** Tailwind's stock colours, spacing, radius, shadow
   and type scales are switched off, so an off-scale class compiles to nothing with no error:
@@ -204,9 +230,11 @@ squashes and shows whole once framed 16:9; its overlays (`data-video-overlay`: c
 YouTube film) are laid out at the scroll frame's size and scaled back to 1:1; its corners are drawn
 elliptical in the card so they look round on screen. `clearCard` hands it back to CSS at rest.
 
-**The sticky nav** (`HeroNav`) is lead-gen: logo and Apply now (its arrow after the label), always on
-screen. It lives at page level because a sticky element only sticks inside its parent. On V2 it
-starts dark and turns light with the page. Hovering the logo plays the package's loading mark
+**The sticky nav** is lead-gen: logo and Apply now, always on screen. It lives at page level because
+a sticky element only sticks inside its parent. On /v2 it is now the site navbar (`SsbNavbar` with
+`heroNav`, via `HomeNav`): it carries `data-hero-nav`, so the intro fades its contents in and V2's
+motion flips its `data-theme` to light halfway through the white. The earlier `HeroNav` is kept
+but unrendered; in it, hovering the logo played the package's loading mark
 (`LogoLoader`: the shield traces and inks itself) over the static shield, which steps aside; the
 loader is square with the 29:40 shield centred in it, so it sits `(29/40 − 1) × height / 2` left of
 the lockup's shield, and is shown with `display` so the draw restarts on every hover.
@@ -387,9 +415,13 @@ like" (now the section's heading), large, its last words turning over in green t
 four roles (a slot as wide as the longest, every role stacked in it, so the line never moves;
 screen readers get the list once). **The answer:** three chapters (01 Build, 02 Ship, 03 Grow) that
 stack as the page scrolls: each card is CSS-sticky under the nav, a step lower than the one before
-so their tops show; as the next slides up over it, it settles back (scale 0.94, scrubbed), the
-section's grey fading over it on a layer of its own. Fading the card itself let the card under it
-show through. Not sticky under reduced motion. 60fps scrolling the stack once its photos have
+so their tops show. Since 2026-10-06 they stack as the AI journey's cards do (the team's call, with
+no shadow; layout and card unchanged): each card shrinks 5% for every card come up over it (never
+below 80%), scrubbed by each card's arrival (its top from the screen's foot to its sticky place),
+nothing dims, and a card is trimmed (`clip-path`) to the foot of the card over it; a card taller
+than the room under the nav holds lower (`top` set in `WhyMotion`), so all of it is read first.
+Before: one settle (scale 0.94) and the section's grey fading over it on a layer of its own (fading
+the card itself had let the card under it show through). Not sticky under reduced motion. 60fps scrolling the stack once its photos have
 loaded (an instant jump onto lazy photos stalled one frame 417ms, decoding). Earlier takes
 (2026-10-05): the mock's two rows of white cards; an editorial band with three steps beside one
 photo; the remark as a dark "paused clip" card. **The chapters' photos are cropped from the mock's
@@ -477,31 +509,48 @@ Campus photos are stills from the campus film until the team's arrive.
 - **ScrollTrigger measures on refresh only** (load, resize). If anything above a scroll moment can
   change height afterwards (a lazy image without dimensions, a font swap), the moment starts late:
   ~500px on the production site. There, they re-measure on body resize (a ResizeObserver calling
-  `ScrollTrigger.refresh()`). Here only the nav sits above the hero; add the same if a section ever
-  goes above it. Give every image its dimensions or aspect ratio, and build anything measured from an
-  image after it loads.
+  `ScrollTrigger.refresh()`). Here `ScrollRefresh` (`home/client.tsx`) does the same for /v2: the
+  curriculum renders in the browser only, after first layout, and pushes everything under it down
+  by thousands of pixels, so every later entrance would otherwise fire off screen. Keep it on any
+  page with a client-only section. Give every image its dimensions or aspect ratio, and build
+  anything measured from an image after it loads.
 - **`pointer-events` is inherited.** The overlay layer is `pointer-events-none` so the film can be
   scrolled over; the play button and the YouTube iframe inside it set `pointer-events-auto`.
 - Every moving thing has a reduced-motion path that shows the final state: no splash, no pinning.
 
 ## Content
 
-Copy in `src/content/home.ts` comes from the team's hero mock (2026-09-30). CTA hrefs are
-placeholders. The campus film (`public/media/campus-film.mp4`, 15s, silent, 6.4 MB) is cut from the
+Copy in `src/content/home.ts` is the deck's first fold (slide 1), shared by both variants since
+2026-10-06 (before, V2 had the team's hero mock of 2026-09-30, its title running "…built by 100+
+industry leaders from" into a ticker of five wordmarks). Both lay the copy out the same, from one
+component (`hero/shared/FoldCopy.tsx`, `fold.css`): eyebrow, `type-billboard-sm` title, the line
+(phrases kept whole, breaking only after a "·"), the CTAs, the facts inline with dots; and at the
+right, "Built by 100+ industry leaders from" over the leaders' `MarkTicker` (`leaders` in
+`HeroContent`, which replaced `logos`). Each variant keeps its own ground and motion: V2 its intro,
+black, feathered film and scroll moment; the split its card, green wash and CSS entrance. And each
+styles its own CTAs: the split white and glass (its wash hides the brand green), V2 the package's
+(green). V2 also holds the line to 30rem (two lines), sets the CTAs 8px further from it, and sets
+the leaders left-aligned, the foot of their marks level with the CTAs' (`hero-v2.css`: up from the
+copy's foot by the facts' line and the copy's gap). Tried that day: the facts under the leaders
+(the team kept them under the CTAs "for now"). A fact's dot follows it, so a wrapped line starts
+with a fact. And V2's film starts at the nav's foot (`md:top-(--sn-h)`), not behind its glass (the
+team's call, 2026-10-06). A first try (2026-10-06) also gave V2 the split's full-bleed film and wash; the
+team wanted only the copy's layout. CTA hrefs are placeholders. The campus film (`public/media/campus-film.mp4`, 15s, silent, 6.4 MB) is cut from the
 team's GIF (`src/Gif.gif`, 313 MB, gitignored): frames 0–453, before the screen recorder's player
 controls appear, lightly denoised, H.264 CRF 26. One `<video>` plays it from first paint: behind the
 shield, in the hero, then framed on scroll, looping, never restarted. The framed video's play button
 opens the full film from YouTube (`media.youtubeId`, via youtube-nocookie) in the frame and pauses
 the loop; scrolling back out of the frame or the hero off screen closes it and the loop resumes.
-The hero's type: title `type-hero` (48px desktop, 28px phone; one step under `type-billboard-sm`'s
-56/32) and the eyebrow in pure white (`text-on-image-ink`); eyebrow at the label size, description
-`Text size="lg"`; CTAs without icon wells, but each with a trailing icon (`HeroCta.icon`,
+The hero's type (V2's until 2026-10-06, before FoldCopy: title `type-hero`, 48/28px, eyebrow at
+the label size); now FoldCopy's: title `type-billboard-sm` (56/32), line `Text size="lg"`. CTAs
+without icon wells, but each with a trailing icon (`HeroCta.icon`,
 `CtaIcon`: an arrow for Apply now, a download for the brochure and the report; the team's call,
 2026-10-01). A CTA anywhere on the page takes one.
 
 ### Logos
 
-The ticker (560px wide on desktop, `panel-lg`) shows BCG, Swiggy, McKinsey, Cars24 and Bain (ISB and IIMA were dropped for now), our own
+The hero's ticker until 2026-10-06, now Alumni's "Your peers come from" (`LogoTicker`). It (560px
+wide on desktop, `panel-lg`) showed BCG, Swiggy, McKinsey, Cars24 and Bain (ISB and IIMA were dropped for now), our own
 files in `public/logos`, trimmed to their edges, in their own colours. BCG, McKinsey and Bain came
 with the Faculty section; Swiggy's (current icon + wordmark) and Cars24's (current violet mark) are
 from English Wikipedia's article images, and Cars24's had 60 units of empty space cut from its

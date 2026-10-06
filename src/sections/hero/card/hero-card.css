@@ -1,6 +1,7 @@
 /* =========================================================
    The "split" first fold: the film in a rounded card under the
-   light nav; copy at the left, the leaders at the right.
+   light nav; copy at the left, the leaders at the right (both
+   in shared/fold.css, shared with the cinematic V2).
    ========================================================= */
 
 .hc {
@@ -82,52 +83,17 @@
   }
 }
 
-/* ---- Left: the copy. ---- */
-.hc-copy {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  min-width: 0;
-  max-width: 44rem;
-  animation: hc-rise 700ms 250ms var(--motion-easing-expressive-entrance, ease-out) both;
-}
-.hc-eyebrow {
-  color: var(--on-image-ink);
-  opacity: 0.9;
-}
-.hc-line {
-  color: var(--on-image-ink);
-  opacity: 0.88;
-}
-.hc-phrase {
-  white-space: nowrap;
-}
-.hc-phrase + .hc-phrase::before {
-  content: ' ';
-  white-space: normal;
-}
-
-.hc-actions {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  margin-top: var(--space-2);
-}
-@media (min-width: 672px) {
-  .hc-actions {
-    flex-direction: row;
-  }
-}
-/* White, as the reference's pill: the green wash makes the brand-green button disappear. */
-.hc-primary {
+/* The CTAs: white, as the reference's pill (the green wash makes the brand-green
+   button disappear), and glass. */
+.hc-card .fold-primary {
   background: #fff;
   color: #0f2a1b;
   border-color: #fff;
 }
-.hc-primary:hover {
+.hc-card .fold-primary:hover {
   background: rgb(255 255 255 / 0.9);
 }
-.hc-secondary {
+.hc-card .fold-secondary {
   --hc-glass: blur(10px);
   background: rgb(255 255 255 / 0.12);
   color: #fff;
@@ -136,60 +102,12 @@
   backdrop-filter: var(--hc-glass);
 }
 
-.hc-facts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-1) var(--space-4);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  font-size: var(--type-body-sm-size);
-  line-height: var(--type-body-sm-lh);
-  color: rgb(255 255 255 / 0.8);
+/* The copy and the leaders (shared/fold.css) rise in after the card. */
+.hc-copy {
+  animation: hc-rise 700ms 250ms var(--motion-easing-expressive-entrance, ease-out) both;
 }
-.hc-facts b {
-  color: #fff;
-  font-weight: var(--font-weight-semibold);
-}
-.hc-facts li + li::before {
-  content: '·';
-  margin-right: var(--space-4);
-  color: rgb(255 255 255 / 0.5);
-}
-/* Phones: one fact a line, no dots (wrapped, a dot would start a line). */
-@media (max-width: 671px) {
-  .hc-facts {
-    flex-direction: column;
-  }
-  .hc-facts li + li::before {
-    content: none;
-  }
-}
-
-/* ---- Right: the leaders. ---- */
 .hc-leaders {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  min-width: 0;
   animation: hc-rise 700ms 450ms var(--motion-easing-expressive-entrance, ease-out) both;
-}
-.hc-leaders-line {
-  margin: 0;
-  font-size: var(--type-h3-size);
-  line-height: var(--type-h3-lh);
-  font-weight: var(--font-weight-medium);
-  color: var(--on-image-ink);
-}
-@media (min-width: 1056px) {
-  .hc-leaders {
-    flex: none;
-    width: 28rem;
-    align-items: flex-end;
-    text-align: right;
-    /* level with the actions, as the reference's logos sit by its buttons */
-    margin-bottom: calc(var(--space-12) + var(--space-2));
-  }
 }
 
 @keyframes hc-settle {
