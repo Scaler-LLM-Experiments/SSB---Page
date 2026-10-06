@@ -25,6 +25,7 @@ const FOOT = 12;
  *   data-enter         the header: the faculty section's entrance (useSectionEntrance)
  *   data-why-roles     the line's roles (data-role) turning over, one up and out as the next
  *                      comes up into the slot, while it is on screen
+ *   data-why-strike    the squiggle through "old MBA", drawn from the left once the line is in
  *   data-why-chapter   a chapter (sticky, CSS), stacking as the AI journey's cards do
  *                      (curriculum/journey/concepts/stack.tsx): every card that comes up over
  *                      it shrinks its card (data-why-card) a little more, scrubbed to the
@@ -95,6 +96,29 @@ export function WhyMotion({ children }: { children: React.ReactNode }) {
         );
       }
 
+      // "old MBA" is struck through once, as the line has faded most of the way in: a squiggle drawn
+      // from the left through the italic words (its dashoffset, the path's length being 1) while
+      // they fade from ink to grey (a CSS transition on dropping data-pending; the squiggle is
+      // currentColor, so it greys with them).
+      const strike = root.querySelector<SVGPathElement>('[data-why-strike]');
+      const struck = strike?.closest<HTMLElement>('.why-strike');
+      if (strike && struck) {
+        struck.setAttribute('data-pending', '');
+        gsap.fromTo(
+          strike,
+          { strokeDashoffset: 1 },
+          {
+            strokeDashoffset: 0,
+            // a touch longer than a straight line: it has further to go
+            duration: d.slowest,
+            delay: d.slower,
+            ease: ease('expressiveInOut'),
+            onStart: () => struck.removeAttribute('data-pending'),
+            scrollTrigger: { trigger: strike, start: 'clamp(top 80%)', once: true },
+          },
+        );
+      }
+
       // The chapters stack as the AI journey's cards do. Each one's arrival runs 0 to 1, from its
       // top reaching the foot of the screen to its reaching its sticky place; a card shrinks by
       // SHRINK for every card come up over it, and is trimmed to the foot of the one directly over
@@ -151,6 +175,7 @@ export function WhyMotion({ children }: { children: React.ReactNode }) {
         ScrollTrigger.removeEventListener('refreshInit', holds);
         chapters.forEach((chapter) => (chapter.style.top = ''));
         cards.forEach((card) => card && (card.style.clipPath = ''));
+        struck?.removeAttribute('data-pending');
       };
     },
     scope,

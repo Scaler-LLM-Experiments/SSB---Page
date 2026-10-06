@@ -27,6 +27,8 @@ export type WhyQuote = {
 export type WhyRoles = {
   /** A line on its own before the lead, e.g. "He’s right about the old MBA." */
   setup?: string;
+  /** Words in `setup` set in italic and struck through as the line arrives, e.g. "old MBA". */
+  struck?: string;
   /** e.g. "But ours prepares you for roles like". */
   lead: string;
   roles: string[];
@@ -47,15 +49,35 @@ export type WhyFigure = {
   sourceNote?: string;
 };
 
-/** One of the three chapters (what SSB does differently), each with its photo. */
+/** The chapter's icon, by name (the section maps each to a Phosphor icon). */
+export type WhyIcon = 'hammer' | 'rocket' | 'trend-up';
+
+/**
+ * One story that proves a chapter: a student's startup, a product, a cohort's
+ * outcome. A label and a headline at the foot of its photo, over a progressive blur.
+ */
+export type WhyStory = {
+  /** A chip at the photo's top left saying what the story is to its chapter: "Example". */
+  tag: string;
+  /** Over the headline: who, and when, e.g. "Hummusapiens · July 2026". */
+  label: string;
+  /** The story in a line, the student or their venture its subject. */
+  headline: string;
+  /** The photo (about 1400px wide), and a smaller copy (about 800px) for phones. */
+  imageUrl: string;
+  imageUrlSmall?: string;
+  imageAlt: string;
+  /** What to keep in frame as the box crops the photo: CSS object-position, e.g. "60% 30%". */
+  imagePosition?: string;
+};
+
+/** One of the three chapters (what SSB does differently): its icon, word and line, then a story. */
 export type WhyPillar = {
-  /** One word, shown numbered over the title: "Build" reads "01 / Build". */
-  kicker: string;
+  icon: WhyIcon;
+  /** One word, the chapter's title: "Build". */
   title: string;
   description: string;
-  /** A photo, drawn at 742 × 428's proportions. */
-  imageUrl: string;
-  imageAlt: string;
+  story: WhyStory;
 };
 
 export type WhyContent = {

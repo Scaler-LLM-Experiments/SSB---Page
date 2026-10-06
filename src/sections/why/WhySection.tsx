@@ -1,7 +1,8 @@
-import type { CSSProperties } from 'react';
-import { Container, Heading, Section, Text } from '@kishanscaler/ssx-ui';
+import type { CSSProperties, ReactElement } from 'react';
+import { Container, Heading, Icon, Section, Text, cn } from '@kishanscaler/ssx-ui';
+import { Hammer, RocketLaunch, TrendUp } from '@phosphor-icons/react/ssr';
 
-import type { WhyContent, WhyPillar, WhyRoles } from './types';
+import type { WhyContent, WhyIcon, WhyPillar, WhyRoles } from './types';
 import { WhyBreaker } from './WhyBreaker';
 import { WhyMotion } from './WhyMotion';
 import './why.css';
@@ -14,9 +15,12 @@ import './why.css';
  *   The turn: "He's right about the old MBA. Ours prepares you for roles
  *   like" (answering the breaker; the deck had "Nobody is preparing you…"),
  *   large, its last words turning over through the four roles, in green.
- *   The answer: three chapters (01 Build, 02 Ship, 03 Grow) that stack as the
- *   page scrolls, as the AI journey's cards do: each card holds under the nav
- *   while the next slides up over it, the ones beneath shrinking back.
+ *   The answer: three chapters (Build, Ship, Grow) that stack as the page
+ *   scrolls, as the AI journey's cards do: each card holds under the nav
+ *   while the next slides up over it, the ones beneath shrinking back. Each
+ *   is its icon, word and line, beside one story that proves it (a Shark
+ *   Tank judge's offer, a student's AI product, the founding cohort's roles)
+ *   in white over its photo, blurred progressively under the words.
  *
  * The deck's title ("MBA is not dead…") and the mock's description were cut
  * (the team's call, 2026-10-06): the breaker makes that argument. All motion
@@ -38,26 +42,26 @@ export function WhySection({
       {/* The breaker: the remark that started the argument, before the section answers it. */}
       <WhyBreaker quote={quote} figures={figures} />
       {answer ? (
-      <Section density="roomy" aria-labelledby="why-roles" className="bg-surface-subtle">
-        <WhyMotion>
-          <Container>
-            <Roles roles={roles} />
+        <Section density="roomy" aria-labelledby="why-roles" className="bg-surface-subtle">
+          <WhyMotion>
+            <Container>
+              <Roles roles={roles} />
 
-            <ol className="why-chapters">
-              {pillars.map((pillar, i) => (
-                <li
-                  key={pillar.kicker}
-                  data-why-chapter
-                  className="why-chapter"
-                  style={{ '--i': i } as CSSProperties}
-                >
-                  <Chapter pillar={pillar} index={i} />
-                </li>
-              ))}
-            </ol>
-          </Container>
-        </WhyMotion>
-      </Section>
+              <ol className="why-chapters">
+                {pillars.map((pillar, i) => (
+                  <li
+                    key={pillar.title}
+                    data-why-chapter
+                    className="why-chapter"
+                    style={{ '--i': i } as CSSProperties}
+                  >
+                    <Chapter pillar={pillar} />
+                  </li>
+                ))}
+              </ol>
+            </Container>
+          </WhyMotion>
+        </Section>
       ) : null}
     </>
   );
@@ -74,7 +78,7 @@ function Roles({ roles }: { roles: WhyRoles }) {
       <h2 id="why-roles" className="type-display text-content">
         {roles.setup ? (
           <>
-            <span>{roles.setup}</span>
+            <Setup text={roles.setup} struck={roles.struck} />
             <br />
           </>
         ) : null}
@@ -92,19 +96,58 @@ function Roles({ roles }: { roles: WhyRoles }) {
   );
 }
 
-/** One chapter: its number and word, the title and line, beside its photo. */
-function Chapter({ pillar, index }: { pillar: WhyPillar; index: number }) {
+/**
+ * The setup line, its struck words (e.g. "old MBA") in italic with a line
+ * drawn through them: struck in the markup, so no-JS and reduced motion show
+ * it struck; WhyMotion draws the line as the line arrives.
+ */
+function Setup({ text, struck }: { text: string; struck?: string }) {
+  const at = struck ? text.indexOf(struck) : -1;
+  if (!struck || at < 0) return <span>{text}</span>;
+  return (
+    <span>
+      {text.slice(0, at)}
+      <s className="why-strike">
+        <em>{struck}</em>
+        {/* a hand-drawn squiggle, stretched across the words; pathLength 1 so it draws by dashoffset */}
+        <svg aria-hidden className="why-strike-line" viewBox="0 0 100 16" preserveAspectRatio="none">
+          <path
+            data-why-strike
+            pathLength={1}
+            d="M2 9C8 2 14 2 20 8S32 14 38 8 50 2 56 8 68 14 74 8 86 2 92 8 98 11 99 9"
+          />
+        </svg>
+      </s>
+      {text.slice(at + struck.length)}
+    </span>
+  );
+}
+
+const ICONS: Record<WhyIcon, ReactElement> = {
+  hammer: <Hammer weight="light" />,
+  rocket: <RocketLaunch weight="light" />,
+  'trend-up': <TrendUp weight="light" />,
+};
+
+/** The sharp photo, then two blurred copies (`why-story-blur-*`), softly then deeply toward the words. */
+const PHOTO_LAYERS = ['', 'soft', 'deep'] as const;
+
+/**
+ * One chapter: its icon, word and line; beside them, the story that proves it,
+ * its words at the foot of its photo. The photo blurs progressively under them
+ * (as the Placements showcase's cards do): two blurred copies, each revealed by
+ * its own gradient, under a dark scrim, so the words read in white.
+ */
+function Chapter({ pillar }: { pillar: WhyPillar }) {
+  const { story } = pillar;
   return (
     <article data-why-card className="why-card">
       <div className="why-card-copy">
-        {/* The chapter's word large and faint at the head (where its number was); its number as the
-            small label over the title (where the word was). Swapped, 2026-10-06. */}
-        <p className="why-card-num">{pillar.kicker}</p>
+        <Icon size="2xl" className="text-content">
+          {ICONS[pillar.icon]}
+        </Icon>
         <div>
-          <Heading as="p" size="eyebrow" className="text-content-secondary" aria-hidden>
-            {String(index + 1).padStart(2, '0')}
-          </Heading>
-          <Heading as="h3" size="display" className="mt-3">
+          <Heading as="h3" size="display">
             {pillar.title}
           </Heading>
           <Text size="lg" tone="secondary" className="mt-3">
@@ -112,17 +155,36 @@ function Chapter({ pillar, index }: { pillar: WhyPillar; index: number }) {
           </Text>
         </div>
       </div>
-      <div className="why-card-photo">
-        {/* eslint-disable-next-line @next/next/no-img-element -- fills a box of its own proportions */}
-        <img
-          src={pillar.imageUrl}
-          alt={pillar.imageAlt}
-          width={742}
-          height={428}
-          loading="lazy"
-          decoding="async"
-        />
-      </div>
+      <figure className="why-story">
+        <div className="why-story-media">
+          {PHOTO_LAYERS.map((layer) => (
+            // eslint-disable-next-line @next/next/no-img-element -- fills its box, so its size can't shift layout
+            <img
+              key={layer}
+              src={story.imageUrl}
+              srcSet={
+                story.imageUrlSmall ? `${story.imageUrlSmall} 800w, ${story.imageUrl} 1400w` : undefined
+              }
+              // the photo is 7/12 of the page's content box (1232px at most) on desktop, full width below
+              sizes="(min-width: 1056px) 720px, 100vw"
+              alt={layer ? '' : story.imageAlt}
+              aria-hidden={layer ? true : undefined}
+              loading="lazy"
+              decoding="async"
+              className={cn('why-story-photo', layer && `why-story-blur why-story-blur-${layer}`)}
+              style={story.imagePosition ? { objectPosition: story.imagePosition } : undefined}
+            />
+          ))}
+          <span aria-hidden className="why-story-scrim" />
+        </div>
+        <span className="why-story-tag type-label">{story.tag}</span>
+        <figcaption className="why-story-copy">
+          <p className="type-label text-on-image-ink-secondary">{story.label}</p>
+          <Heading as="p" size="2" className="mt-2 font-medium text-on-image-ink">
+            {story.headline}
+          </Heading>
+        </figcaption>
+      </figure>
     </article>
   );
 }

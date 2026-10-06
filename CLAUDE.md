@@ -13,14 +13,17 @@ built on the Scaler Design System package `@kishanscaler/ssx-ui`. The bar the te
 ## Where this is going
 
 1. **Now:** the whole home page on /v2, in the agreed sequence (the doc comment in
-   `src/app/v2/page.tsx` lists it): hero, Placements (the showcase), Why SSB, Alumni, Faculty,
-   Testimonial, the curriculum's Learn by doing and AI parts, Live projects, Innovation Lab, the
-   curriculum's terms and career prep, Internship, Admissions, then (outside the sequence for now)
-   Immersions, Impact Foundation, FAQ, all inside the site footer's lift reveal. Most sections after
-   Why SSB came from a teammate's `ssb-sections` branch (merged through `staging-for-review`); their
-   history lives in their doc comments, not here. The first fold has two variants, switched with
-   `?hero=split` (`HeroVariantToggle`, fixed at the window's foot): the cinematic V2 (default) and the
-   split `HeroCard`. Placements was in three variations (2026-10-01); the team picked the showcase
+   `src/app/v2/page.tsx` lists it; since staging's rework of 2026-10-06): hero, Placements (the
+   showcase), Why SSB (Kamath's breaker, then the answer), Alumni, Beyond Placements (student
+   founders), the people tabs (faculty, mentors, founding team, investors and founders), the
+   Testimonial (a banner carousel of investors and founders on campus), the curriculum's terms, then
+   one side navigation (`CurriculumRail`) over career prep, the AI journey, Live projects,
+   Internship, Learn by doing and Immersions; Innovation Lab, Super Mentor Sessions, Campus life, In
+   the news, Impact Foundation, Admissions, FAQ, all inside the site footer's lift reveal. Most
+   sections after Why SSB came from teammates' `ssb-sections` and `staging-for-review` branches; their
+   history lives in their doc comments, not here. The first fold is the cinematic V2 only (staging,
+   2026-10-06): the split `HeroCard` and its `?hero=split` toggle (`HeroVariantToggle`) are kept in
+   the code but no route renders them. Placements was in three variations (2026-10-01); the team picked the showcase
    (2026-10-05). The stories and grid variations' components are still in `sections/placements/`
    but no route renders them (all three are in commit a15a685), **except `PlacementsMotion.tsx` and
    `placements.css`, which the internship section imports**: don't delete those with them. Section
@@ -31,7 +34,10 @@ built on the Scaler Design System package `@kishanscaler/ssx-ui`. The bar the te
 **No Storyblok work yet.** Don't add the Storyblok SDK, create bloks, or touch the Scaler Storyblok
 space until asked. What we do now to prepare: each section takes its content as flat, typed props
 (plain strings, string unions, lists of small objects), kept separate from layout. Those props become
-the blok schema later.
+the blok schema later. Today only the hero (`HeroContent`), Placements (`PlacementsContent`) and Why
+SSB (`WhyContent`) do; the sections merged from `ssb-sections` import their copy from `src/content/`
+inside the component (`<FacultySection />` takes no props), and Live projects and Internship keep
+theirs inline. Move a section to props before it becomes a blok.
 
 This is design exploration, not a live A/B test. Nothing here serves production traffic.
 
@@ -64,8 +70,9 @@ src/
     layout.tsx          <html data-brand="ssb">, fonts via next/font
     globals.css         Tailwind + ssx-ui styles, font token wiring
     page.tsx            lab index: links to every variation
-    v2/                 the home page: the first fold (?hero=split for the split variant), then every section
-  content/              one file per section's copy, from the deck (each file names its slides);
+    v2/                 the home page: the first fold, then every section
+  content/              one file per section's copy, from the deck (each file names its slides; the
+                        FAQ's is `faqs` in admissions.ts; Live projects and Internship have none);
                         also home.ts (the first fold's copy, both variants),
                         people.ts (faculty, mentors, founding team), company-logos.ts (faculty cards'
                         wordmarks, files in public/logos); site/data.ts and site/navdata.ts hold the
@@ -87,7 +94,7 @@ src/
     types.ts            HeroContent: the content contract every variation shares
     HeroTitle.tsx       title with a pure-white phrase; keeps "B-school" unbroken
     CtaIcon.tsx         every CTA's trailing icon (arrow or download)
-    HeroVariantToggle.tsx  lab-only links between the first-fold variants (?hero=…)
+    HeroVariantToggle.tsx  lab-only links between the first-fold variants (?hero=…); unrendered now
     card/               the split first fold: HeroCard (film in a rounded card, light frosted nav via
                         CardNav, the leaders on a MarkTicker), hero-card.css; CSS entrance only
     shared/             pieces the cinematic variations share
@@ -95,7 +102,7 @@ src/
       intro.ts            zoom into the shield and land on campus, then the copy fades in
       LogoTicker.tsx      logo marquee: one tone, equal visual weight, own colours on hover (now only
                           Alumni's PeersTicker; the hero runs the leaders' MarkTicker)
-      FoldCopy.tsx        the first fold's copy and leaders, laid out the same in both variants
+      FoldCopy.tsx        the first fold's copy and leaders, laid out the same in both variants (fold.css)
       HeroNav.tsx         the earlier sticky nav (logo draws itself on hover); no route renders it now
       frame.ts            the centred 16:9 frame, and drawCard: moves the video card by transforms only
       VideoOrPlaceholder.tsx  the campus film, or a moving placeholder until there is one
@@ -105,7 +112,9 @@ src/
                         columns (title + ticker + CTAs | description + facts). Scroll brings the
                         video down into a frame inside the page margins, then the black fades to
                         the white page below
-      HeroV2.tsx          the markup (server component); HeroV2Motion.tsx: intro media + scroll moment
+      HeroV2.tsx          the markup (server component); HeroV2Motion.tsx: intro media + scroll moment;
+                          hero-v2.css: the video's feathered edges (custom properties the motion
+                          tweens to hard) and V2's own settings for the shared fold copy
       moment.ts           the scroll moment's phases, in screens of scroll; the track height from them
       FilmPlayer.tsx      the big play button, and the YouTube film with YouTube's controls rebuilt
       film-player.css     those controls, in YouTube's own values (not the design system)
@@ -127,12 +136,14 @@ src/
                         `config.ts`, saved state in `lab-settings.ts`) in three parts (`part`: learn,
                         ai, main) placed apart on the page; client-only
   sections/internship/  stats, a card stack of learners (its own CardStack), companies; reuses the
-                        Placements grid's markup hooks, PlacementsMotion and placements.css
+                        Placements grid's markup hooks, PlacementsMotion and placements.css (and
+                        alumni.css)
   sections/{alumni,testimonial,live-projects,immersions,impact,admissions,faq}/  one folder per
                         section, its doc comment saying what it is and where its design came from
   sections/why/         WhyBreaker.tsx (client): the breaker that opens it, Kamath's clip with the words
                         and figures beside it; WhySection.tsx (server): the breaker, then a line whose
-                        last words cycle the roles, three stacking chapters; WhyMotion.tsx; why.css;
+                        last words cycle the roles, three stacking chapters (each an icon, word and
+                        line beside a story over a progressively blurred photo); WhyMotion.tsx; why.css;
                         types.ts (WhyContent)
   sections/placements/  three variations on one PlacementsContent (all async server components)
     types.ts            PlacementsContent: four stats, a lead, the stories, the showcases, the logos (with
@@ -157,9 +168,13 @@ src/
 
 ## Adding a hero variation
 
-- New folder `src/sections/hero/v<N>/` with `HeroV<N>.tsx` (a server component taking
-  `HeroContent`) and, if it moves, a `'use client'` `HeroV<N>Motion.tsx`. Add a route in
-  `src/app/v<N>/page.tsx` and a line in the lab index (`src/app/page.tsx`).
+- First-fold variants live on /v2, not on routes of their own: add an id to `VARIANTS` in
+  `HeroVariantToggle.tsx`, render the toggle again (staging dropped it with the split, 2026-10-06)
+  and add a branch for the variant in `src/app/v2/page.tsx` (each brings its own nav:
+  `HomeNav` for the cinematic, `CardNav` for the split). Its code goes in a folder under
+  `src/sections/hero/` (`card/` is the split) with a server component taking `HeroContent` and, if
+  it moves, a `'use client'` motion file beside it. (The older pattern, a `v<N>/` folder with its own
+  `src/app/v<N>/page.tsx` route and a line in the lab index, is how V2 started.)
 - Every variation renders the **same** `HeroContent`, so variations compare layouts on identical copy.
   If a variation needs a new field, add it to `types.ts` as optional, don't fork the type.
   `HeroContent` is the future Storyblok schema; treat changes to it as schema changes.
@@ -413,7 +428,7 @@ argument). Things learnt:
 Then the section answers it. **The turn:** the deck's "Nobody is preparing you for emerging roles
 like" (now the section's heading), large, its last words turning over in green through the deck's
 four roles (a slot as wide as the longest, every role stacked in it, so the line never moves;
-screen readers get the list once). **The answer:** three chapters (01 Build, 02 Ship, 03 Grow) that
+screen readers get the list once). **The answer:** three chapters (Build, Ship, Grow) that
 stack as the page scrolls: each card is CSS-sticky under the nav, a step lower than the one before
 so their tops show. Since 2026-10-06 they stack as the AI journey's cards do (the team's call, with
 no shadow; layout and card unchanged): each card shrinks 5% for every card come up over it (never
@@ -424,8 +439,47 @@ Before: one settle (scale 0.94) and the section's grey fading over it on a layer
 the card itself had let the card under it show through). Not sticky under reduced motion. 60fps scrolling the stack once its photos have
 loaded (an instant jump onto lazy photos stalled one frame 417ms, decoding). Earlier takes
 (2026-10-05): the mock's two rows of white cards; an editorial band with three steps beside one
-photo; the remark as a dark "paused clip" card. **The chapters' photos are cropped from the mock's
-screenshot (742 × 428) until the team sends the originals.**
+photo; the remark as a dark "paused clip" card.
+
+**"He's right about the ~~old MBA~~."** (the team's ask, 2026-10-06): the struck words (`roles.struck`)
+in italic, from a face of their own (`layout.tsx` loads Plus Jakarta Sans italic 600 only, not
+preloaded: a `style` on the main face would have added an italic of every weight, all preloaded).
+The strike is a hand-drawn squiggle (the team: "can be wiggle"; a straight bar first), an SVG path
+stretched across the words with `pathLength="1"`, so GSAP draws it from the left by
+`strokeDashoffset` 1 to 0 once the line has faded in, while the words fade from ink to grey (a CSS
+`color` transition on dropping `data-pending`; the stroke is `currentColor`). Its box keeps about
+its viewBox's proportions (100 × 16 over ~3.2em × 0.5em), so the stretch barely distorts it and the
+stroke scales with the type; a ±2-unit wave in a 12-unit box read as straight at 36px. Struck and grey in the markup, so no-JS and reduced
+motion show the end state. The roles turn over in the logo's green (`ssb-light-9`, #1D925B), not
+`content-brand` (#004A1E, near black at that size): the team asked for brighter.
+
+**Each chapter is proved by one story** (the team's call, 2026-10-06; `WhyStory`): on the left the
+chapter's icon (Phosphor, light weight, ink: no tile, no green), its word as the title and its line
+(the mock's title folded into it); on the right a photo with the story at its foot in white
+(who and when, then the headline: a sentence under them was too much, the team's call), over a **progressive blur** built as the showcase's is (blurred
+copies revealed by gradients, a scrim). Each reads as an example of its chapter (the team's call): a light glass "Highlight" chip at the photo's top left (it read "Example" first), and the student or their venture the headline's subject ("A student's snack brand, offered ₹50 lakh by…"; with the judge as its subject it read as news, not an example). The photo's corners are 12px (`radius-xl`): the card's 16 less the 12px inset left them at 4px, near square. Below desktop the copy comes first, so a stacked card's top
+still shows its word. The stories, from the deck's "Beyond Placements" (slide 5), Shark Tank and
+convocation (7) and AI (9) slides: Build, Anupam Mittal's ₹50 lakh offer to Hummusapiens; Ship,
+GradeSense (Ayush Poojary's AI grading); Grow, the founding cohort into Blinkit, Urban Company and
+Emergent, with Warikoo's line. Things learnt:
+
+- **Gredo didn't raise funding.** Mittal's ₹50 lakh offer (July 2026, ANI) went to Hummusapiens;
+  Gredo (healthy vending; ₹1Cr+ ARR in the deck, a Skope Kitchens vending partnership launched at
+  SSB in June 2026) was only reviewed on that visit. And it is an *offer* to invest: don't write
+  "raised".
+- **Dream Kit's web presence names another maker** (Makerinme), so the deck's "Aashish US grew
+  Dream Kit" may mean grew, not founded: not used until the team confirms.
+- **The blur must start below the faces.** It first started at 42% of the box and blurred
+  Mittal's face; it now starts just above the words (52% on desktop), and each photo's
+  `imagePosition` keeps its subject in frame as the box crops it (16:9 from a tablet up, 4:5 on a
+  phone; 4:3 on desktop was cut as too tall). The scrim ends at 92% so white reads over a light UI screenshot too.
+- **The deck's text is font-shifted.** Ghostscript's `txtwrite` gives every character 29 code
+  points low (`+20(3$*(` is HOME PAGE); add 29 to decode it, then grep it. Render slides with
+  `gs -sDEVICE=png16m -r110` (there is no `pdftoppm`).
+
+**The stories' photos are placeholders to confirm** (`public/media/CREDITS.md`): ANI's photo of
+Mittal's visit, a GradeSense screen from its Product Hunt listing (cropped below the reviewer bar,
+which named a student), and a campus photo from SSB's own site standing in for the convocation.
 
 **"The carousel is not working" (2026-10-01)** was a page left open while its server-rendered markup
 changed under a hot reload: the client motion had bound to the old nodes, so the tabs did nothing
@@ -489,7 +543,7 @@ Campus photos are stills from the campus film until the team's arrive.
 - **Content enters with one gentle fade, not part by part.** No word splits, no staggered pieces,
   no count-ups on numbers: they read as the page stuttering in. (Exceptions, the team's asks: the
   stories variation's figures roll in like counter reels; the showcase's and Why SSB's figures
-  slide up into their lines.)
+  slide up into their lines; Why SSB's "old MBA" is struck through as its line arrives.)
 - **Never let the DOM move under a CSS animation.** Re-inserting an element restarts its CSS
   animations (the ticker jumped back). ScrollTrigger `pin` does this; use CSS sticky instead.
 - **Never lock scrolling with `overflow: hidden`.** On screens that always show a scrollbar it hides

@@ -27,12 +27,13 @@ import { WhySection } from '@/sections/why/WhySection';
 export const metadata: Metadata = { title: 'V2 hero · SSB home page lab' };
 
 /**
- * The home page, assembled, in the agreed sequence: the hero (first fold), placements, alumni,
- * Learn by doing, the 150-hour AI curriculum, live projects, the innovation lab, the faculty,
- * the curriculum, its stats (career prep), student testimonials and placements (the internship
- * section), admissions. Immersions, the impact foundation and the FAQ are not in that sequence
- * and follow it for now. All lifting off the footer. Of the three Placements takes, the
- * showcase is the one used.
+ * The home page, assembled, in the agreed sequence: the hero (first fold), placements, Why SSB
+ * (Kamath's breaker, then the answer), alumni, beyond placements (student founders), the people
+ * tabs, the testimonial band (investors and founders on campus), the curriculum's terms, then one
+ * side navigation over career prep, the AI journey, live projects, the internship, learn by doing
+ * and immersions; the innovation lab, Super Mentor Sessions, campus life, in the news, the impact
+ * foundation, admissions and the FAQ. All lifting off the footer. Of the three Placements takes,
+ * the showcase is the one used.
  */
 export default function V2Page() {
   // The first fold is the cinematic hero only (the split variant and its toggle were dropped, 2026-10-06).

@@ -275,7 +275,9 @@
   display: inline-grid;
   vertical-align: bottom;
   overflow: hidden;
-  color: var(--content-brand);
+  /* The logo's green (the team asked for brighter than the deep `content-brand`); at the display
+     size it clears 3:1 on the section's grey. The page is pinned light, so the light step is safe. */
+  color: var(--color-ssb-light-9);
 }
 .why-role {
   grid-area: 1 / 1;
@@ -283,6 +285,45 @@
 }
 .why-role + .why-role {
   visibility: hidden;
+}
+/* "old MBA": italic (its own face, layout.tsx), a line drawn through it, and
+   grey. WhyMotion holds it in ink (data-pending) until the line arrives, then
+   draws the line from the left as the words fade to grey; without it they show
+   struck and grey. Kept on one line so the line is one stroke; the line, not
+   text-decoration, so it can be drawn. */
+.why-strike {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  text-decoration: none;
+  color: var(--content-secondary);
+  transition: color var(--motion-duration-slower) var(--motion-easing-productive-in-out);
+}
+.why-strike[data-pending] {
+  color: inherit;
+}
+.why-strike em {
+  font-family: var(--font-sans-italic), var(--ssx-font-sans), sans-serif;
+  font-style: italic;
+}
+/* The squiggle: its box about as wide for its height as its viewBox (100 × 12
+   over ~3.2em × 0.5em), so the stretch barely distorts it and its stroke
+   scales with the type (2.2 units, ~0.07em). Drawn in full here (dashoffset 0);
+   WhyMotion draws it on from 1. */
+.why-strike-line {
+  position: absolute;
+  top: calc(56% - 0.25em);
+  right: -0.06em;
+  left: -0.08em;
+  height: 0.5em;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
 }
 
 /* ---- The answer: three chapters that stack as the page scrolls ---- */
@@ -345,33 +386,118 @@
     padding: var(--space-10);
   }
 }
-/* The chapter's number, large and quiet. */
-.why-card-num {
-  font-size: var(--type-billboard-md-size);
-  font-weight: var(--font-weight-medium);
-  line-height: 1;
-  letter-spacing: var(--type-billboard-md-tracking);
-  color: var(--border-subtle);
-  font-variant-numeric: tabular-nums;
+/* The story: its photo fills the box, its words sit at the foot in white. Inset
+   in the card: under the chapter's copy below desktop (so a stacked card's top
+   still shows its word), beside it on desktop. Taller on a phone, where the
+   words take more of the box. */
+.why-story {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin: 0 var(--space-3) var(--space-3);
+  overflow: hidden;
+  /* 12px: the card's 16 less its 12px inset left the photo near-square (4px; the team's call) */
+  border-radius: var(--radius-xl);
+  aspect-ratio: 4 / 5;
 }
-.why-card-photo {
-  order: -1;
-}
-@media (width >= 1056px) {
-  .why-card-photo {
-    order: 0;
-    padding: var(--space-3) var(--space-3) var(--space-3) 0;
+@media (width >= 672px) {
+  .why-story {
+    aspect-ratio: 16 / 9;
   }
 }
-.why-card-photo img {
-  display: block;
+@media (width >= 1056px) {
+  .why-story {
+    margin: var(--space-3) var(--space-3) var(--space-3) 0;
+  }
+}
+/* The photo blurs progressively under the words (as the Placements showcase's
+   cards do): two blurred copies on it, each revealed by its own gradient, softly
+   then deeply toward the foot, under a dark scrim. Copies, not backdrop-filter,
+   which would re-run as the page scrolls. Every layer is scaled up alike, so
+   they stay aligned while each blur's transparent rim falls outside the box;
+   the layer is composited, so the stack's shrinking never re-blurs it. */
+.why-story-media {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+.why-story-photo {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  aspect-ratio: 742 / 428;
   object-fit: cover;
+  transform: scale(1.1);
 }
-@media (width >= 1056px) {
-  .why-card-photo img {
-    border-radius: calc(var(--radius-2xl) - var(--space-3));
+/* The blur starts just above the words, so faces higher in the photo stay
+   sharp; the scrim is dark enough at the foot for white over a light photo
+   (GradeSense's screens). */
+.why-story-blur-soft {
+  filter: blur(8px);
+  mask-image: linear-gradient(to bottom, transparent 46%, #000 64%);
+}
+.why-story-blur-deep {
+  filter: blur(20px);
+  mask-image: linear-gradient(to bottom, transparent 60%, #000 86%);
+}
+.why-story-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 30%,
+    color-mix(in oklab, var(--surface-image-scrim) 62%, transparent) 60%,
+    color-mix(in oklab, var(--surface-image-scrim) 92%, transparent) 100%
+  );
+}
+@media (width >= 672px) {
+  .why-story-blur-soft {
+    mask-image: linear-gradient(to bottom, transparent 52%, #000 70%);
+  }
+  .why-story-blur-deep {
+    mask-image: linear-gradient(to bottom, transparent 66%, #000 90%);
+  }
+  .why-story-scrim {
+    background: linear-gradient(
+      to bottom,
+      transparent 36%,
+      color-mix(in oklab, var(--surface-image-scrim) 62%, transparent) 66%,
+      color-mix(in oklab, var(--surface-image-scrim) 92%, transparent) 100%
+    );
+  }
+}
+/* "Example", a light glass chip at the photo's top left, in line with the
+   words (the showcase's chips, quiet). Nothing between it and the photo may
+   have a mask, filter or opacity, or its glass would blur nothing. */
+.why-story-tag {
+  position: absolute;
+  top: var(--space-6);
+  left: var(--space-6);
+  display: inline-flex;
+  align-items: center;
+  height: var(--space-8);
+  padding-inline: var(--space-3);
+  border: var(--border-width-hair) solid color-mix(in oklab, var(--surface-default) 50%, transparent);
+  border-radius: var(--radius-full);
+  background: color-mix(in oklab, var(--surface-default) 72%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  backdrop-filter: blur(16px) saturate(1.4);
+  color: var(--content-primary);
+}
+@media (width >= 672px) {
+  .why-story-tag {
+    top: var(--space-8);
+    left: var(--space-8);
+  }
+}
+.why-story-copy {
+  position: relative;
+  max-width: 38rem;
+  padding: var(--space-6);
+}
+@media (width >= 672px) {
+  .why-story-copy {
+    padding: var(--space-8);
   }
 }
