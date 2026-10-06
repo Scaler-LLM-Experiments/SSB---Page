@@ -405,8 +405,7 @@
    hairlines between the cells (a 1px gap over the line colour, each cell the
    page's colour) and round it. Each cell holds its logo from every set, stacked,
    only the current one showing (until the motion has run, the first: CSS). The
-   logos are grey until the pointer is on one (its own colours, as the hero's
-   ticker). 6 × 2 on desktop, 4 × 3 on a tablet, 3 × 4 on a phone: twelve cells
+   logos in their own colours (the team's call; they were grey until pointed at). 6 × 2 on desktop, 4 × 3 on a tablet, 3 × 4 on a phone: twelve cells
    always fill their rows, so no line colour shows through an empty one. */
 .pl-boxes {
   display: grid;
@@ -456,17 +455,6 @@
 .pl-box-logo + .pl-box-logo {
   opacity: 0;
   visibility: hidden;
-}
-.pl-box img {
-  filter: grayscale(1);
-  opacity: 0.6;
-  transition:
-    filter var(--motion-duration-fast) var(--motion-easing-productive-in-out),
-    opacity var(--motion-duration-fast) var(--motion-easing-productive-in-out);
-}
-.pl-box:hover img {
-  filter: none;
-  opacity: 1;
 }
 
 /* Below desktop the card stacks: the photo shows under the chips, then the
@@ -567,11 +555,13 @@
   .pl-app-drift .pl-wall-tile img {
     zoom: 0.6;
   }
-  /* Set tight, so a role over two lines and its company fit a tile. */
-  .pl-app-drift .type-label,
-  .pl-app-drift .type-caption {
-    font-size: var(--type-caption-size);
+  /* The role alone, without its company (the team's call: the tile is too small
+     for both), set tight so a role over two lines fits. */
+  .pl-app-drift .type-label {
     line-height: 1.25;
+  }
+  .pl-app-drift .type-caption {
+    display: none;
   }
 }
 

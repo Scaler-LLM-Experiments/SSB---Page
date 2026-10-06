@@ -126,7 +126,7 @@ export async function PlacementsShowcase({
               one box of twelve cells, moving on to the next twelve logos together (ShowcaseMotion).
               Screen readers get the deck's full list instead. */}
           <div data-strip className="mt-12 sm:mt-16">
-            <Heading as="h3" size="eyebrow" className="mb-4 text-content-secondary">
+            <Heading as="h3" size="2" className="mb-6">
               {recruitersTitle}
             </Heading>
             <ul className="sr-only">

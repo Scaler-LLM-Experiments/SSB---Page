@@ -266,7 +266,8 @@ the logos at its foot) and they run as two rows drifting sideways one each way (
 2026-10-05/06: two narrow columns were hard to read on a phone, and rows over the photo above the
 claim crowded it; the same `Drift` markup, its tracks laid out along a row and moved by
 `translateX`; tiles 10rem × 4.5rem on a tablet, 7.5rem × 3.25rem on a phone, logos at `zoom` 0.75
-and 0.6, roles at the caption size, set tight so a role over two lines fits). Every card's copy
+and 0.6; on a phone the roles show without their company, set tight so a role over two lines
+fits). Every card's copy
 sits at its foot (`justify-content: flex-end`), so a two-line claim ends where a three-line one
 does and the spare height goes above the figure: the cards share one grid cell, so the tallest
 sets the height. The report CTA is full width on a phone, as the hero's CTAs are. At its foot the
@@ -309,12 +310,15 @@ clip-path or opacity below 1**: each makes that ancestor a backdrop root, so the
 the chips sharp-backed glass; the row now has none and is clipped at the photo's edges. For the
 same reason each chip fades in itself with the first card, not their row.
 
-**The recruiters** (2026-10-05, in place of four figure boxes): an eyebrow over one box of twelve
+**The recruiters** (2026-10-05, in place of four figure boxes): a line over one box of twelve
 cells, hairlines between them (a 1px gap over the line colour), no fill (6 × 2 on desktop, 4 × 3,
 3 × 4 on a phone, logos at `zoom: 0.75` there; twelve always fill their rows). Each cell stacks its
 logo from each set of twelve (31 logos, three sets; a cell with fewer wraps round); every 4s they
 all crossfade in place to the next set together (`cycleBoxes`; a drift up and out was tried),
-waiting on hover, off screen, a hidden tab, and under reduced motion. Seven of the 31 were added
+waiting on hover, off screen, a hidden tab, and under reduced motion. The logos are in their own
+colours (the team's call, 2026-10-06; grey until pointed at before). The line is the team's, "200+
+recruiters hire SSB students on campus." (`recruitersTitle`, `Heading size="2"`; it was an eyebrow,
+"Our recruiters"): **"200+" is a placeholder**, the deck lists 62. Seven of the 31 were added
 on 2026-10-05 from English Wikipedia's article images (Aviva, CKA Birla Group, FNP, ONDC,
 HealthifyMe, Landmark Group, The Times Group), trimmed and measured as before; Wikidata had only
 Aviva's. Not used: Wikidata's "Muthoot FinCorp" logo is Muthoot Finance's (another company), and
@@ -391,7 +395,7 @@ find the ink's bounds, crop the viewBox) and its `ink` measured the same way. My
 raster (139 KB). **Placeholders in `placements.ts`, to replace before anything ships:** the hires
 counts; the stories' and showcases' copy (only the first card's claim is the team's), the `lead`,
 and the report link; "50+ startups" (the deck lists 62 recruiters, about 43 of them startups);
-"10+ MNCs" (our count of the deck's list). The `roles` are real (the deck's "Strong Alumni Base"),
+"10+ MNCs" (our count of the deck's list); "200+ recruiters" (the deck lists 62). The `roles` are real (the deck's "Strong Alumni Base"),
 but only Emergent is an AI company: "AI titles" need the team's data. No logo on Wikidata for
 Emergent, Avendus, Ninjacart or The Whole Truth, so the stories' career-switch card shows the four of
 the eight whose logos we have (the showcase's roles card names all eight).

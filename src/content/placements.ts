@@ -145,7 +145,9 @@ export const placements: PlacementsContent = {
     { role: 'Brand Marketing', company: 'The Whole Truth' },
     { role: 'Growth Marketing', company: 'BharatPe' },
   ],
-  recruitersTitle: 'Our recruiters',
+  // The team's line (2026-10-06). PLACEHOLDER figure: the deck lists 62 recruiters; "200+" needs a
+  // source before this goes anywhere near production.
+  recruitersTitle: '200+ recruiters hire SSB students on campus.',
   // The grid's logos, best known first (the first twelve are what the grid opens on). Files trimmed
   // to their edges, from Wikidata (P154) and English Wikipedia's article images; `ink` measured
   // as CLAUDE.md, "Logos" says.

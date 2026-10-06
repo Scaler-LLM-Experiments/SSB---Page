@@ -96,7 +96,7 @@ export type PlacementsContent = {
   reportHref: string;
   /** The photo cards (the showcase variation). */
   showcases: PlacementShowcase[];
-  /** Over the logo grid, set as an eyebrow (the grid variation). */
+  /** Over the recruiters' logos: a line in the showcase, an eyebrow in the grid variation. */
   recruitersTitle: string;
   /** Roles alumni moved into, from the deck: what the roles cards float. */
   roles: PlacementRole[];
