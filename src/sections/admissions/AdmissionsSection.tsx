@@ -64,6 +64,9 @@ export function AdmissionsSection() {
             <Heading as="h2" size="display" id="admissions-title" data-enter="headline">
               Admission Process, Fees and Eligibility
             </Heading>
+            <Text size="lg" tone="secondary" data-enter="sub">
+              Who can apply, how selection works, what the programme costs, and the scholarships on offer.
+            </Text>
             <div data-enter="controls" className="mt-5 flex flex-col gap-3 sm:flex-row">
               <Button asChild>
                 <a href={admissionsCtas.primary.href}>{admissionsCtas.primary.label}</a>

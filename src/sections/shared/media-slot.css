@@ -1,0 +1,49 @@
+/* MediaSlot: an image, or its marked placeholder until the asset arrives. */
+.ms {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  width: 100%;
+  border-radius: var(--radius-lg);
+  background: var(--surface-subtle);
+}
+.ms > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ms[data-empty] {
+  border: var(--border-hair) dashed var(--border-control);
+}
+.ms-label {
+  max-width: 80%;
+  padding: var(--space-2);
+  text-align: center;
+  font-family: var(--font-family-mono);
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-lh);
+  color: var(--content-secondary);
+}
+.ms-play {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: var(--space-12);
+  height: var(--space-12);
+  border-radius: var(--radius-full);
+  background: rgb(0 0 0 / 0.55);
+  color: #fff;
+}
+.ms[data-empty] .ms-play {
+  bottom: var(--space-3);
+  right: var(--space-3);
+  width: var(--space-8);
+  height: var(--space-8);
+}
+.ms-play svg {
+  width: 40%;
+  height: 40%;
+}

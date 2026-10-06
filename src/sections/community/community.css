@@ -1,0 +1,124 @@
+/* The deck's remaining sections: the pieces their shared row and cards don't cover. */
+
+/* Campus life. */
+.cm-clubs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.cm-club {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-left: var(--space-4);
+  border-left: var(--border-thick) solid var(--border-brand);
+}
+.cm-follow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+}
+.cm-follow a {
+  font-weight: var(--font-weight-semibold);
+  color: var(--content-brand);
+  text-decoration: none;
+}
+.cm-follow a:hover {
+  text-decoration: underline;
+}
+.cm-follow a span {
+  font-weight: var(--font-weight-regular, 400);
+  color: var(--content-secondary);
+}
+/* A collage: the building large at the left, two photos stacked at the right. */
+.cm-photos {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: 3fr 2fr;
+  grid-template-rows: 1fr 1fr;
+  min-height: 30rem;
+}
+.cm-photos > :first-child {
+  grid-row: 1 / span 2;
+}
+@media (max-width: 671px) {
+  .cm-photos {
+    min-height: 22rem;
+  }
+}
+
+/* Super Mentor Sessions: StoryCard's card and type (.sc), with a thumbnail that plays in place,
+   the role under the name, and the logo at the foot. */
+.tk-media {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-lg);
+  background: var(--surface-subtle);
+}
+.tk-media iframe,
+.tk-play,
+.tk-play img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.tk-play {
+  padding: 0;
+  background: none;
+  cursor: pointer;
+}
+.tk-play img {
+  object-fit: cover;
+  transition: transform var(--motion-duration-slow) var(--motion-easing-productive-in-out);
+}
+.tk-play:hover img {
+  transform: scale(1.03);
+}
+.tk-play:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: -2px;
+}
+/* The play mark the section's other video cards use (MediaSlot's). */
+.tk-play-mark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: var(--space-12);
+  height: var(--space-12);
+  border-radius: var(--radius-full);
+  background: rgb(0 0 0 / 0.55);
+  color: #fff;
+  transform: translate(-50%, -50%);
+}
+.tk-play-mark svg {
+  width: 40%;
+  height: 40%;
+}
+.tk-body {
+  flex: 1;
+}
+.tk-role {
+  margin: calc(var(--space-1) * -1) 0 0;
+  font-size: var(--type-body-sm-size);
+  line-height: var(--type-body-sm-lh);
+  font-weight: var(--font-weight-medium);
+  color: var(--content-primary);
+}
+/* The logo at the foot, in its own colours. */
+.tk-logo {
+  display: block;
+  height: 1.5rem;
+  width: auto;
+  max-width: 10rem;
+  margin-top: auto;
+  padding-top: var(--space-4);
+  object-fit: contain;
+  object-position: left center;
+  box-sizing: content-box;
+}

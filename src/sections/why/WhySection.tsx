@@ -40,7 +40,7 @@ export function WhySection({
       <WhyMotion>
         <Container>
           <div data-enter="header" className="mb-12 flex max-w-(--size-measure-max) flex-col gap-3 sm:mb-16">
-            <Heading as="p" size="eyebrow" className="text-content-secondary" data-enter="eyebrow">
+            <Heading as="p" size="eyebrow" className="text-content-brand" data-enter="eyebrow">
               {eyebrow}
             </Heading>
             <Heading as="h2" size="display" id="why-title" data-enter="headline">

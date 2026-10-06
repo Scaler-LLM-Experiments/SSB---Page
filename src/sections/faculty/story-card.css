@@ -107,15 +107,18 @@
   line-height: var(--type-h2-lh);
   letter-spacing: var(--type-h2-tracking);
 }
-.ssx-card[data-align='start'] .meet-card__logo img {
-  height: 1.5rem;
+.ssx-card[data-align='start'] .meet-card__logo {
+  --meet-logo-h: 1.5rem;
 }
 .meet-card__logo {
   margin-top: var(--space-2);
 }
+.meet-card__logo {
+  --meet-logo-h: 1.25rem;
+}
 .meet-card__logo img {
   display: block;
-  height: 1.25rem;
+  height: var(--meet-logo-h);
   width: auto;
   max-width: 10rem;
   object-fit: contain;

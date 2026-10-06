@@ -49,6 +49,8 @@ export type CardStackProps<T> = {
   arrows?: 'on-image' | 'neutral';
   /** A dot per card under the stack; the current one fills while autoplay waits. */
   dots?: boolean;
+  /** false: no autoplay and no wrapping: it stops at the first and last card (arrows disabled there). */
+  loop?: boolean;
   className?: string;
 };
 
@@ -71,6 +73,7 @@ export function CardStack<T>({
   cardWidth = 76,
   arrows = 'on-image',
   dots = false,
+  loop = true,
   className,
 }: CardStackProps<T>) {
   const n = items.length;
@@ -94,10 +97,10 @@ export function CardStack<T>({
 
   const go = React.useCallback(
     (to: number, user = true) => {
-      setActive(((to % n) + n) % n);
+      setActive(loop ? ((to % n) + n) % n : Math.min(n - 1, Math.max(0, to)));
       if (user) hold();
     },
-    [n, hold],
+    [n, hold, loop],
   );
 
   React.useEffect(() => {
@@ -111,7 +114,7 @@ export function CardStack<T>({
 
   // Autoplay: one timer per card, restarted on every change, so the current
   // dot's fill and the move to the next card stay in step.
-  const playing = visible && !paused && !reduced && n > 1;
+  const playing = loop && visible && !paused && !reduced && n > 1;
   React.useEffect(() => {
     if (!playing) return;
     const id = window.setTimeout(() => go(active + 1, false), AUTOPLAY_MS);
@@ -182,7 +185,7 @@ export function CardStack<T>({
         onTouchCancel={onTouchEnd}
       >
         {items.map((item, i) => {
-          const d = offset(i, active, n);
+          const d = loop ? offset(i, active, n) : i - active;
           const isActive = d === 0;
           return (
             <div
@@ -208,6 +211,7 @@ export function CardStack<T>({
             shape="capsule"
             size="icon-lg"
             aria-label={`Previous ${itemName}`}
+            disabled={!loop && active === 0}
             onClick={() => go(active - 1)}
           >
             <ArrowLeft />
@@ -222,6 +226,7 @@ export function CardStack<T>({
             shape="capsule"
             size="icon-lg"
             aria-label={`Next ${itemName}`}
+            disabled={!loop && active === n - 1}
             onClick={() => go(active + 1)}
           >
             <ArrowRight />

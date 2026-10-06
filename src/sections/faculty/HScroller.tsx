@@ -27,7 +27,7 @@ const ArrowRight = () => (
  *
  * Mark the second (visual) copy of each item with `data-copy`.
  */
-export function useHScroller({ speed = 32 }: { speed?: number } = {}) {
+export function useHScroller({ speed = 32, auto = true }: { speed?: number; auto?: boolean } = {}) {
   const ref = React.useRef<HTMLUListElement>(null);
   const holdUntil = React.useRef(0);
 
@@ -40,7 +40,8 @@ export function useHScroller({ speed = 32 }: { speed?: number } = {}) {
 
   React.useEffect(() => {
     const el = ref.current;
-    if (!el || prefersReducedMotion(el)) return;
+    // auto: false is a plain scroller (arrows, swipe, trackpad), no ticker.
+    if (!el || !auto || prefersReducedMotion(el)) return;
 
     let pos = el.scrollLeft;
     let last = 0;
@@ -115,7 +116,7 @@ export function useHScroller({ speed = 32 }: { speed?: number } = {}) {
       el.removeEventListener('wheel', touch);
       document.removeEventListener('visibilitychange', onVisibility);
     };
-  }, [speed]);
+  }, [speed, auto]);
 
   const page = (dir: 1 | -1) => {
     const el = ref.current;
