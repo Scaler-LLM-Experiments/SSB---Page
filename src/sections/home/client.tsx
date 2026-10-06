@@ -12,7 +12,8 @@ import { SsbNavbar } from '@/sections/site/Navbar';
 export const Curriculum = dynamic(() => import('@/sections/curriculum/SsbCurriculum'), { ssr: false });
 
 export function FooterShell({ children }: { children: React.ReactNode }) {
-  return <SsbFooter>{children}</SsbFooter>;
+  // no "Your next step" banner above the footer: the footer has the same two actions
+  return <SsbFooter showCta={false}>{children}</SsbFooter>;
 }
 
 /**

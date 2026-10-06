@@ -132,8 +132,8 @@ export function AiJourneyBlock({ ai, cfg, width }: { ai: AiJourney; cfg: Journey
         ),
         title: t.name,
         sub: t.desc,
-        // desktop stack: the portrait version fits its tall frame whole; m-web keeps the 4:3
-        photo: <img className="sj-ai-photo" src={stackDesktop && t.imageTall ? t.imageTall : t.image} alt="" loading="lazy" decoding="async" style={t.imagePos ? { objectPosition: t.imagePos } : undefined} />,
+        // the landscape photo everywhere: on desktop it runs across the head of the card
+        photo: <span className="sj-ai-photo sj-ai-todo" aria-hidden="true" />,
         counter: termLabel(t.term),
         // short enough to show whole: the outcome, then the tools, no collapse
         body: () => (
@@ -183,7 +183,7 @@ export function AiJourneyBlock({ ai, cfg, width }: { ai: AiJourney; cfg: Journey
           return (
             <li key={t.term} className="sj-ai-card" {...c(cfg, 'aiCard')}>
               <div className="sj-ai-media">
-                <img className="sj-ai-photo" src={t.image} alt="" loading="lazy" decoding="async" style={t.imagePos ? { objectPosition: t.imagePos } : undefined} />
+                <span className="sj-ai-photo sj-ai-todo" aria-hidden="true" />
                 <span className="sj-ai-tag">
                   <span>{termLabel(t.term)}</span>
                   <Icon weight="bold" aria-hidden />

@@ -47,3 +47,7 @@
   width: 40%;
   height: 40%;
 }
+
+/* A missing photo or video stands as a soft green ground (feedback, 2026-10-06), its brief on it. */
+.ms[data-empty], .sc .ms[data-empty] { border: 0; background: radial-gradient(90% 120% at 0% 0%, color-mix(in srgb, var(--surface-brand-solid) 34%, transparent), transparent 62%), radial-gradient(80% 110% at 100% 100%, color-mix(in srgb, var(--surface-brand-solid) 22%, transparent), transparent 60%), var(--surface-brand-subtle); }
+.ms[data-empty] .ms-label { color: var(--content-brand); opacity: 0.75; }

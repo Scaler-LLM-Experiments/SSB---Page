@@ -384,6 +384,101 @@ function SceneCard({ stats, kind }: { stats: { value: string; label: string }[];
   );
 }
 
+/** The tab that names each stat card in the desktop showcase. */
+const SHOW_TAB: Partial<Record<CareerIcon, string>> = { hours: 'Prep hours', oneToOne: '1:1 solving', interviews: 'Mock interviews', behaviour: 'Behavioural' };
+/** How long a card stays before the showcase slides on (the Placements showcase holds for 5s). */
+const SHOW_DWELL = 3000;
+
+/**
+ * Desktop: the stats as the Placements showcase's sliding cards. A pill switcher names each card,
+ * its dark pill sliding to the one on show and filling as that card's time runs; the cards sit in
+ * a row and slide across, one at a time. Each card is minimal: its drawing at the right (it acts
+ * while its card is on show), the number and what it counts at the lower left. It moves on by
+ * itself and waits while the pointer is on it, while it is off screen, and under reduced motion.
+ */
+function PrepShowcase({ cards }: { cards: [CareerIcon, { value: string; label: string }[]][] }) {
+  const [active, setActive] = React.useState(0);
+  const [live, setLive] = React.useState(false);
+  const root = React.useRef<HTMLDivElement>(null);
+  const tabs = React.useRef<(HTMLButtonElement | null)[]>([]);
+  const [pill, setPill] = React.useState<{ x: number; w: number } | null>(null);
+  React.useEffect(() => {
+    const el = root.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return undefined;
+    const io = new IntersectionObserver(([e]) => setLive(e.isIntersecting), { threshold: 0.35 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  // the pill sits under the active tab: measured, and again when the row changes size
+  React.useLayoutEffect(() => {
+    const measure = () => {
+      const t = tabs.current[active];
+      if (t) setPill({ x: t.offsetLeft, w: t.offsetWidth });
+    };
+    measure();
+    if (typeof ResizeObserver === 'undefined' || !root.current) return undefined;
+    const ro = new ResizeObserver(measure);
+    ro.observe(root.current);
+    return () => ro.disconnect();
+  }, [active]);
+  const n = cards.length;
+  return (
+    <div ref={root} className="sj-ps" data-live={live || undefined} style={{ '--ps-dwell': `${SHOW_DWELL}ms` } as React.CSSProperties}>
+      <div className="sj-ps-switch" role="group" aria-label="Career prep in numbers">
+        {pill ? (
+          <span className="sj-ps-pill" style={{ transform: `translateX(${pill.x}px)`, width: pill.w }} aria-hidden="true">
+            {/* the fill: it runs for the card's time, then the next card comes on (restarts with the card) */}
+            <i key={active} onAnimationEnd={() => setActive((a) => (a + 1) % n)} />
+          </span>
+        ) : null}
+        {cards.map(([k], i) => (
+          <button
+            key={k}
+            type="button"
+            ref={(el) => {
+              tabs.current[i] = el;
+            }}
+            className="sj-ps-tab"
+            aria-current={i === active}
+            onClick={() => setActive(i)}
+          >
+            {SHOW_TAB[k] ?? k}
+          </button>
+        ))}
+      </div>
+      <div className="sj-ps-view">
+        <ul className="sj-ps-track" style={{ transform: `translateX(${-active * 100}%)` }}>
+          {cards.map(([k, stats], i) => {
+            const scene = SCENES[k];
+            const on = i === active;
+            return (
+              <li key={k} className="sj-ps-card" data-k={k} aria-hidden={!on || undefined}>
+                {scene ? (
+                  <div className="sj-ps-art sj-pb-art" style={{ aspectRatio: `${scene.w} / ${scene.h}` }} aria-hidden="true">
+                    <SceneCanvas scene={scene} active={on && live} />
+                  </div>
+                ) : null}
+                <dl className="sj-ps-copy">
+                  {stats.map((st) => (
+                    <div key={st.label} className="sj-ps-stat">
+                      <dt>{st.label}</dt>
+                      {/* the number races in each time its card comes on (remounted, so it counts again):
+                          up from 0 with a motion smear that clears as it lands */}
+                      <dd>
+                        <SpeedNumber key={on ? 'on' : 'off'} value={st.value} duration={1200} />
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
 /** a phase's node icon: its own, else by its place (clarity → building → executing) */
 const PHASE_ICON: Partial<Record<CareerIcon, React.ComponentType<{ weight?: 'regular'; 'aria-hidden'?: boolean }>>> = { clarity: Compass, building: Hammer, executing: RocketLaunch };
 function PhaseIcon({ k, i }: { k?: CareerIcon; i: number }) {
@@ -466,62 +561,51 @@ export function CareerPrepBlock({ prep, cfg }: { prep: CareerPrep; cfg: JourneyC
           m-web: title, bento, phases */}
       <div className="sj-career-split">
       <div className="sj-career-col">
-      <dl className="sj-pbento">
-        {(() => {
-          // one card per scene: a joined stat goes into its host's card, after the host's own
-          const cards = new Map<CareerIcon, { value: string; label: string }[]>();
-          prep.stats.forEach((s, i) => {
-            const k = s.icon ?? fallbackStat[i % fallbackStat.length];
-            const host = BENTO_JOIN[k] ?? k;
-            const list = cards.get(host) ?? [];
-            if (host === k) list.unshift(s);
-            else list.push(s);
-            cards.set(host, list);
-          });
-          return [...cards.entries()]
-            .sort(([a], [b]) => BENTO_ORDER.indexOf(a) - BENTO_ORDER.indexOf(b))
-            .map(([k, stats]) => <SceneCard key={k} kind={k} stats={stats} />);
-        })()}
-      </dl>
+      {(() => {
+        // one card per scene: a joined stat goes into its host's card, after the host's own
+        const cards = new Map<CareerIcon, { value: string; label: string }[]>();
+        prep.stats.forEach((s, i) => {
+          const k = s.icon ?? fallbackStat[i % fallbackStat.length];
+          const host = BENTO_JOIN[k] ?? k;
+          const list = cards.get(host) ?? [];
+          if (host === k) list.unshift(s);
+          else list.push(s);
+          cards.set(host, list);
+        });
+        const sorted = [...cards.entries()].sort(([a], [b]) => BENTO_ORDER.indexOf(a) - BENTO_ORDER.indexOf(b));
+        return (
+          <>
+            {/* desktop: the sliding showcase; smaller screens: the bento (CSS shows one of the two) */}
+            <PrepShowcase cards={sorted} />
+            <dl className="sj-pbento">
+              {sorted.map(([k, stats]) => (
+                <SceneCard key={k} kind={k} stats={stats} />
+              ))}
+            </dl>
+          </>
+        );
+      })()}
       </div>
-      {/* the title and the phases as one card, matched to the bento, with the briefcase art in its corner */}
+      {/* the phases, unframed: a plain list beside the stats */}
       <div ref={card} className="sj-career-col sj-career-card">
-      <Heading as="h3" size="3" id={id} className="sj-career-head">
+      {/* the title heads the phases (unframed), beside the stats */}
+      <Heading as="h3" size="2" id={id} className="sj-career-head">
         {prep.title}
       </Heading>
-      <CareerArt />
-      {/* the phases as three cards in the Learn-by-doing swipe deck: drag or flick the front card
-          away (it auto-advances every 3s, holding while touched or off screen) */}
-      <SwipeDeck
-        label="Career prep phases"
-        noun="Step"
-        items={prep.phases.map((p, i) => ({
-          key: p.name,
-          name: p.name,
-          node: (
-            <article className="sj-phase-card">
-              <div className="sj-phase-top">
-                <span className="sj-cphase-node sj-cphase-icon">
-                  <PhaseIcon k={p.icon} i={i} />
-                </span>
-                <span className="sj-phase-step">
-                  {String(i + 1).padStart(2, '0')} / {String(prep.phases.length).padStart(2, '0')}
-                </span>
-              </div>
-              <b className="sj-phase-name">{p.name}</b>
-              <ul className="sj-phase-tags">
-                {p.items.map((it) => (
-                  <li key={it}>
-                    <Badge tone="default" size="md">
-                      {it}
-                    </Badge>
-                  </li>
-                ))}
-              </ul>
-            </article>
-          ),
-        }))}
-      />
+      {/* the phases as a timeline: one after another down a thin line, each with its icon on the
+          line, its step, its name and what happens in it */}
+      <ol className="sj-tl" aria-label="Career prep phases">
+        {prep.phases.map((p, i) => (
+          <li key={p.name} className="sj-tl-item">
+            <span className="sj-tl-node" aria-hidden="true" />
+            <div className="sj-tl-body">
+              <b className="sj-tl-name">{p.name}</b>
+              {/* what happens in it, as one quiet line */}
+              <p className="sj-tl-items">{p.items.join(' · ')}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
       </div>
       </div>
     </section>

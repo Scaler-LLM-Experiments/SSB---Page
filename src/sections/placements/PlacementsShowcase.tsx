@@ -13,7 +13,6 @@ import './placements.css';
 const FLOAT_SIZING: LogoSizing = { height: 34, maxWidth: 160, maxHeight: 48 };
 
 /** The recruiters' cells: twelve logos at a time (6 × 2 on desktop, 4 × 3 on a tablet, 3 × 4 on a phone). */
-const BOXES = 12;
 
 /** The sharp photo, then its blurred copies (`pl-app-blur-*`): behind the logos, then soft and deep toward the copy. */
 const PHOTO_LAYERS = ['', 'side', 'soft', 'deep'] as const;
@@ -50,6 +49,7 @@ export async function PlacementsShowcase({
   reportHref,
   showcases,
   recruitersTitle,
+  cohorts,
   roles,
   logos,
   recruiters,
@@ -122,9 +122,24 @@ export async function PlacementsShowcase({
             </div>
           </div>
 
-          {/* The recruiters under the cards (the team's call, in place of the four figures' boxes):
-              one box of twelve cells, moving on to the next twelve logos together (ShowcaseMotion).
-              Screen readers get the deck's full list instead. */}
+          {/* The highlights, cohort by cohort (feedback, 2026-10-06): one box each. */}
+          {cohorts?.length ? (
+            <ul className="pl-cohorts">
+              {cohorts.map((c) => (
+                <li key={c.cohort} className="pl-figure-box">
+                  <Heading as="p" size="eyebrow" className="text-content-brand">
+                    {c.cohort}
+                  </Heading>
+                  <p className="type-h1 mt-2 text-content">{c.value}</p>
+                  <p className="mt-1 text-content-secondary">{c.label}</p>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+
+          {/* The companies under the cards, as one list (no "more hiring partners" split): two rows
+              of logos running past in opposite directions, by themselves (CSS; they hold on hover and
+              under reduced motion). Screen readers get the deck's full list instead. */}
           <div data-strip className="mt-12 sm:mt-16">
             <Heading as="h3" size="3" className="pl-recruiters-title mb-5">
               {recruitersTitle}
@@ -134,19 +149,24 @@ export async function PlacementsShowcase({
                 <li key={name}>{name}</li>
               ))}
             </ul>
-            <ul data-logo-boxes aria-hidden className="pl-boxes">
-              {Array.from({ length: BOXES }, (_, i) => (
-                <li key={i} data-logo-box className="pl-box">
-                  {row
-                    .filter((_, j) => j % BOXES === i)
-                    .map((logo) => (
-                      <span key={logo.name} data-logo className="pl-box-logo">
-                        <LogoImage logo={logo} />
-                      </span>
+            <div aria-hidden className="pl-rows">
+              {[0, 1].map((r) => {
+                const mine = row.filter((_, j) => j % 2 === r);
+                return (
+                  <div key={r} className="pl-row" data-dir={r ? 'back' : undefined}>
+                    {[0, 1].map((copy) => (
+                      <div key={copy} className="pl-row-set">
+                        {mine.map((logo) => (
+                          <span key={logo.name} className="pl-row-logo">
+                            <LogoImage logo={logo} />
+                          </span>
+                        ))}
+                      </div>
                     ))}
-                </li>
-              ))}
-            </ul>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </Container>
       </ShowcaseMotion>

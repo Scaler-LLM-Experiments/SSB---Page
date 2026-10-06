@@ -136,13 +136,16 @@ function LearnerCard({ card }: { card: Card }) {
         <h3 className="alumni-card__role">{card.story.line}</h3>
       </div>
       <div className="alumni-card__path">
-        <div className="alumni-card__step">
-          <span className="alumni-card__tile" data-pre="">
+        {/* the cue that this card plays: a frosted pill, a white play disc with a slow ring pulsing
+            out of it, then the label (it reads as a button; the whole card is the link once the
+            story's video is known) */}
+        <div className="in-lc-watch">
+          <span className="in-lc-watch-play" aria-hidden="true">
             <Play weight="fill" />
           </span>
-          <span>
-            <span className="alumni-card__label">Success story</span>
-            <span className="alumni-card__value">Watch {name}’s story</span>
+          <span className="in-lc-watch-text">
+            <span className="in-lc-watch-label">Success story · Video</span>
+            <span className="in-lc-watch-value">Watch {name}’s story</span>
           </span>
         </div>
       </div>

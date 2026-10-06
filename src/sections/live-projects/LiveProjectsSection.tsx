@@ -30,13 +30,20 @@ const PROJECTS: Project[] = [
 
 type Project = { company: string; title: string; desc: string; /** a file name in public/live-projects, without the extension */ image?: string };
 
+/** The generated stand-in photos are off (feedback, 2026-10-06: they read as fake); each card stands
+ * on a green ground until real project imagery arrives. true brings them back. */
+const SHOW_PHOTOS = false;
+
 function ProjectCard({ project: p, priority = false }: { project: Project; priority?: boolean }) {
   return (
-    <article className="ssx-card lp-card" data-align="start" data-photo={p.image ? '' : undefined}>
-      {p.image ? (
+    <article className="ssx-card lp-card" data-align="start" data-photo={SHOW_PHOTOS && p.image ? '' : undefined}>
+      {SHOW_PHOTOS && p.image ? (
         <div className="ssx-card__media">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={`/live-projects/${p.image}.jpg`} alt="" width={720} height={960} loading={priority ? 'eager' : 'lazy'} decoding="async" data-part="photo" />
+          {/* the same photo again, blurred and shown only towards the foot: the progressive blur the text stands on */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="lp-soft" src={`/live-projects/${p.image}.jpg`} alt="" width={720} height={960} loading="lazy" decoding="async" aria-hidden="true" />
         </div>
       ) : null}
       <div className="lp-content">

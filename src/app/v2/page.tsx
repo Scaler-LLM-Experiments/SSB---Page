@@ -5,7 +5,6 @@ import { why } from '@/content/why';
 import { AdmissionsSection } from '@/sections/admissions/AdmissionsSection';
 import { AlumniSection } from '@/sections/alumni/AlumniSection';
 import { PeersTicker } from '@/sections/alumni/PeersTicker';
-import { FacultySection } from '@/sections/faculty/FacultySection';
 import { FaqSection } from '@/sections/faq/FaqSection';
 import { HeroV2 } from '@/sections/hero/v2/HeroV2';
 import { HeroCard } from '@/sections/hero/card/HeroCard';
@@ -17,15 +16,13 @@ import { ImpactSection } from '@/sections/impact/ImpactSection';
 import { InnovationLabSection } from '@/sections/innovation-lab/InnovationLabSection';
 import { InternshipSection } from '@/sections/internship/InternshipSection';
 import { LiveProjectsSection } from '@/sections/live-projects/LiveProjectsSection';
+import { PeopleTabsSection } from '@/sections/people-tabs/PeopleTabsSection';
 import { PlacementsShowcase } from '@/sections/placements/PlacementsShowcase';
 import { TestimonialSection } from '@/sections/testimonial/TestimonialSection';
 import {
   BeyondPlacementsSection,
   CampusLifeSection,
-  FoundingTeamSection,
   InTheNewsSection,
-  InvestorsSection,
-  MentorsSection,
   SharkTankSection,
   SuperMentorsSection,
 } from '@/sections/community/CommunitySections';
@@ -74,17 +71,14 @@ export default async function V2Page({
         {/* 2 placements (main's showcase take) */}
         <PlacementsShowcase {...placements} />
         {/* why SSB (deck slide 4) */}
-        <WhySection {...why} />
+        <WhySection {...why} answer={false} />
         {/* 3 alumni */}
         <AlumniSection peers={<PeersTicker />} />
         {/* student founders (deck p5) */}
         <BeyondPlacementsSection />
-        {/* instructors, then the investor's word (moved up after alumni, the team's call) */}
-        <FacultySection />
-        {/* the mentors and the founding team (deck p13), the investors (p6, its quote the banner) */}
-        <MentorsSection />
-        <FoundingTeamSection />
-        <InvestorsSection />
+        {/* faculty, mentors, the founding team, investors and founders: one section, four tabs;
+            then the investor's word */}
+        <PeopleTabsSection />
         <TestimonialSection />
         {/* the Shark Tank judge on campus (deck p7) */}
         <SharkTankSection />

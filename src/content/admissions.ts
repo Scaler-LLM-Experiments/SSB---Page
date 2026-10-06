@@ -10,15 +10,8 @@ export const admissionsCtas = {
 export const eligibility =
   "Class 12th, then graduation: a bachelor's degree from an accredited institution. Ideal for professionals with work experience, and for freshers who bring a strong track record of initiative: internships, projects, clubs or similar engagements.";
 
-export const admissionSteps = [
-  'Application',
-  'Video Essay',
-  'Profile-Based Shortlisting',
-  'Scaler Management Test',
-  '1–2 Interview Rounds',
-  'Final Decision',
-  'Offer & Acceptance (3–7 day window)',
-];
+// The main landing page's process (feedback, 2026-10-06); the deck's seven steps were replaced.
+export const admissionSteps = ['Apply', 'Pay application fee', 'Submit application', 'Interview', 'Receive verdict'];
 
 export const fastTrack = 'If 90 percentile & above in CAT/XAT/NMAT/SNAP, or a 640+ score in GMAT.';
 

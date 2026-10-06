@@ -23,11 +23,21 @@ import './why.css';
  * is in WhyMotion and WhyBreaker; without it the cards still stack (CSS
  * sticky) and the line shows its first role.
  */
-export function WhySection({ quote, figures, roles, pillars }: WhyContent) {
+export function WhySection({
+  quote,
+  figures,
+  roles,
+  pillars,
+  answer = true,
+}: WhyContent & {
+  /** false: the breaker only, without the turn and the three chapters under it (the home page, 2026-10-06). */
+  answer?: boolean;
+}) {
   return (
     <>
       {/* The breaker: the remark that started the argument, before the section answers it. */}
       <WhyBreaker quote={quote} figures={figures} />
+      {answer ? (
       <Section density="roomy" aria-labelledby="why-roles" className="bg-surface-subtle">
         <WhyMotion>
           <Container>
@@ -48,6 +58,7 @@ export function WhySection({ quote, figures, roles, pillars }: WhyContent) {
           </Container>
         </WhyMotion>
       </Section>
+      ) : null}
     </>
   );
 }

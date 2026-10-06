@@ -9,19 +9,17 @@ import { useSectionEntrance } from '@/sections/faculty/useSectionEntrance';
 import { ScrollDots } from '@/sections/shared/ScrollDots';
 import './immersions.css';
 
-/** A feature: the scene full-bleed, its title and line over the blurred right side. */
+/**
+ * A feature, built as the Learn-by-doing video cards: a light card, the scene edge to edge across
+ * its head, then the title and its line. (The image files carry a blur baked into their right
+ * half, made for text to sit on: the frame shows only the clear left part.)
+ */
 function Feature({ item }: { item: Immersion }) {
   return (
     <article className="imm-feature">
-      <img
-        className="imm-feature__photo"
-        src={`/immersions/${item.image}.webp`}
-        alt=""
-        width={948}
-        height={544}
-        loading="lazy"
-        data-part="photo"
-      />
+      {/* a green ground where the real visit photo will go (feedback, 2026-10-06: the generated
+          scenes read as fake; `item.image` is kept in the content for when real photos arrive) */}
+      <div className="imm-feature__media" data-part="photo" aria-hidden="true" />
       <div className="imm-feature__body">
         <Heading as="h3" size="1" className="imm-feature__title" data-part="title">
           {item.title}

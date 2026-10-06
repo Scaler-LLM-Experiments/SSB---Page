@@ -82,13 +82,25 @@ export function FoldCopy({
 export function FoldLeaders({
   line,
   leaders,
+  alumniLine,
+  alumniFrom,
   className,
   ...props
-}: { line?: string; leaders: HeroLeader[] } & Block) {
+}: { line?: string; leaders: HeroLeader[]; alumniLine?: string; alumniFrom?: string[] } & Block) {
   return (
     <div className={cn('fold-leaders', className)} {...props}>
       {line ? <p className="fold-leaders-line">{line}</p> : null}
       <MarkTicker marks={leaders} label="Industry leaders behind the programme" tone="dark" />
+      {alumniLine && alumniFrom?.length ? (
+        <p className="fold-alumni">
+          <span className="fold-alumni-line">{alumniLine}</span>
+          {alumniFrom.map((name) => (
+            <span key={name} className="fold-alumni-name">
+              {name}
+            </span>
+          ))}
+        </p>
+      ) : null}
     </div>
   );
 }

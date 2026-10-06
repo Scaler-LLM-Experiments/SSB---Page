@@ -14,7 +14,7 @@ import './hero-card.css';
  * then the copy fades up.
  */
 export function HeroCard(hero: HeroContent) {
-  const { media, leadersLine, leaders } = hero;
+  const { media, leadersLine, leaders, alumniLine, alumniFrom } = hero;
   return (
     <section className="hc" aria-labelledby="hc-title">
       <div className="hc-card" data-brand="ssb" data-theme="dark">
@@ -35,7 +35,7 @@ export function HeroCard(hero: HeroContent) {
         <div className="hc-body">
           <FoldCopy hero={hero} titleId="hc-title" className="hc-copy" />
           {leaders?.length ? (
-            <FoldLeaders line={leadersLine} leaders={leaders} className="hc-leaders" />
+            <FoldLeaders line={leadersLine} leaders={leaders} alumniLine={alumniLine} alumniFrom={alumniFrom} className="hc-leaders" />
           ) : null}
         </div>
       </div>

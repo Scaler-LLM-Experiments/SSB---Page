@@ -98,6 +98,8 @@ export type PlacementsContent = {
   showcases: PlacementShowcase[];
   /** Over the recruiters' logos: a line in the showcase, an eyebrow in the grid variation. */
   recruitersTitle: string;
+  /** The average CTC, cohort by cohort, shown over the recruiters. */
+  cohorts?: { cohort: string; value: string; label: string }[];
   /** Roles alumni moved into, from the deck: what the roles cards float. */
   roles: PlacementRole[];
   /** Every logo we have a file for: the grid flips through them, the stories pick theirs by name. */

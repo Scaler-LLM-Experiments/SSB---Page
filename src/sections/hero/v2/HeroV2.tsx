@@ -27,7 +27,7 @@ import './hero-v2.css';
  * turns the nav light once the page is white.
  */
 export function HeroV2(hero: HeroContent) {
-  const { media, leadersLine, leaders } = hero;
+  const { media, leadersLine, leaders, alumniLine, alumniFrom } = hero;
 
   return (
     <HeroV2Motion>
@@ -79,6 +79,8 @@ export function HeroV2(hero: HeroContent) {
                   data-hero-fade
                   line={leadersLine}
                   leaders={leaders}
+                  alumniLine={alumniLine}
+                  alumniFrom={alumniFrom}
                   className="hero-v2-leaders relative md:z-lift"
                 />
               ) : null}

@@ -69,7 +69,10 @@ function CampusFoot({ footRef, content }: { footRef: React.Ref<HTMLElement>; con
         <img src={campus.image.src} srcSet={`${campus.image.small} 1200w, ${campus.image.src} 2400w`} sizes="100vw" alt="" loading="lazy" decoding="async" />
       </div>
 
+      {/* the details sit just above the name and rise out of their own baseline as one block, the way
+          the name's letters do (.sfc-top is the mask, .sfc-top-in the block that moves) */}
       <div className="sfc-top">
+        <div className="sfc-top-in">
         <div className="sfc-lead">
           <p className="sfc-statement">{content.tagline}</p>
           {/* the design system's action pair as its Storybook defines it ("With icon well") and as the
@@ -105,6 +108,7 @@ function CampusFoot({ footRef, content }: { footRef: React.Ref<HTMLElement>; con
         <a className="sfc-up" href="#top" aria-label={content.backToTop}>
           <ArrowUp weight="bold" aria-hidden="true" />
         </a>
+        </div>
       </div>
 
       <div className="sfc-foot">

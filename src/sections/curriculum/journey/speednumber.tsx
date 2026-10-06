@@ -12,7 +12,7 @@ const DURATION = 2200;
 const MAX_BLUR = 5; // px: small text needs far less than the 96px reference
 const ease = (t: number) => 1 - Math.pow(1 - t, 4);
 
-export function SpeedNumber({ value, className }: { value: string; className?: string }) {
+export function SpeedNumber({ value, className, duration = DURATION }: { value: string; className?: string; /** how long the count takes, in ms */ duration?: number }) {
   const m = value.match(/^(\D*)([\d,.]+)(\D*)$/);
   const target = m ? Number(m[2].replace(/,/g, '')) : NaN;
   const ref = React.useRef<HTMLSpanElement>(null);
@@ -30,7 +30,7 @@ export function SpeedNumber({ value, className }: { value: string; className?: s
     let prev = 0;
     const frame = (now: number) => {
       if (!t0) t0 = now;
-      const t = Math.min(1, (now - t0) / DURATION);
+      const t = Math.min(1, (now - t0) / duration);
       const e = ease(t);
       // speed, 0–1: how fast the value is moving now relative to its fastest
       const speed = Math.min(1, Math.max(0, (e - prev) * 40));
@@ -57,7 +57,7 @@ export function SpeedNumber({ value, className }: { value: string; className?: s
       io.disconnect();
       cancelAnimationFrame(raf);
     };
-  }, [target]);
+  }, [target, duration]);
   if (!m || !Number.isFinite(target)) return <span className={className}>{value}</span>;
   const digits = shown.toLocaleString('en-US');
   return (

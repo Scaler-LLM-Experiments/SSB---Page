@@ -147,7 +147,14 @@ export const placements: PlacementsContent = {
   ],
   // The team's line (2026-10-06). PLACEHOLDER figure: the deck lists 62 recruiters; "200+" needs a
   // source before this goes anywhere near production.
-  recruitersTitle: '200+ recruiters hire SSB students on campus.',
+  // Feedback, 2026-10-06: the highlights split by cohort. TO CONFIRM: Cohort 2's final figure
+  // (the note said ₹23-24 LPA).
+  cohorts: [
+    { cohort: 'Cohort 1', value: '₹19 LPA', label: 'Average CTC' },
+    { cohort: 'Cohort 2', value: '₹23–24 LPA', label: 'Average CTC' },
+  ],
+  // One merged list, framed as visits (feedback, 2026-10-06).
+  recruitersTitle: 'Companies that have visited Scaler School of Business',
   // The grid's logos, best known first (the first twelve are what the grid opens on). Files trimmed
   // to their edges, from Wikidata (P154) and English Wikipedia's article images; `ink` measured
   // as CLAUDE.md, "Logos" says.

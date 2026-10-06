@@ -234,3 +234,40 @@
   .sfc-scene > img { animation: none; }
   .sf[data-lift] .sf-foot[data-variant='campus'] > .sfc-scene, .sf[data-lift] .sf-foot[data-variant='campus'] > .sfc-top, .sf[data-lift] .sfc-l > span, .sf[data-lift] .sf-foot[data-variant='campus'] .sfc-meta { transform: none; opacity: 1; transition: none; }
 }
+
+/* ── the campus footer: the details down by the name, the photo clear above ──
+   The statement, the actions and the links no longer sit at the head of the footer: they stand
+   just above the name, on its left and right edges, so the photo's sky and building are open
+   above them. The photo keeps no dark fade at its top (no mask into the night blue, no wash over
+   the sky); it darkens only downwards, under the text. */
+.sf-foot[data-variant='campus'] { justify-content: flex-end; gap: clamp(28px, 4vw, 56px); }
+.sfc-scene > img { -webkit-mask-image: none; mask-image: none; }
+.sfc-scene::after { background:
+    linear-gradient(to bottom, transparent 0, transparent 30%, rgb(7 11 20 / 0.5) 56%, rgb(7 11 20 / 0.82) 78%, rgb(7 11 20 / 0.95) 100%),
+    radial-gradient(120% 90% at 50% 40%, transparent 55%, rgb(7 11 20 / 0.4) 100%); }
+.sfc-top { display: block; clip-path: inset(-12px -12px 0 -12px); }
+.sfc-top-in { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: end; gap: 40px 56px; }
+@media (max-width: 760px) {
+  .sfc-scene > img { -webkit-mask-image: none; mask-image: none; }
+  .sfc-scene::after { background: linear-gradient(to bottom, transparent 0, transparent 14%, rgb(7 11 20 / 0.62) 40%, rgb(7 11 20 / 0.86) 70%, rgb(7 11 20 / 0.95) 100%); }
+  .sfc-top-in { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+}
+/* motion: once the photo has settled, the whole block rises from below its baseline in one piece,
+   on the letters' own curve and time; the name's letters follow as before */
+.sf[data-lift] .sf-foot[data-variant='campus'] > .sfc-top { opacity: 1; transform: none; transition: none; }
+.sf[data-lift] .sfc-top-in { transform: translateY(104%); transition: transform var(--rise, 850ms) cubic-bezier(0.22, 0.7, 0.18, 1); }
+.sf[data-lift][data-arrived] .sfc-top-in { transform: none; transition-delay: 500ms; }
+@media (prefers-reduced-motion: reduce) { .sf[data-lift] .sfc-top-in { transform: none; transition: none; } }
+/* the name comes up in one piece: every letter rises together, no stagger along the line */
+.sf-foot[data-variant='campus'] { --step: 0ms; }
+/* the photo's top is left as shot: no vignette drawing the corners in, no wash, no toning down.
+   It darkens only from its middle down, under the type. */
+.sfc-scene > img { filter: none; }
+.sfc-scene::after { background: linear-gradient(to bottom, transparent 0, transparent 34%, rgb(7 11 20 / 0.5) 58%, rgb(7 11 20 / 0.82) 80%, rgb(7 11 20 / 0.95) 100%); }
+/* the page ends with a strip of the white sheet still showing under the navbar, its rounded foot
+   resting on the photo: the footer is that much shorter than the screen */
+.sf-foot[data-variant='campus'] { --h: min(calc(100svh - var(--sn-h, 69px) - 56px), max(560px, 62vw)); }
+@media (max-width: 760px) {
+  .sf-foot[data-variant='campus'] { --h: min(calc(100svh - var(--sn-h, 61px) - 40px), 780px); }
+  .sfc-scene::after { background: linear-gradient(to bottom, transparent 0, transparent 14%, rgb(7 11 20 / 0.62) 40%, rgb(7 11 20 / 0.86) 70%, rgb(7 11 20 / 0.95) 100%); }
+}

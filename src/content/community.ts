@@ -120,12 +120,12 @@ export const investors = {
 /** Deck p7: the Shark Tank judge. */
 export const sharkTank = {
   eyebrow: 'On campus',
-  title: 'In July 2026, a Shark Tank India judge sat across from our students, and wrote a cheque.',
+  title: 'A Shark Tank India judge sat across from our students, and wrote a cheque.',
   sub: 'Founders and investors review student startups on campus, and some put money behind them.',
   stories: [
     {
       title: 'Anupam Mittal',
-      text: 'During a July 2026 campus visit, Anupam Mittal reviewed student-led startups: Hummusapiens, Gredo, Grade Sense, and Dream Kit, and offered ₹50 lakh to Hummusapiens, founded by student Dr. Charles Chacko Porathoor. A one-time visit, a real term sheet.',
+      text: 'On a campus visit, Shark Tank India’s Anupam Mittal reviewed student-led startups: Hummusapiens, Gredo, Grade Sense, and Dream Kit, and offered ₹50 lakh to Hummusapiens, founded by student Dr. Charles Chacko Porathoor. A one-time visit, a real term sheet.',
       mediaLabel: 'Photo / video: Anupam Mittal on campus with students',
       // SSB's video: "Anupam Mittal Offers ₹50L to this Bangalore Hummus Startup" (its thumbnail)
       media: '/on-campus/anupam-mittal.webp',
@@ -133,7 +133,7 @@ export const sharkTank = {
     },
     {
       title: 'Ankur Warikoo',
-      text: 'At the founding cohort’s convocation in May 2026, Ankur Warikoo handed 55 graduating students, headed to Urban Company, Blinkit, Ninjacart, Avendus, Emergent, and Whole Truth Foods, their certificates in person, and left them with one line: “Don’t get intellectually comfortable.”',
+      text: 'At the founding cohort’s convocation, Ankur Warikoo handed 55 graduating students, headed to Urban Company, Blinkit, Ninjacart, Avendus, Emergent, and Whole Truth Foods, their certificates in person, and left them with one line: “Don’t get intellectually comfortable.”',
       mediaLabel: 'Photo / video: Ankur Warikoo at the founding cohort’s convocation',
       // SSB's video with him ("The Truth About Building a Career, Startup & Personal Brand"); no
       // convocation video on the channel yet

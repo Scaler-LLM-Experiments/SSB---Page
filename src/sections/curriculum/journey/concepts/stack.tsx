@@ -23,13 +23,22 @@
 import * as React from 'react';
 import { createPortal } from 'react-dom';
 import { Heading, IconButton, Text } from '@kishanscaler/ssx-ui';
-import { ArrowCounterClockwise, ArrowLeft, ArrowRight, ArrowUpRight, BookOpenText, CaretDown, CaretLeft, CaretRight, ChalkboardTeacher, Play, RocketLaunch, Star, X } from '@phosphor-icons/react';
+import { ArrowCounterClockwise, ArrowLeft, ArrowRight, ArrowUpRight, BookOpenText, CaretDown, CaretLeft, CaretRight, ChalkboardTeacher, Path, Play, RocketLaunch, Star, X } from '@phosphor-icons/react';
 import type { Journey, Lane, Year } from '../data';
 import { countSkills, fmt } from '../data';
 import { c, type JourneyConfig } from '../config';
 import { GroupLabel, LaneLabel, SummaryBadge, Visual, YearEyebrow } from '../atoms';
 import { JourneyTracker, OutcomeStrip, PerkGrid, ProjectCarousel, ProjectPlaylist, SkillGroups, WorkshopList, summaryParts, useLabels } from '../parts';
 import { prefersReducedMotion, useOpenYear, useSize } from './shared';
+
+/** One small line glyph per part of a card's summary line, in summaryParts' order. */
+function metaGlyphs(y: Year) {
+  if (y.journey?.length || !y.skills) return y.journey?.length ? [Path] : [];
+  const out = [];
+  if (y.skills.tech.length + y.skills.business.length + y.skills.shared.length) out.push(BookOpenText);
+  if (y.projects.length) out.push(RocketLaunch);
+  return out;
+}
 
 /**
  * The back of a card (unfolded under the front, or the modal body): the whole
@@ -259,26 +268,35 @@ function CardFront({ y, cfg }: { y: Year; cfg: JourneyConfig }) {
           <span className="cs-cover" aria-hidden="true">
             <Visual photo={y.visual} alt="" cfg={cfg} ratio={[600, 450]} />
           </span>
-          <span className="cs-chip">
-            <YearEyebrow year={y.year} cfg={cfg} as="span" />
-          </span>
         </span>
         <span className="cs-cover-text">
+          {/* the term, as a plain eyebrow over the title (it used to be a tag on the photo) */}
+          <span className="cs-cover-term">
+            <YearEyebrow year={y.year} cfg={cfg} as="span" />
+          </span>
           <Heading as="h3" size="3" style={{ color: 'inherit' }}>
             {twoLines(y.name).map((line, i) => (
-              <span key={i} className="cs-title-line">
-                {line}
-              </span>
+              <React.Fragment key={i}>
+                {i ? ' ' : null}
+                <span className="cs-title-line">{line}</span>
+              </React.Fragment>
             ))}
           </Heading>
-          <span className="cj-ship">{y.ship}</span>
+          {/* what the term covers, in full (the short "what you leave with" line is the fallback) */}
+          <span className="cj-ship">{y.description || y.ship}</span>
         </span>
         <span className="cs-cover-foot">
           {cfg.showSummary ? (
-            <span className="cs-meta">
-              {summaryParts(y, L).map((p) => (
-                <span key={p}>{p}</span>
-              ))}
+            <span className="cs-meta" data-glyphs="">
+              {summaryParts(y, L).map((p, i) => {
+                const Glyph = metaGlyphs(y)[i];
+                return (
+                  <span key={p}>
+                    {Glyph ? <Glyph weight="regular" aria-hidden="true" /> : null}
+                    {p}
+                  </span>
+                );
+              })}
             </span>
           ) : (
             <span />
@@ -907,7 +925,7 @@ function ScrollStack({ j, cfg }: { j: Journey; cfg: JourneyConfig }) {
     key: y.year,
     eyebrow: <YearEyebrow year={y.year} cfg={cfg} as="span" />,
     title: y.name,
-    sub: y.ship,
+    sub: y.description || y.ship,
     photo: cfg.showVisual && y.visual ? <Visual photo={y.visual} alt="" cfg={cfg} ratio={[750, 560]} /> : null,
     counter: fmt(L.yearLabel, cfg.eyebrowMono ? String(y.year).padStart(2, '0') : y.year),
     body: (onOpenChange) => <YearFolds y={y} cfg={cfg} onOpenChange={onOpenChange} />,

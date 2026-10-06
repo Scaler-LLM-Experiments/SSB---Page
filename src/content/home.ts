@@ -13,7 +13,7 @@ export const hero: HeroContent = {
   eyebrow: 'PGP in Management & Technology (PGP-MT)',
   title: 'India’s first AI-native B‑school',
   description:
-    'Learn by doing · Build startups & AI products · No tech background required · Any bachelor’s degree',
+    'Learn by doing · Build startups & AI products · No tech background required',
   primaryCta: { label: 'Apply now', href: '#apply', icon: 'arrow' },
   secondaryCta: { label: 'Download brochure', href: '#brochure', icon: 'download' },
   facts: [
@@ -28,7 +28,11 @@ export const hero: HeroContent = {
     youtubeLength: 288,
     caption: 'Learn by doing. Build alongside the people shaping what comes next.',
   },
-  leadersLine: 'Built by 100+ industry leaders from',
+  leadersLine: 'Learn business hands-on from 100+ industry-leading faculty from',
+  // Feedback, 2026-10-06. TO CONFIRM: which Oxford reference to use (Oxford / Saïd Business School);
+  // names only until the two logos are supplied.
+  alumniLine: 'Built by alumni from',
+  alumniFrom: ['Oxford', 'Harvard Business School'],
   // The deck's list, in its order: each organisation's own colour mark (its site or app icon,
   // public/logos/marks/lead-*.png, 96px) with its name beside it, as the AI curriculum's tools.
   leaders: [

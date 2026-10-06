@@ -691,3 +691,18 @@
     max-width: 55%;
   }
 }
+
+/* ---- Feedback, 2026-10-06 ---- */
+/* The average CTC by cohort: two boxes side by side. */
+.pl-cohorts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); margin: var(--space-10) 0 0; padding: 0; list-style: none; }
+@media (width >= 672px) { .pl-cohorts { gap: var(--space-4); margin-top: var(--space-12); } }
+/* The companies: two rows of logos running past, the second the other way; faded at both ends. */
+.pl-rows { display: grid; gap: var(--space-4); overflow: hidden; mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent); }
+.pl-row { display: flex; width: max-content; animation: pl-row-run 60s linear infinite; }
+.pl-row[data-dir='back'] { animation-direction: reverse; }
+.pl-rows:hover .pl-row { animation-play-state: paused; }
+.pl-row-set { display: flex; flex: none; gap: var(--space-4); padding-right: var(--space-4); }
+.pl-row-logo { display: grid; place-items: center; flex: none; width: 11rem; height: 5rem; border: var(--border-width-hair) solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--surface-page); }
+@keyframes pl-row-run { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .pl-row { animation: none; } }
+@media (width < 672px) { .pl-row-logo { width: 8.5rem; height: 4rem; } }

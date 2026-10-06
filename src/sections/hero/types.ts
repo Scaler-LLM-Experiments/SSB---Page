@@ -70,5 +70,8 @@ export type HeroContent = {
   leadersLine?: string;
   /** Where the programme's industry leaders come from, running past under `leadersLine`. */
   leaders?: HeroLeader[];
+  /** A second line under the leaders: "Built by alumni from", then the schools' names. */
+  alumniLine?: string;
+  alumniFrom?: string[];
   media?: HeroMedia;
 };

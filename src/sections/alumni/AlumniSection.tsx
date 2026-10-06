@@ -46,8 +46,8 @@ export function AlumniSection({ peers }: { peers?: React.ReactNode }) {
               Strong Alumni Base
             </Heading>
             <Text size="lg" tone="secondary" data-enter="sub">
-              From engineers and analysts to program, growth and marketing roles at Blinkit, Emergent, BharatPe
-              and more.
+              They went beyond placements: engineers and analysts moved into program, growth and marketing
+              roles at Blinkit, Emergent, BharatPe and more, and some built companies of their own.
             </Text>
           </div>
           <div data-enter="controls" className="hidden sm:block">

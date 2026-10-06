@@ -1,17 +1,36 @@
 /* Live projects cards: the faculty card's shell (.ssx-card, story-card.css) with a
    company line, a hairline, then the brief. Tokens only; follows data-brand / data-theme. */
 
-/* these photos are not portraits shot on a dark base, so the card deepens the shell's
-   own fade: clear at the top, near-black behind the text */
+/* the text stands on a progressive blur, not a black fade: the photo stays light to its foot and
+   goes soft under the words. A second copy of the photo, blurred, is laid over the first and let
+   in gradually from above the company name down (a blurred copy, not a backdrop blur: that one
+   reads past the card's edge and brings in black along the foot). A thin tint over the same
+   stretch keeps white type readable on a pale photo. */
+.lp-card .ssx-card__media > .lp-soft {
+  position: absolute;
+  inset: 0;
+  filter: blur(12px) saturate(1.1);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 37%, rgb(0 0 0 / 0.55) 52%, #000 66%);
+  mask-image: linear-gradient(to bottom, transparent 37%, rgb(0 0 0 / 0.55) 52%, #000 66%);
+}
 .lp-card .ssx-card__media::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgb(0 0 0 / 0) 30%, rgb(0 0 0 / 0.5) 60%, rgb(0 0 0 / 0.78) 100%);
+  z-index: 1;
   pointer-events: none;
+  background: linear-gradient(to bottom, rgb(0 0 0 / 0) 46%, rgb(0 0 0 / 0.22) 70%, rgb(0 0 0 / 0.34) 100%);
 }
+/* the shell's own dark fade is not used here */
+.lp-card.ssx-card::after { background: none; }
+.lp-content { text-shadow: 0 1px 10px rgb(0 0 0 / 0.3); }
 .lp-card .ssx-card__media > img {
   object-position: 50% 50%;
+  /* several of the photos end in a dark strip (the front of a desk, a slate floor), which sat
+     under the text as a black band: the photo is drawn a fifth larger from its top edge, so that
+     strip falls outside the card and the lit part of the scene runs to the foot */
+  transform: scale(1.2);
+  transform-origin: 50% 0%;
 }
 
 .lp-content {
@@ -55,3 +74,12 @@
     radial-gradient(120% 80% at 0% 0%, color-mix(in srgb, var(--surface-brand-solid) 55%, transparent), transparent 70%),
     var(--surface-inverse, #0f1512);
 }
+
+/* no photo: the card stands on a deep green ground, lit from its top corner */
+.lp-card:not([data-photo]) {
+  background:
+    radial-gradient(120% 80% at 0% 0%, color-mix(in srgb, var(--surface-brand-solid) 70%, transparent), transparent 70%),
+    radial-gradient(90% 70% at 100% 100%, color-mix(in srgb, var(--surface-brand-solid) 40%, transparent), transparent 70%),
+    #0c2417;
+}
+.lp-card:not([data-photo]).ssx-card::after { background: none; }
