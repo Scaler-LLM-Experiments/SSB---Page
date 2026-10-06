@@ -407,6 +407,10 @@
    only the current one showing (until the motion has run, the first: CSS). The
    logos in their own colours (the team's call; they were grey until pointed at). 6 × 2 on desktop, 4 × 3 on a tablet, 3 × 4 on a phone: twelve cells
    always fill their rows, so no line colour shows through an empty one. */
+/* The line over them: the h3 size at a medium weight, quiet (the team's call). */
+.pl-recruiters-title {
+  font-weight: var(--font-weight-medium);
+}
 .pl-boxes {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

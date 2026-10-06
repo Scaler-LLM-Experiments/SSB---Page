@@ -317,7 +317,7 @@ logo from each set of twelve (31 logos, three sets; a cell with fewer wraps roun
 all crossfade in place to the next set together (`cycleBoxes`; a drift up and out was tried),
 waiting on hover, off screen, a hidden tab, and under reduced motion. The logos are in their own
 colours (the team's call, 2026-10-06; grey until pointed at before). The line is the team's, "200+
-recruiters hire SSB students on campus." (`recruitersTitle`, `Heading size="2"`; it was an eyebrow,
+recruiters hire SSB students on campus." (`recruitersTitle`, `Heading size="3"` at medium weight; it was an eyebrow, then size 2,
 "Our recruiters"): **"200+" is a placeholder**, the deck lists 62. Seven of the 31 were added
 on 2026-10-05 from English Wikipedia's article images (Aviva, CKA Birla Group, FNP, ONDC,
 HealthifyMe, Landmark Group, The Times Group), trimmed and measured as before; Wikidata had only
