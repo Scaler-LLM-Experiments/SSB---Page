@@ -12,7 +12,7 @@
  */
 import * as React from 'react';
 import { useDocTheme, type Theme } from './theme';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Button, ButtonIcon, Logo } from '@kishanscaler/ssx-ui';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Button, Logo } from '@kishanscaler/ssx-ui';
 import {
   ArrowRight,
   BookOpen,
@@ -237,7 +237,7 @@ export function SsbNavbar({
         </nav>
         <div className="sn-actions">
           {themeToggle ? <ThemeToggle theme={theme} onTheme={onTheme} /> : null}
-          {/* the SSX buttons from the updated Storybook: outline secondary, and primary with its trailing icon well */}
+          {/* the SSX buttons: outline secondary, and the plain primary with a trailing arrow (as the hero's CTAs) */}
           {content.secondary.icon === 'download' ? (
             <Button asChild variant="secondary" size="md" className="sn-secondary-btn">
               <a href={content.secondary.href}>
@@ -253,9 +253,7 @@ export function SsbNavbar({
           <Button asChild variant="primary" size="md" className="sn-primary-btn">
             <a href={content.primary.href}>
               {content.primary.label}
-              <ButtonIcon>
-                <ArrowRight weight="bold" aria-hidden="true" />
-              </ButtonIcon>
+              <ArrowRight weight="bold" aria-hidden="true" />
             </a>
           </Button>
           <button type="button" className="sn-burger" aria-expanded={mobile} aria-controls={`${base}-mobile`} aria-label={mobile ? content.closeLabel : content.menuLabel} onClick={() => setMobile((v) => !v)}>
@@ -327,9 +325,7 @@ export function SsbNavbar({
           <Button asChild variant="primary" size="lg" className="sn-mcta">
             <a href={content.primary.href}>
               {content.primary.label}
-              <ButtonIcon>
-                <ArrowRight weight="bold" aria-hidden="true" />
-              </ButtonIcon>
+              <ArrowRight weight="bold" aria-hidden="true" />
             </a>
           </Button>
         </div>

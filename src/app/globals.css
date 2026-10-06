@@ -16,19 +16,9 @@
     monospace;
 }
 
-/* The lab's carousel rows (alumni, faculty, live projects, the impact foundation) start on the
-   page's content edge but run off to the right edge of the window. Here they are capped to the
-   page's column, as every other section is: from the `sm` breakpoint the row is the content
-   width (the container less its gutters) and its cards are clipped at that edge. Phones keep the
-   lab's layout, the next card peeking in from the screen's edge. */
-@media (min-width: 672px) {
-  main .h-scroller, main .alumni-row {
-    max-width: calc(min(100%, var(--size-container-max)) - 2 * var(--space-gutter));
-    margin-inline: auto;
-    padding-inline: 0;
-    scroll-padding-inline: 0;
-  }
-}
+/* The carousel rows (alumni, faculty, live projects, the impact foundation) start on the page's
+   content edge and run off to the right edge of the window, uncut (the team's call, 2026-10-06:
+   capping them to the page's column clipped the last card at that edge). */
 
 /* ── One visual language down the page ───────────────────────────────────────
    The lab's sections share a header (green eyebrow, display heading, grey sub-line, 48px to the
