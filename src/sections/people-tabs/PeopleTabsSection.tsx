@@ -164,7 +164,9 @@ export function PeopleTabsSection() {
 
   return (
     <Section ref={sectionRef} id="people" density="roomy" aria-labelledby="people-title" className="overflow-x-clip pt-section" data-live={live || undefined} style={{ '--pt-dwell': `${DWELL}ms` } as React.CSSProperties}>
-      <Container>
+      {/* phones: this bar floats under the navbar for as long as this section is on screen (CSS sticky,
+          held inside the section, so it leaves with it) */}
+      <Container className="pt-bar">
         <div className="pt-switch-wrap" data-enter="block">
           <div className="pt-switch" role="tablist" aria-label="The people at SSB" onKeyDown={onKey}>
             {pill ? (

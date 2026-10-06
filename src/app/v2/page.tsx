@@ -7,9 +7,6 @@ import { AlumniSection } from '@/sections/alumni/AlumniSection';
 import { PeersTicker } from '@/sections/alumni/PeersTicker';
 import { FaqSection } from '@/sections/faq/FaqSection';
 import { HeroV2 } from '@/sections/hero/v2/HeroV2';
-import { HeroCard } from '@/sections/hero/card/HeroCard';
-import { CardNav } from '@/sections/hero/card/CardNav';
-import { HeroVariantToggle, type HeroVariant } from '@/sections/hero/HeroVariantToggle';
 import { Curriculum, FooterShell, HomeNav, ScrollRefresh } from '@/sections/home/client';
 import { ImmersionsSection } from '@/sections/immersions/ImmersionsSection';
 import { ImpactSection } from '@/sections/impact/ImpactSection';
@@ -38,15 +35,8 @@ export const metadata: Metadata = { title: 'V2 hero · SSB home page lab' };
  * and follow it for now. All lifting off the footer. Of the three Placements takes, the
  * showcase is the one used.
  */
-export default async function V2Page({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}) {
-  // The first fold has two variants, switched by the toggle at the foot of the window (?hero=split).
-  const asked = (await searchParams).hero;
-  const variant: HeroVariant = asked === 'split' ? 'split' : 'cinematic';
-
+export default function V2Page() {
+  // The first fold is the cinematic hero only (the split variant and its toggle were dropped, 2026-10-06).
   return (
     <FooterShell>
       {/* The site is light; only the hero is dark (HeroV2 is its own dark island). */}
@@ -56,18 +46,8 @@ export default async function V2Page({
         {/* 1 first fold, in the chosen variant. Cinematic: the site navbar in the hero's nav slot, dark
             over the black hero (HeroV2's motion turns it light with the page). Split: a light navbar
             over a light page, the film in a rounded card, the leaders at the right. */}
-        {variant === 'split' ? (
-          <>
-            <CardNav />
-            <HeroCard {...hero} />
-          </>
-        ) : (
-          <>
-            <HomeNav />
-            <HeroV2 {...hero} />
-          </>
-        )}
-        <HeroVariantToggle current={variant} />
+        <HomeNav />
+        <HeroV2 {...hero} />
         {/* 2 placements (main's showcase take) */}
         <PlacementsShowcase {...placements} />
         {/* why SSB (deck slide 4) */}

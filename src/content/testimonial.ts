@@ -3,6 +3,8 @@
 // 2243x701 WebP: the person at the right, a green blur at the left).
 
 export const testimonial = {
+  // The line over the quote, as the Why SSB breaker has one (ours, 2026-10-06; for the team to replace).
+  eyebrow: 'What investors see on campus',
   quote:
     'The energy at SSB & SST was intentional. The ideas students shared were grounded in reality, and with the kind of support and ecosystem they have here, they’re definitely on the right track to building things that matter.',
   name: 'Sidhant Goyal',

@@ -22,3 +22,13 @@
 .pt-section[data-live]:hover .pt-pill > i, .pt-section[data-live]:focus-within .pt-pill > i { animation-play-state: paused; }
 @keyframes pt-fill { to { transform: scaleX(1); } }
 @media (prefers-reduced-motion: reduce) { .pt-pill > i { animation: none; transform: scaleX(1); } }
+
+/* m-web: the tabs float. The bar sticks just under the navbar while this section is on screen and
+   goes with the section when it leaves (sticky is held inside the section). The switcher becomes a
+   frosted, lifted pill so it reads as floating over the cards. */
+@media (max-width: 671px) {
+  .pt-bar { position: sticky; top: calc(var(--sn-h, 61px) + 8px); z-index: 20; pointer-events: none; }
+  .pt-bar .pt-switch-wrap { margin-bottom: var(--space-6); }
+  .pt-bar .pt-switch { pointer-events: auto; --pt-glass: blur(14px) saturate(1.4); -webkit-backdrop-filter: var(--pt-glass); backdrop-filter: var(--pt-glass);
+    background: color-mix(in srgb, var(--surface-sunken) 82%, transparent); box-shadow: 0 0 0 1px color-mix(in srgb, var(--border-subtle) 80%, transparent), 0 10px 24px -12px rgb(0 0 0 / 0.28); }
+}
