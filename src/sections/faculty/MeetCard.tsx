@@ -1,6 +1,7 @@
 import './story-card.css';
 
-export type CardLogo = { name: string; src: string };
+/** `scale`: a compact mark (a stacked badge) drawn larger than the wordmarks' height. */
+export type CardLogo = { name: string; src: string; scale?: number };
 
 /**
  * Faculty card: the photo, with text over its dark base — a small kicker with
@@ -53,7 +54,12 @@ export function MeetCard({
         {logo ? (
           <div className="meet-card__logo" data-part="logos">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={logo.src} alt={logo.name} loading="lazy" />
+            <img
+              src={logo.src}
+              alt={logo.name}
+              loading="lazy"
+              style={logo.scale ? ({ height: `calc(var(--meet-logo-h) * ${logo.scale})` } as React.CSSProperties) : undefined}
+            />
           </div>
         ) : null}
       </div>

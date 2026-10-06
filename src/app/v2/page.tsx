@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { hero } from '@/content/home';
 import { heroSplit } from '@/content/hero-card';
 import { placements } from '@/content/placements';
+import { why } from '@/content/why';
 import { AdmissionsSection } from '@/sections/admissions/AdmissionsSection';
 import { AlumniSection } from '@/sections/alumni/AlumniSection';
 import { PeersTicker } from '@/sections/alumni/PeersTicker';
@@ -19,6 +20,17 @@ import { InternshipSection } from '@/sections/internship/InternshipSection';
 import { LiveProjectsSection } from '@/sections/live-projects/LiveProjectsSection';
 import { PlacementsShowcase } from '@/sections/placements/PlacementsShowcase';
 import { TestimonialSection } from '@/sections/testimonial/TestimonialSection';
+import {
+  BeyondPlacementsSection,
+  CampusLifeSection,
+  FoundingTeamSection,
+  InTheNewsSection,
+  InvestorsSection,
+  MentorsSection,
+  SharkTankSection,
+  SuperMentorsSection,
+} from '@/sections/community/CommunitySections';
+import { WhySection } from '@/sections/why/WhySection';
 
 export const metadata: Metadata = { title: 'V2 hero · SSB home page lab' };
 
@@ -62,27 +74,44 @@ export default async function V2Page({
         <HeroVariantToggle current={variant} />
         {/* 2 placements (main's showcase take) */}
         <PlacementsShowcase {...placements} />
+        {/* why SSB (deck slide 4) */}
+        <WhySection {...why} />
         {/* 3 alumni */}
         <AlumniSection peers={<PeersTicker />} />
+        {/* student founders (deck p5) */}
+        <BeyondPlacementsSection />
         {/* instructors, then the investor's word (moved up after alumni, the team's call) */}
         <FacultySection />
+        {/* the mentors and the founding team (deck p13), the investors (p6, its quote the banner) */}
+        <MentorsSection />
+        <FoundingTeamSection />
+        <InvestorsSection />
         <TestimonialSection />
+        {/* the Shark Tank judge on campus (deck p7) */}
+        <SharkTankSection />
         {/* 4 learn by doing, 5 the 150-hour AI curriculum */}
         <Curriculum part="learn" />
         <Curriculum part="ai" />
+        {/* immersions beyond the classroom (deck p10) */}
+        <ImmersionsSection />
         {/* 6 projects */}
         <LiveProjectsSection />
         {/* 7 innovation lab */}
         <InnovationLabSection />
+        {/* Super Mentor Sessions (deck p15) */}
+        <SuperMentorsSection />
         {/* 9 the curriculum (the terms), 10 its stats (career prep) */}
         <Curriculum part="main" />
         {/* 11 student testimonials and placements (the internship: stats, stories, where they went) */}
         <InternshipSection />
+        {/* campus life, then in the news (deck p24, p25) */}
+        <CampusLifeSection />
+        <InTheNewsSection />
+        {/* the Scaler Impact Foundation (deck p26) */}
+        <ImpactSection />
         {/* 12 admissions: process, fees and eligibility */}
         <AdmissionsSection />
-        {/* not in the agreed sequence, kept after it for now: immersions, the impact foundation, the FAQ */}
-        <ImmersionsSection />
-        <ImpactSection />
+        {/* the FAQ (deck p28) */}
         <FaqSection />
       </main>
     </FooterShell>

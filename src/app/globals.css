@@ -37,6 +37,8 @@
 /* header: Learn by doing and the AI curriculum take the page's header */
 .pv-home .sj-learn-head, .pv-home .sj-ai-head { gap: 12px; }
 .pv-home .sj-learn-head > :first-child, .pv-home .sj-ai-head > :first-child { color: var(--content-brand); }
+/* the eyebrow at the page's size and weight (the curriculum's scope sets it a step smaller) */
+.pv-home .sj-learn-head > :first-child, .pv-home .sj-ai-head > :first-child { font-size: 0.75rem; line-height: 1.33; font-weight: 700; }
 .pv-home .sj-learn-head h2, .pv-home .sj-ai-head h2 { font-size: var(--type-display-size); line-height: var(--type-display-lh); letter-spacing: var(--type-display-tracking); font-weight: var(--type-display-weight); }
 .pv-home .sj-learn-head .sj-lede, .pv-home .sj-ai-head .sj-lede { color: var(--content-secondary); }
 /* 48px (40 on phones) from the header to the content, as under every other header */

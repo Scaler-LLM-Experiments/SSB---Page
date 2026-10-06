@@ -1,0 +1,247 @@
+/* Why SSB (WhySection), on the section's faint grey. */
+
+/* ---- The receipt: the clip, and the figures beside it ---- */
+
+.why-evidence {
+  display: grid;
+  gap: var(--space-8);
+}
+@media (width >= 1056px) {
+  .why-evidence {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--space-12);
+    align-items: stretch;
+  }
+}
+/* A paused clip: a dark frame (the deck asks for a still from the video; this
+   stands in for it), a chip naming where it was said, the caption in white
+   like a subtitle, and a playback bar along its foot that runs while it is on
+   screen (WhyMotion). */
+.why-clip {
+  --why-clip-muted: color-mix(in oklab, var(--content-on-image) 62%, transparent);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-12);
+  overflow: hidden;
+  padding: var(--space-6) var(--space-6) var(--space-10);
+  border-radius: var(--radius-2xl);
+  background:
+    radial-gradient(
+      120% 90% at 85% 0%,
+      color-mix(in oklab, var(--content-on-image) 9%, transparent),
+      transparent 60%
+    ),
+    var(--color-neutral-dark-2);
+  color: var(--content-on-image);
+}
+@media (width >= 672px) {
+  .why-clip {
+    min-height: 22rem;
+    padding: var(--space-8) var(--space-10) var(--space-12);
+  }
+}
+.why-clip-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  align-self: flex-start;
+  padding: var(--space-1) var(--space-3);
+  border: var(--border-width-hair) solid color-mix(in oklab, var(--content-on-image) 22%, transparent);
+  border-radius: var(--radius-full);
+  color: var(--why-clip-muted);
+}
+.why-clip-chip svg {
+  width: var(--size-icon-sm);
+  height: var(--size-icon-sm);
+}
+.why-clip-caption {
+  max-width: 30ch;
+  font-size: var(--type-h1-size);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--type-h1-lh);
+  letter-spacing: var(--type-h1-tracking);
+  text-wrap: balance;
+}
+@media (width >= 1056px) {
+  .why-clip-caption {
+    font-size: var(--type-display-size);
+    line-height: 1.2;
+  }
+}
+.why-clip-who {
+  color: var(--why-clip-muted);
+}
+.why-clip-bar {
+  position: absolute;
+  inset: auto var(--space-6) var(--space-5);
+  height: 3px;
+  overflow: hidden;
+  border-radius: var(--radius-full);
+  background: color-mix(in oklab, var(--content-on-image) 20%, transparent);
+}
+@media (width >= 672px) {
+  .why-clip-bar {
+    inset-inline: var(--space-10);
+  }
+}
+.why-clip-played {
+  position: absolute;
+  inset: 0;
+  background: var(--content-on-image);
+  transform: scaleX(0.38);
+  transform-origin: left;
+}
+
+/* The coda, then the two figures, a hairline above each. */
+.why-figures {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-6);
+}
+.why-figure {
+  padding-top: var(--space-6);
+  border-top: var(--border-width-hair) solid var(--border-subtle);
+}
+@media (width >= 672px) {
+  .why-figure {
+    display: grid;
+    grid-template-columns: 9rem minmax(0, 1fr);
+    gap: var(--space-6);
+    align-items: start;
+  }
+}
+/* A figure's line clips it, so it slides up into place (WhyMotion). */
+.why-slide {
+  overflow: hidden;
+}
+.why-slide > span {
+  display: inline-block;
+}
+
+/* ---- The turn: a line ending in a role that keeps changing ---- */
+
+.why-roles {
+  margin-block: var(--space-20) var(--space-12);
+  max-width: 52rem;
+}
+@media (width >= 1056px) {
+  .why-roles {
+    margin-block: var(--space-32) var(--space-16);
+  }
+}
+/* As wide as the longest role (every role stacked in one cell), so turning over
+   never moves the line; clipped, so each slides through it. */
+.why-roll {
+  display: inline-grid;
+  vertical-align: bottom;
+  overflow: hidden;
+  color: var(--content-brand);
+}
+.why-role {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+}
+.why-role + .why-role {
+  visibility: hidden;
+}
+
+/* ---- The answer: three chapters that stack as the page scrolls ---- */
+
+/* Each card holds under the sticky nav (4rem), a step lower than the one
+   before, so the stack shows each card's top edge; the next scrolls up over it.
+   The space under each card is how long it holds. Under reduced motion they
+   simply follow one another. */
+.why-chapters {
+  --why-top: calc(4rem + var(--space-4));
+  --why-step: var(--space-3);
+  display: grid;
+}
+@media (width >= 1056px) {
+  .why-chapters {
+    --why-top: calc(4rem + var(--space-8));
+    --why-step: var(--space-4);
+  }
+}
+.why-chapter {
+  position: sticky;
+  top: calc(var(--why-top) + var(--i) * var(--why-step));
+  padding-bottom: var(--space-16);
+}
+.why-chapter:last-child {
+  padding-bottom: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .why-chapter {
+    position: static;
+    padding-bottom: var(--space-4);
+  }
+}
+.why-card {
+  position: relative;
+  display: grid;
+  overflow: hidden;
+  border: var(--border-width-hair) solid var(--border-subtle);
+  border-radius: var(--radius-2xl);
+  background: var(--surface-default);
+  box-shadow: var(--shadow-overlay);
+  transform-origin: 50% 0;
+}
+@media (width >= 1056px) {
+  .why-card {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  }
+}
+.why-card-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-10);
+  padding: var(--space-6);
+}
+@media (width >= 672px) {
+  .why-card-copy {
+    padding: var(--space-10);
+  }
+}
+/* The chapter's number, large and quiet. */
+.why-card-num {
+  font-size: var(--type-billboard-md-size);
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+  letter-spacing: var(--type-billboard-md-tracking);
+  color: var(--border-subtle);
+  font-variant-numeric: tabular-nums;
+}
+/* Settling back, a card fades toward the section's grey: a layer over it, so the
+   card itself stays opaque (fading the card let the one under it show through). */
+.why-card-dim {
+  position: absolute;
+  inset: 0;
+  background: var(--surface-subtle);
+  opacity: 0;
+  pointer-events: none;
+}
+.why-card-photo {
+  order: -1;
+}
+@media (width >= 1056px) {
+  .why-card-photo {
+    order: 0;
+    padding: var(--space-3) var(--space-3) var(--space-3) 0;
+  }
+}
+.why-card-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 742 / 428;
+  object-fit: cover;
+}
+@media (width >= 1056px) {
+  .why-card-photo img {
+    border-radius: calc(var(--radius-2xl) - var(--space-3));
+  }
+}

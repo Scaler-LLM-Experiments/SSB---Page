@@ -1,7 +1,7 @@
 /**
  * Motion shared by the placements variations with a carousel (stories,
  * showcase): the cards' entrance, the strip of rolling figures, and the
- * carousel's controls. Plain functions on server-rendered markup, called from
+ * carousel's controls (scrolling, or crossfading: fadeControls). Plain functions on server-rendered markup, called from
  * inside a `useMotion` setup.
  */
 import { gsap } from 'gsap';
@@ -120,7 +120,7 @@ export function rollIn(target: Element, tl: gsap.core.Timeline, at = 0) {
  * nearest, so swiping, a trackpad, a mouse drag, the arrows and the segments
  * all agree. The active segment fills over DWELL
  * seconds and the carousel moves on when it is full, wrapping round at the
- * end; it waits while the pointer is on the cards, focus is inside them, just
+ * end; it waits while the pointer is on the cards (or `area`), focus is inside them, just
  * after a swipe, during the entrance (`data-hold`), and while it is off
  * screen or the tab is hidden. The segments are `data-carousel-go` buttons;
  * the fills (`data-carousel-fill`) are found in the same order, wherever they
@@ -132,6 +132,8 @@ export function carouselControls(
   reduced: boolean,
   /** Called as a card becomes the active one (`first`: on setup, before anything is on screen). */
   onActivate?: (i: number, first: boolean) => void,
+  /** Where the pointer pauses it: the cards, or the cards with controls laid over them. */
+  area: HTMLElement = el,
 ) {
   const slides = Array.from(el.children) as HTMLElement[];
   const segments = gsap.utils.toArray<HTMLElement>('[data-carousel-go]', root);
@@ -227,12 +229,12 @@ export function carouselControls(
     },
     { passive: true },
   );
-  listen(el, 'pointerenter', (e) => {
+  listen(area, 'pointerenter', (e) => {
     if ((e as PointerEvent).pointerType !== 'mouse') return;
     hovered = true;
     update();
   });
-  listen(el, 'pointerleave', () => {
+  listen(area, 'pointerleave', () => {
     hovered = false;
     update();
   });
@@ -334,6 +336,154 @@ export function carouselControls(
       progress?.kill();
       touched?.kill();
       el.removeAttribute('data-hold');
+    },
+  };
+}
+
+/**
+ * A carousel that crossfades instead of scrolling (the showcase's, the team's
+ * call). The list is a stack from the server on (`pl-fade`: every card in one
+ * grid cell); `data-fade` marks that the script has taken over, so CSS stops
+ * holding the later cards transparent. `onShow` draws each change (the caller owns the motion);
+ * this owns which card is on show. The segments (`data-carousel-go`) jump to
+ * their card; the active one's fill (`data-carousel-fill`) runs over DWELL
+ * seconds and the carousel moves on when it is full, wrapping round. It waits
+ * while the pointer is on `area`, focus is inside the cards, just after a
+ * swipe, during the entrance (`data-hold`), and while it is off screen or the
+ * tab is hidden. A sideways touch swipe goes to the next or previous card; the
+ * cards not on show are inert.
+ */
+export function fadeControls(
+  root: HTMLElement,
+  el: HTMLElement,
+  reduced: boolean,
+  /** Draws the change to card i from card `from` (-1 on setup, before anything is on screen). */
+  onShow: (i: number, from: number) => void,
+  area: HTMLElement = el,
+) {
+  const slides = Array.from(el.children) as HTMLElement[];
+  const segments = gsap.utils.toArray<HTMLElement>('[data-carousel-go]', root);
+  const fills = gsap.utils.toArray<HTMLElement>('[data-carousel-fill]', root);
+  const off: (() => void)[] = [];
+  const listen = (
+    target: EventTarget,
+    type: string,
+    fn: EventListener,
+    options?: AddEventListenerOptions,
+  ) => {
+    target.addEventListener(type, fn, options);
+    off.push(() => target.removeEventListener(type, fn));
+  };
+
+  let active = -1;
+  let progress: gsap.core.Tween | null = null;
+  let hovered = false;
+  let visible = false;
+  let holdUntil = 0;
+  let touched: gsap.core.Tween | null = null;
+
+  const update = () => {
+    if (!progress) return;
+    const busy =
+      hovered ||
+      el.contains(document.activeElement) ||
+      performance.now() < holdUntil ||
+      el.hasAttribute('data-hold') ||
+      !visible ||
+      document.hidden;
+    if (busy) progress.pause();
+    else progress.play();
+  };
+
+  const show = (to: number) => {
+    const n = slides.length;
+    const i = ((to % n) + n) % n;
+    if (i === active) return;
+    const from = active;
+    active = i;
+    slides.forEach((slide, j) => {
+      slide.inert = j !== i;
+      slide.setAttribute('aria-hidden', String(j !== i));
+    });
+    segments.forEach((s, j) => s.setAttribute('aria-current', String(j === i)));
+    onShow(i, from);
+    progress?.kill();
+    progress = null;
+    fills.forEach((fill, j) => j !== i && gsap.set(fill, { scaleX: 0 }));
+    if (reduced) {
+      if (fills[i]) gsap.set(fills[i], { scaleX: 1 });
+      return;
+    }
+    progress = gsap.fromTo(
+      fills[i] ?? { scaleX: 0 },
+      { scaleX: 0 },
+      { scaleX: 1, duration: DWELL, ease: ease('linear'), paused: true, onComplete: () => show(active + 1) },
+    );
+    update();
+  };
+
+  const hold = () => {
+    holdUntil = performance.now() + TOUCH_HOLD * 1000;
+    touched?.kill();
+    touched = gsap.delayedCall(TOUCH_HOLD + 0.05, update);
+    update();
+  };
+
+  listen(area, 'pointerenter', (e) => {
+    if ((e as PointerEvent).pointerType !== 'mouse') return;
+    hovered = true;
+    update();
+  });
+  listen(area, 'pointerleave', () => {
+    hovered = false;
+    update();
+  });
+
+  // A sideways swipe (touch only: the cards are stacked, there is nothing to drag) goes on or back.
+  let swipe: { x: number; y: number } | null = null;
+  listen(el, 'pointerdown', (e) => {
+    const p = e as PointerEvent;
+    swipe = p.pointerType === 'touch' ? { x: p.clientX, y: p.clientY } : null;
+    if (swipe) hold();
+  });
+  listen(el, 'pointerup', (e) => {
+    if (!swipe) return;
+    const p = e as PointerEvent;
+    const dx = p.clientX - swipe.x;
+    const dy = p.clientY - swipe.y;
+    swipe = null;
+    if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;
+    show(active - Math.sign(dx));
+    hold();
+  });
+  listen(el, 'pointercancel', () => (swipe = null));
+  listen(el, 'focusin', update);
+  listen(el, 'focusout', () => requestAnimationFrame(update));
+  listen(document, 'visibilitychange', update);
+  segments.forEach((segment, i) => listen(segment, 'click', () => show(i)));
+
+  const io = new IntersectionObserver(([entry]) => {
+    visible = entry.isIntersecting;
+    update();
+  });
+  io.observe(el);
+  el.setAttribute('data-fade', '');
+  show(0);
+
+  return {
+    update,
+    active: () => active,
+    cleanup: () => {
+      io.disconnect();
+      off.forEach((fn) => fn());
+      progress?.kill();
+      touched?.kill();
+      el.removeAttribute('data-fade');
+      el.removeAttribute('data-hold');
+      slides.forEach((slide) => {
+        slide.inert = false;
+        slide.removeAttribute('aria-hidden');
+      });
     },
   };
 }

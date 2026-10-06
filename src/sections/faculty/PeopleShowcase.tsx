@@ -19,8 +19,9 @@ export type ShowcasePerson = {
 
 /**
  * The Faculty layout, for any group of people: a header (eyebrow, headline,
- * subtext, arrows), then a looping ticker row of MEET cards on tablet and up
- * and a swipeable card stack on phones, each with progress dots. Faculty and
+ * subtext, arrows), then a row of MEET cards on tablet and up (a plain carousel:
+ * arrows, swipe, trackpad; no ticker, no loop) and a swipeable card stack on
+ * phones (stops at either end), each with progress dots. Faculty and
  * the Scaler Impact Foundation use it.
  */
 export function PeopleShowcase({
@@ -30,23 +31,24 @@ export function PeopleShowcase({
   sub,
   people,
   itemName,
+  after,
 }: {
   /** Prefix for the headline's id (`<id>-title`), which labels the section. */
   id: string;
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
-  sub: string;
+  sub?: string;
   people: ShowcasePerson[];
   /** What one card is, for the controls' labels ("faculty", "member"). */
   itemName: string;
+  /** Rendered under the row, inside the section (the investors' VC events). */
+  after?: React.ReactNode;
 }) {
-  const { ref, page, goTo } = useHScroller();
+  // A plain carousel: no ticker, no loop (the team's call, 2026-10-06).
+  const { ref, page, goTo } = useHScroller({ auto: false });
   const sectionRef = React.useRef<HTMLElement>(null);
   useSectionEntrance(sectionRef);
 
-  // The ticker needs more than a screen's width of cards beyond the first set
-  // to wrap seamlessly; a short list (5 people) gets a third copy.
-  const copies = people.length < 8 ? 3 : 2;
 
   return (
     <Section ref={sectionRef} density="roomy" aria-labelledby={`${id}-title`} className="overflow-x-clip">
@@ -56,15 +58,19 @@ export function PeopleShowcase({
           className="mb-10 flex flex-col gap-6 sm:mb-12 sm:flex-row sm:items-end sm:justify-between"
         >
           <div className="flex max-w-(--size-measure-max) flex-col gap-3">
-            <Heading as="p" size="eyebrow" className="text-content-brand" data-enter="eyebrow">
-              {eyebrow}
-            </Heading>
+            {eyebrow ? (
+              <Heading as="p" size="eyebrow" className="text-content-brand" data-enter="eyebrow">
+                {eyebrow}
+              </Heading>
+            ) : null}
             <Heading as="h2" size="display" id={`${id}-title`} data-enter="headline">
               {title}
             </Heading>
-            <Text size="lg" tone="secondary" data-enter="sub">
-              {sub}
-            </Text>
+            {sub ? (
+              <Text size="lg" tone="secondary" data-enter="sub">
+                {sub}
+              </Text>
+            ) : null}
           </div>
           <div data-enter="controls" className="hidden sm:block">
             <HScrollerControls label={itemName} page={page} />
@@ -77,10 +83,11 @@ export function PeopleShowcase({
         <CardStack
           items={people}
           getKey={(m) => m.name}
-          label={eyebrow}
+          label={eyebrow ?? title}
           itemName={itemName}
           announce={(m) => `${m.name}, ${m.role}`}
           dots
+          loop={false}
           renderCard={(m, i) => (
             <MeetCard
               image={m.image}
@@ -93,35 +100,25 @@ export function PeopleShowcase({
         />
       </Container>
 
-      {/* Tablet and up: the looping ticker row, same card left-aligned. */}
-      <HScrollerTrack trackRef={ref} label={eyebrow}>
-        {/* The ticker loops through copies of the list; only the first is real. */}
-        {Array.from({ length: copies }, (_, c) =>
-          people.map((m, i) => {
-            const copy = c > 0;
-            return (
-              <li
-                key={`${c}-${m.name}`}
-                data-copy={copy || undefined}
-                aria-hidden={copy || undefined}
-                inert={copy || undefined}
-              >
-                <MeetCard
-                  image={m.image}
-                  name={m.name}
-                  role={m.role}
-                  logo={m.logo}
-                  align="start"
-                  priority={!copy && i < 5}
-                />
-              </li>
-            );
-          }),
-        )}
+      {/* Tablet and up: the row, same card left-aligned. */}
+      <HScrollerTrack trackRef={ref} label={eyebrow ?? title}>
+        {people.map((m, i) => (
+          <li key={m.name}>
+            <MeetCard
+              image={m.image}
+              name={m.name}
+              role={m.role}
+              logo={m.logo}
+              align="start"
+              priority={i < 5}
+            />
+          </li>
+        ))}
       </HScrollerTrack>
       <div className="hidden sm:block">
-        <ScrollDots scroller={ref} count={people.length} itemName={itemName} onSelect={goTo} />
+        <ScrollDots scroller={ref} count={people.length} itemName={itemName} onSelect={goTo} fill="solid" />
       </div>
+      {after}
     </Section>
   );
 }

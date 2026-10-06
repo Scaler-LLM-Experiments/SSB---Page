@@ -22,6 +22,10 @@ export function FaqSection() {
             <Heading as="h2" size="display" id="faq-title" data-enter="headline">
               Frequently Asked Questions
             </Heading>
+            <Text size="lg" tone="secondary" data-enter="sub">
+              Answers to what applicants ask most about the degree, eligibility, the programme and the
+              internship.
+            </Text>
           </div>
 
           <div data-enter="block" className="min-w-0">
