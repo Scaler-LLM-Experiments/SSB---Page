@@ -315,7 +315,8 @@ cells, hairlines between them (a 1px gap over the line colour), no fill (6 × 2 
 3 × 4 on a phone, logos at `zoom: 0.75` there; twelve always fill their rows). Each cell stacks its
 logo from each set of twelve (31 logos, three sets; a cell with fewer wraps round); every 4s they
 all crossfade in place to the next set together (`cycleBoxes`; a drift up and out was tried),
-waiting on hover, off screen, a hidden tab, and under reduced motion. The logos are in their own
+the count starting when the box comes on screen, stopped off screen, on a hidden tab and under
+reduced motion. No pause under the pointer (2026-10-06): the team read it as the cycle running slow. The logos are in their own
 colours (the team's call, 2026-10-06; grey until pointed at before). The line is the team's, "200+
 recruiters hire SSB students on campus." (`recruitersTitle`, `Heading size="3"` at medium weight; it was an eyebrow, then size 2,
 "Our recruiters"): **"200+" is a placeholder**, the deck lists 62. Seven of the 31 were added

@@ -16,9 +16,13 @@ const CYCLE = 4;
 /**
  * The recruiters' boxes (`data-logo-box`, each a stack of `data-logo`, one per
  * set): every CYCLE seconds they all move on to the next set together, each
- * crossfading in place. Waits while the pointer is on
- * them, while they are off screen and while the tab is hidden; still under
- * reduced motion (the first set, as the CSS shows it). Returns its cleanup.
+ * crossfading in place. The count starts when the boxes come on screen (and
+ * again when the tab comes back), so the first change is CYCLE seconds after
+ * they are seen; it stops while they are off screen or the tab is hidden. No
+ * pause under the pointer (the team's call: it read as the cycle being slow;
+ * the logos are in colour already, so pointing at one needs nothing to wait
+ * for). Still under reduced motion (the first set, as the CSS shows it).
+ * Returns its cleanup.
  */
 function cycleBoxes(root: HTMLElement, reduced: boolean) {
   const grid = root.querySelector<HTMLElement>('[data-logo-boxes]');
@@ -29,7 +33,6 @@ function cycleBoxes(root: HTMLElement, reduced: boolean) {
   if (!grid || reduced || sets < 2) return () => {};
 
   let k = 0;
-  let hovered = false;
   let visible = false;
   stacks.forEach((stack) => stack.forEach((logo, j) => gsap.set(logo, { autoAlpha: j ? 0 : 1 })));
   const advance = () => {
@@ -50,24 +53,28 @@ function cycleBoxes(root: HTMLElement, reduced: boolean) {
     k = next;
   };
   let call: gsap.core.Tween | null = null;
-  const schedule = () => {
+  const stop = () => {
+    call?.kill();
+    call = null;
+  };
+  const start = () => {
+    stop();
+    if (!visible || document.hidden) return;
     call = gsap.delayedCall(CYCLE, () => {
-      if (!hovered && visible && !document.hidden) advance();
-      schedule();
+      advance();
+      start();
     });
   };
-  schedule();
-  const enter = () => (hovered = true);
-  const leave = () => (hovered = false);
-  grid.addEventListener('pointerenter', enter);
-  grid.addEventListener('pointerleave', leave);
-  const io = new IntersectionObserver(([entry]) => (visible = entry.isIntersecting));
+  const io = new IntersectionObserver(([entry]) => {
+    visible = entry.isIntersecting;
+    start();
+  });
   io.observe(grid);
+  document.addEventListener('visibilitychange', start);
   return () => {
-    call?.kill();
+    stop();
     io.disconnect();
-    grid.removeEventListener('pointerenter', enter);
-    grid.removeEventListener('pointerleave', leave);
+    document.removeEventListener('visibilitychange', start);
   };
 }
 
