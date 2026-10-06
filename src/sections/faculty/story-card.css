@@ -1,13 +1,12 @@
 /* =========================================================
-   SSX Story Card (overlay variant) — ported from human-feature-card.html.
-   Photo fills the card, content sits on a text sits straight on the
-   photo's dark base, one logo under it in white.
+   Faculty card — a photo card with the text on the photo's dark base:
+   a "Meet" kicker with a rule, the name large, the role in capitals and the
+   company wordmark in white. data-align="center" (phones) | "start" (desktop).
    Tokens only; follows data-brand / data-theme.
    ========================================================= */
 
 .ssx-card {
   --card-radius: var(--radius-lg);
-  --card-pad: var(--space-6);
 
   position: relative;
   isolation: isolate;
@@ -24,6 +23,16 @@
   color: var(--on-image-ink);
   font-family: var(--font-family-sans);
 }
+/* A soft dark fade behind the text, so it stays legible where it reaches
+   into the lighter part of a photo. */
+.ssx-card::after {
+  content: '';
+  position: absolute;
+  inset: 40% 0 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, var(--surface-image-scrim) 60%);
+}
 
 .ssx-card__media {
   position: absolute;
@@ -38,81 +47,92 @@
   object-position: var(--card-focal, 50% 0%);
 }
 
-.ssx-card__content {
-  position: relative;
+.meet-card__content {
   display: flex;
-  flex: none;
   flex-direction: column;
-  gap: var(--space-4);
+  align-items: center;
+  gap: var(--space-2);
   margin-top: auto;
-  padding: var(--card-pad);
+  padding: var(--space-6) var(--space-5);
+  text-align: center;
 }
-
-.ssx-card__body {
-  display: grid;
-  gap: var(--space-1);
+.ssx-card[data-align='start'] .meet-card__content {
+  align-items: flex-start;
+  text-align: start;
 }
-.ssx-card__title {
+.meet-card__kicker {
+  margin: 0 0 var(--space-1);
+  padding-bottom: var(--space-1);
+  border-bottom: var(--border-thick) solid var(--on-image-ink);
+  font-size: var(--type-eyebrow-size);
+  line-height: var(--type-eyebrow-lh);
+  letter-spacing: var(--type-eyebrow-tracking);
+  font-weight: var(--type-eyebrow-weight);
+  text-transform: uppercase;
+}
+.meet-card__name {
   margin: 0;
   font-size: var(--type-h2-size);
   line-height: var(--type-h2-lh);
   letter-spacing: var(--type-h2-tracking);
-  font-weight: var(--type-h2-weight);
-  color: var(--on-image-ink);
-  overflow-wrap: anywhere;
+  font-weight: var(--font-weight-semibold);
   text-wrap: balance;
 }
-.ssx-card__description {
-  margin: 0;
-  font-size: var(--type-body-sm-size);
-  line-height: var(--type-body-sm-lh);
-  letter-spacing: var(--type-body-sm-tracking);
-  font-weight: var(--type-body-sm-weight);
+.meet-card__role {
+  /* sits close under the name: pull back most of the column gap */
+  margin: calc(var(--space-1) * -1) 0 0;
+  max-width: 28ch;
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-lh);
+  letter-spacing: var(--type-eyebrow-tracking);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
   color: var(--on-image-ink-secondary);
-  text-wrap: pretty;
+  text-wrap: balance;
 }
-
-/* ---- Logo: one per card, 24px tall (20px on a phone), width auto ---- */
-.ssx-logos {
-  --logo-h: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-  min-width: 0;
-  height: var(--logo-h);
+/* Phone card: "Meet" and the role at 10px, below the scale's 12px floor
+   (caption) on purpose, so the name leads. */
+.ssx-card[data-align='center'] .meet-card__kicker,
+.ssx-card[data-align='center'] .meet-card__role {
+  font-size: 0.625rem;
 }
-.ssx-logo {
+/* …and the role keeps the full gap under the name (8px, not the desktop's 4px). */
+.ssx-card[data-align='center'] .meet-card__role {
+  margin-top: 0;
+}
+/* Desktop row: the earlier card sizes — name at the h2 role (24px), the
+   logo 24px tall. */
+.ssx-card[data-align='start'] .meet-card__name {
+  font-size: var(--type-h2-size);
+  line-height: var(--type-h2-lh);
+  letter-spacing: var(--type-h2-tracking);
+}
+.ssx-card[data-align='start'] .meet-card__logo img {
+  height: 1.5rem;
+}
+.meet-card__logo {
+  margin-top: var(--space-2);
+}
+.meet-card__logo img {
   display: block;
-  flex: 0 1 auto;
-  height: var(--logo-h);
+  height: 1.25rem;
   width: auto;
-  min-width: 0;
-  max-width: 100%;
+  max-width: 10rem;
   object-fit: contain;
   object-position: left center;
   filter: brightness(0) invert(1);
 }
-
-/* ---- Mobile: spacing only; type steps come from the type roles ---- */
-@media (max-width: 671px) {
-  .ssx-card {
-    --card-pad: var(--space-4);
-  }
-  .ssx-card .ssx-card__content {
-    gap: var(--space-3);
-  }
-  .ssx-card .ssx-logos {
-    --logo-h: 1.25rem;
-  }
+.ssx-card[data-align='center'] .meet-card__logo img {
+  object-position: center;
 }
 
 /* =========================================================
-   Horizontal scroller: the track bleeds to the viewport edge but its
-   first card lines up with the Container's content edge.
+   Desktop row (from 672px): a looping ticker. The track bleeds to the
+   viewport edge but its first card lines up with the Container's content edge.
    ========================================================= */
 .h-scroller {
   --scroller-inset: calc(max(0px, (100% - var(--size-container-max)) / 2) + var(--space-gutter));
-  display: flex;
+  display: none; /* phones use the card stack (.fc-*) instead */
   gap: var(--space-4);
   margin: 0;
   padding: 0 var(--scroller-inset) var(--space-2);
@@ -121,6 +141,11 @@
   overscroll-behavior-x: contain;
   scroll-padding-inline: var(--scroller-inset);
   scrollbar-width: none;
+}
+@media (min-width: 672px) {
+  .h-scroller {
+    display: flex;
+  }
 }
 .h-scroller::-webkit-scrollbar {
   display: none;

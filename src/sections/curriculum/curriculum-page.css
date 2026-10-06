@@ -1,0 +1,7 @@
+/* the curriculum as it sits on the home page: the page's own 1280px column (24px gutter),
+   so its frame adds no padding of its own; the section above already ends with the
+   section rhythm, so no extra top padding */
+.pv-page { box-sizing: border-box; max-width: 1280px; margin: 0 auto; padding: 72px 24px 96px; }
+@media (max-width: 767px) { .pv-page { padding: 40px 16px 64px; } }
+.pv-home { padding-top: 0; }
+.pv-home .sj-shell { padding-left: 0; padding-right: 0; }

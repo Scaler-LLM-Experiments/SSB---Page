@@ -1,0 +1,235 @@
+/* =========================================================
+   Strong Alumni Base: a row of photo cards; each shows where the
+   person went after SSB, above where they were before, arrow between.
+   ========================================================= */
+
+/* The row starts on the page's content edge and runs off the right, like Faculty's. */
+.alumni-row {
+  --scroller-inset: calc(max(0px, (100% - var(--size-container-max)) / 2) + var(--space-gutter));
+  display: flex;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0 var(--scroller-inset) var(--space-2);
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-padding-inline: var(--scroller-inset);
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.alumni-row::-webkit-scrollbar {
+  display: none;
+}
+.alumni-row > li {
+  position: relative;
+  flex: none;
+  /* phones: the same card, scaled down to fit, the next one peeking in */
+  width: min(86vw, 30rem);
+  aspect-ratio: 3 / 2;
+  scroll-snap-align: start;
+}
+
+/* ---- The card: one design at 480 x 320, scaled to its slot (AlumniCard sets
+   --alumni-scale from the slot's width: 1 on the web, ~0.7 on a phone), so
+   the phone shows exactly the web card, smaller. Sizes inside are fixed at
+   the web values, not the type tokens, which step down on phones. ---- */
+.alumni-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  width: 480px;
+  height: 320px;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--surface-inverse);
+  color: var(--on-image-ink);
+  transform: scale(var(--alumni-scale, 1));
+  transform-origin: top left;
+}
+.alumni-card__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* A light shade over the right side, where the text sits on the photo's own blur. */
+.alumni-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, transparent 45%, rgb(0 0 0 / 0.35) 70%);
+  pointer-events: none;
+}
+.alumni-card__body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-5);
+  margin-left: 46%;
+  padding: var(--space-8) var(--space-4) var(--space-6) 0;
+  /* the card is dark at every theme; the brand colour is the dark theme's */
+  background: transparent;
+  color: var(--on-image-ink);
+}
+.alumni-card__name {
+  margin: 0;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  font-weight: var(--font-weight-medium);
+}
+/* 24px: the longest role ("Brand Marketing at The Whole Truth") fits in three lines */
+.alumni-card__role {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.27;
+  letter-spacing: -0.005em;
+  font-weight: var(--font-weight-medium);
+  text-wrap: balance;
+}
+
+/* ---- The move: post SSB above pre SSB, a double arrow between. ---- */
+.alumni-card__path {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.alumni-card__step {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.alumni-card__tile {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--space-12);
+  height: var(--space-12);
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: #fff;
+  color: var(--on-image-ink);
+}
+/* The briefcase: a frosted tile, not a white one. */
+.alumni-card__tile[data-pre] {
+  background: rgb(255 255 255 / 0.18);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.alumni-card__tile svg {
+  width: 45%;
+  height: 45%;
+}
+.alumni-card__tile img {
+  width: 62%;
+  height: 62%;
+  object-fit: contain;
+}
+/* Company marks that come on their own square fill the tile. */
+.alumni-card__tile[data-fill] img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The double arrow, centred under the tiles: two chevrons, overlapped. */
+.alumni-card__arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: var(--space-12);
+  padding-block: var(--space-1-5);
+  color: var(--on-image-ink);
+}
+.alumni-card__arrow svg {
+  width: var(--space-5);
+  height: var(--space-5);
+}
+.alumni-card__arrow svg + svg {
+  margin-top: calc(var(--space-5) * -0.55);
+}
+/* Hover (or on screen, on touch): the chevrons stay put and fade in and out,
+   the lower one first, so the light seems to travel up; each lights green at
+   its peak. The company tile answers with a ring that spreads and fades. */
+@keyframes alumni-climb {
+  0%,
+  100% {
+    opacity: 0.25;
+    color: var(--on-image-ink);
+  }
+  40% {
+    opacity: 1;
+    color: var(--content-brand); /* the dark theme's light SSB green, #7bc99a */
+  }
+}
+@keyframes alumni-ring {
+  0%,
+  35% {
+    box-shadow: 0 0 0 0 rgb(255 255 255 / 0.65);
+  }
+  100% {
+    box-shadow: 0 0 0 10px rgb(255 255 255 / 0);
+  }
+}
+.alumni-card__step:first-child .alumni-card__tile {
+  transition: transform var(--motion-duration-slow) var(--motion-easing-productive-in-out);
+}
+@media (hover: hover) {
+  .alumni-card:hover .alumni-card__arrow svg {
+    animation: alumni-climb 1200ms var(--motion-easing-productive-in-out) infinite;
+  }
+  .alumni-card:hover .alumni-card__step:first-child .alumni-card__tile {
+    transform: scale(1.04);
+    animation: alumni-ring 1200ms var(--motion-easing-productive-in-out) 300ms infinite;
+  }
+}
+@media (hover: none) {
+  .alumni-card[data-in-view] .alumni-card__arrow svg {
+    animation: alumni-climb 1500ms var(--motion-easing-productive-in-out) infinite;
+  }
+  .alumni-card[data-in-view] .alumni-card__step:first-child .alumni-card__tile {
+    animation: alumni-ring 1500ms var(--motion-easing-productive-in-out) 375ms infinite;
+  }
+}
+/* The lower chevron leads, the upper follows. */
+.alumni-card__arrow svg:first-child {
+  animation-delay: 200ms !important;
+}
+
+.alumni-card__label {
+  display: block;
+  /* 11px: a step under the caption, so the value leads */
+  font-size: 0.6875rem;
+  line-height: var(--type-caption-lh);
+  letter-spacing: var(--type-eyebrow-tracking);
+  text-transform: uppercase;
+  color: var(--on-image-ink-secondary);
+}
+.alumni-card__value {
+  display: block;
+  font-size: 0.875rem;
+  line-height: 1.2;
+  font-weight: var(--font-weight-medium);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .alumni-card .alumni-card__arrow svg,
+  .alumni-card .alumni-card__tile {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* Your peers come from: the hero's ticker, in colour. Its sizes give square marks (EY,
+   Apollo, Jio) the same ink as the wordmarks, which makes them taller than the
+   row; cap them so nothing is clipped (object-contain keeps their shape). */
+.peers-ticker .hero-ticker-logo {
+  max-height: var(--space-10);
+  /* in their own colours here, not the hero's one tone */
+  filter: none;
+  opacity: 1;
+}

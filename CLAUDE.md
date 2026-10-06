@@ -88,9 +88,21 @@ src/
       moment.ts           the scroll moment's phases, in screens of scroll; the track height from them
       FilmPlayer.tsx      the big play button, and the YouTube film with YouTube's controls rebuilt
       film-player.css     those controls, in YouTube's own values (not the design system)
+  content/
+    innovation-lab.ts   Scaler Innovation Lab stats and incubated startups (deck slide 12)
   sections/faculty/
-    FacultySection.tsx  header + an auto-scrolling row of photo story cards (portraits in public/faculty)
+    FacultySection.tsx  header, then the looping card row from `sm` up and a card stack on phones
+                        (portraits in public/faculty, 640x800 WebP)
     HScroller.tsx       the row: a real scroller that loops, pauses on hover/focus/touch, arrow buttons
+    FacultyCarouselMobile.tsx  phones: front card with neighbours tucked behind, glass arrows, drag to
+                        swipe (the card follows the finger and drops to the back), auto-advance
+    MeetCard.tsx        photo card: "Meet" kicker, name, role in capitals, company logo in white;
+                        centred on phones, left-aligned in the row
+    useSectionEntrance.ts  the section's entrance (below); the Innovation Lab uses it too, with three
+                        `decks` (stat cards, startups panel, startup cards), each wiped open on its own trigger
+  sections/innovation-lab/
+    InnovationLabSection.tsx  sticky pitch on the left; stat cards (count up) and a framed startups row
+                        (banners in public/startups) on the right; same entrance as Faculty
     StoryCard.tsx       photo card: name, role, one company logo in white
     useSectionEntrance.ts  the section's entrance (below)
   sections/why/         WhySection.tsx (server): faculty-style header, the quote as a paused clip with

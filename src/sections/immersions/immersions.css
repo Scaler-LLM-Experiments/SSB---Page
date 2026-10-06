@@ -1,0 +1,284 @@
+/* =========================================================
+   Immersions beyond the classroom: two landscape features,
+   then the creator lab's success stories.
+   ========================================================= */
+
+/* ---- The features: side by side on the web, stacked on phones. ---- */
+.imm-features {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 1056px) {
+  .imm-features {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* The scene full-bleed; the text over its own blurred right side. */
+.imm-feature {
+  position: relative;
+  display: grid;
+  overflow: hidden;
+  aspect-ratio: 948 / 544;
+  border-radius: var(--radius-lg);
+  background: var(--surface-inverse);
+  color: var(--on-image-ink);
+}
+.imm-feature__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* A light shade over the right side so white text holds on the light blur. */
+.imm-feature::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, transparent 40%, rgb(0 0 0 / 0.55) 62%, rgb(0 0 0 / 0.6));
+  pointer-events: none;
+}
+.imm-feature__body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: var(--space-3);
+  margin-left: 50%;
+  padding: var(--space-8) var(--space-6) var(--space-6) var(--space-2);
+}
+.imm-feature__title {
+  margin: 0;
+  color: var(--on-image-ink);
+}
+.imm-feature__text {
+  margin: 0;
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-lh);
+  color: var(--on-image-ink-secondary);
+}
+/* Phones: the scene on top (its left part), the text on dark below. */
+@media (max-width: 671px) {
+  .imm-feature {
+    aspect-ratio: auto;
+    grid-template-rows: auto auto;
+  }
+  .imm-feature__photo {
+    position: relative;
+    inset: auto;
+    aspect-ratio: 16 / 10;
+    object-position: left center;
+  }
+  .imm-feature::after {
+    display: none;
+  }
+  .imm-feature__body {
+    margin-left: 0;
+    padding: var(--space-5);
+  }
+  .imm-feature__text {
+    font-size: var(--type-body-sm-size);
+    line-height: var(--type-body-sm-lh);
+  }
+}
+
+/* ---- The creators: three across from 672px; a swipe row on phones. ---- */
+.creator-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.creator-dots {
+  display: none;
+}
+@media (max-width: 671px) {
+  /* The row runs edge to edge; its padding keeps the first card on the gutter. */
+  .creator-wrap {
+    padding-inline: 0;
+  }
+  .creator-row {
+    display: flex;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding-inline: var(--space-gutter);
+    scroll-padding-inline: var(--space-gutter);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .creator-row::-webkit-scrollbar {
+    display: none;
+  }
+  .creator-row > li {
+    flex: none;
+    width: 82vw;
+    scroll-snap-align: start;
+  }
+  .creator-dots {
+    display: block;
+  }
+}
+
+.creator-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  aspect-ratio: 702 / 750;
+  border-radius: var(--radius-lg);
+  background: var(--surface-inverse);
+  color: var(--on-image-ink);
+  text-align: center;
+}
+.creator-card__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Shade at the top for the name, and a deep fade at the foot for the stats. */
+.creator-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgb(0 0 0 / 0.45), transparent 32%),
+    linear-gradient(to top, rgb(0 0 0 / 0.9) 4%, rgb(0 0 0 / 0.55) 26%, transparent 46%);
+  pointer-events: none;
+}
+.creator-card__head,
+.creator-card__foot {
+  position: relative;
+  z-index: 1;
+}
+.creator-card__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-6) var(--space-5) 0;
+}
+.creator-card__badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  overflow: hidden;
+  margin-bottom: var(--space-1);
+  padding: var(--space-0-5) var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--surface-brand-solid);
+  color: var(--content-on-brand-solid);
+  font-size: var(--type-caption-size);
+  line-height: 1.4;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--type-eyebrow-tracking);
+  text-transform: uppercase;
+}
+.creator-card__badge svg {
+  width: 0.85em;
+  height: 0.85em;
+}
+/* On hover, a band of light sweeps across the badge. */
+.creator-card__badge::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 30%, rgb(255 255 255 / 0.55) 50%, transparent 70%);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+@keyframes creator-shimmer {
+  to {
+    transform: translateX(120%);
+  }
+}
+@media (hover: hover) {
+  .creator-card:hover .creator-card__badge::after {
+    animation: creator-shimmer 1100ms var(--motion-easing-productive-in-out) infinite;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .creator-card:hover .creator-card__badge::after {
+    animation: none;
+  }
+}
+.creator-card__name {
+  margin: 0;
+  font-size: var(--type-h1-size);
+  line-height: var(--type-h1-lh);
+  letter-spacing: var(--type-h1-tracking);
+  font-weight: var(--font-weight-semibold);
+  text-shadow: 0 1px 12px rgb(0 0 0 / 0.25);
+}
+.creator-card__niche {
+  margin: 0;
+  font-size: var(--type-body-sm-size);
+  line-height: var(--type-body-sm-lh);
+  text-shadow: 0 1px 8px rgb(0 0 0 / 0.3);
+}
+
+.creator-card__foot {
+  padding: 0 var(--space-5) var(--space-5);
+}
+/* "Achievements" in a white pill, on a hairline across the card. */
+.creator-card__rule {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin: 0 0 var(--space-5);
+}
+.creator-card__rule::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  border-top: var(--border-hair) solid rgb(255 255 255 / 0.35);
+}
+.creator-card__rule span {
+  position: relative;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  background: #fff;
+  color: #171717;
+  font-size: var(--type-caption-size);
+  line-height: 1.4;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--type-eyebrow-tracking);
+  text-transform: uppercase;
+}
+/* Three stats, value over label, split by thin rules. */
+.creator-card__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0;
+}
+.creator-card__stats > div {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--space-1);
+}
+.creator-card__stats > div + div {
+  border-left: var(--border-hair) solid rgb(255 255 255 / 0.3);
+}
+.creator-card__stats dd {
+  margin: 0;
+  font-size: var(--type-h2-size);
+  line-height: var(--type-h2-lh);
+  font-weight: var(--font-weight-semibold);
+}
+.creator-card__stats dt {
+  font-size: var(--type-body-sm-size);
+  line-height: var(--type-body-sm-lh);
+  color: var(--on-image-ink-secondary);
+}
