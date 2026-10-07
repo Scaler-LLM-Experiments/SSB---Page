@@ -271,3 +271,9 @@
   .sf-foot[data-variant='campus'] { --h: min(calc(100svh - var(--sn-h, 61px) - 40px), 780px); }
   .sfc-scene::after { background: linear-gradient(to bottom, transparent 0, transparent 14%, rgb(7 11 20 / 0.62) 40%, rgb(7 11 20 / 0.86) 70%, rgb(7 11 20 / 0.95) 100%); }
 }
+/* no band between the page and the footer's photo. The band was the sheet's own foot: 56px of
+   padding under the last section, in the footer shell's colour, which is black wherever the shell
+   has no light theme of its own (the repo's page). The padding is gone, so the last section runs
+   straight down to the photo, and anything behind the sheet is white. */
+.sf[data-lift] .sf-lift { padding-bottom: 0; }
+.sf[data-lift] { background: #fff; }

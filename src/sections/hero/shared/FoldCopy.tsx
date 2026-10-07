@@ -86,7 +86,7 @@ export function FoldLeaders({
   alumniFrom,
   className,
   ...props
-}: { line?: string; leaders: HeroLeader[]; alumniLine?: string; alumniFrom?: string[] } & Block) {
+}: { line?: string; leaders: HeroLeader[]; alumniLine?: string; alumniFrom?: { name: string; logo?: string }[] } & Block) {
   return (
     <div className={cn('fold-leaders', className)} {...props}>
       {line ? <p className="fold-leaders-line">{line}</p> : null}
@@ -94,9 +94,13 @@ export function FoldLeaders({
       {alumniLine && alumniFrom?.length ? (
         <p className="fold-alumni">
           <span className="fold-alumni-line">{alumniLine}</span>
-          {alumniFrom.map((name) => (
-            <span key={name} className="fold-alumni-name">
-              {name}
+          {alumniFrom.map((a) => (
+            <span key={a.name} className="fold-alumni-name">
+              {a.logo ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img className="fold-alumni-logo" src={a.logo} alt="" />
+              ) : null}
+              {a.name}
             </span>
           ))}
         </p>

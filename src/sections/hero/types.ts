@@ -72,6 +72,6 @@ export type HeroContent = {
   leaders?: HeroLeader[];
   /** A second line under the leaders: "Built by alumni from", then the schools' names. */
   alumniLine?: string;
-  alumniFrom?: string[];
+  alumniFrom?: { name: string; logo?: string }[];
   media?: HeroMedia;
 };

@@ -375,3 +375,15 @@
     border-radius: calc(var(--radius-2xl) - var(--space-3));
   }
 }
+
+/* The finished stack leaves as one piece (2026-10-07), as the AI journey's does. A sticky chapter
+   is pushed out when the list's end reaches the foot of its box, so each chapter's foot padding is
+   the step of every chapter after it (the room between chapters in the flow is a top margin
+   instead). The chapters keep their steps as they scroll away together. --why-n: how many. */
+.why-chapters { --why-n: 3; }
+.why-chapter, .why-chapter:last-child { padding-bottom: calc((var(--why-n) - 1 - var(--i)) * var(--why-step)); }
+.why-chapter + .why-chapter { margin-top: var(--space-16); }
+@media (prefers-reduced-motion: reduce) {
+  .why-chapter, .why-chapter:last-child { padding-bottom: 0; }
+  .why-chapter + .why-chapter { margin-top: var(--space-4); }
+}

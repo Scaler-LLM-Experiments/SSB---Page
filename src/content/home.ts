@@ -30,9 +30,12 @@ export const hero: HeroContent = {
   },
   leadersLine: 'Learn business hands-on from 100+ industry-leading faculty from',
   // Feedback, 2026-10-06. TO CONFIRM: which Oxford reference to use (Oxford / Saïd Business School);
-  // names only until the two logos are supplied.
   alumniLine: 'Built by alumni from',
-  alumniFrom: ['Oxford', 'Harvard Business School'],
+  // Logos from Wikimedia Commons (the Oxford circlet; the HBS shield), in public/logos.
+  alumniFrom: [
+    { name: 'Oxford', logo: '/logos/oxford.svg' },
+    { name: 'Harvard Business School', logo: '/logos/harvard-business-school.svg' },
+  ],
   // The deck's list, in its order: each organisation's own colour mark (its site or app icon,
   // public/logos/marks/lead-*.png, 96px) with its name beside it, as the AI curriculum's tools.
   leaders: [

@@ -64,3 +64,17 @@
     overflow-x: auto;
   }
 }
+
+/* The marks stand on the ground itself (2026-10-07): no white tile behind them (the files are cut
+   out, transparent), each drawn whole at one height. */
+.mt-list img {
+  width: auto;
+  max-width: calc(var(--space-8) * 1.6);
+  border-radius: 0;
+  background: none;
+  object-fit: contain;
+}
+.mt[data-tone='light'] .mt-list img {
+  box-shadow: none;
+  outline: 0;
+}

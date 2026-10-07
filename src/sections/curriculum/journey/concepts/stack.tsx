@@ -790,7 +790,13 @@ export function CardStack({ items: list, cfg, label, cKey = 'scrollStack', topOf
     const off = Math.max(topOffset, navBottom);
     const next = items.current.map((el, i) => (el ? Math.min(off + SS_TOP + i * peek, vh - el.offsetHeight - dock) : off + SS_TOP));
     items.current.forEach((el, i) => {
-      if (el) el.style.top = `${next[i]}px`;
+      if (!el) return;
+      el.style.top = `${next[i]}px`;
+      // the finished stack leaves as one piece: a sticky card is pushed out when the list's end
+      // reaches the foot of its margin box, so each card's foot margin is the peek of every card
+      // after it. The cards then keep their steps (and their depth) as they scroll away together,
+      // instead of the earlier ones sliding down behind the last.
+      el.style.marginBottom = `${(items.current.length - 1 - i) * peek}px`;
     });
     setTops((prev) => (prev.length === next.length && prev.every((v, i) => v === next[i]) ? prev : next));
   }, [topOffset, peek, dock]);
