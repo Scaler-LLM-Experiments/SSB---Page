@@ -321,9 +321,20 @@
 }
 /* (both lines are two lines now, so the bars match at their own height: no fixed min-height) */
 
-/* The features' overlay as the creator cards have it (2026-10-07, the team's ask): a dark shade rising
-   from the foot over the photo, the title and line straight on it in white; the glass bar is gone. */
-.imm-feature__media::after { content: ''; position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(to top, rgb(0 0 0 / 0.9) 4%, rgb(0 0 0 / 0.55) 30%, transparent 58%); }
-.imm-feature__body { right: 0; bottom: 0; left: 0; z-index: 1; padding: 24px 28px 26px; border: 0; border-radius: 0; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
-@media (max-width: 671px) { .imm-feature__body { padding: 18px 18px 20px; } }
+/* The creator cards' achievements on the immersions' glass bar (2026-10-07, the team's ask): the
+   rule, pill and stats sit in one frosted panel at the card's foot; the shade under them lighter. */
+.creator-card::after {
+  background:
+    linear-gradient(to bottom, rgb(0 0 0 / 0.45), transparent 32%),
+    linear-gradient(to top, rgb(0 0 0 / 0.45) 0%, transparent 40%);
+}
+.creator-card__foot {
+  --cc-glass: blur(22px) saturate(1.5);
+  margin: 0 var(--space-3) var(--space-3);
+  padding: var(--space-5) var(--space-4) var(--space-4);
+  border: 1px solid rgb(255 255 255 / 0.22);
+  border-radius: 18px;
+  background: rgb(12 18 15 / 0.42);
+  -webkit-backdrop-filter: var(--cc-glass);
+  backdrop-filter: var(--cc-glass);
+}
