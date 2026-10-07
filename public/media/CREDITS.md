@@ -11,5 +11,6 @@
 | `mittal-band.mp4`, `mittal-band.webp` | the team's GIF of Anupam Mittal's campus visit (2026-10-07), cropped of the screen recorder's marks, flipped, widened to 21:9 on Magnific (Seedance 2.5 outpaint of the right side, the footage untouched in place; Magnific Precision upscale), H.264 CRF 16 at 2560 × 1098 | Scaler (the widened area AI-generated) | ours |
 | `warikoo-band.mp4`, `warikoo-band.webp` | the team's GIF of Ankur Warikoo's convocation speech (2026-10-07), its left 300px cropped so he sits in the band's left third, lightly denoised, H.264 CRF 16 at 980 × 720 | Scaler | ours |
 | `why-story-cohort*.webp` | `club_act5` from SSB's campus-life page (scaler.com/school-of-business/campus-life); stands in for a convocation photo | Scaler | ours |
+| `lab-*-<width>.webp` (build, hand, space, drone, mentor) | photos from Scaler's own Innovation Lab page ([scaler.com/innovation-lab](https://www.scaler.com/innovation-lab), served from framerusercontent.com), 2026-10-07; resized to 1890/960 (build) and 1400/800 wide | Scaler | ours |
 
 Resized for the page (1400 and 800px wide, or 1600px for the Commons photos), WebP. CC0 asks for no attribution; it is recorded here anyway.

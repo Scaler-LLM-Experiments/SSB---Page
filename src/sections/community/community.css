@@ -183,14 +183,10 @@
 .bp-turn {
   max-width: 52rem;
 }
-/* "companies", in the logo's green, as Why SSB's roles turn over in (brighter than content-brand,
-   near black at this size); it clears 3:1 on white at the display size. */
-.bp-accent {
-  color: var(--color-ssb-light-9);
-}
 
 /* A company (VentureCard): a card with a square photo inset at its left (Why SSB's chapter cards'
-   inset and corners: 12px in, 12px photo corners, a 16px card), its field on a glass chip and its
+   inset: 12px in; 8px corners on the card and the square alike, as every card on the page: the
+   team's call, 2026-10-07, one roundness), its field on a glass chip and its
    figure in white on a progressive blur; the copy at its right. Below sm, the photo over the copy.
    A light hairline, white. */
 .vc {
@@ -198,7 +194,7 @@
   height: 100%;
   overflow: hidden;
   border: var(--border-hair) solid color-mix(in srgb, var(--border-subtle) 60%, transparent);
-  border-radius: var(--radius-2xl);
+  border-radius: var(--radius-lg);
   background: var(--surface-page);
 }
 @media (width >= 672px) {
@@ -214,7 +210,7 @@
   margin: var(--space-3) var(--space-3) 0;
   overflow: hidden;
   aspect-ratio: 1 / 1;
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-lg);
   background: var(--color-neutral-dark-2);
 }
 @media (width >= 672px) {
@@ -242,6 +238,22 @@
 }
 .vc-plate {
   transform: none;
+}
+/* A startup's banner (a white logo on a two-colour gradient, 1133 x 542): the square takes its
+   top and bottom colours, and the whole banner sits across its middle, its own top and bottom
+   faded into them, so the logo shows whole (cropped square, a wide logo lost its ends). */
+.vc-media[data-banner] {
+  background: linear-gradient(to bottom, var(--vc-top), var(--vc-bottom));
+}
+.vc-banner {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: auto;
+  max-width: none;
+  translate: 0 -50%;
+  mask-image: linear-gradient(to bottom, transparent, #000 28%, #000 72%, transparent);
 }
 .vc-blur-soft {
   filter: blur(8px);
@@ -316,6 +328,38 @@
   flex-direction: column;
   gap: var(--space-3);
 }
+/* The company, and an arrow to its site at the right, if it has one. */
+.vc-title {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.vc-link {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--space-8);
+  height: var(--space-8);
+  margin: calc(var(--space-1) * -1) calc(var(--space-2) * -1) 0 0;
+  border-radius: var(--radius-full);
+  color: var(--content-secondary);
+  transition:
+    background-color var(--motion-duration-fast) linear,
+    color var(--motion-duration-fast) linear;
+}
+.vc-link:hover {
+  background: var(--surface-sunken);
+  color: var(--content-primary);
+}
+.vc-link:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+.vc-link svg {
+  width: 18px;
+  height: 18px;
+}
 /* Who built it: round photos (overlapping, ringed in the card's white), their names, and who
    they are to it under them. */
 .vc-founders {
@@ -337,6 +381,11 @@
 }
 .vc-avatar + .vc-avatar {
   margin-left: calc(var(--space-2) * -1);
+}
+/* initials don't overlap: the one over would cut the other's letters ("SH" under "PM") */
+.vc-avatar-initials + .vc-avatar,
+.vc-avatar + .vc-avatar-initials {
+  margin-left: var(--space-1);
 }
 .vc-avatar-initials {
   display: grid;

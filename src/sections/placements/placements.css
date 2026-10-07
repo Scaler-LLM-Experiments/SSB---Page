@@ -417,7 +417,7 @@
   gap: var(--border-width-hair);
   overflow: hidden;
   border: var(--border-width-hair) solid var(--border-subtle);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-lg);
   background: var(--border-subtle);
 }
 @media (width >= 672px) {

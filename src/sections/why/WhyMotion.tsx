@@ -139,7 +139,7 @@ export function WhyMotion({ children }: { children: React.ReactNode }) {
           // the card is scaled: the inset is in its own units
           card.style.clipPath =
             cut > 1
-              ? `inset(0 0 ${(cut / (box.height / card.offsetHeight)).toFixed(1)}px 0 round var(--radius-2xl))`
+              ? `inset(0 0 ${(cut / (box.height / card.offsetHeight)).toFixed(1)}px 0 round var(--radius-lg))`
               : '';
         });
       };
