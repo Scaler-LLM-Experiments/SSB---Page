@@ -246,3 +246,20 @@
   /* the "+" is drawn with text-fill-color in journey.css: white too, on the bar */
   .cr-main .sj-pb-card .sj-pb-text .sj-speed > span, .cr-main .sj-pb-card .sj-pb-text dd { color: #fff; -webkit-text-fill-color: #fff; }
 }
+
+/* Career prep below desktop as a carousel (2026-10-07, the team's ask): the scene cards in one swipe
+   row, a card and a slice of the next on screen, snapping; the page's dots under them. */
+.sj-pbento-dots { display: none; }
+@media (max-width: 1055px) {
+  .cr-main .sj-pbento { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 86%; gap: 12px; overflow-x: auto; overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: calc(var(--space-gutter) * -1); padding-inline: var(--space-gutter); scroll-padding-inline: var(--space-gutter); }
+  .cr-main .sj-pbento::-webkit-scrollbar { display: none; }
+  .cr-main .sj-pbento > .sj-pb-card { scroll-snap-align: start; min-height: 280px; }
+  .sj-pbento-dots { display: block; margin-top: 16px; }
+}
+@media (min-width: 672px) and (max-width: 1055px) { .cr-main .sj-pbento { grid-auto-columns: 48%; } }
+@media (max-width: 1055px) {
+  /* one row: the bento's own rows and areas off */
+  .cr-main .sj-pbento { grid-template-rows: none; grid-template-areas: none; grid-auto-rows: auto; }
+  .cr-main .sj-pbento > .sj-pb-card { grid-area: auto; grid-row: 1; grid-column: auto; }
+}
