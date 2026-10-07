@@ -444,12 +444,16 @@ photo; the remark as a dark "paused clip" card.
 **"He's right about the ~~old MBA~~."** (the team's ask, 2026-10-06): the struck words (`roles.struck`)
 in italic, from a face of their own (`layout.tsx` loads Plus Jakarta Sans italic 600 only, not
 preloaded: a `style` on the main face would have added an italic of every weight, all preloaded).
-The strike is a hand-drawn squiggle (the team: "can be wiggle"; a straight bar first), an SVG path
-stretched across the words with `pathLength="1"`, so GSAP draws it from the left by
-`strokeDashoffset` 1 to 0 once the line has faded in, while the words fade from ink to grey (a CSS
-`color` transition on dropping `data-pending`; the stroke is `currentColor`). Its box keeps about
-its viewBox's proportions (100 × 16 over ~3.2em × 0.5em), so the stretch barely distorts it and the
-stroke scales with the type; a ±2-unit wave in a 12-unit box read as straight at 36px. Struck and grey in the markup, so no-JS and reduced
+The strike is an SVG path stretched across the words with `pathLength="1"`, so GSAP draws it from
+the left by `strokeDashoffset` 1 to 0 once the line has faded in, while the words fade from ink to
+grey (a CSS `color` transition on dropping `data-pending`; the stroke is `currentColor`). **Straight
+for now** (the team's call, 2026-10-07). A hand-drawn squiggle was tried that day ("can be
+wiggle"): denser and longer on request (eleven uneven humps, viewBox 100 × 14, `M1 7.5C3.4 1.4 7.1
+1.4 9.5 7S16.1 12 18.6 7S24.9 1.2 27.3 7S34.0 12.2 36.6 7S43.0 1.5 45.4 7S51.9 11.8 54.5 7S60.7
+1.3 63.1 7S69.7 12.3 72.3 7S78.7 1.6 81.2 7S87.5 12 89.9 7S96.5 1.4 99.0 7`, overhanging 0.16em
+left and 0.22em right, with 0.1em / 0.04em of margin round the words so it cleared "the" and the
+full stop), then dropped. Swapping the path back restores it; a box of about the viewBox's
+proportions keeps the stretch from distorting it, and a ±2-unit wave read as straight at 36px. Struck and grey in the markup, so no-JS and reduced
 motion show the end state. The roles turn over in the logo's green (`ssb-light-9`, #1D925B), not
 `content-brand` (#004A1E, near black at that size): the team asked for brighter.
 

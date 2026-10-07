@@ -109,13 +109,9 @@ function Setup({ text, struck }: { text: string; struck?: string }) {
       {text.slice(0, at)}
       <s className="why-strike">
         <em>{struck}</em>
-        {/* a hand-drawn squiggle, stretched across the words; pathLength 1 so it draws by dashoffset */}
-        <svg aria-hidden className="why-strike-line" viewBox="0 0 100 16" preserveAspectRatio="none">
-          <path
-            data-why-strike
-            pathLength={1}
-            d="M2 9C8 2 14 2 20 8S32 14 38 8 50 2 56 8 68 14 74 8 86 2 92 8 98 11 99 9"
-          />
+        {/* a straight line through the words (the squiggle was tried, 2026-10-07); pathLength 1 so it draws by dashoffset */}
+        <svg aria-hidden className="why-strike-line" viewBox="0 0 100 14" preserveAspectRatio="none">
+          <path data-why-strike pathLength={1} d="M0 7H100" />
         </svg>
       </s>
       {text.slice(at + struck.length)}
@@ -143,7 +139,8 @@ function Chapter({ pillar }: { pillar: WhyPillar }) {
   return (
     <article data-why-card className="why-card">
       <div className="why-card-copy">
-        <Icon size="2xl" className="text-content">
+        {/* 40px: between the scale's 2xl (48, the team: a touch big) and xl (32) */}
+        <Icon size="2xl" className="size-10 min-w-10 text-content">
           {ICONS[pillar.icon]}
         </Icon>
         <div>

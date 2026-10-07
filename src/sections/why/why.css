@@ -306,15 +306,15 @@
   font-family: var(--font-sans-italic), var(--ssx-font-sans), sans-serif;
   font-style: italic;
 }
-/* The squiggle: its box about as wide for its height as its viewBox (100 × 12
-   over ~3.2em × 0.5em), so the stretch barely distorts it and its stroke
-   scales with the type (2.2 units, ~0.07em). Drawn in full here (dashoffset 0);
-   WhyMotion draws it on from 1. */
+/* The line: an SVG path, straight for now (a hand-drawn squiggle was tried,
+   2026-10-07; swapping the path brings it back), stretched across the words
+   just past their ends. 2.2 units of the 14-unit box is ~0.08em, so it scales
+   with the type. Drawn in full here (dashoffset 0); WhyMotion draws it on. */
 .why-strike-line {
   position: absolute;
   top: calc(56% - 0.25em);
-  right: -0.06em;
-  left: -0.08em;
+  right: -0.04em;
+  left: -0.06em;
   height: 0.5em;
   overflow: visible;
   fill: none;

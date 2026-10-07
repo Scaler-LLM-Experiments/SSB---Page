@@ -25,7 +25,7 @@ const FOOT = 12;
  *   data-enter         the header: the faculty section's entrance (useSectionEntrance)
  *   data-why-roles     the line's roles (data-role) turning over, one up and out as the next
  *                      comes up into the slot, while it is on screen
- *   data-why-strike    the squiggle through "old MBA", drawn from the left once the line is in
+ *   data-why-strike    the line through "old MBA", drawn from the left once the line is in
  *   data-why-chapter   a chapter (sticky, CSS), stacking as the AI journey's cards do
  *                      (curriculum/journey/concepts/stack.tsx): every card that comes up over
  *                      it shrinks its card (data-why-card) a little more, scrubbed to the
@@ -96,9 +96,9 @@ export function WhyMotion({ children }: { children: React.ReactNode }) {
         );
       }
 
-      // "old MBA" is struck through once, as the line has faded most of the way in: a squiggle drawn
+      // "old MBA" is struck through once, as the line has faded most of the way in: a line drawn
       // from the left through the italic words (its dashoffset, the path's length being 1) while
-      // they fade from ink to grey (a CSS transition on dropping data-pending; the squiggle is
+      // they fade from ink to grey (a CSS transition on dropping data-pending; the line is
       // currentColor, so it greys with them).
       const strike = root.querySelector<SVGPathElement>('[data-why-strike]');
       const struck = strike?.closest<HTMLElement>('.why-strike');
@@ -109,8 +109,7 @@ export function WhyMotion({ children }: { children: React.ReactNode }) {
           { strokeDashoffset: 1 },
           {
             strokeDashoffset: 0,
-            // a touch longer than a straight line: it has further to go
-            duration: d.slowest,
+            duration: d.slower,
             delay: d.slower,
             ease: ease('expressiveInOut'),
             onStart: () => struck.removeAttribute('data-pending'),
