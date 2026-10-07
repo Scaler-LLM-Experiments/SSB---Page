@@ -666,8 +666,8 @@ figures ($1B+, ₹10Cr+, $2M+) at `type-h1` in the logo's green (`--color-ssb-li
 call), feet level. Below desktop, on a short screen and under reduced motion the mosaic is simply
 there (tiles wipe open, the head fades up). Then the startups, **as the same section** (the
 team's call): a subheading (`h3`, `size="1"` at medium weight: 28px, 24 on a phone; `size="2"` read small: "Network with **industry leaders** / incubated in
-our startup ecosystem.", the team's words; 16px over the cards, the row's own gap between them, the team's call) 40px under the photos (the lab drops its bottom
-padding, the row's top padding is 40px), and their cards, whose photo is a rectangle below
+our startup ecosystem.", the team's words; 32px over the cards, 24 on a phone: the row's own 16px gap first, then a step more, the team's calls) 64px under the photos, 48 on a phone (40 read tight; the lab drops its bottom
+padding, the row's top padding is that gap), and their cards, whose photo is a rectangle below
 desktop (16:9 over the copy on a phone, 4:3 beside it on a tablet; a square made a phone's card
 tall). The lab has a margin above it (64px, 40 on a phone): the full-bleed photo needs a breath
 after the curriculum's last cards. Super Mentor Sessions came off the page that day (the team's
@@ -756,7 +756,9 @@ round. The hero's film frame is the hero's own (drawCard).
   no count-ups on numbers: they read as the page stuttering in. (Exceptions, the team's asks: the
   stories variation's figures roll in like counter reels; the showcase's and Why SSB's figures
   slide up into their lines; Why SSB's "old MBA" is struck through as its line arrives; the
-  testimonial band's words, then its profile card, slide in a step on each turn.)
+  testimonial band's words, then its profile card, slide in a step on each turn; the Innovation
+  Lab's figures are written in letter by letter, each character fading in out of a slight blur,
+  on inline spans so nothing moves and each figure still reads and copies as one word.)
 - **Never let the DOM move under a CSS animation.** Re-inserting an element restarts its CSS
   animations (the ticker jumped back). ScrollTrigger `pin` does this; use CSS sticky instead.
 - **Never lock scrolling with `overflow: hidden`.** On screens that always show a scrollbar it hides

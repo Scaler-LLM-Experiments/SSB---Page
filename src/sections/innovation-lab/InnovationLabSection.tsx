@@ -111,7 +111,15 @@ function LabBand() {
               <ul className="lab-stats">
                 {labBand.stats.map((s) => (
                   <li key={s.label} className="lab-stat">
-                    <p className="lab-stat-value">{s.value}</p>
+                    {/* a span a character, for the figure written in letter by letter; inline, so it
+                        still reads (and copies) as one word */}
+                    <p className="lab-stat-value">
+                      {Array.from(s.value).map((ch, i) => (
+                        <span key={i} data-lab-char>
+                          {ch}
+                        </span>
+                      ))}
+                    </p>
                     <p className="lab-stat-label">{s.label}</p>
                   </li>
                 ))}
@@ -159,14 +167,45 @@ function LabBand() {
   );
 }
 
+/** Each figure's characters, figure by figure. */
+const figuresIn = (root: HTMLElement) =>
+  gsap.utils
+    .toArray<HTMLElement>('.lab-stat-value', root)
+    .map((figure) => gsap.utils.toArray<HTMLElement>('[data-lab-char]', figure));
+
+/**
+ * The figures written in letter by letter (the team's ask, 2026-10-07): each character fades in
+ * out of a slight blur, a stagger after the one before, each figure starting a beat after the
+ * last. Opacity and filter only, on inline spans, so nothing moves and the words stay whole.
+ */
+function writeFigures(figures: HTMLElement[][]) {
+  const tl = gsap.timeline();
+  figures.forEach((chars, i) =>
+    tl.to(
+      chars,
+      {
+        opacity: 1,
+        filter: 'blur(0px)',
+        duration: d.slower,
+        ease: ease('expressiveEntrance'),
+        stagger: st.base * 1.5,
+      },
+      i * d.normal,
+    ),
+  );
+  return tl;
+}
+
 /**
  * The lab's motion. On desktop (LIVE, with motion), the scroll moment: the track is tall (CSS) and
  * its stage sticks under the nav; scrubbed to the scroll, the first photo, laid over the whole
  * stage, is trimmed by `clip-path` from the stage's edges to its tile's (its corners rounding in)
  * while it scales down about the tile's centre just enough to keep covering it; the other tiles
  * come in from SPREAD times their distance from it, at SPREAD times their size, under it; the head
- * fades up once the frame has closed halfway. Every box is measured on refresh, untransformed.
- * Otherwise, an entrance: the head fades up, each tile wipes open as it is reached.
+ * fades up once the frame has closed halfway, and once it is half in, the figures are written in
+ * letter by letter (writeFigures), once. Every box is measured on refresh, untransformed.
+ * Otherwise, an entrance: the head fades up and its figures are written in, each tile wipes open
+ * as it is reached.
  */
 function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
   useMotion(
@@ -185,6 +224,14 @@ function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
       const photo = hero?.querySelector('img');
       const tiles = gsap.utils.toArray<HTMLElement>('[data-lab-tile]', root);
       if (!track || !stage || !head || !mosaic || !slot || !hero || !photo) return;
+      const figures = figuresIn(root);
+      const chars = figures.flat();
+      let writing: gsap.core.Timeline | null = null;
+      const unwrite = () => {
+        writing?.kill();
+        writing = null;
+        gsap.set(chars, { clearProps: 'opacity,filter' });
+      };
 
       const mm = gsap.matchMedia();
 
@@ -220,6 +267,7 @@ function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
         };
 
         const at = { closed: 0, head: 0 };
+        gsap.set(chars, { opacity: 0, filter: 'blur(6px)' });
         const render = () => {
           const p = at.closed;
           const out = SPREAD - 1;
@@ -238,6 +286,7 @@ function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
             }),
           );
           gsap.set(head, { opacity: at.head, y: (1 - at.head) * geo.rise });
+          if (!writing && at.head > 0.5) writing = writeFigures(figures);
         };
         measure();
         render();
@@ -267,6 +316,7 @@ function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
           root.removeAttribute('data-lab-live');
           hero.style.clipPath = '';
           gsap.set([photo, head, ...tiles], { clearProps: 'transform,transformOrigin,opacity' });
+          unwrite();
         };
       });
 
@@ -285,6 +335,15 @@ function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
             scrollTrigger: { trigger: head, start: 'clamp(top 85%)', once: true },
           },
         );
+        gsap.set(chars, { opacity: 0, filter: 'blur(6px)' });
+        ScrollTrigger.create({
+          trigger: head,
+          start: 'clamp(top 85%)',
+          once: true,
+          onEnter: () => {
+            writing = writeFigures(figures).delay(d.slow);
+          },
+        });
         // each tile wipes open bottom to top as it is reached (those arriving together one stagger
         // apart), its photo settling from a slight zoom: the faculty cards' entrance
         const cards = [hero, ...tiles];
@@ -315,7 +374,10 @@ function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
               );
             }),
         });
-        return () => gsap.set(cards, { clearProps: 'clipPath' });
+        return () => {
+          gsap.set(cards, { clearProps: 'clipPath' });
+          unwrite();
+        };
       });
 
       return () => mm.revert();

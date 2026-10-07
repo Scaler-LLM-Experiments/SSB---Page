@@ -18,14 +18,26 @@ main section.lab[data-density='roomy'] {
   }
 }
 /* The startups' row (RowSection, a section of its own) reads as the lab's second part: its
-   subheading 40px under the photos, not two sections' padding (128px). */
+   subheading 64px under the photos (48 on a phone; 40 was tight, the team's call), not two
+   sections' padding (128px). */
 main section.lab + section[data-density='roomy'] {
-  padding-top: var(--space-10);
+  padding-top: var(--space-12);
 }
-/* its subheading as close to the cards as the cards are to each other (the row's gap, 16px; the
-   team's call), not a section header's 48px: plain CSS, so it wins over RowSection's utilities */
+@media (width >= 672px) {
+  main section.lab + section[data-density='roomy'] {
+    padding-top: var(--space-16);
+  }
+}
+/* its subheading 32px over the cards (24 on a phone): first the row's own gap (16px, the team's
+   call), then a step more ("below as well"); still closer than a section header's 48px. Plain CSS,
+   so it wins over RowSection's utilities */
 main section.lab + section [data-enter='header'] {
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+@media (width >= 672px) {
+  main section.lab + section [data-enter='header'] {
+    margin-bottom: var(--space-8);
+  }
 }
 /* the subheading: a step under the section's heading (h1, 28px; 24 on a phone), at the medium
    weight every section title on the page takes (the package's h1 is semibold, which read heavy) */
