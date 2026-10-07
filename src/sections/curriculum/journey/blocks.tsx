@@ -562,6 +562,11 @@ export function CareerPrepBlock({ prep, cfg }: { prep: CareerPrep; cfg: JourneyC
         <Heading as="h2" size="display" id={id} className="sj-career-head">
           {prep.title}
         </Heading>
+        {prep.lede ? (
+          <Text size="lg" tone="secondary" className="sj-lede">
+            {prep.lede}
+          </Text>
+        ) : null}
       </header>
       <div className="sj-career-split">
       <div className="sj-career-col">

@@ -49,7 +49,7 @@ export function AlumniCard({ alumnus: a, priority = false }: { alumnus: Alumnus;
     <article ref={ref} className="alumni-card" data-in-view={inView || undefined}>
       <img
         className="alumni-card__photo"
-        src={`/alumni/${a.photo}.webp`}
+        src={a.photo ? `/alumni/${a.photo}.webp` : '/internship/plate.webp'}
         alt=""
         width={948}
         height={631}
@@ -57,6 +57,12 @@ export function AlumniCard({ alumnus: a, priority = false }: { alumnus: Alumnus;
         fetchPriority={priority ? 'high' : undefined}
         data-part="photo"
       />
+      {/* no portrait in this style yet: the empty room (the plate) with the initials where the person would stand */}
+      {a.photo ? null : (
+        <span className="alumni-card__initials" aria-hidden="true">
+          {a.name.split(' ').map((w) => w[0]).slice(0, 2).join('')}
+        </span>
+      )}
       <div className="alumni-card__body" data-brand="ssb" data-theme="dark">
         <div className="flex flex-col gap-2">
           <p className="alumni-card__name" data-part="title">

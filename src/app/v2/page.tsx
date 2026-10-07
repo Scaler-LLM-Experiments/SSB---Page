@@ -12,6 +12,7 @@ import { ImmersionsSection } from '@/sections/immersions/ImmersionsSection';
 import { ImpactSection } from '@/sections/impact/ImpactSection';
 import { InnovationLabSection } from '@/sections/innovation-lab/InnovationLabSection';
 import { InternshipSection } from '@/sections/internship/InternshipSection';
+import { LearnByDoingSection } from '@/sections/learn-by-doing/LearnByDoingSection';
 import { LiveProjectsSection } from '@/sections/live-projects/LiveProjectsSection';
 import { PeopleTabsSection } from '@/sections/people-tabs/PeopleTabsSection';
 import { PlacementsShowcase } from '@/sections/placements/PlacementsShowcase';
@@ -66,18 +67,20 @@ export default function V2Page() {
         <Curriculum part="terms" />
         <CurriculumRail
           sections={[
-            { id: 'career-prep', label: 'Career prep', icon: 'career', node: <Curriculum part="career" /> },
+            // the team's order (2026-10-07): AI journey, career prep, learn by doing, internship, immersions;
+            // Live projects is off the rail for now (<LiveProjectsSection /> was between the AI journey and the internship)
             { id: 'ai-journey', label: 'AI journey', icon: 'ai', node: <Curriculum part="ai" /> },
-            { id: 'live-projects-rail', label: 'Live projects', icon: 'projects', node: <LiveProjectsSection /> },
+            { id: 'career-prep', label: 'Career prep', icon: 'career', node: <Curriculum part="career" /> },
+            { id: 'learn-by-doing', label: 'Learn by doing', icon: 'learn', node: <LearnByDoingSection /> },
             { id: 'internship-rail', label: 'Internship', icon: 'internship', node: <InternshipSection /> },
-            { id: 'learn-by-doing', label: 'Learn by doing', icon: 'learn', node: <Curriculum part="learn" /> },
             { id: 'immersions-rail', label: 'Immersions', icon: 'immersions', node: <ImmersionsSection /> },
+            // Super Mentor Sessions, into the curriculum's rail (2026-10-07, the team's ask; it followed the Innovation Lab)
+            { id: 'sessions-rail', label: 'Super Mentor Sessions', icon: 'sessions', node: <SuperMentorsSection /> },
           ]}
         />
         {/* innovation lab */}
         <InnovationLabSection />
-        {/* Super Mentor Sessions (deck p15) */}
-        <SuperMentorsSection />
+        {/* the founding team and investors (Super Mentor Sessions, before them, moved into the curriculum's rail) */}
         <PeopleTabsSection groups={['founding', 'investors']} id="founders" label="The team and backers behind SSB" />
         {/* campus life, then in the news (deck p24, p25) */}
         <CampusLifeSection />

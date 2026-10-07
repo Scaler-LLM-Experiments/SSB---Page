@@ -728,3 +728,7 @@
 .pl-chip-fill {
   height: 3px;
 }
+
+/* The cohort boxes sit as close under the deck as they sit to each other (2026-10-07, the team's ask). */
+.pl-cohorts { margin-top: var(--space-3); }
+@media (width >= 672px) { .pl-cohorts { margin-top: var(--space-4); } }

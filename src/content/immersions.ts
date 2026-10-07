@@ -19,8 +19,10 @@ export const immersions: Immersion[] = [
   },
   {
     title: 'Creator-preneur track',
-    description:
-      "6 months embedded inside Jio Creative Labs, Reliance's in-house creative agency, working on campaigns like Jio Dhan Dhana Dhan and its IPL-tied cricket-season push.",
+    // shortened to the left card's length, two lines (2026-10-07, the team's ask); the deck's: "6 months
+    // embedded inside Jio Creative Labs, Reliance's in-house creative agency, working on campaigns like
+    // Jio Dhan Dhana Dhan and its IPL-tied cricket-season push."
+    description: "6 months inside Reliance's Jio Creative Labs, on campaigns like Jio Dhan Dhana Dhan.",
     image: 'creator-preneur-track',
   },
 ];

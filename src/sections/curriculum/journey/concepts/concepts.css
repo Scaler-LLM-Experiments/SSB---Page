@@ -521,3 +521,7 @@
 .cs-deck .cs-front[data-cover] .cs-cover-term { display: inline-flex; align-self: flex-start; align-items: center; margin-bottom: 4px; padding: 5px 10px; border-radius: var(--sj-ctl-r, var(--radius-md)); background: var(--surface-brand-subtle); }
 .cs-deck .cs-front[data-cover] .cs-cover-term .sj-eyebrow, .cs-deck .cs-front[data-cover] .cs-cover-term .sj-eyebrow * { font-size: 11px; line-height: 1.3; }
 .cs-deck .cs-front[data-cover] .cs-cover-term { width: fit-content; justify-self: start; }
+/* term cards on hover (2026-10-07, the team's ask): only the picture zooms; the card stays put
+   (no lift; its tilt and place are the resting ones) */
+.sj .cs-deck:not([data-open]) .cs-card:not([data-piled]):hover,
+.sj .cs-deck:not([data-open]) .cs-card:not([data-piled]):focus-within { transform: translate(var(--x), var(--y)) rotate(var(--r)) scale(var(--s)); }

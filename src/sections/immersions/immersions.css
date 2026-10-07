@@ -278,3 +278,45 @@
 /* Lower again: 3:2, the image drawn a little smaller (195% wide) so the Jio sign still fits whole. */
 .imm-feature__media { aspect-ratio: 3 / 2; }
 .imm-feature__photo { width: 195%; translate: 0 -46.5%; }
+
+/* ── The features as career prep's slides (2026-10-07, the team's ask) ──
+   The scene fills the card, in a grey frame; the title and its line sit on a frosted glass bar
+   at the card's foot, in white, as career prep's figures sit on theirs. Dark glass, not career
+   prep's green: these are photos. */
+.imm-feature {
+  position: relative;
+  display: block;
+  aspect-ratio: 5 / 4;
+  border: 8px solid var(--surface-sunken);
+  border-radius: 24px;
+  box-shadow: none;
+  background: var(--surface-sunken);
+}
+.imm-feature__media {
+  position: absolute;
+  inset: 0;
+  aspect-ratio: auto;
+  border-radius: 16px;
+}
+.imm-feature__photo { width: 215%; translate: 0 -50%; }
+.imm-feature__body {
+  --imm-glass: blur(22px) saturate(1.5);
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  left: 16px;
+  gap: 6px;
+  padding: 18px 22px;
+  border: 1px solid rgb(255 255 255 / 0.22);
+  border-radius: 18px;
+  background: rgb(12 18 15 / 0.42);
+  -webkit-backdrop-filter: var(--imm-glass);
+  backdrop-filter: var(--imm-glass);
+}
+.imm-feature__title { color: #fff; }
+.imm-feature__text { color: rgb(255 255 255 / 0.86); }
+@media (max-width: 671px) {
+  .imm-feature { aspect-ratio: 4 / 5; }
+  .imm-feature__body { right: 10px; bottom: 10px; left: 10px; padding: 14px 16px; }
+}
+/* (both lines are two lines now, so the bars match at their own height: no fixed min-height) */

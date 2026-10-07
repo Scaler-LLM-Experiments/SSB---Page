@@ -56,6 +56,8 @@ export interface LearnByDoing { eyebrow: string; title: string; titleAccent: str
 export type CareerIcon = 'hours' | 'interviews' | 'oneToOne' | 'domain' | 'behaviour' | 'clarity' | 'building' | 'executing';
 export interface CareerPrep {
   title: string;
+  /** The line under the title (the curriculum sections' header: eyebrow, title, subtext). */
+  lede?: string;
   /** `feature`: the one stat shown large (it is a count, the rest are hours). */
   stats: { value: string; label: string; icon?: CareerIcon; feature?: boolean }[];
   /** desc: one sentence under the phase name (else the items are joined into one) */
