@@ -13,6 +13,8 @@ import './row-section.css';
  * right edge, with progress dots: the Alumni layout, for any cards. Each child
  * becomes one card of the row; `cardWidth` sets its width (phones: 82vw at most).
  * `after` renders under the row, inside the section. Cards open as Faculty's do.
+ * `heading` replaces the eyebrow, title and line with a heading of the section's own (Beyond
+ * Placements' turn); it must be an h2 with the id `${id}-title`. `title` still names the row.
  */
 export function RowSection({
   id,
@@ -22,6 +24,7 @@ export function RowSection({
   itemName,
   cardWidth = '20rem',
   after,
+  heading,
   children,
 }: {
   id: string;
@@ -32,12 +35,12 @@ export function RowSection({
   itemName: string;
   cardWidth?: string;
   after?: React.ReactNode;
+  heading?: React.ReactNode;
   children: React.ReactNode;
 }) {
   const sectionRef = React.useRef<HTMLElement>(null);
   const rowRef = React.useRef<HTMLUListElement>(null);
   useSectionEntrance(sectionRef, { decks: ['.rs-row > li > article'] });
-
 
   const items = React.Children.toArray(children);
 
@@ -48,21 +51,23 @@ export function RowSection({
           data-enter="header"
           className="mb-10 flex flex-col gap-6 sm:mb-12 sm:flex-row sm:items-end sm:justify-between"
         >
-          <div className="flex max-w-(--size-measure-max) flex-col gap-3">
-            {eyebrow ? (
-              <Heading as="p" size="eyebrow" className="text-content-brand" data-enter="eyebrow">
-                {eyebrow}
+          {heading ?? (
+            <div className="flex max-w-(--size-measure-max) flex-col gap-3">
+              {eyebrow ? (
+                <Heading as="p" size="eyebrow" className="text-content-brand" data-enter="eyebrow">
+                  {eyebrow}
+                </Heading>
+              ) : null}
+              <Heading as="h2" size="display" id={`${id}-title`} data-enter="headline">
+                {title}
               </Heading>
-            ) : null}
-            <Heading as="h2" size="display" id={`${id}-title`} data-enter="headline">
-              {title}
-            </Heading>
-            {sub ? (
-              <Text size="lg" tone="secondary" data-enter="sub">
-                {sub}
-              </Text>
-            ) : null}
-          </div>
+              {sub ? (
+                <Text size="lg" tone="secondary" data-enter="sub">
+                  {sub}
+                </Text>
+              ) : null}
+            </div>
+          )}
         </div>
       </Container>
 

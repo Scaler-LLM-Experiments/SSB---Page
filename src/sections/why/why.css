@@ -1,4 +1,5 @@
-/* Why SSB (WhySection), on the section's faint grey. */
+/* Why SSB (WhySection), on the page's white (`surface-page`; the faint grey `surface-subtle` until
+   2026-10-07, the team's call). */
 
 /* ---- The breaker (WhyBreaker): the clip full bleed, the words white over it ---- */
 
@@ -10,7 +11,7 @@
    part on a frost rising behind them, all white; then it fades out into the
    page (the team's calls). */
 .why-breaker {
-  --why-ground: var(--surface-subtle);
+  --why-ground: var(--surface-page);
   --why-shade: var(--color-neutral-dark-2);
   --why-line: color-mix(in oklab, var(--on-image-ink) 35%, transparent);
   /* Phone: the height the clip is framed for (its face clear above the words). */
@@ -260,7 +261,7 @@
   margin-bottom: var(--space-12);
   max-width: 52rem;
 }
-/* Desktop: the page's full width, so "But ours prepares you for roles like"
+/* Desktop: the page's full width, so "But SSB prepares you for roles like"
    and the role fit on one line (the team's call; ~1,080px with the longest role
    at 36px). Where they don't (up to ~1,130px wide), the role wraps whole. */
 @media (width >= 1056px) {
@@ -276,7 +277,7 @@
   vertical-align: bottom;
   overflow: hidden;
   /* The logo's green (the team asked for brighter than the deep `content-brand`); at the display
-     size it clears 3:1 on the section's grey. The page is pinned light, so the light step is safe. */
+     size it clears 3:1 on the page's white. The page is pinned light, so the light step is safe. */
   color: var(--color-ssb-light-9);
 }
 .why-role {

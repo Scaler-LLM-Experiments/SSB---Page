@@ -28,12 +28,12 @@ export const metadata: Metadata = { title: 'V2 hero · SSB home page lab' };
 
 /**
  * The home page, assembled, in the agreed sequence: the hero (first fold), placements, Why SSB
- * (Kamath's breaker, then the answer), alumni, beyond placements (student founders), the people
- * tabs, the testimonial band (investors and founders on campus), the curriculum's terms, then one
- * side navigation over career prep, the AI journey, live projects, the internship, learn by doing
- * and immersions; the innovation lab, Super Mentor Sessions, campus life, in the news, the impact
- * foundation, admissions and the FAQ. All lifting off the footer. Of the three Placements takes,
- * the showcase is the one used.
+ * (Kamath's breaker, then the answer), alumni (already in those roles), the second breaker
+ * (founders and investors backing the students), beyond placements (student founders), the people
+ * tabs, the curriculum's terms, then one side navigation over career prep, the AI journey, live
+ * projects, the internship, learn by doing and immersions; the innovation lab, Super Mentor
+ * Sessions, campus life, in the news, the impact foundation, admissions and the FAQ. All lifting
+ * off the footer. Of the three Placements takes, the showcase is the one used.
  */
 export default function V2Page() {
   // The first fold is the cinematic hero only (the split variant and its toggle were dropped, 2026-10-06).
@@ -52,16 +52,15 @@ export default function V2Page() {
         <PlacementsShowcase {...placements} />
         {/* why SSB (deck slide 4) */}
         <WhySection {...why} />
-        {/* 3 alumni */}
+        {/* 3 alumni: our earlier cohorts, already in the roles Why SSB names */}
         <AlumniSection />
+        {/* the second breaker: founders backing the students (a judge's offer of funding, a founder's
+            advice), a person to a slide */}
+        <TestimonialSection />
         {/* student founders (deck p5) */}
         <BeyondPlacementsSection />
-        {/* faculty, mentors, the founding team, investors and founders: one section, four tabs;
-            then the investor's word */}
+        {/* faculty and mentors (the founding team and investors come after Super Mentor Sessions) */}
         <PeopleTabsSection />
-        {/* investors and founders on campus: one banner carousel (the testimonial and the Shark Tank
-            stories, a person to a slide) */}
-        <TestimonialSection />
         {/* the curriculum, together (the team's call, 2026-10-06): the terms, then learn by doing, career prep, the
             150-hour AI curriculum, the live projects, the internship and the immersions behind one side navigation */}
         <Curriculum part="terms" />

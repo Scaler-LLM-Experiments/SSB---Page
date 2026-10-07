@@ -12,6 +12,87 @@ import './why.css';
 const { duration: d, stagger: st, offset } = motionTokens;
 
 /**
+ * A breaker's motion, from its markup hooks: the `data-breaker-part`s fade up one after another
+ * as it arrives, the figures (`data-breaker-stats`, if any) come in as their row does, and the
+ * media (`data-breaker-stage`) settles from a slight zoom as it crosses the screen. Shared with
+ * the testimonial band, which takes the breaker's treatment.
+ */
+export function useBreakerMotion(scope: React.RefObject<HTMLElement | null>) {
+  useMotion(
+    () => {
+      const root = scope.current;
+      if (!root || prefersReducedMotion(root)) return;
+      gsap.registerPlugin(ScrollTrigger);
+      const q = gsap.utils.selector(root);
+      const enter = ease('expressiveEntrance');
+      // The words come up one after another (eyebrow, words, footnote), a gentle fade each.
+      gsap.fromTo(
+        q('[data-breaker-part]'),
+        { autoAlpha: 0, y: offset.reveal },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: d.slower,
+          stagger: st.base * 2,
+          ease: enter,
+          clearProps: 'transform,opacity,visibility',
+          scrollTrigger: { trigger: root, start: 'clamp(top 70%)', once: true },
+        },
+      );
+      // Then the figures as their row arrives, one after the other: each one's line and figure
+      // (sliding up into its line), then its text and source fading up behind it.
+      const row = q('[data-breaker-stats]')[0];
+      if (row) {
+        const figures = gsap.timeline({
+          scrollTrigger: { trigger: row, start: 'clamp(top 90%)', once: true },
+        });
+        q('[data-breaker-stat]').forEach((stat, i) => {
+          const at = i * st.base * 3;
+          figures
+            .fromTo(
+              stat,
+              { autoAlpha: 0 },
+              { autoAlpha: 1, duration: d.slow, ease: enter, clearProps: 'opacity,visibility' },
+              at,
+            )
+            .fromTo(
+              stat.querySelector('[data-slide]'),
+              { yPercent: 110 },
+              { yPercent: 0, duration: d.slower, ease: enter, clearProps: 'transform' },
+              at,
+            )
+            .fromTo(
+              stat.querySelectorAll('[data-stat-part]'),
+              { autoAlpha: 0, y: offset.reveal },
+              {
+                autoAlpha: 1,
+                y: 0,
+                duration: d.slower,
+                stagger: st.base * 2,
+                ease: enter,
+                clearProps: 'transform,opacity,visibility',
+              },
+              at + st.base * 2,
+            );
+        });
+      }
+      // The clip settles from a slight zoom as the breaker crosses the screen.
+      gsap.fromTo(
+        q('[data-breaker-stage]'),
+        { scale: 1.08 },
+        {
+          scale: 1,
+          ease: ease('linear'),
+          scrollTrigger: { trigger: root, start: 'top bottom', end: 'center center', scrub: true },
+        },
+      );
+    },
+    scope,
+    [],
+  );
+}
+
+/**
  * The breaker that opens Why SSB, after Apple's product blocks: the clip of
  * the remark full bleed, Nikhil Kamath on its left looking right, and the
  * words on the right where he is looking, in white (a dark island), over a
@@ -54,76 +135,7 @@ export function WhyBreaker({ quote, figures }: { quote: WhyQuote; figures: WhyFi
     return () => onScreen.disconnect();
   }, [video]);
 
-  useMotion(
-    () => {
-      const root = scope.current;
-      if (!root || prefersReducedMotion(root)) return;
-      gsap.registerPlugin(ScrollTrigger);
-      const q = gsap.utils.selector(root);
-      const enter = ease('expressiveEntrance');
-      // The words come up one after another (eyebrow, words, footnote), a gentle fade each.
-      gsap.fromTo(
-        q('[data-breaker-part]'),
-        { autoAlpha: 0, y: offset.reveal },
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: d.slower,
-          stagger: st.base * 2,
-          ease: enter,
-          clearProps: 'transform,opacity,visibility',
-          scrollTrigger: { trigger: root, start: 'clamp(top 70%)', once: true },
-        },
-      );
-      // Then the figures as their row arrives, one after the other: each one's line and figure
-      // (sliding up into its line), then its text and source fading up behind it.
-      const row = q('[data-breaker-stats]')[0];
-      const figures = gsap.timeline({
-        scrollTrigger: { trigger: row, start: 'clamp(top 90%)', once: true },
-      });
-      q('[data-breaker-stat]').forEach((stat, i) => {
-        const at = i * st.base * 3;
-        figures
-          .fromTo(
-            stat,
-            { autoAlpha: 0 },
-            { autoAlpha: 1, duration: d.slow, ease: enter, clearProps: 'opacity,visibility' },
-            at,
-          )
-          .fromTo(
-            stat.querySelector('[data-slide]'),
-            { yPercent: 110 },
-            { yPercent: 0, duration: d.slower, ease: enter, clearProps: 'transform' },
-            at,
-          )
-          .fromTo(
-            stat.querySelectorAll('[data-stat-part]'),
-            { autoAlpha: 0, y: offset.reveal },
-            {
-              autoAlpha: 1,
-              y: 0,
-              duration: d.slower,
-              stagger: st.base * 2,
-              ease: enter,
-              clearProps: 'transform,opacity,visibility',
-            },
-            at + st.base * 2,
-          );
-      });
-      // The clip settles from a slight zoom as the breaker crosses the screen.
-      gsap.fromTo(
-        q('[data-breaker-stage]'),
-        { scale: 1.08 },
-        {
-          scale: 1,
-          ease: ease('linear'),
-          scrollTrigger: { trigger: root, start: 'top bottom', end: 'center center', scrub: true },
-        },
-      );
-    },
-    scope,
-    [],
-  );
+  useBreakerMotion(scope);
 
   return (
     <section ref={scope} aria-labelledby="why-breaker-title" className="why-breaker">

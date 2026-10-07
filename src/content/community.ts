@@ -8,55 +8,119 @@ import type { Session } from '@/sections/community/SessionCard';
 
 type Story = { title: string; text?: string; media?: string; mediaLabel: string; kicker?: string; href?: string };
 
-/** Deck p5: "Beyond Placements". */
+/** A company a student started or grew: one Beyond Placements card. */
+export type Venture = {
+  company: string;
+  /** One or two people; their names run together ("A & B"). */
+  founders: string[];
+  /** Their photos (square, in /public), in the same order; initials where there is none. */
+  avatars?: (string | undefined)[];
+  /** Their SSB cohort, under their names; "Cohort 1" if unset (the team's call, 2026-10-07). */
+  cohort?: string;
+  /** What it is, in a line or two. */
+  description: string;
+  /** Its field, on a glass chip at the photo's top left. */
+  sector: string;
+  /** The figure over the photo's blur: "₹1Cr+" over "ARR". */
+  stat: { value: string; label: string };
+  /** The photo at the card's left (its smaller file for phones); the dark plate until there is one. */
+  image?: string;
+  imageSmall?: string;
+  /** object-position, to keep the subject in the crop. */
+  imagePosition?: string;
+  imageAlt?: string;
+};
+
+/**
+ * Deck p5: "Beyond Placements", rebuilt on 2026-10-07 (the team's brief): no eyebrow, title or
+ * line; a turn that carries on from the breaker before it (founders backing the students), as
+ * Why SSB's turn hands over to its chapters; then one card per company. No photos for now (the
+ * team's call, 2026-10-07: every card on the dark plate; the Why stories' photos of Hummusapiens
+ * and GradeSense were used first). Hummusapiens is from the deck's Shark Tank slide (p7), Gredo's
+ * founders from Skope Kitchens' release on their vending launch at SSB (2026; to confirm they are
+ * students).
+ *
+ * **Figures marked PLACEHOLDER are made up** (the team's call: "fabricate for now, we will add
+ * real stats later"); the rest are the deck's. So are the names of the valet app and the bridal
+ * line (the deck doesn't name them).
+ */
 export const beyondPlacements = {
-  eyebrow: 'Student founders',
-  title: 'Beyond Placements',
-  sub: "Some students didn't just find careers at SSB. They built companies.",
-  stories: [
+  turn: {
+    setup: 'Students at SSB didn’t just build careers.',
+    lead: 'They built companies.',
+    // in the logo's green, as Why SSB's roles, its full stop too (the team's calls, 2026-10-07)
+    accent: 'companies.',
+  },
+  ventures: [
     {
-      kicker: 'Paritosh Sinha',
-      title: 'Grew a Personal Brand from 8K to 200K',
-      text: 'Paritosh Sinha skipped placements to build his creator business full-time, now fielding publishing offers for his debut book.',
-      mediaLabel: 'Photo / video: Paritosh Sinha',
+      company: 'Hummusapiens',
+      founders: ['Dr. Charles Chacko Porathoor'],
+      description:
+        'Hummus-based healthy snacks, built while studying at SSB and pitched to Shark Tank India judge Anupam Mittal on campus.',
+      sector: 'Healthy snacking',
+      // an offer to invest (July 2026, ANI): not "raised"
+      stat: { value: '₹50L', label: 'offered by Anupam Mittal' },
     },
     {
-      kicker: 'Moh Agarwal',
-      title: 'Scaling a Family Business Through Tech',
-      text: 'Moh Agarwal joined Tally Konnect post-SSB, launching its ERP automation platform.',
-      mediaLabel: 'Photo / video: Moh Agarwal',
+      company: 'Gredo',
+      founders: ['Mayank Kelwani', 'Sanskriti Deshmukh'],
+      description:
+        'A protein-food brand live on Zomato and Swiggy, with fresh-food vending machines across Bangalore, the first one at SSB.',
+      sector: 'Food-tech',
+      stat: { value: '₹1Cr+', label: 'ARR' },
     },
     {
-      kicker: 'Aashish US',
-      title: 'Built a ₹2Cr Startup with 12,000+ Students Across Schools',
-      text: 'Aashish US grew Dream Kit, a homegrown STEAM toy brand, while holding a role at Whole Truth.',
-      mediaLabel: 'Photo / video: Aashish US',
+      company: 'Dream Kit',
+      founders: ['Aashish US'],
+      avatars: ['/alumni/aashish-us.webp'],
+      // "grew", as the deck has it: its web presence names another maker (to confirm)
+      description:
+        'A homegrown STEAM toy brand that teaches science through play, grown while he held a full-time role at The Whole Truth.',
+      sector: 'STEAM toys',
+      stat: { value: '12,000+', label: 'students across schools' },
     },
     {
-      kicker: 'Gredo',
-      title: 'Protein-Food Brand with ₹1Cr+ ARR',
-      text: 'Gredo, a protein food brand, is live on Zomato and Swiggy, with vending machines across Bangalore.',
-      mediaLabel: 'Photo / video: Gredo',
+      company: 'GradeSense',
+      founders: ['Ayush Poojary'],
+      description:
+        'AI that evaluates descriptive and handwritten answer sheets at scale, so teachers spend less time grading and more teaching.',
+      sector: 'AI · EdTech',
+      stat: { value: '50,000+', label: 'answer sheets graded' }, // PLACEHOLDER
     },
     {
-      kicker: 'Yash Ramchandani',
-      title: 'A Parking App Built From Scratch',
-      text: "Yash Ramchandani's smart valet platform streamlines car handovers at high-footfall venues.",
-      mediaLabel: 'Photo / video: parking app screenshot',
+      company: 'Creator business',
+      founders: ['Paritosh Sinha'],
+      description:
+        'He skipped placements to build his creator business full-time, and is now fielding publishing offers for his debut book.',
+      sector: 'Creator economy',
+      stat: { value: '200K', label: 'followers, up from 8K' },
     },
     {
-      kicker: 'Impanna Reddy',
-      title: 'An AI-Assisted Bridal Wear Brand',
-      text: 'Impanna Reddy combines bridal storytelling, colour analysis, and certified gold-zari craftsmanship in a premium Kanjivaram line.',
-      mediaLabel: 'Photo / video: bridal wear line',
+      company: 'Tally Konnect',
+      founders: ['Moh Agarwal'],
+      avatars: ['/alumni/moh-agarwal.webp'],
+      description:
+        'Joined the family business after SSB and took it digital, launching Tally Konnect’s ERP automation platform for its clients.',
+      sector: 'B2B SaaS',
+      stat: { value: '₹5Cr', label: 'valuation' }, // PLACEHOLDER
     },
     {
-      kicker: 'Ayush Poojary',
-      title: 'AI-Powered Grading, Built by a Student',
-      text: "Ayush Poojary's Gradesense evaluates descriptive and handwritten assessments at scale.",
-      mediaLabel: 'Photo / video: Gradesense screenshot',
+      company: 'ParkEase', // PLACEHOLDER name: the deck has "a parking app"
+      founders: ['Yash Ramchandani'],
+      description:
+        'A smart valet platform built from scratch, streamlining car handovers at malls, hotels and other high-footfall venues.',
+      sector: 'Mobility',
+      stat: { value: '10,000+', label: 'cars handed over' }, // PLACEHOLDER
     },
-  ] satisfies Story[],
+    {
+      company: 'Zari & Co.', // PLACEHOLDER name: the deck has "an AI-assisted bridal wear brand"
+      founders: ['Impanna Reddy'],
+      description:
+        'A premium Kanjivaram bridal line pairing AI colour analysis and bridal storytelling with certified gold-zari craftsmanship.',
+      sector: 'Fashion',
+      stat: { value: '₹50L', label: 'raised' }, // PLACEHOLDER
+    },
+  ] satisfies Venture[],
 };
 
 /** Deck p6: "Investors & Founders on Campus" (its quote is the testimonial banner). */

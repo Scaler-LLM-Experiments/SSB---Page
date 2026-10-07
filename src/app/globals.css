@@ -14,6 +14,9 @@
     'Helvetica Neue', Arial, sans-serif;
   --font-family-mono: var(--ssx-font-mono), SFMono-Regular, Menlo, Consolas, 'Liberation Mono',
     monospace;
+  /* Section titles at medium, the weight of the alumni cards' titles and the breakers' words (the
+     team's call, 2026-10-07); the package sets them semibold. */
+  --type-display-weight: var(--font-weight-medium);
 }
 
 /* The carousel rows (alumni, faculty, live projects, the impact foundation) start on the page's
