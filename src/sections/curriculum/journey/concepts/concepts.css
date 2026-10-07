@@ -525,3 +525,21 @@
    (no lift; its tilt and place are the resting ones) */
 .sj .cs-deck:not([data-open]) .cs-card:not([data-piled]):hover,
 .sj .cs-deck:not([data-open]) .cs-card:not([data-piled]):focus-within { transform: translate(var(--x), var(--y)) rotate(var(--r)) scale(var(--s)); }
+/* term cards: "View more" in place of the bare arrow (2026-10-07), in the brand green; the arrow nudges on hover */
+.cs-cover-cta { flex: none; display: inline-flex; align-items: center; gap: 6px; padding: 6px 0; font-size: 0.9375rem; line-height: 1.2; font-weight: var(--font-weight-semibold, 600); color: var(--content-brand); white-space: nowrap; }
+.cs-cover-cta svg { width: 16px; height: 16px; transition: transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+.cs-card:hover .cs-cover-cta svg, .cs-front:focus-visible .cs-cover-cta svg { transform: translateX(3px); }
+.cs-card:hover .cs-cover-cta, .cs-front:focus-visible .cs-cover-cta { text-decoration: underline; text-underline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .cs-cover-cta svg { transition: none; } }
+/* an open term's "Scroll for more" (2026-10-07): a pill at the foot of the scrolling box, over a fade
+   from the box's white, gone once the end is reached */
+.cs-scrollcue { position: sticky; bottom: 0; z-index: 4; display: flex; justify-content: center; height: 0; overflow: visible; pointer-events: none; opacity: 0; transition: opacity 240ms ease; }
+.cs-scrollcue[data-on] { opacity: 1; }
+.cs-scrollcue::before { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 96px; background: linear-gradient(to bottom, transparent, var(--surface-page, #fff) 85%); }
+.cs-scrollcue-btn { all: unset; box-sizing: border-box; position: absolute; bottom: 16px; display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px;
+  background: var(--content-primary); color: var(--surface-page); font-size: 0.875rem; line-height: 1; font-weight: var(--font-weight-semibold, 600); cursor: pointer; box-shadow: 0 10px 24px -10px rgb(0 0 0 / 0.4); }
+.cs-scrollcue[data-on] .cs-scrollcue-btn { pointer-events: auto; }
+.cs-scrollcue-btn svg { width: 14px; height: 14px; animation: cs-cue-bob 1.6s ease-in-out infinite; }
+.cs-scrollcue-btn:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+@keyframes cs-cue-bob { 50% { transform: translateY(3px); } }
+@media (prefers-reduced-motion: reduce) { .cs-scrollcue { transition: none; } .cs-scrollcue-btn svg { animation: none; } }

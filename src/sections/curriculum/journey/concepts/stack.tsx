@@ -23,7 +23,7 @@
 import * as React from 'react';
 import { createPortal } from 'react-dom';
 import { Heading, IconButton, Text } from '@kishanscaler/ssx-ui';
-import { ArrowCounterClockwise, ArrowUpRight, BookOpenText, CaretDown, ChalkboardTeacher, Path, Play, RocketLaunch, Star, X } from '@phosphor-icons/react';
+import { ArrowCounterClockwise, ArrowRight, ArrowUpRight, BookOpenText, CaretDown, ChalkboardTeacher, Path, Play, RocketLaunch, Star, X } from '@phosphor-icons/react';
 import type { Journey, Lane, Year } from '../data';
 import { countSkills, fmt } from '../data';
 import { c, type JourneyConfig } from '../config';
@@ -302,9 +302,11 @@ function CardFront({ y, cfg }: { y: Year; cfg: JourneyConfig }) {
           ) : (
             <span />
           )}
-          {/* the open cue: a flat light-green tile (the whole card is the button) */}
-          <span className="cs-cover-plus" aria-hidden="true">
-            <ArrowUpRight weight="bold" />
+          {/* the open cue, spelt out (2026-10-07, the team: a bare arrow didn't read as clickable); the
+              whole card is still the button, so this is a label, not a second control */}
+          <span className="cs-cover-cta" aria-hidden="true">
+            View more
+            <ArrowRight weight="bold" />
           </span>
         </span>
       </>
@@ -597,6 +599,7 @@ function StackModal({ y, cfg, from, leaving, onClose, onGone, portal, sheet }: {
             <div ref={bodyRef} className="cs-modal-body cs-sheet-body">
               <ModalBody y={y} cfg={cfg} />
             </div>
+            <ScrollCue box={mainRef} />
           </div>
         </div>
       </div>
@@ -635,10 +638,48 @@ function StackModal({ y, cfg, from, leaving, onClose, onGone, portal, sheet }: {
         <div ref={bodyRef} className="cs-modal-body" style={{ width: frame.w }}>
           <ModalBody y={y} cfg={cfg} />
         </div>
+        <ScrollCue box={boxRef} />
       </div>
     </div>
   );
   return createPortal(node, portal ?? document.body);
+}
+
+/**
+ * "Scroll for more" (2026-10-07, the team: an open term didn't say it went on below the fold). Sits at
+ * the foot of the scrolling box, sticky, over a fade; it hides once the box is scrolled to its end or
+ * when everything already fits. A click scrolls on by most of a screen.
+ */
+function ScrollCue({ box }: { box: React.RefObject<HTMLElement | null> }) {
+  const [more, setMore] = React.useState(false);
+  React.useEffect(() => {
+    const el = box.current;
+    if (!el) return undefined;
+    const check = () => setMore(el.scrollHeight - el.clientHeight - el.scrollTop > 24);
+    check();
+    el.addEventListener('scroll', check, { passive: true });
+    const ro = new ResizeObserver(check);
+    ro.observe(el);
+    Array.from(el.children).forEach((c) => ro.observe(c));
+    return () => {
+      el.removeEventListener('scroll', check);
+      ro.disconnect();
+    };
+  }, [box]);
+  const go = () => {
+    const el = box.current;
+    if (!el) return;
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    el.scrollBy({ top: el.clientHeight * 0.8, behavior: reduce ? 'auto' : 'smooth' });
+  };
+  return (
+    <div className="cs-scrollcue" data-on={more || undefined} aria-hidden={!more}>
+      <button type="button" className="cs-scrollcue-btn" onClick={go} tabIndex={more ? 0 : -1}>
+        Scroll for more
+        <CaretDown weight="bold" aria-hidden="true" />
+      </button>
+    </div>
+  );
 }
 
 /* ── m-web: scroll stack, every year open ─────────────────────────────────── */
@@ -1090,7 +1131,7 @@ export function StackJourney({ j, cfg, width, portal, initialOpen = null }: { j:
   const cw = Math.min(380, W * 0.3);
   // collapsed: a plain row of equal cards, side by side (no fan, no overlap)
   // (wide gaps: the cards have no frame, so the space between them is what sets them apart)
-  const ROW_GAP = 64;
+  const ROW_GAP = 32; // 64 until 2026-10-07 (the team: the gaps between the terms read too wide)
   // modal / sheet: a carousel showing three whole cards and a slice of the fourth (it says "more this way")
   const carousel = modal && n > 3;
   const rowW = carousel ? (W - ROW_GAP * 3) / 3.2 : (W - ROW_GAP * (n - 1)) / n;
