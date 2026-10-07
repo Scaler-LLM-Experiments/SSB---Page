@@ -12,6 +12,12 @@
   }
 }
 
+/* The lab's extra room above (innovation-lab.css: it follows the curriculum) is the lab's alone:
+   campus life follows a section like any other. */
+main section.lab.cm[data-density='roomy'] {
+  margin-top: 0;
+}
+
 /* Follow campus life: two glass buttons floating on the cohort photo, at its lower left (light,
    transparent glass: white type over the photo). In the slot's cell, over the photo; on desktop the
    moment brings them up with the heading (data-lab-overlay). Nothing between them and the photo
@@ -166,7 +172,7 @@
   max-width: 52rem;
 }
 
-/* A company (VentureCard): a card with a square photo inset at its left (Why SSB's chapter cards'
+/* A company (VentureCard): a card with a square photo (a rectangle below desktop) inset at its left (Why SSB's chapter cards'
    inset: 12px in; 8px corners on the card and the square alike, as every card on the page: the
    team's call, 2026-10-07, one roundness), its field on a glass chip and its
    figure in white on a progressive blur; the copy at its right. Below sm, the photo over the copy.
@@ -191,7 +197,9 @@
   justify-content: flex-end;
   margin: var(--space-3) var(--space-3) 0;
   overflow: hidden;
-  aspect-ratio: 1 / 1;
+  /* a rectangle below desktop (the team's call, 2026-10-07: a square over the copy made a phone's
+     card tall), the square from desktop up */
+  aspect-ratio: 16 / 9;
   border-radius: var(--radius-lg);
   background: var(--color-neutral-dark-2);
 }
@@ -199,6 +207,12 @@
   .vc-media {
     align-self: start;
     margin: var(--space-3) 0 var(--space-3) var(--space-3);
+    aspect-ratio: 4 / 3;
+  }
+}
+@media (width >= 1056px) {
+  .vc-media {
+    aspect-ratio: 1 / 1;
   }
 }
 /* The photo and its blurred copies, one layer (the entrance settles it from a slight zoom). The

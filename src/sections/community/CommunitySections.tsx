@@ -267,12 +267,20 @@ export function CampusLifeSection() {
         </div>
       </Section>
 
-      {/* The student clubs, as the Innovation Lab's startups: a turn for a heading, then the row. */}
+      {/* The student clubs, as the Innovation Lab's startups: a subheading, then the row (the lab's
+          CSS runs it on from the section above, `section.lab + section`). */}
       <RowSection
         id="clubs"
         title={c.clubsTurn.text}
         heading={
-          <Heading as="h2" size="display" id="clubs-title" data-enter="headline" className="max-w-(--size-measure-max)">
+          // a subheading within campus life, as the lab's startups (h3, a step smaller)
+          <Heading
+            as="h3"
+            size="1"
+            id="clubs-title"
+            data-enter="headline"
+            className="lab-sub max-w-(--size-measure-max) [text-wrap:balance]"
+          >
             <Accent text={c.clubsTurn.text} word={c.clubsTurn.accent} />
           </Heading>
         }

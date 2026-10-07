@@ -30,8 +30,9 @@ export const AREAS = ['a', 'b', 'd', 'e'] as const;
  * building a drone arrives full-bleed, sticks under the nav, and the camera pulls back: its frame
  * closes into the middle tile of a mosaic of the lab (a robotic hand, the glass-walled labs, a
  * drone in flight, a mentor trying a student's build), the other tiles settling in from beyond
- * the edges as the name, its line and the three figures come up over them. Then the startups the
- * lab incubates, as Beyond Placements' cards, headed by a turn as that section is.
+ * the edges as the header (eyebrow, heading, line, as the curriculum's) and the three figures
+ * (green, at its right) come up over them. Then the startups the lab incubates, as Beyond
+ * Placements' cards, under a subheading (one section: a smaller heading, closer).
  *
  * The frame closes with `clip-path` and the photo inside it only ever scales down, so it stays
  * sharp; the tiles move by transforms. Below desktop, on a short screen and under reduced motion
@@ -44,8 +45,11 @@ export const AREAS = ['a', 'b', 'd', 'e'] as const;
  * and fade looking weird"); one even blur ("make it premium"); a feathered backdrop; the hero's
  * layout on black; that blur over a cropped clip ("getting cropped, looks bad"); the clip uncropped
  * with the copy on a blur from the left ("ghatiya"); then the footage framed under the name and
- * figures, on white ("looks flat, doesn't excite anyone"). Before all that: a sticky pitch beside
- * count-up stat cards and a framed row of banner cards (in git history).
+ * figures, on white ("looks flat, doesn't excite anyone"). After this moment, that day: the
+ * photos simply rising in under the header; the figures in a band of their own, then on green
+ * tiles in the grid ("looks like Lumia"), then in a box above it; the team came back to this
+ * ("go with the older layout"). Before all that: a sticky pitch beside count-up stat cards and a
+ * framed row of banner cards (in git history).
  */
 export function InnovationLabSection() {
   return (
@@ -55,12 +59,13 @@ export function InnovationLabSection() {
         id="sil"
         title="Startups incubated in the Innovation Lab"
         heading={
+          // a subheading within the lab's section (the team's call): h3, a step smaller
           <Heading
-            as="h2"
-            size="display"
+            as="h3"
+            size="1"
             id="sil-title"
             data-enter="headline"
-            className="max-w-(--size-measure-max)"
+            className="lab-sub max-w-(--size-measure-max) [text-wrap:balance]"
           >
             <span className="block">
               <Accent text={labTurn.setup} word={labTurn.accent} />
@@ -90,8 +95,11 @@ function LabBand() {
         <div data-lab-stage className="lab-stage">
           <Container className="lab-frame">
             <div data-lab-head className="lab-head">
-              {/* the page's section header: display heading, the line under it */}
+              {/* the page's section header, as the curriculum's: eyebrow, heading, the line under it */}
               <div className="lab-copy flex flex-col gap-3">
+                <Heading as="p" size="eyebrow" className="text-content-brand">
+                  {labBand.eyebrow}
+                </Heading>
                 <Heading as="h2" size="display" id="sil-band-title">
                   {/* keeps "non-technical" whole: it broke after "non-" */}
                   <HeroTitle title={labBand.title} />
@@ -103,7 +111,15 @@ function LabBand() {
               <ul className="lab-stats">
                 {labBand.stats.map((s) => (
                   <li key={s.label} className="lab-stat">
-                    <p className="lab-stat-value">{s.value}</p>
+                    {/* a span a character, for the figure written in letter by letter; inline, so it
+                        still reads (and copies) as one word */}
+                    <p className="lab-stat-value">
+                      {Array.from(s.value).map((ch, i) => (
+                        <span key={i} data-lab-char>
+                          {ch}
+                        </span>
+                      ))}
+                    </p>
                     <p className="lab-stat-label">{s.label}</p>
                   </li>
                 ))}
@@ -151,15 +167,46 @@ function LabBand() {
   );
 }
 
+/** Each figure's characters, figure by figure. */
+const figuresIn = (root: HTMLElement) =>
+  gsap.utils
+    .toArray<HTMLElement>('.lab-stat-value', root)
+    .map((figure) => gsap.utils.toArray<HTMLElement>('[data-lab-char]', figure));
+
+/**
+ * The figures written in letter by letter (the team's ask, 2026-10-07): each character fades in
+ * out of a slight blur, a stagger after the one before, each figure starting a beat after the
+ * last. Opacity and filter only, on inline spans, so nothing moves and the words stay whole.
+ */
+function writeFigures(figures: HTMLElement[][]) {
+  const tl = gsap.timeline();
+  figures.forEach((chars, i) =>
+    tl.to(
+      chars,
+      {
+        opacity: 1,
+        filter: 'blur(0px)',
+        duration: d.slower,
+        ease: ease('expressiveEntrance'),
+        stagger: st.base * 1.5,
+      },
+      i * d.normal,
+    ),
+  );
+  return tl;
+}
+
 /**
  * The lab's motion. On desktop (LIVE, with motion), the scroll moment: the track is tall (CSS) and
  * its stage sticks under the nav; scrubbed to the scroll, the first photo, laid over the whole
  * stage, is trimmed by `clip-path` from the stage's edges to its tile's (its corners rounding in)
  * while it scales down about the tile's centre just enough to keep covering it; the other tiles
  * come in from SPREAD times their distance from it, at SPREAD times their size, under it; the head
- * fades up once the frame has closed halfway. Every box is measured on refresh, untransformed.
- * Otherwise, an entrance: the head fades up, each tile wipes open as it is reached. Campus life
- * (CommunitySections) plays it too, on the same markup hooks and `lab-*` classes.
+ * fades up once the frame has closed halfway, and once it is half in, the figures are written in
+ * letter by letter (writeFigures), once. Every box is measured on refresh, untransformed.
+ * Otherwise, an entrance: the head fades up and its figures are written in, each tile wipes open
+ * as it is reached. Campus life (CommunitySections) plays it too, on the same markup hooks and
+ * `lab-*` classes; anything over its middle tile (`data-lab-overlay`) comes up with the head.
  */
 export function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
   useMotion(
@@ -180,6 +227,14 @@ export function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
       // anything laid over the middle tile (campus life's follow buttons) comes up with the head
       const overlays = gsap.utils.toArray<HTMLElement>('[data-lab-overlay]', root);
       if (!track || !stage || !head || !mosaic || !slot || !hero || !photo) return;
+      const figures = figuresIn(root);
+      const chars = figures.flat();
+      let writing: gsap.core.Timeline | null = null;
+      const unwrite = () => {
+        writing?.kill();
+        writing = null;
+        gsap.set(chars, { clearProps: 'opacity,filter' });
+      };
 
       const mm = gsap.matchMedia();
 
@@ -215,6 +270,7 @@ export function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
         };
 
         const at = { closed: 0, head: 0 };
+        gsap.set(chars, { opacity: 0, filter: 'blur(6px)' });
         const render = () => {
           const p = at.closed;
           const out = SPREAD - 1;
@@ -234,6 +290,7 @@ export function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
           );
           gsap.set(head, { opacity: at.head, y: (1 - at.head) * geo.rise });
           if (overlays.length) gsap.set(overlays, { opacity: at.head });
+          if (!writing && at.head > 0.5) writing = writeFigures(figures);
         };
         measure();
         render();
@@ -263,6 +320,7 @@ export function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
           root.removeAttribute('data-lab-live');
           hero.style.clipPath = '';
           gsap.set([photo, head, ...tiles, ...overlays], { clearProps: 'transform,transformOrigin,opacity' });
+          unwrite();
         };
       });
 
@@ -281,6 +339,15 @@ export function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
             scrollTrigger: { trigger: head, start: 'clamp(top 85%)', once: true },
           },
         );
+        gsap.set(chars, { opacity: 0, filter: 'blur(6px)' });
+        ScrollTrigger.create({
+          trigger: head,
+          start: 'clamp(top 85%)',
+          once: true,
+          onEnter: () => {
+            writing = writeFigures(figures).delay(d.slow);
+          },
+        });
         // each tile wipes open bottom to top as it is reached (those arriving together one stagger
         // apart), its photo settling from a slight zoom: the faculty cards' entrance
         const cards = [hero, ...tiles];
@@ -311,7 +378,10 @@ export function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
               );
             }),
         });
-        return () => gsap.set(cards, { clearProps: 'clipPath' });
+        return () => {
+          gsap.set(cards, { clearProps: 'clipPath' });
+          unwrite();
+        };
       });
 
       return () => mm.revert();
