@@ -1,55 +1,6 @@
 /* =========================================================
-   Admissions: the process as a numbered timeline, the fee table.
+   Admissions: eligibility, the process and scholarships in the showcase's form; the fee table.
    ========================================================= */
-
-/* The seven steps: a number in a ring, joined by a line down the left. */
-.adm-steps {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.adm-steps > li {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-}
-.adm-steps > li:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  top: var(--space-8);
-  left: calc(var(--space-8) / 2);
-  height: calc(100% - var(--space-8) + var(--space-3));
-  border-left: var(--border-hair) dashed var(--border-control);
-}
-.adm-steps__n {
-  display: grid;
-  flex: none;
-  place-items: center;
-  width: var(--space-8);
-  height: var(--space-8);
-  border: var(--border-hair) solid var(--border-brand);
-  border-radius: var(--radius-full);
-  background: var(--surface-brand-subtle);
-  color: var(--content-brand);
-  font-size: var(--type-caption-size);
-  font-weight: var(--font-weight-semibold);
-}
-
-/* The fast-track route, set apart under the steps. */
-.adm-fasttrack {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2) var(--space-3);
-  margin-top: var(--space-5);
-  padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-md);
-  background: var(--surface-subtle);
-}
 
 /* The fee: a table on the web; on phones, a list (the table's four columns
    don't fit, and scrolling hid the course fee). */
@@ -84,5 +35,191 @@
   .adm-intakes,
   .adm-intakes-note {
     display: none;
+  }
+}
+
+/* ── The process and scholarships cards: the card's edge as the fee card's (a hairline,
+   radius-lg), the artwork on a green ground filling it, and a frosted glass panel or bar for the
+   words in white (radius-md, inside the card's radius-lg). ── */
+.adm-frame {
+  /* the design system's card edge, as the fee card's: a hairline, radius-lg */
+  overflow: hidden;
+  border: var(--border-hair) solid var(--border-decorative);
+  border-radius: var(--radius-lg);
+}
+.adm-ground {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  padding: var(--space-4);
+  /* the scholarship art's palette: mint, deepening to the brand green */
+  background:
+    radial-gradient(90% 120% at 0% 0%, color-mix(in srgb, var(--surface-brand-solid) 30%, transparent), transparent 60%),
+    radial-gradient(80% 110% at 100% 100%, color-mix(in srgb, var(--surface-brand-solid) 22%, transparent), transparent 60%),
+    color-mix(in srgb, var(--surface-brand-solid) 16%, var(--surface-page));
+}
+.adm-glass {
+  --adm-glass: blur(22px) saturate(1.5);
+  border: 1px solid color-mix(in srgb, var(--content-on-image) 22%, transparent);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, color-mix(in srgb, var(--surface-brand-solid), black 55%) 38%, transparent);
+  -webkit-backdrop-filter: var(--adm-glass);
+  backdrop-filter: var(--adm-glass);
+  color: var(--content-on-image);
+}
+.adm-glass p {
+  color: inherit;
+  opacity: 0.88;
+}
+
+/* The process on the scholarship artwork: the drawing fills the ground (the student at the
+   right); a dark frosted panel down the left holds the title, the steps (each its
+   number, then the step, a hairline between) and fast-track at its foot, in white. Phones: the
+   drawing's top shows above, the panel full width under it. */
+.adm-process {
+  display: flex;
+  min-height: 26rem;
+}
+.adm-process > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* the art is wider than the card: anchored at its left edge, the student stands right of the panel */
+  object-position: 0% 55%;
+}
+.adm-process__panel {
+  --adm-glass: blur(22px) saturate(1.3);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: min(100%, 46%);
+  padding: var(--space-6);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--surface-inverse) 62%, transparent);
+  -webkit-backdrop-filter: var(--adm-glass);
+  backdrop-filter: var(--adm-glass);
+  color: var(--content-on-image);
+}
+.adm-process__panel h3 {
+  color: inherit;
+}
+.adm-process__steps {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.adm-process__steps > li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-top: 1px solid color-mix(in srgb, var(--content-on-image) 16%, transparent);
+  font-weight: var(--font-weight-medium);
+}
+.adm-process__steps > li:last-child {
+  border-bottom: 1px solid color-mix(in srgb, var(--content-on-image) 16%, transparent);
+}
+.adm-process__steps > li > span {
+  flex: none;
+  width: 1.75rem;
+  font-size: var(--type-caption-size);
+  font-weight: var(--font-weight-bold, 700);
+  letter-spacing: 0.08em;
+  opacity: 0.7;
+}
+.adm-process__fast {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-top: auto;
+}
+.adm-process__fast p {
+  color: inherit;
+  opacity: 0.85;
+}
+
+/* Scholarships: the artwork fills the ground (16:9; taller on phones), and on the glass bar at its
+   foot the figure large beside what it is, in white; stacked on phones. */
+.adm-scholar {
+  display: flex;
+  align-items: flex-end;
+  aspect-ratio: 16 / 9;
+  background: var(--surface-brand-subtle);
+}
+.adm-scholar > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 30%;
+}
+.adm-scholar__bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  width: 100%;
+  padding: var(--space-4) var(--space-6);
+}
+.adm-scholar__figure {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  margin: 0;
+  font-size: 2.5rem;
+  line-height: 1;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+}
+.adm-scholar__figure > span {
+  margin-bottom: var(--space-1);
+  font-size: var(--type-caption-size);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.88;
+}
+.adm-scholar__copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+.adm-scholar__copy > * {
+  color: inherit;
+}
+@media (max-width: 671px) {
+  .adm-ground {
+    padding: var(--space-3);
+  }
+  .adm-process {
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 0;
+    padding-top: 12rem;
+  }
+  .adm-process > img {
+    height: 16rem;
+    object-position: 80% 40%;
+  }
+  .adm-process__panel {
+    width: 100%;
+    padding: var(--space-5);
+  }
+  .adm-scholar {
+    aspect-ratio: 4 / 5;
+  }
+  .adm-scholar__bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-5);
   }
 }

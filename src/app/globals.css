@@ -19,6 +19,14 @@
   --type-display-weight: var(--font-weight-medium);
 }
 
+/* Brand text in the SSB brand's green, the logo's (`ssb-light-9`, #1D925B), not the package's
+   `content-brand` for SSB light, its darkest step (#004A1E, near black at eyebrow size): the
+   team's call, 2026-10-07. Eyebrows, labels and every other `content-brand` text follow. Light
+   theme only: the dark theme's brand text is already a light green. */
+[data-brand='ssb']:not([data-theme='dark']) {
+  --content-brand: var(--color-ssb-light-9);
+}
+
 /* The carousel rows (alumni, faculty, live projects, the impact foundation) start on the page's
    content edge and run off to the right edge of the window, uncut (the team's call, 2026-10-06:
    capping them to the page's column clipped the last card at that edge). */

@@ -1,50 +1,104 @@
 /* The deck's remaining sections: the pieces their shared row and cards don't cover. */
 
-/* Campus life. */
+/* Campus life: a bento the page's full width (the team's ask, 2026-10-07). Desktop: the cohort as
+   one tall card at the left (half the width); at the right the campus in three rows of the same
+   height (two, one wide, two). Tablet and phone: the cohort above, the campus under it. Each card
+   is a photo filling a design system card (radius-lg); a photo zooms a little under the pointer. */
+.cm-bento {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(3, 11rem);
+  grid-template-areas:
+    'feature feature arch classroom'
+    'feature feature building building'
+    'feature feature flags gym';
+}
+.cm-cell {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  margin: 0;
+  border-radius: var(--radius-lg);
+  background: var(--surface-subtle);
+}
+.cm-cell[data-area='feature'] { grid-area: feature; }
+.cm-cell[data-area='arch'] { grid-area: arch; }
+.cm-cell[data-area='classroom'] { grid-area: classroom; }
+.cm-cell[data-area='building'] { grid-area: building; }
+.cm-cell[data-area='flags'] { grid-area: flags; }
+.cm-cell[data-area='gym'] { grid-area: gym; }
+.cm-cell > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* a slight zoom under the pointer, the card's edge holding still */
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (hover: hover) {
+  .cm-cell:hover > img {
+    transform: scale(1.05);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cm-cell > img {
+    transition: none;
+  }
+  .cm-cell:hover > img {
+    transform: none;
+  }
+}
+.cm-cell[data-area='feature'] > img { object-position: 50% 62%; }
+.cm-cell[data-area='arch'] > img { object-position: 50% 50%; }
+.cm-cell[data-area='classroom'] > img { object-position: 50% 40%; }
+.cm-cell[data-area='flags'] > img { object-position: 50% 60%; }
+.cm-cell[data-area='gym'] > img { object-position: 45% 60%; }
+/* Under the bento: the clubs at the left (two cards), following campus life at the right; the
+   three cards one height. Stacked below desktop. */
+.cm-foot {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
 .cm-clubs {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
 }
-.cm-club {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  padding-left: var(--space-4);
-  border-left: var(--border-thick) solid var(--border-brand);
+.cm-follow a .cm-ig {
+  width: 20px;
+  height: 20px;
 }
-.cm-follow {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: var(--space-1) var(--space-3);
-}
-.cm-follow a {
-  font-weight: var(--font-weight-semibold);
-  color: var(--content-brand);
-  text-decoration: none;
-}
-.cm-follow a:hover {
-  text-decoration: underline;
-}
-.cm-follow a span {
+.cm-follow__note {
   font-weight: var(--font-weight-regular, 400);
   color: var(--content-secondary);
 }
-/* A collage: the building large at the left, two photos stacked at the right. */
-.cm-photos {
-  display: grid;
-  gap: var(--space-4);
-  grid-template-columns: 3fr 2fr;
-  grid-template-rows: 1fr 1fr;
-  min-height: 30rem;
-}
-.cm-photos > :first-child {
-  grid-row: 1 / span 2;
+@media (max-width: 1055px) {
+  .cm-foot {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cm-bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: 24rem 11rem 11rem 11rem;
+    grid-template-areas:
+      'feature feature'
+      'arch classroom'
+      'building building'
+      'flags gym';
+  }
 }
 @media (max-width: 671px) {
-  .cm-photos {
-    min-height: 22rem;
+  .cm-bento {
+    gap: var(--space-3);
+    grid-template-rows: 18rem 8rem 9rem 8rem;
+  }
+  .cm-clubs {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-3);
   }
 }
 

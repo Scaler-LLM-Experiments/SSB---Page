@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Container, Heading, Section, Text } from '@kishanscaler/ssx-ui';
+import { Button, Card, CardBody, Container, Heading, Section, Text } from '@kishanscaler/ssx-ui';
 
 import {
   beyondPlacements,
@@ -16,7 +16,6 @@ import {
 import { PeopleShowcase, type ShowcasePerson } from '@/sections/faculty/PeopleShowcase';
 import { useSectionEntrance } from '@/sections/faculty/useSectionEntrance';
 import { StoryCard } from '@/sections/shared/cards';
-import { MediaSlot } from '@/sections/shared/MediaSlot';
 import { RowSection } from '@/sections/shared/RowSection';
 import { SessionCard } from './SessionCard';
 import { VentureCard } from './VentureCard';
@@ -148,55 +147,99 @@ export function SuperMentorsSection() {
 }
 
 /** Deck p24: campus life. Copy and clubs at the left, a photo collage at the right. */
+/** Instagram's glyph in its own gradient (yellow through orange and magenta to purple), as the
+    brand shows it; the paths are Simple Icons' (CC0). */
+function InstagramGlyph() {
+  const id = React.useId();
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="cm-ig">
+      <defs>
+        <radialGradient id={id} cx="0.25" cy="1.05" r="1.25">
+          <stop offset="0" stopColor="#ffd776" />
+          <stop offset="0.25" stopColor="#f3a554" />
+          <stop offset="0.5" stopColor="#f15245" />
+          <stop offset="0.75" stopColor="#d92e7f" />
+          <stop offset="1" stopColor="#7638fa" />
+        </radialGradient>
+      </defs>
+      <path
+        fill={`url(#${id})`}
+        d="M7.03.084c-1.277.06-2.149.264-2.911.563-.789.308-1.458.72-2.123 1.388-.665.668-1.075 1.337-1.38 2.127-.295.764-.496 1.637-.552 2.914C.008 8.353-.005 8.764.002 12.023c.006 3.258.02 3.667.082 4.947.061 1.277.264 2.148.564 2.911.308.789.72 1.457 1.388 2.123.668.665 1.336 1.074 2.128 1.38.763.295 1.636.496 2.914.552 1.277.056 1.688.069 4.946.063 3.258-.006 3.668-.021 4.948-.081 1.28-.061 2.147-.266 2.91-.564.789-.308 1.458-.72 2.123-1.388.665-.668 1.074-1.338 1.38-2.128.295-.763.496-1.636.551-2.913.056-1.28.07-1.69.063-4.948-.006-3.258-.021-3.667-.082-4.946-.06-1.28-.264-2.149-.563-2.912-.308-.789-.72-1.457-1.388-2.123C21.298 1.33 20.628.921 19.838.617 19.074.321 18.202.12 16.924.065 15.647.009 15.236-.005 11.977.001 8.718.008 8.31.022 7.03.084m.14 21.693c-1.17-.051-1.805-.245-2.229-.408-.56-.216-.96-.477-1.382-.895-.422-.418-.681-.819-.9-1.378-.164-.423-.362-1.058-.417-2.228-.06-1.265-.072-1.644-.079-4.848-.007-3.204.005-3.583.061-4.848.05-1.169.245-1.805.408-2.228.216-.561.476-.96.895-1.382.419-.421.818-.681 1.378-.9.423-.165 1.058-.361 2.227-.417 1.266-.06 1.645-.072 4.848-.079 3.203-.007 3.584.005 4.85.061 1.169.051 1.805.244 2.227.408.561.216.96.475 1.382.895.422.419.682.818.9 1.379.166.421.362 1.056.417 2.226.06 1.266.074 1.645.08 4.848.006 3.203-.006 3.584-.061 4.848-.051 1.17-.245 1.806-.408 2.23-.216.56-.476.96-.895 1.381-.419.422-.818.681-1.378.9-.423.165-1.058.362-2.226.417-1.266.06-1.645.072-4.85.079-3.204.007-3.582-.006-4.848-.061M16.953 5.586a1.44 1.44 0 1 0 1.437-1.442 1.44 1.44 0 0 0-1.437 1.442M5.839 12.012a6.162 6.162 0 1 0 12.323-.024 6.162 6.162 0 0 0-12.323.024M8 12.008a4 4 0 1 1 4.008 3.992A4 4 0 0 1 8 12.008"
+      />
+    </svg>
+  );
+}
+
 export function CampusLifeSection() {
   const ref = React.useRef<HTMLElement>(null);
-  useSectionEntrance(ref, { decks: ['.cm-photos > *'] });
+  useSectionEntrance(ref, { decks: ['.cm-bento > *'] });
   const c = campusLife;
   return (
     <Section ref={ref} density="roomy" aria-labelledby="campus-title">
       <Container>
-        <div className="grid gap-10 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-16">
-          <div data-enter="header" className="flex flex-col gap-6 self-start md:sticky md:top-24">
-            <div className="flex flex-col gap-3">
-              <Heading as="p" size="eyebrow" className="text-content-brand" data-enter="eyebrow">
-                {c.eyebrow}
-              </Heading>
-              <Heading as="h2" size="display" id="campus-title" data-enter="headline">
-                {c.title}
-              </Heading>
-              <Text size="lg" tone="secondary" data-enter="sub">
-                {c.sub}
-              </Text>
-            </div>
-            <div className="cm-clubs" data-enter="sub">
-              <Heading as="h3" size="eyebrow" className="text-content-secondary">
-                Student clubs
-              </Heading>
-              {c.clubs.map((club) => (
-                <div key={club.name} className="cm-club">
-                  <b>{club.name}</b>
-                  <Text size="sm" tone="secondary">
-                    {club.text}
-                  </Text>
-                </div>
-              ))}
-            </div>
-            <div className="cm-follow" data-enter="controls">
-              <Text size="sm" tone="secondary">
-                Follow campus life:
-              </Text>
-              {c.follow.map((f) => (
-                <a key={f.handle} href={f.href} target="_blank" rel="noopener noreferrer">
-                  {f.handle} <span>({f.note})</span>
-                </a>
-              ))}
-            </div>
-          </div>
-          <div className="cm-photos">
-            {c.photos.map((p) => (
-              <MediaSlot key={p.mediaLabel} src={p.media} label={p.mediaLabel} ratio="auto" />
+        <div data-enter="header" className="mb-10 flex max-w-(--size-measure-max) flex-col gap-3 sm:mb-12">
+          <Heading as="p" size="eyebrow" className="text-content-brand" data-enter="eyebrow">
+            {c.eyebrow}
+          </Heading>
+          <Heading as="h2" size="display" id="campus-title" data-enter="headline">
+            {c.title}
+          </Heading>
+          <Text size="lg" tone="secondary" data-enter="sub">
+            {c.sub}
+          </Text>
+        </div>
+
+        {/* The bento (the team's ask, 2026-10-07): the cohort large at the left; the campus in a
+            grid at the right, as tall. */}
+        <div className="cm-bento">
+          <figure className="cm-cell" data-area="feature">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={c.feature.media} alt={c.feature.alt} width={1600} height={1067} loading="lazy" decoding="async" data-part="photo" />
+          </figure>
+          {c.photos.map((photo) => (
+            <figure key={photo.area} className="cm-cell" data-area={photo.area}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={photo.media} alt={photo.alt} width={1600} height={1067} loading="lazy" decoding="async" data-part="photo" />
+            </figure>
+          ))}
+        </div>
+
+        {/* Under it, left and right: the student clubs as two cards, and following campus life,
+            each account a button with Instagram's own glyph. */}
+        <div className="cm-foot">
+          <div className="cm-clubs" data-enter="block">
+            {c.clubs.map((club) => (
+              <Card as="article" key={club.name}>
+                <CardBody className="gap-2 p-5 sm:p-6">
+                  <Heading as="p" size="eyebrow" className="text-content-brand">
+                    Student club
+                  </Heading>
+                  <Heading as="h3" size="3">
+                    {club.name}
+                  </Heading>
+                  <Text tone="secondary">{club.text}</Text>
+                </CardBody>
+              </Card>
             ))}
           </div>
+          <Card as="div" className="cm-follow" data-enter="block">
+            <CardBody className="gap-4 p-5 sm:p-6">
+              <Heading as="h3" size="3">
+                Follow campus life
+              </Heading>
+              <div className="flex flex-col gap-3">
+                {c.follow.map((f) => (
+                  <Button key={f.handle} asChild variant="secondary">
+                    <a href={f.href} target="_blank" rel="noopener noreferrer">
+                      <InstagramGlyph />
+                      {f.handle}
+                      <span className="cm-follow__note">{f.note}</span>
+                    </a>
+                  </Button>
+                ))}
+              </div>
+            </CardBody>
+          </Card>
         </div>
       </Container>
     </Section>

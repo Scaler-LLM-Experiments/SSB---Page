@@ -353,17 +353,27 @@ export const superMentors = {
   ] satisfies Session[],
 };
 
-/** Deck p24: Life Beyond the Classroom. */
+/** Deck p24: Life Beyond the Classroom. Photos: the team's campus shoot (2026-10-07), public/campus. */
 export const campusLife = {
   eyebrow: 'Campus life',
   title: 'Life Beyond the Classroom.',
   sub: 'Fully residential campus in Bengaluru · Shared Innovation Lab and campus with SST · Backed by Peak XV, Lightrock, Tiger Global.',
+  /** The bento's large card, the clubs laid over it. */
+  feature: { media: '/campus/cohort.webp', alt: 'An SSB cohort together on campus' },
   clubs: [
     {
       name: 'Marketing Club',
       text: 'Branding sessions, case competitions with founders including Meolaa’s Ishita Sawant.',
     },
     { name: 'Consulting Club', text: 'SSB’s own Case Book, sessions with Ex-McKinsey and BCG consultants.' },
+  ],
+  /** The campus, beside it (`area`: its place in the bento). */
+  photos: [
+    { area: 'arch', media: '/campus/arch.webp', alt: 'The Scaler School of Business arch on Commencement Day' },
+    { area: 'classroom', media: '/campus/classroom.webp', alt: 'Students in an SSB lecture hall' },
+    { area: 'building', media: '/campus/building.webp', alt: 'The SSB building in Bengaluru' },
+    { area: 'flags', media: '/campus/flags.webp', alt: 'SSB banners in the campus grounds' },
+    { area: 'gym', media: '/campus/gym.webp', alt: 'The campus gym' },
   ],
   follow: [
     {
@@ -373,11 +383,6 @@ export const campusLife = {
     },
     { handle: '@life_at_ssb', note: 'student-run', href: 'https://www.instagram.com/life_at_ssb/' },
   ],
-  photos: [
-    { mediaLabel: 'Photo: campus building exterior' },
-    { mediaLabel: 'Photo: classroom' },
-    { mediaLabel: 'Photo: turf / common area' },
-  ] as { mediaLabel: string; media?: string }[],
 };
 
 /** Deck p25: "Scaler In the news." (the deck has only the title: four article slots). */
