@@ -29,7 +29,7 @@ export type WhyRoles = {
   setup?: string;
   /** Words in `setup` set in italic and struck through as the line arrives, e.g. "old MBA". */
   struck?: string;
-  /** e.g. "But ours prepares you for roles like". */
+  /** e.g. "But SSB prepares you for roles like". */
   lead: string;
   roles: string[];
 };
@@ -45,7 +45,7 @@ export type WhyFigure = {
   /** The source's logo, a file in public/logos, and its height in px (sized so the logos weigh alike). */
   sourceLogo?: string;
   sourceLogoHeight?: number;
-  /** Beside the logo, e.g. "2026" or "Global AI Jobs Barometer, 2026". */
+  /** Beside the logo, e.g. "2026". */
   sourceNote?: string;
 };
 

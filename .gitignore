@@ -49,3 +49,12 @@ next-env.d.ts
 
 # the Kamath clip's source GIF (57 MB); the page uses the MP4 cut in public/media
 /src/Nikhil Gif.gif
+
+# the Anupam Mittal clip's source GIF (55 MB); the page uses the MP4 cut in public/media
+/src/Anupam Mittal Funding.gif
+
+# the Ankur Warikoo clip's source GIF (76 MB); the page uses the MP4 cut in public/media
+/src/Ankoor Warikoo.gif
+
+# the Innovation Lab's source GIF (the team's, 2026-10-07); not used on the page yet
+/src/Scaler Innovation Lab.gif

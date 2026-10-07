@@ -19,6 +19,7 @@ import { StoryCard } from '@/sections/shared/cards';
 import { MediaSlot } from '@/sections/shared/MediaSlot';
 import { RowSection } from '@/sections/shared/RowSection';
 import { SessionCard } from './SessionCard';
+import { VentureCard } from './VentureCard';
 import './community.css';
 
 /*
@@ -27,20 +28,43 @@ import './community.css';
  * setting its `photo` / `media` there.
  */
 
-/** Deck p5: student founders. */
+/** `text` with `word` in the logo's green (Beyond Placements' "companies"). */
+function Accent({ text, word }: { text: string; word?: string }) {
+  const at = word ? text.indexOf(word) : -1;
+  if (!word || at < 0) return text;
+  return (
+    <>
+      {text.slice(0, at)}
+      <span className="bp-accent">{word}</span>
+      {text.slice(at + word.length)}
+    </>
+  );
+}
+
+/**
+ * Deck p5: student founders. No eyebrow, title or line (2026-10-07, the team's brief): a turn
+ * carries on from the breaker before it, as Why SSB's does into its chapters, at the display size
+ * in ink (the setup was grey, the team: black); then a row of cards, one per company.
+ */
 export function BeyondPlacementsSection() {
   const c = beyondPlacements;
   return (
     <RowSection
       id="beyond"
-      eyebrow={c.eyebrow}
-      title={c.title}
-      sub={c.sub}
-      itemName="story"
-      cardWidth="22rem"
+      title="Companies built by SSB students"
+      heading={
+        <Heading as="h2" size="display" id="beyond-title" data-enter="headline" className="bp-turn">
+          <span className="block">{c.turn.setup}</span>
+          <span className="block">
+            <Accent text={c.turn.lead} word={c.turn.accent} />
+          </span>
+        </Heading>
+      }
+      itemName="company"
+      cardWidth="38rem"
     >
-      {c.stories.map((s) => (
-        <StoryCard key={s.title} {...s} />
+      {c.ventures.map((v) => (
+        <VentureCard key={v.company} {...v} />
       ))}
     </RowSection>
   );

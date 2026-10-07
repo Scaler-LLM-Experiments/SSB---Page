@@ -42,7 +42,7 @@ export function WhySection({
       {/* The breaker: the remark that started the argument, before the section answers it. */}
       <WhyBreaker quote={quote} figures={figures} />
       {answer ? (
-        <Section density="roomy" aria-labelledby="why-roles" className="bg-surface-subtle">
+        <Section density="roomy" aria-labelledby="why-roles" className="bg-page">
           <WhyMotion>
             <Container>
               <Roles roles={roles} />

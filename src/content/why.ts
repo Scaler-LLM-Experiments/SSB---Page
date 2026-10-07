@@ -38,7 +38,8 @@ export const why: WhyContent = {
       source: 'PwC',
       sourceLogo: '/logos/pwc.svg',
       sourceLogoHeight: 24,
-      sourceNote: 'Global AI Jobs Barometer, 2026',
+      // the year only, as Forbes' (the team's call, 2026-10-07; the report is the Global AI Jobs Barometer)
+      sourceNote: '2026',
     },
   ],
   // The deck's four roles. Its lead ("Nobody is preparing you for emerging roles like:") rewritten
@@ -47,7 +48,7 @@ export const why: WhyContent = {
     setup: 'He’s right about the old MBA.',
     // Italic, struck through as the line arrives (the team's ask, 2026-10-06).
     struck: 'old MBA',
-    lead: 'But ours prepares you for roles like',
+    lead: 'But SSB prepares you for roles like',
     roles: ['Founder’s Office', 'AI Product Manager', 'Growth Manager', 'Category Manager'],
   },
   // The three chapters, each proved by one story (2026-10-06). The lines are the team's mock's

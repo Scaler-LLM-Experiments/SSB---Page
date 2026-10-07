@@ -31,12 +31,12 @@ export function AlumniSection({ peers }: { peers?: React.ReactNode }) {
             <Heading as="p" size="eyebrow" className="text-content-brand" data-enter="eyebrow">
               Alumni
             </Heading>
+            {/* Picks up Why SSB's "roles like…" (2026-10-07): our earlier cohorts, already there. */}
             <Heading as="h2" size="display" id="alumni-title" data-enter="headline">
-              Strong Alumni Base
+              Our earlier cohorts are already in roles like these.
             </Heading>
             <Text size="lg" tone="secondary" data-enter="sub">
-              They went beyond placements: engineers and analysts moved into program, growth and marketing
-              roles at Blinkit, Emergent, BharatPe and more, and some built companies of their own.
+              Now in growth, strategy and brand roles at Blinkit, Emergent and more.
             </Text>
           </div>
         </div>

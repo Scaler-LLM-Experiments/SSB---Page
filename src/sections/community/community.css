@@ -122,3 +122,196 @@
   object-position: left center;
   box-sizing: content-box;
 }
+
+/* ---- Beyond Placements (2026-10-07, the team's brief) ---- */
+
+/* The turn, at the display size, in ink: the setup, then the answer, a line each on desktop. */
+.bp-turn {
+  max-width: 52rem;
+}
+/* "companies", in the logo's green, as Why SSB's roles turn over in (brighter than content-brand,
+   near black at this size); it clears 3:1 on white at the display size. */
+.bp-accent {
+  color: var(--color-ssb-light-9);
+}
+
+/* A company (VentureCard): a card with a square photo inset at its left (Why SSB's chapter cards'
+   inset and corners: 12px in, 12px photo corners, a 16px card), its field on a glass chip and its
+   figure in white on a progressive blur; the copy at its right. Below sm, the photo over the copy.
+   A light hairline, white. */
+.vc {
+  display: grid;
+  height: 100%;
+  overflow: hidden;
+  border: var(--border-hair) solid color-mix(in srgb, var(--border-subtle) 60%, transparent);
+  border-radius: var(--radius-2xl);
+  background: var(--surface-page);
+}
+@media (width >= 672px) {
+  .vc {
+    grid-template-columns: 16rem minmax(0, 1fr);
+  }
+}
+.vc-media {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin: var(--space-3) var(--space-3) 0;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-xl);
+  background: var(--color-neutral-dark-2);
+}
+@media (width >= 672px) {
+  .vc-media {
+    align-self: start;
+    margin: var(--space-3) 0 var(--space-3) var(--space-3);
+  }
+}
+/* The photo and its blurred copies, one layer (the entrance settles it from a slight zoom). The
+   copies, not backdrop-filter, which would re-run as the row scrolls; every one scaled alike, so
+   they stay aligned while each blur's transparent rim falls outside the box. */
+.vc-layers {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+.vc-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  transform: scale(1.1);
+}
+.vc-plate {
+  transform: none;
+}
+.vc-blur-soft {
+  filter: blur(8px);
+  mask-image: linear-gradient(to bottom, transparent 44%, #000 64%);
+}
+.vc-blur-deep {
+  filter: blur(20px);
+  mask-image: linear-gradient(to bottom, transparent 60%, #000 86%);
+}
+.vc-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 36%,
+    color-mix(in oklab, var(--surface-image-scrim) 55%, transparent) 66%,
+    color-mix(in oklab, var(--surface-image-scrim) 90%, transparent) 100%
+  );
+}
+/* Its field: Why SSB's light glass chip, at the photo's top left, in line with the figure. */
+.vc-tag {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-4);
+  display: inline-flex;
+  align-items: center;
+  height: var(--space-6);
+  padding-inline: var(--space-2-5);
+  border: var(--border-width-hair) solid color-mix(in oklab, var(--surface-default) 50%, transparent);
+  border-radius: var(--radius-full);
+  background: color-mix(in oklab, var(--surface-default) 72%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  backdrop-filter: blur(16px) saturate(1.4);
+  color: var(--content-primary);
+}
+/* The figure: big, medium weight, white; what it counts under it. */
+.vc-stat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  padding: var(--space-4);
+  color: var(--on-image-ink);
+}
+.vc-stat-value {
+  font-size: var(--type-display-size);
+  line-height: 1.1;
+  letter-spacing: var(--type-display-tracking);
+  font-weight: var(--font-weight-medium);
+}
+.vc-stat-label {
+  font-size: var(--type-body-sm-size);
+  line-height: var(--type-body-sm-lh);
+  color: var(--on-image-ink-secondary);
+}
+.vc-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-5);
+  /* 16px from the photo (it was 20/24px; the team: a little closer) */
+  padding: var(--space-4) var(--space-5) var(--space-6);
+}
+@media (width >= 672px) {
+  .vc-body {
+    padding: var(--space-6) var(--space-6) var(--space-5) var(--space-4);
+  }
+}
+.vc-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+/* Who built it: round photos (overlapping, ringed in the card's white), their names, and who
+   they are to it under them. */
+.vc-founders {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2-5);
+}
+.vc-avatars {
+  display: flex;
+  flex: none;
+}
+.vc-avatar {
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  box-shadow: 0 0 0 2px var(--surface-page);
+}
+.vc-avatar + .vc-avatar {
+  margin-left: calc(var(--space-2) * -1);
+}
+.vc-avatar-initials {
+  display: grid;
+  place-items: center;
+  background: var(--surface-sunken);
+  font-size: var(--type-caption-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--content-secondary);
+}
+.vc-who {
+  display: grid;
+  min-width: 0;
+}
+.vc-names {
+  font-size: var(--type-body-sm-size);
+  line-height: 1.35;
+  font-weight: var(--font-weight-medium);
+  color: var(--content-primary);
+}
+.vc-role {
+  font-size: var(--type-caption-size);
+  line-height: 1.4;
+  color: var(--content-secondary);
+}
+/* The line, three lines at most. */
+.vc-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
