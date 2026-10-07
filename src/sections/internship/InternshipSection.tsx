@@ -21,6 +21,7 @@ import * as React from 'react';
 import { Container, Heading, Icon, Section, Text } from '@kishanscaler/ssx-ui';
 import { Briefcase, CalendarBlank, CaretUp, Compass, Play, SealCheck } from '@phosphor-icons/react';
 import { PlacementsMotion } from '@/sections/placements/PlacementsMotion';
+import { CardStack as PhoneCarousel } from '@/sections/shared/CardStack';
 import { CardStack } from './CardStack';
 import '@/sections/alumni/alumni.css';
 import '@/sections/placements/placements.css';
@@ -235,25 +236,35 @@ function LearnerCard({ card }: { card: Card }) {
  * out at its two ends, almost whole (internship.css).
  */
 function Stories() {
+  const announce = (c: Card) => (c.kind === 'video' ? `${c.story.name}: ${c.story.line}` : `${c.pivot[0]}: ${c.pivot[4]} at ${c.pivot[3]}`);
+  // the alumni card is one fixed design scaled to its slot: this is the slot
+  const renderCard = (c: Card) => (
+    <div className="in-slot">
+      <LearnerCard card={c} />
+    </div>
+  );
   return (
-    <CardStack
-      className="in-stack"
-      items={CARDS}
-      getKey={(c) => c.key}
-      label="Learners: success stories and pivots"
-      itemName="learner"
-      cardWidth={86}
-      interval={2400}
-      resumeAfter={4000}
-      announce={(c) => (c.kind === 'video' ? `${c.story.name}: ${c.story.line}` : `${c.pivot[0]}: ${c.pivot[4]} at ${c.pivot[3]}`)}
-      dots
-      renderCard={(c) => (
-        // the alumni card is one fixed design scaled to its slot: this is the slot
-        <div className="in-slot">
-          <LearnerCard card={c} />
-        </div>
-      )}
-    />
+    <>
+      {/* Phones: the gallery row every carousel has on a phone (shared/CardStack). */}
+      <div className="sm:hidden">
+        <PhoneCarousel items={CARDS} getKey={(c) => c.key} label="Learners: success stories and pivots" itemName="learner" announce={announce} dots renderCard={renderCard} />
+      </div>
+      <div className="hidden sm:block">
+        <CardStack
+          className="in-stack"
+          items={CARDS}
+          getKey={(c) => c.key}
+          label="Learners: success stories and pivots"
+          itemName="learner"
+          cardWidth={86}
+          interval={2400}
+          resumeAfter={4000}
+          announce={announce}
+          dots
+          renderCard={renderCard}
+        />
+      </div>
+    </>
   );
 }
 

@@ -1,42 +1,26 @@
 /* The people tabs: a sunken pill of tabs, a dark pill sliding under the one on show (the career
    prep stats' switcher). Tokens only. */
 .pt-switch-wrap { display: flex; margin-bottom: var(--space-8); min-width: 0; }
-.pt-switch { position: relative; display: flex; max-width: 100%; padding: 4px; border-radius: 999px; background: var(--surface-sunken); overflow-x: auto; scrollbar-width: none; }
+.pt-switch { position: relative; display: flex; max-width: 100%; padding: 4px; border-radius: var(--radius-lg); background: var(--surface-sunken); overflow-x: auto; scrollbar-width: none; }
 .pt-switch::-webkit-scrollbar { display: none; }
-.pt-tab { all: unset; box-sizing: border-box; position: relative; z-index: 1; flex: none; cursor: pointer; padding: 10px 20px; border-radius: 999px; font-size: 0.9375rem; line-height: 1.3; font-weight: var(--font-weight-medium); white-space: nowrap; color: var(--content-secondary); transition: color 260ms ease; }
+.pt-tab { all: unset; box-sizing: border-box; position: relative; z-index: 1; flex: none; cursor: pointer; padding: 10px 20px; border-radius: var(--radius-md); font-size: 0.9375rem; line-height: 1.3; font-weight: var(--font-weight-medium); white-space: nowrap; color: var(--content-secondary); transition: color 260ms ease; }
 .pt-tab:hover { color: var(--content-primary); }
 .pt-tab[aria-selected='true'] { color: var(--surface-page); }
 .pt-tab:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
-.pt-pill { position: absolute; top: 4px; bottom: 4px; left: 0; border-radius: 999px; background: var(--content-primary); transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1), width 520ms cubic-bezier(0.22, 1, 0.36, 1); }
+.pt-pill { position: absolute; top: 4px; bottom: 4px; left: 0; border-radius: var(--radius-md); background: var(--content-primary); transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1), width 520ms cubic-bezier(0.22, 1, 0.36, 1); }
 /* the panel coming on: a short rise and fade */
 .pt-panel { animation: pt-in 520ms cubic-bezier(0.22, 1, 0.36, 1) both; }
 @keyframes pt-in { from { opacity: 0; transform: translateY(12px); } }
 @media (max-width: 671px) { .pt-switch-wrap { margin-bottom: var(--space-6); } .pt-tab { padding: 9px 16px; font-size: 0.875rem; } }
 @media (prefers-reduced-motion: reduce) { .pt-pill { transition: none; } .pt-panel { animation: none; } }
 
-/* the pill fills as the tab's time runs (a lighter ground, the fill in full ink); paused off screen
-   and while the pointer or focus is inside the section */
-.pt-pill { overflow: hidden; background: color-mix(in srgb, var(--content-primary) 78%, var(--surface-page)); }
-.pt-pill > i { position: absolute; inset: 0; background: var(--content-primary); transform-origin: 0 50%; transform: scaleX(0); animation: pt-fill var(--pt-dwell, 7000ms) linear forwards; animation-play-state: paused; }
-.pt-section[data-live] .pt-pill > i { animation-play-state: running; }
-.pt-section[data-live]:hover .pt-pill > i, .pt-section[data-live]:focus-within .pt-pill > i { animation-play-state: paused; }
-@keyframes pt-fill { to { transform: scaleX(1); } }
-@media (prefers-reduced-motion: reduce) { .pt-pill > i { animation: none; transform: scaleX(1); } }
 
-/* m-web: the tabs float. The bar sticks just under the navbar while this section is on screen and
-   goes with the section when it leaves (sticky is held inside the section). The switcher becomes a
-   frosted, lifted pill so it reads as floating over the cards. */
-@media (max-width: 671px) {
-  .pt-bar { position: sticky; top: calc(var(--sn-h, 61px) + 8px); z-index: 20; pointer-events: none; }
-  .pt-bar .pt-switch-wrap { margin-bottom: var(--space-6); }
-  .pt-bar .pt-switch { pointer-events: auto; --pt-glass: blur(14px) saturate(1.4); -webkit-backdrop-filter: var(--pt-glass); backdrop-filter: var(--pt-glass);
-    background: color-mix(in srgb, var(--surface-sunken) 82%, transparent); box-shadow: 0 0 0 1px color-mix(in srgb, var(--border-subtle) 80%, transparent), 0 10px 24px -12px rgb(0 0 0 / 0.28); }
-}
-
-/* ── The tabs as a floating control (the first-fold toggle's form), for this section only ──
-   The bar sits at the section's end and sticks to the foot of the window while the section is on
-   screen: a raised white pill, centred, with a soft shadow. All widths (this replaces the phone's
-   bar under the navbar). */
-.pt-bar, .pt-bar[class] { position: sticky; top: auto; bottom: 16px; z-index: 20; display: flex; justify-content: center; margin-top: var(--space-8); pointer-events: none; }
-.pt-bar .pt-switch-wrap { margin: 0; max-width: 100%; }
-.pt-bar .pt-switch { pointer-events: auto; border: 1px solid var(--border-subtle); background: var(--surface-raised, #fff); box-shadow: 0 10px 30px -12px rgb(0 0 0 / 0.35); -webkit-backdrop-filter: none; backdrop-filter: none; }
+/* The tabs' slot: at the header's right (beside the header's foot); left-aligned above the cards
+   on phones, on the header's edge. The switcher is a flat white ground with a hairline, the tab on show in brand green. */
+.pt-tabs { display: flex; flex: none; justify-content: flex-start; min-width: 0; max-width: 100%; }
+.pt-tabs .pt-switch-wrap { margin: 0; max-width: 100%; }
+.pt-tabs .pt-switch { border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--surface-raised); box-shadow: none; }
+/* the tab on show: brand green, square-cornered to the design system (radius-md inside the lg ground) */
+.pt-tabs .pt-tab { border-radius: var(--radius-md); }
+.pt-tabs .pt-tab[aria-selected='true'] { color: var(--content-on-brand-solid); }
+.pt-tabs .pt-pill { border-radius: var(--radius-md); background: var(--surface-brand-solid); }

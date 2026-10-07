@@ -132,3 +132,75 @@
     transition: none;
   }
 }
+
+/* =========================================================
+   Phone carousel (CardStack), as Apple's galleries on a phone: a row that scrolls sideways
+   and snaps to each card, the next peeking in. It runs edge to edge (out of its Container's
+   gutter) while each card snaps to the gutter. --fs-card-w is a share of the carousel's width
+   (cqw: the root is the size container).
+   ========================================================= */
+.fs {
+  container-type: inline-size;
+}
+.fs-row {
+  --fs-gutter: calc(50vw - 50cqw);
+  display: flex;
+  gap: var(--space-3);
+  margin: 0 calc(var(--fs-gutter) * -1);
+  padding: 0 var(--fs-gutter);
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--fs-gutter);
+  scrollbar-width: none;
+}
+.fs-row::-webkit-scrollbar {
+  display: none;
+}
+.fs-slide {
+  flex: 0 0 var(--fs-card-w);
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+.fs-slide > * {
+  height: 100%;
+}
+/* The card on show brings its text in, as Apple's captions do: line after line (kicker, name,
+   role, logo), each sliding in from the right and fading up a beat after the one before, as the
+   card settles; the others' text waits out of sight. Lines are the text block's children; their
+   `translate` and the section entrance's `transform` are separate properties, and the entrance
+   clears its opacity once played, so the two never fight. */
+.fs-slide :is(.meet-card__content, .lp-content, .alumni-card__body) > * {
+  transition:
+    opacity 0.45s var(--motion-easing-productive-in-out, ease),
+    translate 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.fs-slide:not([data-active]) :is(.meet-card__content, .lp-content, .alumni-card__body) > * {
+  opacity: 0;
+  translate: 40px 0;
+  transition-duration: 0.2s;
+  transition-delay: 0s;
+}
+.fs-slide[data-active] :is(.meet-card__content, .lp-content, .alumni-card__body) > * {
+  transition-delay: 0.1s;
+}
+.fs-slide[data-active] :is(.meet-card__content, .lp-content, .alumni-card__body) > :nth-child(2) {
+  transition-delay: 0.18s;
+}
+.fs-slide[data-active] :is(.meet-card__content, .lp-content, .alumni-card__body) > :nth-child(3) {
+  transition-delay: 0.26s;
+}
+.fs-slide[data-active] :is(.meet-card__content, .lp-content, .alumni-card__body) > :nth-child(4) {
+  transition-delay: 0.34s;
+}
+.fs-slide[data-active] :is(.meet-card__content, .lp-content, .alumni-card__body) > :nth-child(n + 5) {
+  transition-delay: 0.42s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .fs-slide :is(.meet-card__content, .lp-content, .alumni-card__body) > * {
+    transition: none;
+    opacity: 1 !important;
+    translate: none !important;
+  }
+}

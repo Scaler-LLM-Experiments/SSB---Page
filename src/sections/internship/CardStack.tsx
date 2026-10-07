@@ -4,6 +4,7 @@ import * as React from 'react';
 import { GlassButton } from '@kishanscaler/ssx-ui';
 import { prefersReducedMotion } from '@kishanscaler/ssx-ui/motion';
 
+import { CarouselNav } from '@/sections/shared/CarouselNav';
 import '@/sections/shared/card-stack.css';
 
 const ArrowLeft = () => (
@@ -245,22 +246,18 @@ export function CardStack<T>({
       </div>
 
       {dots ? (
-        <div className="fc-dots" role="group" aria-label={`Choose a ${itemName}`}>
-          {items.map((item, i) => (
-            <button
-              key={getKey(item)}
-              type="button"
-              className="fc-dot"
-              aria-label={`${itemName} ${i + 1} of ${n}`}
-              aria-current={i === active ? 'true' : undefined}
-              data-playing={i === active && playing ? '' : undefined}
-              onClick={() => go(i)}
-            >
-              {/* Re-keyed on every change so the fill restarts with the timer. */}
-              <span key={`${active}-${playing}`} className="fc-dot__fill" aria-hidden="true" />
-            </button>
-          ))}
-        </div>
+        // the gallery dots every carousel has (shared/CarouselNav): a dot per card, the current one
+        // filling while the stack waits, caret arrows either side (it loops, so neither end stops)
+        <CarouselNav
+          count={n}
+          active={active}
+          itemName={itemName}
+          onSelect={(i) => go(i)}
+          onPrev={() => go(active - 1)}
+          onNext={() => go(active + 1)}
+          running={playing}
+          interval={reduced ? undefined : interval}
+        />
       ) : null}
 
       <p className="sr-only" aria-live="polite">

@@ -3,7 +3,6 @@
 import * as React from 'react';
 import { Container, Heading, Section, Text } from '@kishanscaler/ssx-ui';
 
-import { HScrollerControls } from '@/sections/faculty/HScroller';
 import { useSectionEntrance } from '@/sections/faculty/useSectionEntrance';
 import { ScrollDots } from './ScrollDots';
 import './row-section.css';
@@ -39,15 +38,6 @@ export function RowSection({
   const rowRef = React.useRef<HTMLUListElement>(null);
   useSectionEntrance(sectionRef, { decks: ['.rs-row > li > article'] });
 
-  const page = (dir: 1 | -1) => {
-    const el = rowRef.current;
-    const card = el?.firstElementChild as HTMLElement | null;
-    if (!el || !card) return;
-    el.scrollBy({
-      left: dir * (card.offsetWidth + parseFloat(getComputedStyle(el).columnGap || '0')),
-      behavior: 'smooth',
-    });
-  };
 
   const items = React.Children.toArray(children);
 
@@ -72,9 +62,6 @@ export function RowSection({
                 {sub}
               </Text>
             ) : null}
-          </div>
-          <div data-enter="controls" className="hidden sm:block">
-            <HScrollerControls label={itemName} page={page} />
           </div>
         </div>
       </Container>

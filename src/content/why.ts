@@ -45,33 +45,66 @@ export const why: WhyContent = {
   // to answer the breaker's Kamath quote (the team's call, 2026-10-06).
   roles: {
     setup: 'He’s right about the old MBA.',
+    // Italic, struck through as the line arrives (the team's ask, 2026-10-06).
+    struck: 'old MBA',
     lead: 'But ours prepares you for roles like',
     roles: ['Founder’s Office', 'AI Product Manager', 'Growth Manager', 'Category Manager'],
   },
-  // PLACEHOLDER photos: cropped from the team's mock until the originals arrive (public/media/CREDITS.md).
+  // The three chapters, each proved by one story (2026-10-06). The lines are the team's mock's
+  // (2026-10-05), each title folded into its line. The stories are the deck's ("Beyond Placements",
+  // slide 5; the Shark Tank and convocation slide, 7; the AI slide's "5 real AI products", 9),
+  // checked against the press where there is any. Photos and their sources: public/media/CREDITS.md.
   pillars: [
     {
-      kicker: 'Build',
-      title: 'Make the idea real.',
+      icon: 'hammer',
+      title: 'Build',
       description:
-        'Launch a business, meet customers and learn from the market rather than a hypothetical case alone.',
-      imageUrl: '/media/why-build.webp',
-      imageAlt: 'SSB students working through a task on their phones',
+        'Make the idea real. Launch a business, meet customers and learn from the market, not a hypothetical case.',
+      // ANI, 29 July 2026 (via LatestLY): Mittal reviewed Hummusapiens, Gredo, Grade Sense and Dream
+      // Kit on campus, and offered to invest ₹50 lakh in Hummusapiens. An offer: don't say "raised".
+      story: {
+        tag: 'Highlight',
+        label: 'Hummusapiens · July 2026',
+        headline: 'A student’s snack brand, offered ₹50 lakh by Shark Tank’s Anupam Mittal.',
+        imageUrl: '/media/why-story-mittal.webp',
+        imageUrlSmall: '/media/why-story-mittal-800.webp',
+        imageAlt: 'Anupam Mittal in conversation on stage at Scaler School of Business',
+        imagePosition: '66% 50%',
+      },
     },
     {
-      kicker: 'Ship',
-      title: 'Use AI as a working tool.',
-      description: 'Start without code, then build products, automations and agents for real use cases.',
-      imageUrl: '/media/why-ship.webp',
-      imageAlt: 'SSB students celebrating in the lab',
+      icon: 'rocket',
+      title: 'Ship',
+      description:
+        'Use AI as a working tool. Start without code, then ship products, automations and agents for real use cases: five before you graduate.',
+      // The deck's "AI-Powered Grading, Built by a Student"; what it does from its Product Hunt
+      // listing (multi-language OCR, rubrics, teacher override, 500+ papers a batch).
+      story: {
+        tag: 'Highlight',
+        label: 'GradeSense · Ayush Poojary',
+        headline: 'A student’s AI that marks handwritten exams in minutes.',
+        imageUrl: '/media/why-story-gradesense.webp',
+        imageUrlSmall: '/media/why-story-gradesense-800.webp',
+        imageAlt: 'GradeSense grading a handwritten answer sheet, its AI feedback beside it',
+        imagePosition: '80% 0%',
+      },
     },
     {
-      kicker: 'Grow',
-      title: 'Prepare for emerging roles.',
+      icon: 'trend-up',
+      title: 'Grow',
       description:
-        'Explore Founder’s Office, AI Product, Growth and Category roles with people who hire and lead in them.',
-      imageUrl: '/media/why-grow.webp',
-      imageAlt: 'A speaker addressing a full SSB classroom',
+        'Prepare for emerging roles. Explore Founder’s Office, AI Product, Growth and Category roles with people who hire and lead in them.',
+      // The deck's convocation card (May 2026). PLACEHOLDER photo: a campus photo from SSB's own
+      // site, not the convocation, until the team sends one.
+      story: {
+        tag: 'Highlight',
+        label: 'The founding cohort · May 2026',
+        headline: '55 graduates, headed to Blinkit, Urban Company and Emergent.',
+        imageUrl: '/media/why-story-cohort.webp',
+        imageUrlSmall: '/media/why-story-cohort-800.webp',
+        imageAlt: 'SSB students in a discussion round a table',
+        imagePosition: '40% 50%',
+      },
     },
   ],
 };

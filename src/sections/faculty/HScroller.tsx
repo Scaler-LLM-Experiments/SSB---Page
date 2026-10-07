@@ -54,7 +54,12 @@ export function useHScroller({ speed = 32, auto = true }: { speed?: number; auto
       const dt = last ? Math.min(now - last, 64) / 1000 : 0;
       last = now;
       const busy =
-        hovered || el.contains(document.activeElement) || now < holdUntil.current || el.hasAttribute('data-hold');
+        hovered ||
+        el.contains(document.activeElement) ||
+        now < holdUntil.current ||
+        el.hasAttribute('data-hold') ||
+        // its carousel's pause button (CarouselNav, via ScrollDots)
+        el.hasAttribute('data-paused');
       const w = setWidth(el);
       if (busy || !w) {
         pos = el.scrollLeft; // pick up wherever the visitor left it

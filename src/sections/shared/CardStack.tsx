@@ -1,37 +1,13 @@
 'use client';
 
 import * as React from 'react';
-import { GlassButton } from '@kishanscaler/ssx-ui';
 import { prefersReducedMotion } from '@kishanscaler/ssx-ui/motion';
 
+import { CarouselNav } from './CarouselNav';
+import { onSideways } from './onSideways';
 import './card-stack.css';
 
-const ArrowLeft = () => (
-  <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
-    <path d="M228,128a12,12,0,0,1-12,12H69l51.52,51.51a12,12,0,0,1-17,17l-72-72a12,12,0,0,1,0-17l72-72a12,12,0,0,1,17,17L69,116H216A12,12,0,0,1,228,128Z" />
-  </svg>
-);
-const ArrowRight = () => (
-  <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
-    <path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z" />
-  </svg>
-);
-
-const AUTOPLAY_MS = 4000;
-const RESUME_AFTER_MS = 6000;
-const SWIPE_PX = 60; // how far a drag must travel to change the card
-const MAX_TILT_DEG = 6;
-const SIDE_SCALE = 0.86;
-
-/** Shortest signed distance from `active` to `i` on a loop of `n`. */
-const offset = (i: number, active: number, n: number) => {
-  let d = (i - active) % n;
-  if (d > n / 2) d -= n;
-  if (d < -n / 2) d += n;
-  return d;
-};
-const posOf = (d: number) =>
-  d === 0 ? '0' : d === 1 ? '1' : d === -1 ? '-1' : d < 0 ? 'far-left' : 'far-right';
+const AUTOPLAY_MS = 6000; // Apple's galleries hold each slide about this long
 
 export type CardStackProps<T> = {
   items: T[];
@@ -41,27 +17,29 @@ export type CardStackProps<T> = {
   announce: (item: T) => string;
   /** The carousel's name ("Faculty"). */
   label: string;
-  /** One item, for the arrows' names ("faculty" -> "Next faculty"). */
+  /** One item, for the controls' names ("faculty" -> "Next faculty"). */
   itemName: string;
-  /** Front card's width as a share of the stage, e.g. 76 (the default). */
+  /** A card's width as a share of the carousel's, e.g. 86 (the default): the next one peeks in. */
   cardWidth?: number;
-  /** Arrows over a photo take the white on-image glass; over a light card, the neutral glass. */
-  arrows?: 'on-image' | 'neutral';
-  /** A dot per card under the stack; the current one fills while autoplay waits. */
+  /** A dot per card under the row; the current one fills while autoplay waits. */
   dots?: boolean;
-  /** false: no autoplay and no wrapping: it stops at the first and last card (arrows disabled there). */
+  /** true: after the last card, autoplay goes back to the first. false: it plays through once. */
   loop?: boolean;
   className?: string;
 };
 
 /**
- * Phone carousel: a looping stack (front card, its neighbours tucked behind,
- * smaller and dimmed) with glass arrows. Drag the front card and it follows
- * the finger with a slight tilt; let go past SWIPE_PX and it drops to the back
- * as the next comes forward. It advances on its own every AUTOPLAY_MS while on
- * screen, pausing for RESUME_AFTER_MS after any interaction, never under
- * reduced motion. The stage is as tall as its tallest card (cards stack in
- * one grid cell), so cards of any height work.
+ * Phone carousel, as Apple's galleries on a phone (apple.com/iphone-18-pro): a row of cards
+ * that scrolls sideways under the finger and snaps to each card, the next one peeking in at the
+ * edge. The card on show brings its text in: it slides in from the right and fades up as the
+ * card settles (card-stack.css); the others' text waits out of sight.
+ *
+ * While the row is on screen it moves one card on every AUTOPLAY_MS, the current dot filling as
+ * it waits (CarouselNav), and stops at the last card (or goes back to the first, `loop`). A
+ * sideways swipe, a dot or an arrow stops it for good: the visitor has taken over (scrolling the
+ * page past it does not). Never under reduced
+ * motion. The card on show is read from the scroll position, so a swipe, a dot and the timer
+ * all agree.
  */
 export function CardStack<T>({
   items,
@@ -70,38 +48,19 @@ export function CardStack<T>({
   announce,
   label,
   itemName,
-  cardWidth = 76,
-  arrows = 'on-image',
+  cardWidth = 86,
   dots = false,
-  loop = true,
+  loop = false,
   className,
 }: CardStackProps<T>) {
   const n = items.length;
   const [active, setActive] = React.useState(0);
-  const [paused, setPaused] = React.useState(false);
+  // Autoplay: off for good once the visitor takes over, or at the end.
+  const [on, setOn] = React.useState(true);
   const [visible, setVisible] = React.useState(false);
   const [reduced, setReduced] = React.useState(false);
   const rootRef = React.useRef<HTMLDivElement>(null);
-  const stageRef = React.useRef<HTMLDivElement>(null);
-  const resumeTimer = React.useRef<number | undefined>(undefined);
-  // Drag state: where the touch began, whether it has locked to horizontal.
-  const drag = React.useRef<{ x: number; y: number; dx: number; axis: 'x' | 'y' | null } | null>(null);
-
-  // Any interaction holds autoplay for RESUME_AFTER_MS.
-  const hold = React.useCallback(() => {
-    setPaused(true);
-    window.clearTimeout(resumeTimer.current);
-    resumeTimer.current = window.setTimeout(() => setPaused(false), RESUME_AFTER_MS);
-  }, []);
-  React.useEffect(() => () => window.clearTimeout(resumeTimer.current), []);
-
-  const go = React.useCallback(
-    (to: number, user = true) => {
-      setActive(loop ? ((to % n) + n) % n : Math.min(n - 1, Math.max(0, to)));
-      if (user) hold();
-    },
-    [n, hold, loop],
-  );
+  const rowRef = React.useRef<HTMLUListElement>(null);
 
   React.useEffect(() => {
     const root = rootRef.current;
@@ -112,145 +71,108 @@ export function CardStack<T>({
     return () => io.disconnect();
   }, []);
 
-  // Autoplay: one timer per card, restarted on every change, so the current
-  // dot's fill and the move to the next card stay in step.
-  const playing = loop && visible && !paused && !reduced && n > 1;
+  // Where card i starts, and the furthest the row can scroll (the last card stops at the end).
+  const geometry = React.useCallback(() => {
+    const row = rowRef.current;
+    const first = row?.firstElementChild as HTMLElement | null;
+    if (!row || !first) return null;
+    const step = first.offsetWidth + parseFloat(getComputedStyle(row).columnGap || '0');
+    return { row, step, max: row.scrollWidth - row.clientWidth };
+  }, []);
+
+  // The card on show follows the scroll position (a swipe, a dot, the timer alike).
+  React.useEffect(() => {
+    const row = rowRef.current;
+    if (!row) return;
+    let frame = 0;
+    const read = () => {
+      frame = 0;
+      const g = geometry();
+      if (!g || !g.step) return;
+      const i = row.scrollLeft >= g.max - 4 ? n - 1 : Math.round(row.scrollLeft / g.step);
+      setActive(Math.min(n - 1, Math.max(0, i)));
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(read);
+    };
+    row.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      row.removeEventListener('scroll', onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, [geometry, n]);
+
+  const go = React.useCallback(
+    (to: number) => {
+      const g = geometry();
+      if (!g) return;
+      const i = loop ? ((to % n) + n) % n : Math.min(n - 1, Math.max(0, to));
+      g.row.scrollTo({ left: Math.min(i * g.step, g.max), behavior: reduced ? 'auto' : 'smooth' });
+    },
+    [geometry, loop, n, reduced],
+  );
+  const take = (to: number) => {
+    setOn(false); // the visitor has taken over
+    go(to);
+  };
+
+  // A sideways swipe takes over; the page scrolling past (a vertical swipe on a card) does not.
+  React.useEffect(() => {
+    const row = rowRef.current;
+    if (!row) return;
+    return onSideways(row, () => setOn(false));
+  }, []);
+
+  // Autoplay: one timer per card, restarted on every change, so the current dot's fill and the
+  // move to the next card stay in step.
+  const playing = on && visible && !reduced && n > 1;
   React.useEffect(() => {
     if (!playing) return;
-    const id = window.setTimeout(() => go(active + 1, false), AUTOPLAY_MS);
+    const id = window.setTimeout(() => {
+      if (!loop && active >= n - 1) setOn(false);
+      else go(active + 1);
+    }, AUTOPLAY_MS);
     return () => window.clearTimeout(id);
-  }, [playing, active, go]);
-
-  const front = () => stageRef.current?.querySelector<HTMLElement>('.fc-slide[data-pos="0"]') ?? null;
-  const onTouchStart = (e: React.TouchEvent) => {
-    const t = e.touches[0];
-    drag.current = { x: t.clientX, y: t.clientY, dx: 0, axis: null };
-    hold();
-  };
-  const onTouchMove = (e: React.TouchEvent) => {
-    const d = drag.current;
-    if (!d) return;
-    const t = e.touches[0];
-    const dx = t.clientX - d.x;
-    const dy = t.clientY - d.y;
-    // Lock to an axis once the finger has clearly moved: a vertical drag
-    // stays a page scroll, a horizontal one moves the card.
-    if (!d.axis && Math.hypot(dx, dy) > 8) d.axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
-    if (d.axis !== 'x') return;
-    d.dx = dx;
-    const el = front();
-    if (!el) return;
-    const tilt = Math.max(-1, Math.min(1, dx / (el.offsetWidth || 1))) * MAX_TILT_DEG;
-    el.style.transition = 'none';
-    el.style.transform = `translateX(${dx}px) rotate(${tilt}deg)`;
-  };
-  const onTouchEnd = () => {
-    const d = drag.current;
-    drag.current = null;
-    const el = front();
-    if (el) {
-      // Hand the card back to the stylesheet: it animates from where the
-      // finger left it to its new place (the back) or to the centre.
-      el.style.transition = '';
-      el.style.transform = '';
-    }
-    if (d?.axis === 'x' && Math.abs(d.dx) > SWIPE_PX) go(active + (d.dx < 0 ? 1 : -1));
-  };
-
-  // A side card's outer edge meets the stage edge: shift it by
-  // (50% - its scaled half-width) of the stage, written as a share of the card.
-  const shift = ((50 - (SIDE_SCALE * cardWidth) / 2) / cardWidth) * 100;
-  const stageVars = {
-    '--fc-card-w': `${cardWidth}%`,
-    '--fc-shift': `${shift}%`,
-    '--fc-side-scale': SIDE_SCALE,
-    '--fc-interval': `${AUTOPLAY_MS}ms`,
-  } as React.CSSProperties;
+  }, [playing, active, go, loop, n]);
 
   return (
     <div
       ref={rootRef}
-      className={className}
-      style={stageVars}
+      className={`fs ${className ?? ''}`}
+      style={{ '--fs-card-w': `${cardWidth}cqw` } as React.CSSProperties}
       role="region"
       aria-roledescription="carousel"
       aria-label={label}
     >
-      <div
-        ref={stageRef}
-        className="fc-stage"
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
-        onTouchCancel={onTouchEnd}
-      >
-        {items.map((item, i) => {
-          const d = loop ? offset(i, active, n) : i - active;
-          const isActive = d === 0;
-          return (
-            <div
-              key={getKey(item)}
-              className="fc-slide"
-              data-pos={posOf(d)}
-              aria-hidden={!isActive || undefined}
-              inert={!isActive || undefined}
-              aria-roledescription="slide"
-              aria-label={`${i + 1} of ${n}`}
-            >
-              {renderCard(item, i)}
-            </div>
-          );
-        })}
-
-        <div
-          className="fc-arrow"
-          data-side="prev"
-          data-surface-ink={arrows === 'on-image' ? 'on-image' : undefined}
-        >
-          <GlassButton
-            shape="capsule"
-            size="icon-lg"
-            aria-label={`Previous ${itemName}`}
-            disabled={!loop && active === 0}
-            onClick={() => go(active - 1)}
+      <ul ref={rowRef} className="fs-row">
+        {items.map((item, i) => (
+          <li
+            key={getKey(item)}
+            className="fs-slide"
+            data-active={i === active || undefined}
+            aria-roledescription="slide"
+            aria-label={`${i + 1} of ${n}`}
           >
-            <ArrowLeft />
-          </GlassButton>
-        </div>
-        <div
-          className="fc-arrow"
-          data-side="next"
-          data-surface-ink={arrows === 'on-image' ? 'on-image' : undefined}
-        >
-          <GlassButton
-            shape="capsule"
-            size="icon-lg"
-            aria-label={`Next ${itemName}`}
-            disabled={!loop && active === n - 1}
-            onClick={() => go(active + 1)}
-          >
-            <ArrowRight />
-          </GlassButton>
-        </div>
-      </div>
+            {renderCard(item, i)}
+          </li>
+        ))}
+      </ul>
 
       {dots ? (
-        <div className="fc-dots" role="group" aria-label={`Choose a ${itemName}`}>
-          {items.map((item, i) => (
-            <button
-              key={getKey(item)}
-              type="button"
-              className="fc-dot"
-              aria-label={`${itemName} ${i + 1} of ${n}`}
-              aria-current={i === active ? 'true' : undefined}
-              data-playing={i === active && playing ? '' : undefined}
-              onClick={() => go(i)}
-            >
-              {/* Re-keyed on every change so the fill restarts with the timer. */}
-              <span key={`${active}-${playing}`} className="fc-dot__fill" aria-hidden="true" />
-            </button>
-          ))}
-        </div>
+        <CarouselNav
+          count={n}
+          active={active}
+          itemName={itemName}
+          onSelect={take}
+          onPrev={() => take(active - 1)}
+          onNext={() => take(active + 1)}
+          atStart={!loop && active === 0}
+          atEnd={!loop && active === n - 1}
+          running={playing}
+          // timed only while autoplay is on; after that the current dot shows full, not frozen empty
+          interval={on && !reduced && n > 1 ? AUTOPLAY_MS : undefined}
+          tone="light"
+        />
       ) : null}
 
       <p className="sr-only" aria-live="polite">
