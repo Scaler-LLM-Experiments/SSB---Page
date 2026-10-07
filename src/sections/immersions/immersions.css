@@ -338,3 +338,12 @@
   -webkit-backdrop-filter: var(--cc-glass);
   backdrop-filter: var(--cc-glass);
 }
+/* a shorter glass bar (2026-10-07), so more of the face shows: "Achievements" plain (no pill, no
+   rule), the figures a step smaller, less padding */
+.creator-card__foot { padding: var(--space-3) var(--space-3) var(--space-3); }
+.creator-card__rule { margin: 0 0 var(--space-2); }
+.creator-card__rule::before { content: none; }
+.creator-card__rule span { padding: 0; border-radius: 0; background: none; color: var(--on-image-ink-secondary); font-size: 0.6875rem; }
+.creator-card__stats dd { font-size: var(--type-h4-size, 1.25rem); line-height: 1.2; }
+.creator-card__stats dt { font-size: var(--type-caption-size); line-height: 1.3; }
+.creator-card__stats > div { gap: 2px; }
