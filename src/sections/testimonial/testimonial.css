@@ -187,7 +187,7 @@
   gap: var(--space-3);
   max-width: 100%;
   /* well clear of the statement, so the two read as words, then who said or did them */
-  margin-top: var(--space-10);
+  margin-top: var(--space-8);
   padding: var(--space-3) var(--space-5);
   border: var(--border-width-hair) solid color-mix(in oklab, var(--on-image-ink) 18%, transparent);
   /* the design system's 8px, as its cards (the team's call, 2026-10-07; it was a pill) */
@@ -239,7 +239,7 @@
 /* Phone: the logos on a row of their own under the name, so the card never squeezes it. */
 @media (width < 672px) {
   .oc-profile {
-    margin-top: var(--space-8);
+    margin-top: var(--space-6);
     flex-wrap: wrap;
     row-gap: var(--space-2);
   }

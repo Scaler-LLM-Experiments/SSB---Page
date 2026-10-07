@@ -25,13 +25,16 @@
 
 /* ── One visual language down the page ───────────────────────────────────────
    The lab's sections share a header (green eyebrow, display heading, grey sub-line, 48px to the
-   content) and a rhythm (96px above and below a section, 48px on phones). Our curriculum blocks
+   content) and a rhythm (64px above and below a section, 40px on phones: the system's `default`
+   rung, tokens; the team's call, 2026-10-07, closer than `roomy`'s 96 / 48). Our curriculum blocks
    and main's Placements showcase were built apart and differed; here they are brought in line.
    Scoped to the home page (.pv-home), so the curriculum's own page and lab are unchanged. */
 
 /* rhythm: each curriculum block is a section like the rest; its own inner padding is dropped */
-.pv-page.pv-home { padding-top: 48px; padding-bottom: 48px; }
-@media (min-width: 672px) { .pv-page.pv-home { padding-top: 96px; padding-bottom: 96px; } }
+main [data-slot='section'][data-density='roomy'], .pv-page.pv-home { padding-block: var(--space-10); }
+@media (min-width: 672px) {
+  main [data-slot='section'][data-density='roomy'], .pv-page.pv-home { padding-block: var(--space-16); }
+}
 .pv-home .sj-shell { padding-top: 0; padding-bottom: 0; }
 .pv-home .sj-shell > .sj-ai, .pv-home .sj-shell > .sj-learn { margin-top: 0; padding-top: 0; }
 /* no rule above Learn by doing: no other section on the page opens with a line */

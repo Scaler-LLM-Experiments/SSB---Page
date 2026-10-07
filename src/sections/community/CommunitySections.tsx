@@ -19,6 +19,7 @@ import { StoryCard } from '@/sections/shared/cards';
 import { MediaSlot } from '@/sections/shared/MediaSlot';
 import { RowSection } from '@/sections/shared/RowSection';
 import { SessionCard } from './SessionCard';
+import { Accent } from '@/sections/shared/Accent';
 import { VentureCard } from './VentureCard';
 import './community.css';
 
@@ -27,19 +28,6 @@ import './community.css';
  * videos (MediaSlot), copy from src/content/community.ts. Swap an asset in by
  * setting its `photo` / `media` there.
  */
-
-/** `text` with `word` in the logo's green (Beyond Placements' "companies"). */
-function Accent({ text, word }: { text: string; word?: string }) {
-  const at = word ? text.indexOf(word) : -1;
-  if (!word || at < 0) return text;
-  return (
-    <>
-      {text.slice(0, at)}
-      <span className="bp-accent">{word}</span>
-      {text.slice(at + word.length)}
-    </>
-  );
-}
 
 /**
  * Deck p5: student founders. No eyebrow, title or line (2026-10-07, the team's brief): a turn

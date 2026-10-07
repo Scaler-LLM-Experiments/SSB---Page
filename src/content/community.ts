@@ -11,24 +11,30 @@ type Story = { title: string; text?: string; media?: string; mediaLabel: string;
 /** A company a student started or grew: one Beyond Placements card. */
 export type Venture = {
   company: string;
-  /** One or two people; their names run together ("A & B"). */
+  /** One or more people; one by full name, several by first names ("A, B & C"). */
   founders: string[];
   /** Their photos (square, in /public), in the same order; initials where there is none. */
   avatars?: (string | undefined)[];
-  /** Their SSB cohort, under their names; "Cohort 1" if unset (the team's call, 2026-10-07). */
-  cohort?: string;
-  /** What it is, in a line or two. */
+  /** Under their names: the SSB cohort for students ("Cohort 1" if unset, the team's call,
+   *  2026-10-07), "Founder" / "Co-founders" for the Innovation Lab's. */
+  role?: string;
+  /** What it is, in about three lines (115 to 125 characters fill them on desktop). */
   description: string;
   /** Its field, on a glass chip at the photo's top left. */
   sector: string;
-  /** The figure over the photo's blur: "₹1Cr+" over "ARR". */
-  stat: { value: string; label: string };
+  /** The figure over the photo's blur: "₹1Cr+" over "ARR". None: no figure, no blur. */
+  stat?: { value: string; label: string };
   /** The photo at the card's left (its smaller file for phones); the dark plate until there is one. */
   image?: string;
   imageSmall?: string;
   /** object-position, to keep the subject in the crop. */
   imagePosition?: string;
   imageAlt?: string;
+  /** A wide banner (a white logo on a two-colour gradient) in place of a photo: the square takes
+   *  its two colours, top and bottom, and the whole banner sits across its middle, faded in. */
+  banner?: { src: string; top: string; bottom: string };
+  /** Its website: an arrow beside the company's name. */
+  href?: string;
 };
 
 /**

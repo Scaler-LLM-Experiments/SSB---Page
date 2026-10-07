@@ -15,9 +15,10 @@
   --why-shade: var(--color-neutral-dark-2);
   --why-line: color-mix(in oklab, var(--on-image-ink) 35%, transparent);
   /* Phone: the height the clip is framed for (its face clear above the words). */
-  --why-clip: max(40rem, 92svh);
+  /* compact since 2026-10-07 (the team: every breaker shorter); it was max(40rem, 92svh) */
+  --why-clip: max(34rem, 80svh);
   /* How far the clip takes to fade out into the page at the breaker's foot. */
-  --why-fade: 6rem;
+  --why-fade: 5rem;
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -25,9 +26,10 @@
 }
 @media (width >= 1056px) {
   .why-breaker {
-    --why-fade: 8rem;
+    --why-fade: 6rem;
     display: grid;
-    min-height: clamp(34rem, 80svh, 46rem);
+    /* compact since 2026-10-07; it was clamp(34rem, 80svh, 46rem) */
+    min-height: clamp(28rem, 64svh, 38rem);
   }
 }
 .why-breaker-media {
@@ -151,7 +153,7 @@
       '. foot';
     /* Less room above than below, so the centred copy sits a little high, level
        with the clip's picture above its faded foot. */
-    padding-block: var(--space-16) var(--why-fade);
+    padding-block: var(--space-12) var(--why-fade);
   }
   .why-breaker-top {
     display: contents;
@@ -210,12 +212,12 @@
 /* A clear gap between the words and the figures (the team's call); on desktop
    wider, which lifts the words (the figures hold their place at the foot). */
 .why-breaker-foot {
-  margin-top: var(--space-12);
+  margin-top: var(--space-8);
 }
 @media (width >= 1056px) {
   .why-breaker-foot {
     grid-area: foot;
-    margin-top: var(--space-20);
+    margin-top: var(--space-12);
   }
 }
 /* As Apple sets its spec figures: a line over each, the figure, a line of
@@ -365,7 +367,8 @@
   display: grid;
   overflow: hidden;
   border: var(--border-width-hair) solid var(--border-subtle);
-  border-radius: var(--radius-2xl);
+  /* 8px, as every card on the page (the team's call, 2026-10-07: one roundness); it was 16 */
+  border-radius: var(--radius-lg);
   background: var(--surface-default);
   /* no shadow (the AI journey's cards have none): the hairline edge carries it */
   transform-origin: 50% 0;
@@ -398,8 +401,8 @@
   justify-content: flex-end;
   margin: 0 var(--space-3) var(--space-3);
   overflow: hidden;
-  /* 12px: the card's 16 less its 12px inset left the photo near-square (4px; the team's call) */
-  border-radius: var(--radius-xl);
+  /* 8px, the card's own (one roundness, 2026-10-07); concentric (4px) read near-square, the team */
+  border-radius: var(--radius-lg);
   aspect-ratio: 4 / 5;
 }
 @media (width >= 672px) {
