@@ -528,7 +528,7 @@
 /* term cards: "View more" in place of the bare arrow (2026-10-07), in the brand green; the arrow nudges on hover */
 .cs-cover-cta { flex: none; display: inline-flex; align-items: center; gap: 6px; padding: 6px 0; font-size: 0.9375rem; line-height: 1.2; font-weight: var(--font-weight-semibold, 600); color: var(--content-brand); white-space: nowrap; }
 .cs-cover-cta svg { width: 16px; height: 16px; transition: transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1); }
-.cs-card:hover .cs-cover-cta svg, .cs-front:focus-visible .cs-cover-cta svg { transform: translateX(3px); }
+.cs-card:hover .cs-cover-cta svg, .cs-front:focus-visible .cs-cover-cta svg { transform: translate(2px, -2px); }
 .cs-card:hover .cs-cover-cta, .cs-front:focus-visible .cs-cover-cta { text-decoration: underline; text-underline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) { .cs-cover-cta svg { transition: none; } }
 /* an open term's "Scroll for more" (2026-10-07): a pill at the foot of the scrolling box, over a fade

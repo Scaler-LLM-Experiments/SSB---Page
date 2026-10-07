@@ -23,7 +23,7 @@
 import * as React from 'react';
 import { createPortal } from 'react-dom';
 import { Heading, IconButton, Text } from '@kishanscaler/ssx-ui';
-import { ArrowCounterClockwise, ArrowRight, ArrowUpRight, BookOpenText, CaretDown, ChalkboardTeacher, Path, Play, RocketLaunch, Star, X } from '@phosphor-icons/react';
+import { ArrowCounterClockwise, ArrowUpRight, BookOpenText, CaretDown, ChalkboardTeacher, Path, Play, RocketLaunch, Star, X } from '@phosphor-icons/react';
 import type { Journey, Lane, Year } from '../data';
 import { countSkills, fmt } from '../data';
 import { c, type JourneyConfig } from '../config';
@@ -306,7 +306,7 @@ function CardFront({ y, cfg }: { y: Year; cfg: JourneyConfig }) {
               whole card is still the button, so this is a label, not a second control */}
           <span className="cs-cover-cta" aria-hidden="true">
             View more
-            <ArrowRight weight="bold" />
+            <ArrowUpRight weight="bold" />
           </span>
         </span>
       </>
