@@ -23,7 +23,7 @@ const CLOSE = 0.82;
 /** How far out (and how much larger) the other tiles start, as a multiple of where they land. */
 const SPREAD = 1.28;
 /** The mosaic's places for the photos after the first, in order (innovation-lab.css). */
-const AREAS = ['a', 'b', 'd', 'e'] as const;
+export const AREAS = ['a', 'b', 'd', 'e'] as const;
 
 /**
  * The Scaler Innovation Lab (2026-10-07). One moment, on desktop: the lab's photo of students
@@ -158,9 +158,10 @@ function LabBand() {
  * while it scales down about the tile's centre just enough to keep covering it; the other tiles
  * come in from SPREAD times their distance from it, at SPREAD times their size, under it; the head
  * fades up once the frame has closed halfway. Every box is measured on refresh, untransformed.
- * Otherwise, an entrance: the head fades up, each tile wipes open as it is reached.
+ * Otherwise, an entrance: the head fades up, each tile wipes open as it is reached. Campus life
+ * (CommunitySections) plays it too, on the same markup hooks and `lab-*` classes.
  */
-function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
+export function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
   useMotion(
     () => {
       const root = scope.current;
@@ -176,6 +177,8 @@ function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
       const hero = one('data-lab-hero');
       const photo = hero?.querySelector('img');
       const tiles = gsap.utils.toArray<HTMLElement>('[data-lab-tile]', root);
+      // anything laid over the middle tile (campus life's follow buttons) comes up with the head
+      const overlays = gsap.utils.toArray<HTMLElement>('[data-lab-overlay]', root);
       if (!track || !stage || !head || !mosaic || !slot || !hero || !photo) return;
 
       const mm = gsap.matchMedia();
@@ -230,6 +233,7 @@ function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
             }),
           );
           gsap.set(head, { opacity: at.head, y: (1 - at.head) * geo.rise });
+          if (overlays.length) gsap.set(overlays, { opacity: at.head });
         };
         measure();
         render();
@@ -258,7 +262,7 @@ function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
         return () => {
           root.removeAttribute('data-lab-live');
           hero.style.clipPath = '';
-          gsap.set([photo, head, ...tiles], { clearProps: 'transform,transformOrigin,opacity' });
+          gsap.set([photo, head, ...tiles, ...overlays], { clearProps: 'transform,transformOrigin,opacity' });
         };
       });
 

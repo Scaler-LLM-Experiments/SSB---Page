@@ -364,22 +364,34 @@ export const campusLife = {
   eyebrow: 'Campus life',
   title: 'Life Beyond the Classroom.',
   sub: 'Fully residential campus in Bengaluru · Shared Innovation Lab and campus with SST · Backed by Peak XV, Lightrock, Tiger Global.',
-  /** The bento's large card, the clubs laid over it. */
-  feature: { media: '/campus/cohort.webp', alt: 'An SSB cohort together on campus' },
+  /** The mosaic's middle photo: on desktop it arrives full-bleed and pulls back into its tile. */
+  feature: { media: '/campus/cohort.webp', alt: 'An SSB cohort together on campus', position: '50% 62%' },
+  /** The student clubs, as the Innovation Lab's startups (a row of cards, each with a photo). */
+  clubsTurn: { text: 'Student clubs, by SSB students.', accent: 'Student clubs' },
   clubs: [
     {
       name: 'Marketing Club',
+      tag: 'Marketing',
       text: 'Branding sessions, case competitions with founders including Meolaa’s Ishita Sawant.',
+      media: '/campus/flags.webp',
+      alt: 'SSB banners in the campus grounds',
+      position: '50% 70%',
     },
-    { name: 'Consulting Club', text: 'SSB’s own Case Book, sessions with Ex-McKinsey and BCG consultants.' },
+    {
+      name: 'Consulting Club',
+      tag: 'Consulting',
+      text: 'SSB’s own Case Book, sessions with Ex-McKinsey and BCG consultants.',
+      media: '/campus/classroom.webp',
+      alt: 'Students in an SSB lecture hall',
+      position: '62% 50%',
+    },
   ],
-  /** The campus, beside it (`area`: its place in the bento). */
+  /** The campus around it, in the mosaic's order (left tall, left short, right short, right tall). */
   photos: [
-    { area: 'arch', media: '/campus/arch.webp', alt: 'The Scaler School of Business arch on Commencement Day' },
-    { area: 'classroom', media: '/campus/classroom.webp', alt: 'Students in an SSB lecture hall' },
-    { area: 'building', media: '/campus/building.webp', alt: 'The SSB building in Bengaluru' },
-    { area: 'flags', media: '/campus/flags.webp', alt: 'SSB banners in the campus grounds' },
-    { area: 'gym', media: '/campus/gym.webp', alt: 'The campus gym' },
+    { media: '/campus/arch.webp', alt: 'The Scaler School of Business arch on Commencement Day', position: '50% 50%' },
+    { media: '/campus/gym.webp', alt: 'The campus gym', position: '45% 60%' },
+    { media: '/campus/building.webp', alt: 'The SSB building in Bengaluru', position: '50% 55%' },
+    { media: '/campus/classroom.webp', alt: 'Students in an SSB lecture hall', position: '50% 40%' },
   ],
   follow: [
     {

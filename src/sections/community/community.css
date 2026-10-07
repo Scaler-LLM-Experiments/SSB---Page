@@ -1,104 +1,86 @@
 /* The deck's remaining sections: the pieces their shared row and cards don't cover. */
 
-/* Campus life: a bento the page's full width (the team's ask, 2026-10-07). Desktop: the cohort as
-   one tall card at the left (half the width); at the right the campus in three rows of the same
-   height (two, one wide, two). Tablet and phone: the cohort above, the campus under it. Each card
-   is a photo filling a design system card (radius-lg); a photo zooms a little under the pointer. */
-.cm-bento {
-  display: grid;
-  gap: var(--space-4);
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-template-rows: repeat(3, 11rem);
-  grid-template-areas:
-    'feature feature arch classroom'
-    'feature feature building building'
-    'feature feature flags gym';
-}
-.cm-cell {
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  overflow: hidden;
-  margin: 0;
-  border-radius: var(--radius-lg);
-  background: var(--surface-subtle);
-}
-.cm-cell[data-area='feature'] { grid-area: feature; }
-.cm-cell[data-area='arch'] { grid-area: arch; }
-.cm-cell[data-area='classroom'] { grid-area: classroom; }
-.cm-cell[data-area='building'] { grid-area: building; }
-.cm-cell[data-area='flags'] { grid-area: flags; }
-.cm-cell[data-area='gym'] { grid-area: gym; }
-.cm-cell > img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  /* a slight zoom under the pointer, the card's edge holding still */
+/* Campus life: the Innovation Lab's mosaic and moment (innovation-lab.css, the `lab-*` classes; the
+   team's ask, 2026-10-07): the cohort in the middle, the campus either side. The photos around it
+   zoom a little under the pointer (the middle one is the moment's, which moves it itself). */
+.cm .lab-tile[data-area] img {
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
-@media (hover: hover) {
-  .cm-cell:hover > img {
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .cm .lab-tile[data-area]:hover img {
     transform: scale(1.05);
   }
 }
-@media (prefers-reduced-motion: reduce) {
-  .cm-cell > img {
-    transition: none;
-  }
-  .cm-cell:hover > img {
-    transform: none;
-  }
+
+/* Follow campus life: two glass buttons floating on the cohort photo, at its lower left (light,
+   transparent glass: white type over the photo). In the slot's cell, over the photo; on desktop the
+   moment brings them up with the heading (data-lab-overlay). Nothing between them and the photo
+   has a filter, mask or opacity below 1, or the glass would blur nothing. */
+/* the buttons share the photo's grid cell, at its lower left: placed by the grid, not by
+   position, since the slot must stay unpositioned (the moment lifts the photo out over the whole
+   stage, positioned against it) */
+.cm-slot > * {
+  grid-area: 1 / 1;
 }
-.cm-cell[data-area='feature'] > img { object-position: 50% 62%; }
-.cm-cell[data-area='arch'] > img { object-position: 50% 50%; }
-.cm-cell[data-area='classroom'] > img { object-position: 50% 40%; }
-.cm-cell[data-area='flags'] > img { object-position: 50% 60%; }
-.cm-cell[data-area='gym'] > img { object-position: 45% 60%; }
-/* Under the bento: the clubs at the left (two cards), following campus life at the right; the
-   three cards one height. Stacked below desktop. */
-.cm-foot {
-  display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-  gap: var(--space-4);
-  margin-top: var(--space-4);
+.cm-social {
+  position: relative;
+  z-index: 2;
+  align-self: end;
+  justify-self: start;
+  margin: var(--space-4);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  max-width: calc(100% - var(--space-8));
 }
-.cm-clubs {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-4);
+.cm-glass {
+  --cm-glass: blur(18px) saturate(1.5);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 44px;
+  padding: 0 var(--space-4) 0 var(--space-3);
+  border: 1px solid color-mix(in srgb, var(--content-on-image) 35%, transparent);
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--content-on-image) 16%, transparent);
+  -webkit-backdrop-filter: var(--cm-glass);
+  backdrop-filter: var(--cm-glass);
+  color: var(--content-on-image);
+  font-size: var(--type-body-size);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.2s linear;
 }
-.cm-follow a .cm-ig {
+.cm-glass:hover {
+  background: color-mix(in srgb, var(--content-on-image) 28%, transparent);
+}
+.cm-glass:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+.cm-glass .cm-ig {
+  flex: none;
   width: 20px;
   height: 20px;
 }
-.cm-follow__note {
+.cm-glass__note {
   font-weight: var(--font-weight-regular, 400);
-  color: var(--content-secondary);
-}
-@media (max-width: 1055px) {
-  .cm-foot {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .cm-bento {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: 24rem 11rem 11rem 11rem;
-    grid-template-areas:
-      'feature feature'
-      'arch classroom'
-      'building building'
-      'flags gym';
-  }
+  opacity: 0.8;
 }
 @media (max-width: 671px) {
-  .cm-bento {
-    gap: var(--space-3);
-    grid-template-rows: 18rem 8rem 9rem 8rem;
+  .cm-social {
+    margin: var(--space-3);
+    max-width: calc(100% - var(--space-6));
   }
-  .cm-clubs {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-3);
+  .cm-glass {
+    height: 36px;
+    padding: 0 var(--space-3) 0 var(--space-2);
+    font-size: var(--type-caption-size);
+  }
+  .cm-glass .cm-ig {
+    width: 16px;
+    height: 16px;
   }
 }
 

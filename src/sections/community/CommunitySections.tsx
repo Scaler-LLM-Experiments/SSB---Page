@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Button, Card, CardBody, Container, Heading, Section, Text } from '@kishanscaler/ssx-ui';
+import { Container, Heading, Section, Text } from '@kishanscaler/ssx-ui';
 
 import {
   beyondPlacements,
@@ -14,7 +14,7 @@ import {
   superMentors,
 } from '@/content/community';
 import { PeopleShowcase, type ShowcasePerson } from '@/sections/faculty/PeopleShowcase';
-import { useSectionEntrance } from '@/sections/faculty/useSectionEntrance';
+import { AREAS, useLabMotion } from '@/sections/innovation-lab/InnovationLabSection';
 import { StoryCard } from '@/sections/shared/cards';
 import { RowSection } from '@/sections/shared/RowSection';
 import { SessionCard } from './SessionCard';
@@ -158,79 +158,132 @@ function InstagramGlyph() {
   );
 }
 
+/** A student club in the Innovation Lab startups' card (VentureCard's markup and styles): its photo
+    in the square at the left with its field on a glass chip, its name, its line at the foot. No
+    founders row: the deck names none. */
+function ClubCard({ club }: { club: (typeof campusLife.clubs)[number] }) {
+  return (
+    <article className="vc">
+      <div className="vc-media">
+        <div className="vc-layers" data-part="photo">
+          {/* eslint-disable-next-line @next/next/no-img-element -- fills its box */}
+          <img
+            className="vc-photo"
+            src={club.media}
+            alt={club.alt}
+            sizes="(min-width: 672px) 256px, 90vw"
+            loading="lazy"
+            decoding="async"
+            style={{ objectPosition: club.position }}
+          />
+        </div>
+        <span className="vc-tag type-label">{club.tag}</span>
+      </div>
+      <div className="vc-body">
+        <div className="vc-head">
+          <div className="vc-title">
+            <Heading as="h3" size="2" data-part="title">
+              {club.name}
+            </Heading>
+          </div>
+        </div>
+        <Text size="sm" tone="secondary" className="vc-text" data-part="description">
+          {club.text}
+        </Text>
+      </div>
+    </article>
+  );
+}
+
 export function CampusLifeSection() {
   const ref = React.useRef<HTMLElement>(null);
-  useSectionEntrance(ref, { decks: ['.cm-bento > *'] });
+  // The Innovation Lab's moment (the team's ask, 2026-10-07): on desktop the cohort arrives
+  // full-bleed and pulls back into the middle of a mosaic of the campus; elsewhere the tiles wipe
+  // open. The follow buttons float on the cohort in glass, coming up with the heading.
+  useLabMotion(ref);
   const c = campusLife;
   return (
-    <Section ref={ref} density="roomy" aria-labelledby="campus-title">
-      <Container>
-        <div data-enter="header" className="mb-10 flex max-w-(--size-measure-max) flex-col gap-3 sm:mb-12">
-          <Heading as="p" size="eyebrow" className="text-content-brand" data-enter="eyebrow">
-            {c.eyebrow}
-          </Heading>
-          <Heading as="h2" size="display" id="campus-title" data-enter="headline">
-            {c.title}
-          </Heading>
-          <Text size="lg" tone="secondary" data-enter="sub">
-            {c.sub}
-          </Text>
-        </div>
-
-        {/* The bento (the team's ask, 2026-10-07): the cohort large at the left; the campus in a
-            grid at the right, as tall. */}
-        <div className="cm-bento">
-          <figure className="cm-cell" data-area="feature">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={c.feature.media} alt={c.feature.alt} width={1600} height={1067} loading="lazy" decoding="async" data-part="photo" />
-          </figure>
-          {c.photos.map((photo) => (
-            <figure key={photo.area} className="cm-cell" data-area={photo.area}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={photo.media} alt={photo.alt} width={1600} height={1067} loading="lazy" decoding="async" data-part="photo" />
-            </figure>
-          ))}
-        </div>
-
-        {/* Under it, left and right: the student clubs as two cards, and following campus life,
-            each account a button with Instagram's own glyph. */}
-        <div className="cm-foot">
-          <div className="cm-clubs" data-enter="block">
-            {c.clubs.map((club) => (
-              <Card as="article" key={club.name}>
-                <CardBody className="gap-2 p-5 sm:p-6">
+    <>
+      <Section ref={ref} density="roomy" aria-labelledby="campus-title" className="lab cm">
+        <div data-lab-track className="lab-track">
+          <div data-lab-stage className="lab-stage">
+            <Container className="lab-frame">
+              <div data-lab-head className="lab-head">
+                <div className="lab-copy flex flex-col gap-3">
                   <Heading as="p" size="eyebrow" className="text-content-brand">
-                    Student club
+                    {c.eyebrow}
                   </Heading>
-                  <Heading as="h3" size="3">
-                    {club.name}
+                  <Heading as="h2" size="display" id="campus-title">
+                    {c.title}
                   </Heading>
-                  <Text tone="secondary">{club.text}</Text>
-                </CardBody>
-              </Card>
-            ))}
-          </div>
-          <Card as="div" className="cm-follow" data-enter="block">
-            <CardBody className="gap-4 p-5 sm:p-6">
-              <Heading as="h3" size="3">
-                Follow campus life
-              </Heading>
-              <div className="flex flex-col gap-3">
-                {c.follow.map((f) => (
-                  <Button key={f.handle} asChild variant="secondary">
-                    <a href={f.href} target="_blank" rel="noopener noreferrer">
-                      <InstagramGlyph />
-                      {f.handle}
-                      <span className="cm-follow__note">{f.note}</span>
-                    </a>
-                  </Button>
+                  <Text size="lg" tone="secondary">
+                    {c.sub}
+                  </Text>
+                </div>
+              </div>
+
+              <div data-lab-mosaic className="lab-mosaic">
+                <div data-lab-slot className="lab-slot cm-slot">
+                  <figure data-lab-hero className="lab-tile lab-hero">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={c.feature.media}
+                      alt={c.feature.alt}
+                      width={1600}
+                      height={1067}
+                      loading="lazy"
+                      decoding="async"
+                      style={{ objectPosition: c.feature.position }}
+                    />
+                  </figure>
+                  {/* follow campus life: the two accounts as glass buttons on the photo */}
+                  <div data-lab-overlay className="cm-social" role="group" aria-label="Follow campus life on Instagram">
+                    {c.follow.map((f) => (
+                      <a key={f.handle} className="cm-glass" href={f.href} target="_blank" rel="noopener noreferrer">
+                        <InstagramGlyph />
+                        <span>{f.handle}</span>
+                        <span className="cm-glass__note">{f.note}</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+                {c.photos.map((photo, i) => (
+                  <figure key={photo.media} data-lab-tile data-area={AREAS[i]} className="lab-tile">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={photo.media}
+                      alt={photo.alt}
+                      width={1600}
+                      height={1067}
+                      loading="lazy"
+                      decoding="async"
+                      style={{ objectPosition: photo.position }}
+                    />
+                  </figure>
                 ))}
               </div>
-            </CardBody>
-          </Card>
+            </Container>
+          </div>
         </div>
-      </Container>
-    </Section>
+      </Section>
+
+      {/* The student clubs, as the Innovation Lab's startups: a turn for a heading, then the row. */}
+      <RowSection
+        id="clubs"
+        title={c.clubsTurn.text}
+        heading={
+          <Heading as="h2" size="display" id="clubs-title" data-enter="headline" className="max-w-(--size-measure-max)">
+            <Accent text={c.clubsTurn.text} word={c.clubsTurn.accent} />
+          </Heading>
+        }
+        itemName="club"
+        cardWidth="38rem"
+      >
+        {c.clubs.map((club) => (
+          <ClubCard key={club.name} club={club} />
+        ))}
+      </RowSection>
+    </>
   );
 }
 
