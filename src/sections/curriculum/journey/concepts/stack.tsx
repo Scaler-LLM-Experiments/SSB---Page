@@ -1131,7 +1131,7 @@ export function StackJourney({ j, cfg, width, portal, initialOpen = null }: { j:
   const cw = Math.min(380, W * 0.3);
   // collapsed: a plain row of equal cards, side by side (no fan, no overlap)
   // (wide gaps: the cards have no frame, so the space between them is what sets them apart)
-  const ROW_GAP = 32; // 64 until 2026-10-07 (the team: the gaps between the terms read too wide)
+  const ROW_GAP = 44; // 64, then 32 (2026-10-07: too wide, then a little tight)
   // modal / sheet: a carousel showing three whole cards and a slice of the fourth (it says "more this way")
   const carousel = modal && n > 3;
   const rowW = carousel ? (W - ROW_GAP * 3) / 3.2 : (W - ROW_GAP * (n - 1)) / n;
