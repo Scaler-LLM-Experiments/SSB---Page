@@ -176,7 +176,8 @@ function ClubCard({ club }: { club: (typeof campusLife.clubs)[number] }) {
             </Heading>
           </div>
         </div>
-        <Text size="sm" tone="secondary" className="vc-text" data-part="description">
+        {/* larger than the startups' small line, about three lines: a club has only this (the team's call) */}
+        <Text size="lg" tone="secondary" className="vc-text cm-club-text" data-part="description">
           {club.text}
         </Text>
       </div>

@@ -64,29 +64,29 @@
   will-change: transform;
 }
 /* The clip at 16:9. Phone: framed for --why-clip, a little larger than the
-   screen is tall, centred on his face (35% across) and raised 10%, so his face
-   sits in the top half, clear of the words; its foot melts into the copy under
-   it. Desktop: drawn 25% larger than covering the breaker, shifted so he sits
-   in its left third, his face about 21% across, his hands short of the words
-   (the team's call). Shifting a frame needs that much: at 15% larger, moved
-   that far, it stopped short of the right edge and left a strip uncovered. */
+   screen is tall (exactly: zoomed out, 2026-10-07), centred on his face (35% across) and raised 2% (10% cut his head under the nav), so
+   his face sits in the top half, clear of the words; its foot melts into the copy under
+   it. Desktop: drawn 12% larger than covering the breaker (zoomed out from 25%, the
+   team's call, 2026-10-07), shifted so he sits in its left third, his face about 27%
+   across. The shift is bounded by the zoom: at 1.12 the frame covers both edges only
+   while shifted between 45% and 55% of its width. */
 .why-breaker-clip {
   position: absolute;
   top: 0;
   left: 50%;
   display: block;
-  width: calc(var(--why-clip) * 1.1 * 16 / 9);
-  height: calc(var(--why-clip) * 1.1);
+  width: calc(var(--why-clip) * 16 / 9);
+  height: calc(var(--why-clip));
   max-width: none;
   object-fit: cover;
-  translate: -35% -10%;
+  translate: -35% -2%;
   mask-image: linear-gradient(to bottom, #000 70%, transparent 90%);
 }
 @media (width >= 1056px) {
   .why-breaker-clip {
-    width: calc(max(100cqw, 177.78cqh) * 1.25);
-    height: calc(max(100cqh, 56.25cqw) * 1.25);
-    translate: -58% -8%;
+    width: calc(max(100cqw, 177.78cqh) * 1.12);
+    height: calc(max(100cqh, 56.25cqw) * 1.12);
+    translate: -55% -6%;
     mask-image: none;
   }
 }
