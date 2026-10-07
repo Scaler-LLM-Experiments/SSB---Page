@@ -366,13 +366,15 @@ export const campusLife = {
   sub: 'Fully residential campus in Bengaluru · Shared Innovation Lab and campus with SST · Backed by Peak XV, Lightrock, Tiger Global.',
   /** The mosaic's middle photo: on desktop it arrives full-bleed and pulls back into its tile. */
   feature: { media: '/campus/cohort.webp', alt: 'An SSB cohort together on campus', position: '50% 62%' },
-  /** The student clubs, as the Innovation Lab's startups (a row of cards, each with a photo). */
+  /** The student clubs, as the Innovation Lab's startups (a row of cards, each with a photo). The
+      deck's line for each, then a clause of ours on what the club is for, to fill the card's three
+      lines as the startups' do (the team's ask, 2026-10-07; no new facts: for the team to confirm). */
   clubsTurn: { text: 'Student clubs, by SSB students.', accent: 'Student clubs' },
   clubs: [
     {
       name: 'Marketing Club',
       tag: 'Marketing',
-      text: 'Branding sessions, case competitions with founders including Meolaa’s Ishita Sawant.',
+      text: 'Branding sessions and case competitions with founders like Meolaa’s Ishita Sawant: learn to build and pitch a brand.',
       media: '/campus/flags.webp',
       alt: 'SSB banners in the campus grounds',
       position: '50% 70%',
@@ -380,7 +382,7 @@ export const campusLife = {
     {
       name: 'Consulting Club',
       tag: 'Consulting',
-      text: 'SSB’s own Case Book, sessions with Ex-McKinsey and BCG consultants.',
+      text: 'SSB’s own Case Book and sessions with Ex-McKinsey and BCG consultants: learn to structure and present a case.',
       media: '/campus/classroom.webp',
       alt: 'Students in an SSB lecture hall',
       position: '62% 50%',
