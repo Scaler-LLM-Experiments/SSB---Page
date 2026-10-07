@@ -18,8 +18,8 @@
  * logo grid fade up.
  */
 import * as React from 'react';
-import { Container, Heading, Icon, Section, Text } from '@kishanscaler/ssx-ui';
-import { Briefcase, CalendarBlank, CaretUp, Compass, Play, SealCheck } from '@phosphor-icons/react';
+import { Container, Heading, Section, Text } from '@kishanscaler/ssx-ui';
+import { Briefcase, CaretUp, Play } from '@phosphor-icons/react';
 import { PlacementsMotion } from '@/sections/placements/PlacementsMotion';
 import { CardStack as PhoneCarousel } from '@/sections/shared/CardStack';
 import { CardStack } from './CardStack';
@@ -29,10 +29,11 @@ import './internship.css';
 
 // The numbers, as the Placements grid shows its stats (../SSB---Page sections/placements): an icon,
 // the figure with its unit a step down in grey, what it measures, and a short line.
+// Three levels a box, as Placements' cohort boxes (2026-10-07): eyebrow, figure, caption.
 const STATS = [
-  { icon: <SealCheck weight="light" />, figure: ['', '100', '%'], label: 'Internship placement', line: 'Across cohorts 1 and 2.' },
-  { icon: <Compass weight="light" />, figure: ['', '52', '%+'], label: 'In Product and Founder’s Office', line: 'The largest share of internship roles.' },
-  { icon: <CalendarBlank weight="light" />, figure: ['', '3–6', 'mo'], label: 'Months of internship', line: 'Within the PGP.' },
+  { eyebrow: 'Internship placement', figure: ['', '100', '%'], label: 'Internship placement', caption: 'Across cohorts 1 and 2' },
+  { eyebrow: 'Top roles', figure: ['', '52', '%+'], label: 'In Product and Founder’s Office', caption: 'In Product and Founder’s Office' },
+  { eyebrow: 'Duration', figure: ['', '3–6', ' months'], label: 'Months of internship', caption: 'Of internship, within the PGP' },
 ];
 const FUNCTIONS = ['Product', 'Founder’s Office', 'Marketing', 'Finance', 'Operations', 'Strategy'];
 
@@ -86,17 +87,9 @@ const MARKS: Record<string, { src: string; fill?: boolean }> = {
 };
 
 type Card = { key: string; kind: 'video'; story: (typeof STORIES)[number] } | { key: string; kind: 'profile'; pivot: (typeof PIVOTS)[number] };
-// a video, then a profile, in turn; the profiles left over follow
-const CARDS: Card[] = (() => {
-  const videos = STORIES.map((story): Card => ({ key: `video-${story.name}`, kind: 'video', story }));
-  const profiles = PIVOTS.map((pivot): Card => ({ key: `profile-${pivot[0]}`, kind: 'profile', pivot }));
-  const out: Card[] = [];
-  while (videos.length || profiles.length) {
-    if (videos.length) out.push(videos.shift()!);
-    if (profiles.length) out.push(profiles.shift()!);
-  }
-  return out;
-})();
+// The video stories only (2026-10-07, the team's ask). The profile cards (PIVOTS) moved to the alumni
+// section (content/alumni.ts, pivotAlumni); PIVOTS stays for the `profile` card kind.
+const CARDS: Card[] = STORIES.map((story): Card => ({ key: `video-${story.name}`, kind: 'video', story }));
 
 const initials = (name: string) =>
   name
@@ -247,14 +240,14 @@ function Stories() {
     <>
       {/* Phones: the gallery row every carousel has on a phone (shared/CardStack). */}
       <div className="sm:hidden">
-        <PhoneCarousel items={CARDS} getKey={(c) => c.key} label="Learners: success stories and pivots" itemName="learner" announce={announce} dots renderCard={renderCard} />
+        <PhoneCarousel items={CARDS} getKey={(c) => c.key} label="Learners: success stories" itemName="learner" announce={announce} dots renderCard={renderCard} />
       </div>
       <div className="hidden sm:block">
         <CardStack
           className="in-stack"
           items={CARDS}
           getKey={(c) => c.key}
-          label="Learners: success stories and pivots"
+          label="Learners: success stories"
           itemName="learner"
           cardWidth={86}
           interval={2400}
@@ -325,24 +318,17 @@ export function InternshipSection() {
         </div>
 
         {/* the numbers: the Placements grid's stat panel, three cells with hairlines between */}
-        <ul className="in-stats grid overflow-hidden border border-border-subtle bg-surface">
-          {STATS.map((stat, i) => (
-            <li key={stat.label} data-card className="in-stat relative isolate border-border-subtle" data-rule={i > 0 || undefined}>
-              <div data-card-body className="flex h-full flex-col p-5 sm:p-6">
-                <Icon size="md" className="text-content-secondary">
-                  {stat.icon}
-                </Icon>
-                <p className="mt-6 type-billboard-sm text-content">
-                  {stat.figure[0] ? <span className="pl-unit pl-unit-lead">{stat.figure[0]}</span> : null}
-                  {stat.figure[1]}
-                  <span className="pl-unit">{stat.figure[2]}</span>
-                </p>
-                <p className="mt-2 type-label text-content">
-                  {stat.label}
-                </p>
-                <Text size="sm" tone="secondary" className="mt-0.5">
-                  {stat.line}
-                </Text>
+        {/* the numbers as Placements' cohort boxes (2026-10-07, the team's ask): a grey box each, three
+            levels only: the eyebrow, the figure, what it counts (the icons and second lines are gone) */}
+        <ul className="in-boxes">
+          {STATS.map((stat) => (
+            <li key={stat.label} data-card className="pl-figure-box relative isolate overflow-hidden">
+              <div data-card-body>
+                <Heading as="p" size="eyebrow" className="text-content-brand">
+                  {stat.eyebrow}
+                </Heading>
+                <p className="type-h1 mt-2 text-content">{stat.figure.join('')}</p>
+                <p className="mt-1 text-content-secondary">{stat.caption}</p>
               </div>
               {/* the green the cell comes up in (clear at rest) */}
               <span data-card-tint aria-hidden className="pl-tint" />
@@ -355,7 +341,7 @@ export function InternshipSection() {
 
         <div className="in-carousel" data-fade>
           <Heading as="h3" size="eyebrow" className="mb-4 text-content-secondary">
-            Success stories and pivots
+            Success stories
           </Heading>
           <Stories />
         </div>

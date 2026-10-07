@@ -9,11 +9,16 @@ export const PHOTOS: Record<string, { id?: string; src?: string; alt: string }> 
   // SSB term cards: real Scaler School of Business photos (students, campus), taken from the SSB
   // concept site's campus gallery (ssb-school-concept.vercel.app) and cropped to 4:3 (2026-10-05);
   // files in versions/v1/assets/ssb-terms, served from /ssb-terms
-  ssbT1: { src: '/ssb-terms/term1.webp', alt: 'SSB students gathered around their phones during a selling challenge' },
-  ssbT2: { src: '/ssb-terms/term2.webp', alt: 'A speaker addressing a full classroom at the SSB campus' },
-  ssbT3: { src: '/ssb-terms/term3.webp', alt: 'SSB students cheering around a table in the campus lab' },
-  ssbT4: { src: '/ssb-terms/term4.webp?v=2', alt: 'SSB students playing basketball on the campus court' },
-  ssbT5: { src: '/ssb-terms/term5.webp', alt: 'The SSB cohort gathered for a group photo in their classroom' },
+  // the team's illustration (2026-10-07): frosted green building blocks, in place of the selling-challenge photo (term1.webp)
+  ssbT1: { src: '/ssb-terms/term1-blocks.webp', alt: 'Frosted green building blocks stacked on a soft green ground' },
+  // the team's illustration (2026-10-07): a frosted blue tile with a path to a spark, in place of the campus photo (term2.webp)
+  ssbT2: { src: '/ssb-terms/term2-path.webp', alt: 'A frosted blue tile marked with a path of dots leading to a spark' },
+  // the team's illustration (2026-10-07): a frosted violet briefcase with a check, in place of the campus photo (term3.webp)
+  ssbT3: { src: '/ssb-terms/term3-briefcase.webp', alt: 'A frosted violet briefcase marked with a check' },
+  // the team's illustration (2026-10-07): a frosted green magnifier over a spark, in place of the campus photo (term4.webp)
+  ssbT4: { src: '/ssb-terms/term4-search.webp', alt: 'A frosted green magnifying glass over a spark' },
+  // the team's illustration (2026-10-07): frosted blue bars rising under an arrow, in place of the cohort photo (term5.webp)
+  ssbT5: { src: '/ssb-terms/term5-growth.webp', alt: 'Frosted blue bars rising under an upward arrow' },
   ssbMentor: { src: 'https://ssb-school-concept.vercel.app/assets/curriculum.webp', alt: 'A mentor working through a problem with students at their laptops' },
   y1: { id: '1517694712202-14dd9538aa97', alt: 'A laptop showing code on a white desk' },
   y2: { id: '1733826544839-2282050204e6', alt: 'Indian students working together on a laptop' },

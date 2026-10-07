@@ -37,6 +37,14 @@
   .in-stack { max-width: none; container-type: inline-size; --fc-card-w: 30rem !important; --fc-shift: calc(50cqi - 30rem * 0.43) !important; }
   .in-stack .fc-slide[data-pos='-1'], .in-stack .fc-slide[data-pos='1'] { filter: brightness(0.72) saturate(0.8); }
 }
+/* desktop, the front card in focus (2026-10-07): larger (36rem), its neighbours smaller (0.72)
+   and blended back into the page: paler, desaturated, softly blurred. Each neighbour's outer
+   edge still meets the stage's edge. */
+@media (min-width: 960px) {
+  .in-stack { --fc-card-w: 36rem !important; --fc-side-scale: 0.72 !important; --fc-shift: calc(50cqi - 36rem * 0.36) !important; }
+  .in-stack .fc-slide[data-pos='-1'], .in-stack .fc-slide[data-pos='1'] { opacity: 0.5; filter: saturate(0.4) blur(2px); }
+  .in-stack .fc-slide[data-pos='0'] > * { box-shadow: 0 30px 60px -28px rgb(0 0 0 / 0.45); border-radius: var(--radius-lg); }
+}
 /* phones: the stage runs edge to edge, so the front card is 86vw, as in the alumni row */
 @media (max-width: 671px) { .in-stack { margin-inline: calc(var(--space-gutter) * -1); } }
 
@@ -73,3 +81,14 @@
 .in-lc-watch-value { font-size: 16px; line-height: 1.3; font-weight: 600; color: #fff; white-space: nowrap; }
 @media (max-width: 671px) { .in-lc-watch { gap: 10px; padding: 6px 16px 6px 6px; } .in-lc-watch-play { width: 36px; height: 36px; } .in-lc-watch-value { font-size: 14px; } .in-lc-watch-label { font-size: 10px; } }
 @media (prefers-reduced-motion: reduce) { .in-lc-watch-play::after { animation: none; opacity: 0; } }
+
+/* the figures in the logo's green (2026-10-07, the team's ask), as Beyond Placements' "companies.";
+   the unit the same green, a step lighter */
+.in-figure { color: var(--color-ssb-light-9); }
+.in-figure .pl-unit { color: color-mix(in srgb, var(--color-ssb-light-9) 72%, #fff); }
+
+/* The numbers as Placements' cohort boxes (2026-10-07): grey boxes, gaps between, no frame or hairlines.
+   One column on a phone, three across from sm. */
+.in-boxes { display: grid; gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
+@media (width >= 672px) { .in-boxes { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); } }
+.in-boxes .pl-figure-box { border-radius: var(--radius-2xl); }

@@ -706,3 +706,29 @@
 @keyframes pl-row-run { to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) { .pl-row { animation: none; } }
 @media (width < 672px) { .pl-row-logo { width: 8.5rem; height: 4rem; } }
+
+/* The chips, with more contrast (2026-10-07): grey text on pale glass was hard to read over a
+   bright photo. The ones at rest are dark glass with white text; the one on show is near-solid
+   white with dark text. */
+.pl-chip {
+  border-color: rgb(255 255 255 / 0.3);
+  background: rgb(20 22 28 / 0.46);
+  color: #fff;
+}
+.pl-chip:hover {
+  background: rgb(20 22 28 / 0.62);
+  color: #fff;
+}
+.pl-chip[aria-current='true'],
+.pl-chips:not([data-ready]) .pl-chip:first-child {
+  border-color: rgb(255 255 255 / 0.9);
+  background: rgb(255 255 255 / 0.94);
+  color: #171717;
+}
+.pl-chip-fill {
+  height: 3px;
+}
+
+/* The cohort boxes sit as close under the deck as they sit to each other (2026-10-07, the team's ask). */
+.pl-cohorts { margin-top: var(--space-3); }
+@media (width >= 672px) { .pl-cohorts { margin-top: var(--space-4); } }

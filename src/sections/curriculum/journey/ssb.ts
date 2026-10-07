@@ -199,24 +199,29 @@ export const SSB_JOURNEY: Journey = {
     eyebrow: 'The AI journey',
     title: '150-Hour AI Curriculum:',
     titleAccent: 'From No-Code to AI Agents',
-    lede: 'Learn hands-on AI skills for modern business leaders.', // the main landing page's line (feedback, 2026-10-06)
+    lede: '25+ AI tools · 5 AI products · 3 hackathons · No coding background required', // the team's curriculum doc (2026-10-07); before, the main landing page's line
     terms: [
-      // AI journey photos: generated with Magnific (Seedream 5 Pro, 2026-09-30) from each term's outcome,
-      // set in a premium top-tier business-school campus (MBA students), bright natural daylight;
-      // earlier sets kept in
-      // assets/ai-terms/v1-studio, v2-mba and v3-premium-warm. Originally
-      // outcome, styled on the concept site's Term 4 photo; files in versions/v1/assets/ai-terms,
-      // served from dist/ai-terms
-      { term: 1, name: 'Build your first app without code', desc: 'Research, write, analyse and present faster; describe your first app to build it.', tools: ['ChatGPT', 'Claude', 'Gemini', 'Perplexity', 'NotebookLM', 'Lovable'], outcome: 'Product #1: an expense splitter from the Vibe Coding Hackathon.', image: '/ai-terms/term1.jpg?v=4', imagePos: '50% 8%', imageTall: '/ai-terms/term1-tall.jpg?v=3', icon: 'wand' },
-      { term: 2, name: 'Launch a voice AI assistant', desc: 'Build AI that speaks, sees, listens and generates visual work.', tools: ['ElevenLabs', 'Vapi', 'Midjourney', 'HeyGen', 'Gemini', 'ChatGPT'], outcome: 'Product #2: a voice-based language learning assistant.', image: '/ai-terms/term2.jpg?v=4', imagePos: '50% 34%', imageTall: '/ai-terms/term2-tall.jpg?v=3', icon: 'wave' },
-      { term: 3, name: 'Automate a real business process', desc: 'Connect sales, marketing and operations so repetitive tasks run on their own.', tools: ['Zapier', 'n8n', 'Make', 'Airtable', 'Notion'], outcome: 'Product #3: an automation for a real process, such as case-interview practice.', image: '/ai-terms/term3.jpg?v=4', imagePos: '50% 36%', imageTall: '/ai-terms/term3-tall.jpg?v=3', icon: 'cycle' },
-      { term: 4, name: 'Deploy your own AI agent', desc: 'Build agents that research, decide and complete tasks like a digital teammate.', tools: ['Relevance AI', 'CrewAI', 'Hugging Face', 'Ollama'], outcome: 'Product #4: a negotiation coach from the 48-hour AI Hackathon.', image: '/ai-terms/term4.jpg?v=4', imagePos: '50% 42%', imageTall: '/ai-terms/term4-tall.jpg?v=3', icon: 'robot' },
-      { term: 5, name: 'Take an AI product to market', desc: 'Price the product, prove its ROI and take it to market.', tools: ['Julius AI', 'Microsoft Copilot', 'Cursor'], outcome: 'Product #5: a capstone launched to real users, such as a party icebreaker game.', image: '/ai-terms/term5.jpg?v=4', imagePos: '50% 20%', imageTall: '/ai-terms/term5-tall.jpg?v=3', icon: 'rocket' },
+      // Titles, descriptions and outcomes from the team's curriculum doc (2026-10-07), verbatim. An outcome
+      // has no "Product #n: " prefix now, so the card shows it whole.
+      // AI journey images (2026-10-07, the team's call): the Scaler Innovation Lab, from the live pages
+      // (scaler.com/school-of-business: the lab space, 1; scaler.com/school-of-technology, ~2000px: the
+      // Ninad AI voice demo, 2; 3: students working a process through at a table, from the SSB page (Maximem's founder, then Gradonix's screen, were there first); a robotic hand, 4; 5: SST students building together on a laptop and phone (xSpecies' founder, then Flow's product screen, the big
+      // faded name above it left out; a lab tour and NeoSapiens' founders were tried first),
+      // in public/ai-terms/real. SST photos 3 and 5 had a caption bar at their foot, cropped off the files; the
+      // strip's imagePos frames the rest. Tried the same day and dropped: generated photos, the live page's green AI slides, campus
+      // photos, and startups' product screenshots.
+      { term: 1, name: 'Work Smarter with AI', desc: 'Use AI to research, write, analyse and present faster, then build your first app just by describing it.', tools: ['ChatGPT', 'Claude', 'Gemini', 'Perplexity', 'NotebookLM', 'Lovable'], outcome: 'AI Product #1 from the Vibe Coding Hackathon, e.g. a Splitwise-style expense splitter', image: '/ai-terms/real/term1-lab.webp', imagePos: '50% 60%', imageTall: '/ai-terms/term1-tall.jpg?v=3', icon: 'wand' },
+      { term: 2, name: 'Create with AI', desc: 'Go beyond text and build AI that can speak, see, listen and generate images and video. Use it for anything from a customer-support voice bot and training videos to product demos and visual reports.', tools: ['ElevenLabs', 'Vapi', 'Midjourney', 'HeyGen', 'Gemini', 'ChatGPT'], outcome: 'AI Product #2 from the AI Agent Hackathon, e.g. a language-learning voice assistant', image: '/ai-terms/real/term2-lab-voice.webp', imagePos: '50% 30%', imageTall: '/ai-terms/term2-tall.jpg?v=3', icon: 'wave' },
+      { term: 3, name: 'Automate with AI', desc: 'Connect everyday tools so that repetitive work in sales, marketing and operations runs on its own.', tools: ['Zapier', 'n8n', 'Make', 'Airtable', 'Notion'], outcome: 'AI Product #3, an automation that runs a real business process, e.g. a case-interview practice tool', image: '/ai-terms/real/term3-students.webp', imagePos: '50% 40%', imageTall: '/ai-terms/term3-tall.jpg?v=3', icon: 'cycle' },
+      { term: 4, name: 'Build AI Agents', desc: 'Build AI agents that research, decide and complete tasks on their own, like a digital teammate.', tools: ['Relevance AI', 'CrewAI', 'Hugging Face', 'Ollama'], outcome: 'AI Product #4 from the 48-Hour AI Hackathon, e.g. a negotiation-training AI coach', image: '/ai-terms/real/term4-lab-robotics.webp', imagePos: '50% 35%', imageTall: '/ai-terms/term4-tall.jpg?v=3', icon: 'robot' },
+      { term: 5, name: 'Scale AI products', desc: 'Learn where AI creates real value in a business, how to price it and build its ROI case, and take your product to market.', tools: ['Julius AI', 'Microsoft Copilot', 'Cursor'], outcome: 'AI Product #5, a capstone launched to real users with a go-to-market plan, e.g. a party icebreaker AI game', image: '/ai-terms/real/term5-students.webp', imagePos: '50% 40%', imageTall: '/ai-terms/term5-tall.jpg?v=3', icon: 'rocket' },
     ],
   },
   careerPrep: {
     // [DOC]
     title: 'Career prep that starts in Month 1',
+    // ours (2026-10-07), from the phases below, for the team to confirm: every curriculum section has a subtext
+    lede: 'From 1:1 counselling in Month 1 to mock interviews and salary negotiation, in three phases: clarity, building and executing.',
     start: 'Month 1',
     stats: [
       { value: '1,100+', label: 'Mock Interviews', icon: 'interviews', feature: true },

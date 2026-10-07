@@ -359,17 +359,39 @@ export const superMentors = {
   ] satisfies Session[],
 };
 
-/** Deck p24: Life Beyond the Classroom. */
+/** Deck p24: Life Beyond the Classroom. Photos: the team's campus shoot (2026-10-07), public/campus. */
 export const campusLife = {
   eyebrow: 'Campus life',
   title: 'Life Beyond the Classroom.',
   sub: 'Fully residential campus in Bengaluru · Shared Innovation Lab and campus with SST · Backed by Peak XV, Lightrock, Tiger Global.',
+  /** The mosaic's middle photo: on desktop it arrives full-bleed and pulls back into its tile. */
+  feature: { media: '/campus/cohort.webp', alt: 'An SSB cohort together on campus', position: '50% 62%' },
+  /** The student clubs, as the Innovation Lab's startups (a row of cards, each with a photo). */
+  clubsTurn: { text: 'Student clubs, by SSB students.', accent: 'Student clubs' },
   clubs: [
     {
       name: 'Marketing Club',
+      tag: 'Marketing',
       text: 'Branding sessions, case competitions with founders including Meolaa’s Ishita Sawant.',
+      media: '/campus/flags.webp',
+      alt: 'SSB banners in the campus grounds',
+      position: '50% 70%',
     },
-    { name: 'Consulting Club', text: 'SSB’s own Case Book, sessions with Ex-McKinsey and BCG consultants.' },
+    {
+      name: 'Consulting Club',
+      tag: 'Consulting',
+      text: 'SSB’s own Case Book, sessions with Ex-McKinsey and BCG consultants.',
+      media: '/campus/classroom.webp',
+      alt: 'Students in an SSB lecture hall',
+      position: '62% 50%',
+    },
+  ],
+  /** The campus around it, in the mosaic's order (left tall, left short, right short, right tall). */
+  photos: [
+    { media: '/campus/arch.webp', alt: 'The Scaler School of Business arch on Commencement Day', position: '50% 50%' },
+    { media: '/campus/gym.webp', alt: 'The campus gym', position: '45% 60%' },
+    { media: '/campus/building.webp', alt: 'The SSB building in Bengaluru', position: '50% 55%' },
+    { media: '/campus/classroom.webp', alt: 'Students in an SSB lecture hall', position: '50% 40%' },
   ],
   follow: [
     {
@@ -379,11 +401,6 @@ export const campusLife = {
     },
     { handle: '@life_at_ssb', note: 'student-run', href: 'https://www.instagram.com/life_at_ssb/' },
   ],
-  photos: [
-    { mediaLabel: 'Photo: campus building exterior' },
-    { mediaLabel: 'Photo: classroom' },
-    { mediaLabel: 'Photo: turf / common area' },
-  ] as { mediaLabel: string; media?: string }[],
 };
 
 /** Deck p25: "Scaler In the news." (the deck has only the title: four article slots). */

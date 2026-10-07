@@ -1,50 +1,111 @@
 /* The deck's remaining sections: the pieces their shared row and cards don't cover. */
 
-/* Campus life. */
-.cm-clubs {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
+/* Campus life: the Innovation Lab's mosaic and moment (innovation-lab.css, the `lab-*` classes; the
+   team's ask, 2026-10-07): the cohort in the middle, the campus either side. The photos around it
+   zoom a little under the pointer (the middle one is the moment's, which moves it itself). */
+.cm .lab-tile[data-area] img {
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.cm-club {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  padding-left: var(--space-4);
-  border-left: var(--border-thick) solid var(--border-brand);
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .cm .lab-tile[data-area]:hover img {
+    transform: scale(1.05);
+  }
 }
-.cm-follow {
+
+/* The lab's extra room above (innovation-lab.css: it follows the curriculum) is the lab's alone:
+   campus life follows a section like any other. */
+main section.lab.cm[data-density='roomy'] {
+  margin-top: 0;
+}
+
+/* a club's line at the large body size, never cut (the startups' line clamps at three) */
+.vc-text.cm-club-text {
+  display: block;
+  -webkit-line-clamp: unset;
+  line-clamp: none;
+}
+
+/* Follow campus life: two glass buttons floating on the cohort photo, at its lower left (light,
+   transparent glass: white type and Instagram's glyph in white over the photo, 4px corners), under
+   "Follow us on"). In the slot's cell, over the photo; on desktop the
+   moment brings them up with the heading (data-lab-overlay). Nothing between them and the photo
+   has a filter, mask or opacity below 1, or the glass would blur nothing. */
+/* the buttons share the photo's grid cell, at its lower left: placed by the grid, not by
+   position, since the slot must stay unpositioned (the moment lifts the photo out over the whole
+   stage, positioned against it) */
+.cm-slot > * {
+  grid-area: 1 / 1;
+}
+.cm-social {
+  position: relative;
+  z-index: 2;
+  align-self: end;
+  justify-self: start;
+  margin: var(--space-4);
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
-  gap: var(--space-1) var(--space-3);
+  align-items: center;
+  gap: var(--space-2);
+  max-width: calc(100% - var(--space-8));
 }
-.cm-follow a {
-  font-weight: var(--font-weight-semibold);
-  color: var(--content-brand);
+.cm-glass {
+  --cm-glass: blur(18px) saturate(1.5);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 44px;
+  padding: 0 var(--space-4) 0 var(--space-3);
+  border: 1px solid color-mix(in srgb, var(--content-on-image) 35%, transparent);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--content-on-image) 16%, transparent);
+  -webkit-backdrop-filter: var(--cm-glass);
+  backdrop-filter: var(--cm-glass);
+  color: var(--content-on-image);
+  font-size: var(--type-body-size);
+  font-weight: var(--font-weight-medium);
   text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.2s linear;
 }
-.cm-follow a:hover {
-  text-decoration: underline;
+.cm-social__label {
+  flex-basis: 100%;
+  margin: 0 0 var(--space-1);
+  font-size: var(--type-caption-size);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.04em;
+  color: var(--content-on-image);
+  /* legible over a light patch of the photo */
+  text-shadow: 0 1px 8px rgb(0 0 0 / 0.45);
 }
-.cm-follow a span {
+.cm-glass:hover {
+  background: color-mix(in srgb, var(--content-on-image) 28%, transparent);
+}
+.cm-glass:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+.cm-glass .cm-ig {
+  flex: none;
+  width: 20px;
+  height: 20px;
+}
+.cm-glass__note {
   font-weight: var(--font-weight-regular, 400);
-  color: var(--content-secondary);
-}
-/* A collage: the building large at the left, two photos stacked at the right. */
-.cm-photos {
-  display: grid;
-  gap: var(--space-4);
-  grid-template-columns: 3fr 2fr;
-  grid-template-rows: 1fr 1fr;
-  min-height: 30rem;
-}
-.cm-photos > :first-child {
-  grid-row: 1 / span 2;
+  opacity: 0.8;
 }
 @media (max-width: 671px) {
-  .cm-photos {
-    min-height: 22rem;
+  .cm-social {
+    margin: var(--space-3);
+    max-width: calc(100% - var(--space-6));
+  }
+  .cm-glass {
+    height: 36px;
+    padding: 0 var(--space-3) 0 var(--space-2);
+    font-size: var(--type-caption-size);
+  }
+  .cm-glass .cm-ig {
+    width: 16px;
+    height: 16px;
   }
 }
 
