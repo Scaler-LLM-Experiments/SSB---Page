@@ -15,9 +15,11 @@
   --why-shade: var(--color-neutral-dark-2);
   --why-line: color-mix(in oklab, var(--on-image-ink) 35%, transparent);
   /* Phone: the height the clip is framed for (its face clear above the words). */
-  --why-clip: max(40rem, 92svh);
+  /* compact since 2026-10-07 (the team: every breaker shorter; then "slightly" taller again): it
+     was max(40rem, 92svh), then max(34rem, 80svh) */
+  --why-clip: max(36rem, 86svh);
   /* How far the clip takes to fade out into the page at the breaker's foot. */
-  --why-fade: 6rem;
+  --why-fade: 5rem;
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -25,9 +27,11 @@
 }
 @media (width >= 1056px) {
   .why-breaker {
-    --why-fade: 8rem;
+    --why-fade: 6rem;
     display: grid;
-    min-height: clamp(34rem, 80svh, 46rem);
+    /* compact since 2026-10-07, then a little taller again: it was clamp(34rem, 80svh, 46rem),
+       then clamp(28rem, 64svh, 38rem) */
+    min-height: clamp(30rem, 72svh, 42rem);
   }
 }
 .why-breaker-media {
@@ -60,29 +64,29 @@
   will-change: transform;
 }
 /* The clip at 16:9. Phone: framed for --why-clip, a little larger than the
-   screen is tall, centred on his face (35% across) and raised 10%, so his face
-   sits in the top half, clear of the words; its foot melts into the copy under
-   it. Desktop: drawn 25% larger than covering the breaker, shifted so he sits
-   in its left third, his face about 21% across, his hands short of the words
-   (the team's call). Shifting a frame needs that much: at 15% larger, moved
-   that far, it stopped short of the right edge and left a strip uncovered. */
+   screen is tall (exactly: zoomed out, 2026-10-07), centred on his face (35% across) and raised 2% (10% cut his head under the nav), so
+   his face sits in the top half, clear of the words; its foot melts into the copy under
+   it. Desktop: drawn 12% larger than covering the breaker (zoomed out from 25%, the
+   team's call, 2026-10-07), shifted so he sits in its left third, his face about 27%
+   across. The shift is bounded by the zoom: at 1.12 the frame covers both edges only
+   while shifted between 45% and 55% of its width. */
 .why-breaker-clip {
   position: absolute;
   top: 0;
   left: 50%;
   display: block;
-  width: calc(var(--why-clip) * 1.1 * 16 / 9);
-  height: calc(var(--why-clip) * 1.1);
+  width: calc(var(--why-clip) * 16 / 9);
+  height: calc(var(--why-clip));
   max-width: none;
   object-fit: cover;
-  translate: -35% -10%;
+  translate: -35% -2%;
   mask-image: linear-gradient(to bottom, #000 70%, transparent 90%);
 }
 @media (width >= 1056px) {
   .why-breaker-clip {
-    width: calc(max(100cqw, 177.78cqh) * 1.25);
-    height: calc(max(100cqh, 56.25cqw) * 1.25);
-    translate: -58% -8%;
+    width: calc(max(100cqw, 177.78cqh) * 1.12);
+    height: calc(max(100cqh, 56.25cqw) * 1.12);
+    translate: -55% -6%;
     mask-image: none;
   }
 }
@@ -151,7 +155,7 @@
       '. foot';
     /* Less room above than below, so the centred copy sits a little high, level
        with the clip's picture above its faded foot. */
-    padding-block: var(--space-16) var(--why-fade);
+    padding-block: var(--space-12) var(--why-fade);
   }
   .why-breaker-top {
     display: contents;
@@ -210,12 +214,12 @@
 /* A clear gap between the words and the figures (the team's call); on desktop
    wider, which lifts the words (the figures hold their place at the foot). */
 .why-breaker-foot {
-  margin-top: var(--space-12);
+  margin-top: var(--space-8);
 }
 @media (width >= 1056px) {
   .why-breaker-foot {
     grid-area: foot;
-    margin-top: var(--space-20);
+    margin-top: var(--space-12);
   }
 }
 /* As Apple sets its spec figures: a line over each, the figure, a line of
@@ -365,7 +369,8 @@
   display: grid;
   overflow: hidden;
   border: var(--border-width-hair) solid var(--border-subtle);
-  border-radius: var(--radius-2xl);
+  /* 8px, as every card on the page (the team's call, 2026-10-07: one roundness); it was 16 */
+  border-radius: var(--radius-lg);
   background: var(--surface-default);
   /* no shadow (the AI journey's cards have none): the hairline edge carries it */
   transform-origin: 50% 0;
@@ -398,8 +403,8 @@
   justify-content: flex-end;
   margin: 0 var(--space-3) var(--space-3);
   overflow: hidden;
-  /* 12px: the card's 16 less its 12px inset left the photo near-square (4px; the team's call) */
-  border-radius: var(--radius-xl);
+  /* 8px, the card's own (one roundness, 2026-10-07); concentric (4px) read near-square, the team */
+  border-radius: var(--radius-lg);
   aspect-ratio: 4 / 5;
 }
 @media (width >= 672px) {

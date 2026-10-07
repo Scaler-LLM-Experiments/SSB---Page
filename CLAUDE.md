@@ -19,8 +19,9 @@ built on the Scaler Design System package `@kishanscaler/ssx-ui`. The bar the te
    backing the students, below), Beyond Placements (student founders), the people tabs (faculty,
    mentors, founding team, investors and founders), the curriculum's terms, then
    one side navigation (`CurriculumRail`) over career prep, the AI journey, Live projects,
-   Internship, Learn by doing and Immersions; Innovation Lab, Super Mentor Sessions, Campus life, In
-   the news, Impact Foundation, Admissions, FAQ, all inside the site footer's lift reveal. Most
+   Internship, Learn by doing and Immersions; Innovation Lab, the founding team and backers, Campus
+   life, In the news, Impact Foundation, Admissions, FAQ, all inside the site footer's lift reveal
+   (Super Mentor Sessions came off on 2026-10-07; its component is kept). Most
    sections after Why SSB came from teammates' `ssb-sections` and `staging-for-review` branches; their
    history lives in their doc comments, not here. The first fold is the cinematic V2 only (staging,
    2026-10-06): the split `HeroCard` and its `?hero=split` toggle (`HeroVariantToggle`) are kept in
@@ -130,15 +131,17 @@ src/
     FacultySection.tsx  PeopleShowcase over the faculty (portraits in public/faculty, 640x800 WebP);
                         no route renders it now (the people tabs carry the faculty)
     HScroller.tsx       the row: a real scroller that loops, pauses on hover/focus/touch, arrow buttons;
-                        Live projects, Innovation Lab and Alumni reuse it or its controls
+                        Live projects and Alumni reuse it or its controls
     MeetCard.tsx        photo card: "Meet" kicker, name, role in capitals, company logo in white;
                         centred on phones, left-aligned in the row
-    useSectionEntrance.ts  the entrance (below) almost every section imports; the Innovation Lab passes
-                        three `decks` (stat cards, startups panel, startup cards), each wiped open on its own trigger
+    useSectionEntrance.ts  the entrance (below) almost every section imports; `decks` takes one selector
+                        per group of cards, each wiped open on its own trigger
   sections/innovation-lab/
-    InnovationLabSection.tsx  sticky pitch on the left; stat cards (count up) and a framed startups row
-                        (banners in public/startups) on the right; same entrance as Faculty
-    StartupCard.tsx     banner, name, founders, description, Know more
+    InnovationLabSection.tsx  the section header and green figures, a mosaic of the lab's photos (on
+                        desktop a scroll moment: the first photo full-bleed, pulling back into its
+                        tile); then
+                        the startups as Beyond Placements' cards (VentureCard, their banners in
+                        public/startups) on RowSection
   sections/curriculum/  SsbCurriculum renders the curriculum lab's `journey/` code (config-driven:
                         `config.ts`, saved state in `lab-settings.ts`) in parts placed apart on the
                         page (`part`: terms, career, ai, learn; `main` is terms + career, unused on
@@ -227,7 +230,10 @@ it links to are not in the package. The `.d.ts` files are the reliable source fo
 - **Type:** set text by role. `Heading` (the `as` prop is required) and `Text` (`size`, `tone`),
   or `type-*` utilities. Marketing heroes use `type-hero` / `type-billboard-*`. 12px is the floor.
 - **Page layout:** `Section density="roomy"` for marketing sections, `Container` for the width and
-  page gutter (`px-gutter`), `Stack` and `Grid` for spacing between things.
+  page gutter (`px-gutter`), `Stack` and `Grid` for spacing between things. On the home page
+  `globals.css` sets a roomy Section's padding to 64px (40px on a phone), the `default` rung, in
+  tokens (the team's call, 2026-10-07: sections closer than roomy's 96 / 48); the curriculum's
+  blocks take the same.
 - **Icons:** pass an svg as a child; the component sizes it. In server components import from
   `@phosphor-icons/react/ssr`.
 - **Links styled as buttons:** `<Button asChild><a href="…">…</a></Button>`. Icon well: `<ButtonIcon>`.
@@ -643,6 +649,97 @@ are students: to confirm. No photos for now, every card on the plate (the team's
 GradeSense had the Why stories' photos first); only Aashish US and Moh Agarwal have avatars (the
 alumni photos).
 
+### Scaler Innovation Lab
+
+Rebuilt on 2026-10-07 (the team's brief: "a breaker instead of this section", the name "written
+boldly"; then "generate excitement"; then, of the footage framed on white, "looks flat, doesn't
+excite anyone", with the photos of scaler.com/innovation-lab to use). **Now: one scroll moment
+over the lab's photos** (desktop at least 640px tall, with motion): the track is a screen under
+the nav plus 0.75 of one, its stage sticky under the nav; the drone-build photo arrives
+full-bleed and, scrubbed, its frame closes into the middle tile of a mosaic while the other tiles
+settle in from 1.28 times their distance and size, under it, and the head fades up. The head:
+the curriculum's header (eyebrow "Startup ecosystem", ours; `Heading size="display"`; `Text
+size="lg"`) with SSB's own copy from the live site ("Scaler's Innovation Lab for non-technical
+leaders" / "Enter without code. Exit with the capability to build real world products as a Mini
+CEO.", the team's ask), balanced, "non-technical" kept whole (`HeroTitle`); at its right the three
+figures ($1B+, ₹10Cr+, $2M+) at `type-h1` in the logo's green (`--color-ssb-light-9`, the team's
+call), feet level. Below desktop, on a short screen and under reduced motion the mosaic is simply
+there (tiles wipe open, the head fades up). Then the startups, **as the same section** (the
+team's call): a subheading (`h3`, `size="1"` at medium weight: 28px, 24 on a phone; `size="2"` read small: "Network with **industry leaders** / incubated in
+our startup ecosystem.", the team's words; 32px over the cards, 24 on a phone: the row's own 16px gap first, then a step more, the team's calls) 64px under the photos, 48 on a phone (40 read tight; the lab drops its bottom
+padding, the row's top padding is that gap), and their cards, whose photo is a rectangle below
+desktop (16:9 over the copy on a phone, 4:3 beside it on a tablet; a square made a phone's card
+tall). The lab has a margin above it (64px, 40 on a phone): the full-bleed photo needs a breath
+after the curriculum's last cards. Super Mentor Sessions came off the page that day (the team's
+call; the component is kept).
+
+Tried that day after the moment, then dropped for it ("go with the older layout"): the header
+and the photos simply rising in (a wipe sweep, a scroll drift); the figures in a band of their
+own under the photos; the figures on brand-green tiles among the photos, one grid ("looks like
+Lumia"); the figures in a quiet box above the grid. Things learnt:
+
+- **Close a frame with `clip-path`, and only ever scale the photo down** (the moment): the photo
+  laid over the whole stage, trimmed by `inset()` to its tile while it scales about the tile's
+  centre just enough to keep covering it. A scale-up from the tile's size draws it soft.
+- **A sticky element keeps its margin box inside its parent.** The curriculum rail's list
+  (`.cr-nav`) stuck until the rail's very end, 64px below the last section's content (its
+  padding), so "Immersions" hung over the next section's heading; a bottom margin of the
+  sections' padding (`--space-16`) stops it level with the content.
+- Two sections' paddings stacked (128px) read as a new topic between the grid and the startups'
+  row: the lab's section drops its bottom padding.
+- `motionTokens.offset.enter` is a string ("0.75rem"), not a number: convert it before
+  arithmetic.
+- **Don't run prettier on `src/app/v2/page.tsx`**: the rail's entries are kept on one line past
+  110 columns, and prettier reflows them.
+
+Photos: Scaler's own, from its Innovation Lab page (framerusercontent.com), resized to
+`public/media/lab-*-<width>.webp`; three more there went unused (a student presenting, a board
+room, students at a robotic arm), with four product renders of its domains (a humanoid, a robotic
+hand, a smart speaker, a crypto flower) and its mentors' companies' logos.
+
+**Before the photos, the team's footage** of the lab: their GIF (`src/Scaler Innovation Lab.gif`,
+46 MB, gitignored), re-cut to six shots, slowed with motion interpolation (`minterpolate` mci,
+aobmc, bidir: clean on hands and faces), hard cuts (`public/media/lab-band.mp4`, 8.7s, 4.5 MB,
+untracked and now unused). **It is Rubenius' film** (the lab's designers): their mark and URL
+are in it; a clean cut, and the right to use it, are the team's to get. Framed on white under the
+name and figures, it read flat (above).
+
+**Tried as a breaker that day, the copy laid over the footage** (the team's verdicts, in turn):
+everything centred, bold, over a black radial gradient ("very bad, make it classy"); a blur
+rising behind the copy, melting into the page ("gradient and fade looking weird": its dark tint
+faded into the white as a grey smear); one even blur ("make it premium"); a feathered backdrop
+behind the copy; the hero's layout, the footage fading into a black ground ("instead of a dark
+background, add progressive blur"); that blur over the clip cropped to a taller band ("getting
+cropped, looks bad"); the clip uncropped at 21:9, the copy on a blur from the left, the figures'
+glass panel over the sharp right ("ghatiya"). The lesson: this footage (soft at full bleed, busy,
+watermarked) can't carry type laid over it; framed, it reads. Under it, on white: the startups as Beyond Placements' cards, headed by a turn ("10+ startups incubated here, /
+founded by leaders from Big Tech.", "10+ startups" in the logo green; `Accent`, shared). Their
+banners are white logos on two-colour gradients, too wide to crop square: the card's square
+takes the banner's top and bottom colours (sampled from its rows, `tint` in
+`content/innovation-lab.ts`) and the whole banner sits across its middle, faded in at its top
+and bottom. No figure on these cards (none per startup), so no blur; an arrow beside the name
+opens the site. Before: a sticky pitch beside four count-up stat cards and a framed row of banner
+cards (`StartupCard`, removed; in git history).
+
+**Every breaker is more compact since that day** (the team's call): desktop `min-height`
+clamp(28rem, 64svh, 38rem), was clamp(34rem, 80svh, 46rem); the phone's frame `--why-clip`
+max(34rem, 80svh), was max(40rem, 92svh); the fade 6rem (5 on a phone), was 8 (6); less room
+over the copy and above the figures; the profile card closer to the statement. Then a little
+taller again the same day ("slightly increase the height"): desktop clamp(30rem, 72svh, 42rem),
+the phone's frame max(36rem, 86svh).
+
+### One roundness
+
+Every card on the page has 8px corners (`--radius-lg`), and so does anything inset in one (a
+photo, a square, a panel): the team's call, 2026-10-07 ("uniformity of roundness"). Most already
+did (story, alumni, immersions, internship and session cards, media slots, the carousel
+controls, the curriculum's `--sj-card-r`; `globals.css` brings the Placements showcase to it on
+the home page); brought in that day: the company cards (16 / 12), Why SSB's chapter cards and
+their photos (16 / 12; `WhyMotion` clips them `round var(--radius-lg)` to match), the Innovation
+Lab's glass panel (12) and the recruiters' box (12). The design system's own rule nests at 4px
+(`--sj-card-r-in`), but the team read a 4px photo in a card as near square. Chips and avatars stay
+round. The hero's film frame is the hero's own (drawCard).
+
 ## Motion rules
 
 - GSAP through `@kishanscaler/ssx-ui/motion`: `useMotion` for scoped setup and cleanup, and
@@ -661,7 +758,9 @@ alumni photos).
   no count-ups on numbers: they read as the page stuttering in. (Exceptions, the team's asks: the
   stories variation's figures roll in like counter reels; the showcase's and Why SSB's figures
   slide up into their lines; Why SSB's "old MBA" is struck through as its line arrives; the
-  testimonial band's words, then its profile card, slide in a step on each turn.)
+  testimonial band's words, then its profile card, slide in a step on each turn; the Innovation
+  Lab's figures are written in letter by letter, each character fading in out of a slight blur,
+  on inline spans so nothing moves and each figure still reads and copies as one word.)
 - **Never let the DOM move under a CSS animation.** Re-inserting an element restarts its CSS
   animations (the ticker jumped back). ScrollTrigger `pin` does this; use CSS sticky instead.
 - **Never lock scrolling with `overflow: hidden`.** On screens that always show a scrollbar it hides

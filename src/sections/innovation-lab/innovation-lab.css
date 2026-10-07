@@ -1,65 +1,218 @@
 /* =========================================================
-   Scaler Innovation Lab: the startups row inside its panel.
+   Scaler Innovation Lab (2026-10-07): the name and its line at the left, the three figures at the
+   right, their feet level; under them a mosaic of the lab's photos (the first, the drone build,
+   in the middle and twice as wide). On desktop with motion the photo arrives full-bleed and pulls
+   back into its tile as the page scrolls (InnovationLabSection.tsx); everywhere else the mosaic is
+   simply there. Stacked below desktop.
    ========================================================= */
-.sil-row {
-  display: flex;
+/* More room after the curriculum than between other sections (the team's call): the photo arrives
+   full-bleed, and it needs a breath after the rail's last cards. */
+main section.lab[data-density='roomy'] {
+  margin-top: var(--space-10);
+  /* the startups' row carries on from here as part of the same section (below) */
+  padding-bottom: 0;
+}
+@media (width >= 672px) {
+  main section.lab[data-density='roomy'] {
+    margin-top: var(--space-16);
+  }
+}
+/* The startups' row (RowSection, a section of its own) reads as the lab's second part: its
+   subheading 64px under the photos (48 on a phone; 40 was tight, the team's call), not two
+   sections' padding (128px). */
+main section.lab + section[data-density='roomy'] {
+  padding-top: var(--space-12);
+}
+@media (width >= 672px) {
+  main section.lab + section[data-density='roomy'] {
+    padding-top: var(--space-16);
+  }
+}
+/* its subheading 32px over the cards (24 on a phone): first the row's own gap (16px, the team's
+   call), then a step more ("below as well"); still closer than a section header's 48px. Plain CSS,
+   so it wins over RowSection's utilities */
+main section.lab + section [data-enter='header'] {
+  margin-bottom: var(--space-6);
+}
+@media (width >= 672px) {
+  main section.lab + section [data-enter='header'] {
+    margin-bottom: var(--space-8);
+  }
+}
+/* the subheading: a step under the section's heading (h1, 28px; 24 on a phone), at the medium
+   weight every section title on the page takes (the package's h1 is semibold, which read heavy) */
+.lab-sub {
+  font-weight: var(--font-weight-medium);
+}
+
+.lab-head {
+  display: grid;
+  gap: var(--space-8);
+  margin-bottom: var(--space-10);
+}
+@media (width >= 1056px) {
+  .lab-head {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: var(--space-12);
+    margin-bottom: var(--space-12);
+  }
+}
+/* The copy takes what the figures leave, so the two-line heading wraps beside them. */
+.lab-copy {
+  max-width: 44rem;
+}
+/* balanced, so the heading breaks after "Lab" and the line leaves no word alone ("CEO.") */
+.lab-copy > * {
+  text-wrap: balance;
+}
+
+/* The figures, as Apple sets its spec figures: the figure, then what it counts, three across. */
+.lab-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-4);
   margin: 0;
   padding: 0;
   list-style: none;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
 }
-.sil-row::-webkit-scrollbar {
-  display: none;
+@media (width >= 672px) {
+  .lab-stats {
+    grid-template-columns: repeat(3, auto);
+    gap: var(--space-12);
+  }
 }
-.sil-row > li {
-  flex: none;
-  /* phones: one card, the gap, then a fifth of the next: w + gap + w/5 = the row */
-  width: calc((100% - var(--space-4)) / 1.2);
-  scroll-snap-align: start;
+.lab-stat-value {
+  margin: 0;
+  font-size: var(--type-h1-size);
+  line-height: 1.1;
+  letter-spacing: var(--type-display-tracking);
+  font-weight: var(--font-weight-medium);
+  /* the logo's green (the team's call), as the page's accent words */
+  color: var(--color-ssb-light-9);
 }
-@media (min-width: 672px) {
-  /* two cards, two gaps, then a fifth of the third: 2.2w + 2 gaps = the row */
-  .sil-row > li {
-    width: calc((100% - 2 * var(--space-4)) / 2.2);
+/* h1 everywhere: at the display size they weighed as much as the heading beside them */
+.lab-stat-label {
+  margin: var(--space-2) 0 0;
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-lh);
+  color: var(--content-secondary);
+}
+
+/* The mosaic: on a phone the drone build across the top, then the four in two rows; on desktop
+   three columns, the build in the middle twice as wide, a tall and a short tile either side
+   (offset, so the two sides don't mirror). Every tile an 8px card, its photo cropped to fill it. */
+.lab-mosaic {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-areas:
+    'hero hero'
+    'a d'
+    'b e';
+  gap: var(--space-2);
+}
+.lab-slot {
+  grid-area: hero;
+  display: grid;
+}
+.lab-tile {
+  margin: 0;
+  overflow: hidden;
+  aspect-ratio: 1;
+  border-radius: var(--radius-lg);
+  background: var(--surface-sunken);
+}
+.lab-hero {
+  aspect-ratio: 4 / 3;
+}
+.lab-tile img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+}
+.lab-tile[data-area='a'] {
+  grid-area: a;
+}
+.lab-tile[data-area='b'] {
+  grid-area: b;
+}
+.lab-tile[data-area='d'] {
+  grid-area: d;
+}
+.lab-tile[data-area='e'] {
+  grid-area: e;
+}
+@media (width >= 672px) {
+  .lab-mosaic {
+    gap: var(--space-3);
+  }
+  .lab-tile {
+    aspect-ratio: 3 / 2;
+  }
+  .lab-hero {
+    aspect-ratio: 16 / 9;
+  }
+}
+@media (width >= 1056px) {
+  .lab-mosaic {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr);
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    grid-template-areas:
+      'a hero d'
+      'a hero e'
+      'b hero e';
+    height: clamp(30rem, 46vw, 42rem);
+  }
+  .lab-tile,
+  .lab-hero {
+    aspect-ratio: auto;
   }
 }
 
-/* The startup's banner keeps its own shape (1133x542) in the card's media frame. */
-.sil-banner {
-  border-bottom: 0;
+/* The moment (desktop with motion, on a screen tall enough: the query is LIVE's). The track is a
+   screen under the nav plus 0.75 of one; its stage sticks under the nav and holds the head and the
+   mosaic, which fills what the head leaves. Not positioned in between: the first photo, lifted out
+   of its tile (data-lab-live, set by the motion), covers the whole stage, the window's full width,
+   and is trimmed back to its tile by clip-path. The other tiles start larger and further out, so
+   the stage clips them (clip, not hidden: no scroll container). */
+.lab-frame {
+  position: static;
 }
-
-/* The dashed rule between founders and description. The package Divider is a
-   1px fill with no dashed option, so it becomes a dashed top border instead. */
-.sil-rule {
-  height: 0;
-  background: transparent;
-  border-top: var(--border-hair) dashed var(--border-control);
-}
-
-/* Phones: the card is narrower than on the web row, so its type steps down
-   one size (title to body-lg, founders and description to caption). */
-@media (max-width: 671px) {
-  .sil-card__body {
-    padding: var(--space-3);
+@media (min-width: 1056px) and (min-height: 640px) and (prefers-reduced-motion: no-preference) {
+  .lab-track {
+    height: calc(100svh - var(--sn-h, 69px) + 75svh);
   }
-  .sil-card__title {
-    font-size: var(--type-body-lg-size);
-    line-height: var(--type-body-lg-lh);
+  .lab-stage {
+    position: sticky;
+    top: var(--sn-h, 69px);
+    height: calc(100svh - var(--sn-h, 69px));
+    overflow: clip;
   }
-  .sil-card__meta {
-    font-size: var(--type-caption-size);
-    line-height: var(--type-caption-lh);
-    letter-spacing: var(--type-caption-tracking);
+  .lab-frame {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding-block: var(--space-6);
   }
-  .sil-card__body .sil-rule {
-    margin-block: var(--space-3);
+  .lab-frame .lab-head {
+    flex: none;
+    margin-bottom: var(--space-8);
   }
-  .sil-card__body [data-part='action'] {
-    padding-top: var(--space-4);
+  .lab-frame .lab-mosaic {
+    flex: 1;
+    min-height: 0;
+    height: auto;
+  }
+  .lab[data-lab-live] .lab-hero {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: 0;
+  }
+  .lab[data-lab-live] .lab-hero img,
+  .lab[data-lab-live] .lab-tile[data-area] {
+    will-change: transform;
   }
 }
