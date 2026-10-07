@@ -9,7 +9,10 @@
 @media (min-width: 1056px) {
   .cr { display: grid; grid-template-columns: 13rem minmax(0, 1fr); column-gap: var(--space-12); align-items: start;
     box-sizing: border-box; max-width: var(--size-container-max); margin-inline: auto; padding-inline: var(--space-gutter); }
-  .cr-nav { grid-column: 1; grid-row: 1; position: sticky; top: calc(var(--sn-h, 69px) + 40px); padding-top: var(--space-16); }
+  /* the bottom margin stops the list where the last section's content ends, not at the rail's edge (a sticky
+     element keeps its margin box inside its parent): it hung 64px lower, over the next section's heading */
+  .cr-nav { grid-column: 1; grid-row: 1; position: sticky; top: calc(var(--sn-h, 69px) + 40px); padding-top: var(--space-16);
+    margin-bottom: var(--space-16); }
   .cr-main { grid-column: 2; grid-row: 1; min-width: 0;
     /* the sections' own containers and carousels measure from this gutter: none inside the column */
     --space-gutter: 0px; --size-container-max: 100%; }

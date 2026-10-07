@@ -5,6 +5,34 @@
    back into its tile as the page scrolls (InnovationLabSection.tsx); everywhere else the mosaic is
    simply there. Stacked below desktop.
    ========================================================= */
+/* More room after the curriculum than between other sections (the team's call): the photo arrives
+   full-bleed, and it needs a breath after the rail's last cards. */
+main section.lab[data-density='roomy'] {
+  margin-top: var(--space-10);
+  /* the startups' row carries on from here as part of the same section (below) */
+  padding-bottom: 0;
+}
+@media (width >= 672px) {
+  main section.lab[data-density='roomy'] {
+    margin-top: var(--space-16);
+  }
+}
+/* The startups' row (RowSection, a section of its own) reads as the lab's second part: its
+   subheading 40px under the photos, not two sections' padding (128px). */
+main section.lab + section[data-density='roomy'] {
+  padding-top: var(--space-10);
+}
+/* its subheading as close to the cards as the cards are to each other (the row's gap, 16px; the
+   team's call), not a section header's 48px: plain CSS, so it wins over RowSection's utilities */
+main section.lab + section [data-enter='header'] {
+  margin-bottom: var(--space-4);
+}
+/* the subheading: a step under the section's heading (h1, 28px; 24 on a phone), at the medium
+   weight every section title on the page takes (the package's h1 is semibold, which read heavy) */
+.lab-sub {
+  font-weight: var(--font-weight-medium);
+}
+
 .lab-head {
   display: grid;
   gap: var(--space-8);
@@ -48,7 +76,8 @@
   line-height: 1.1;
   letter-spacing: var(--type-display-tracking);
   font-weight: var(--font-weight-medium);
-  color: var(--content-primary);
+  /* the logo's green (the team's call), as the page's accent words */
+  color: var(--color-ssb-light-9);
 }
 /* h1 everywhere: at the display size they weighed as much as the heading beside them */
 .lab-stat-label {
@@ -153,7 +182,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    padding-block: var(--space-6) var(--space-8);
+    padding-block: var(--space-6);
   }
   .lab-frame .lab-head {
     flex: none;

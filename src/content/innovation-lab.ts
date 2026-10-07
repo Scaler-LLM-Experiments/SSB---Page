@@ -102,13 +102,15 @@ export type LabPhoto = {
 };
 
 /**
- * The Innovation Lab's head (2026-10-07): the name large, its line, three figures (the team's
- * "top 3" of the four above; team members left out), then the lab in photos: the first is the one
- * the scroll moment opens on, full-bleed; the rest are the mosaic it pulls back into, in order
- * (left tall, left short, right short, right tall). Photos from Scaler's own Innovation Lab page
- * (scaler.com/innovation-lab), 2026-10-07; public/media/CREDITS.md.
+ * The Innovation Lab (2026-10-07): the page's section header (eyebrow, heading, line), a mosaic of
+ * the lab's photos (the first in the middle, twice as wide; the rest left tall, left short, right
+ * short, right tall), then three figures (the team's "top 3" of the four above; team members left
+ * out). Photos from Scaler's own Innovation Lab page (scaler.com/innovation-lab), 2026-10-07;
+ * public/media/CREDITS.md.
  */
 export const labBand = {
+  // ours, as the curriculum's "Future-proof curriculum"
+  eyebrow: 'Startup ecosystem',
   // SSB's own heading and line for the lab (the live site's section, the team's ask): before,
   // "Scaler Innovation Lab" / "Network with founders, land internships, and work on real startup
   // projects, 10 steps from your classroom."
@@ -153,11 +155,15 @@ export const labBand = {
   ] satisfies LabPhoto[],
 };
 
-/** Under the band, the startups' row: its heading, "10+ startups" in the logo's green. */
+/**
+ * Under the figures, the startups' row: its heading (the team's words, 2026-10-07: "network with
+ * industry leaders, who are incubated in our startup ecosystem"), "industry leaders" in the logo's
+ * green. Before: "10+ startups incubated here, / founded by leaders from Big Tech."
+ */
 export const labTurn = {
-  setup: '10+ startups incubated here,',
-  lead: 'founded by leaders from Big Tech.',
-  accent: '10+ startups',
+  setup: 'Network with industry leaders',
+  lead: 'incubated in our startup ecosystem.',
+  accent: 'industry leaders',
 };
 
 /**

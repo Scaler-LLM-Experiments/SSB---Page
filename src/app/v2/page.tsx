@@ -20,7 +20,6 @@ import {
   BeyondPlacementsSection,
   CampusLifeSection,
   InTheNewsSection,
-  SuperMentorsSection,
 } from '@/sections/community/CommunitySections';
 import { WhySection } from '@/sections/why/WhySection';
 
@@ -31,9 +30,10 @@ export const metadata: Metadata = { title: 'V2 hero · SSB home page lab' };
  * (Kamath's breaker, then the answer), alumni (already in those roles), the second breaker
  * (founders and investors backing the students), beyond placements (student founders), the people
  * tabs, the curriculum's terms, then one side navigation over career prep, the AI journey, live
- * projects, the internship, learn by doing and immersions; the innovation lab, Super Mentor
- * Sessions, campus life, in the news, the impact foundation, admissions and the FAQ. All lifting
- * off the footer. Of the three Placements takes, the showcase is the one used.
+ * projects, the internship, learn by doing and immersions; the innovation lab, the founding team
+ * and backers, campus life, in the news, the impact foundation, admissions and the FAQ. All lifting
+ * off the footer. Super Mentor Sessions is off the page (the team's call, 2026-10-07; the component
+ * is kept in CommunitySections). Of the three Placements takes, the showcase is the one used.
  */
 export default function V2Page() {
   // The first fold is the cinematic hero only (the split variant and its toggle were dropped, 2026-10-06).
@@ -59,7 +59,7 @@ export default function V2Page() {
         <TestimonialSection />
         {/* student founders (deck p5) */}
         <BeyondPlacementsSection />
-        {/* faculty and mentors (the founding team and investors come after Super Mentor Sessions) */}
+        {/* faculty and mentors (the founding team and investors come after the innovation lab) */}
         <PeopleTabsSection />
         {/* the curriculum, together (the team's call, 2026-10-06): the terms, then learn by doing, career prep, the
             150-hour AI curriculum, the live projects, the internship and the immersions behind one side navigation */}
@@ -76,8 +76,6 @@ export default function V2Page() {
         />
         {/* innovation lab */}
         <InnovationLabSection />
-        {/* Super Mentor Sessions (deck p15) */}
-        <SuperMentorsSection />
         <PeopleTabsSection groups={['founding', 'investors']} id="founders" label="The team and backers behind SSB" />
         {/* campus life, then in the news (deck p24, p25) */}
         <CampusLifeSection />

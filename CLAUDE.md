@@ -19,8 +19,9 @@ built on the Scaler Design System package `@kishanscaler/ssx-ui`. The bar the te
    backing the students, below), Beyond Placements (student founders), the people tabs (faculty,
    mentors, founding team, investors and founders), the curriculum's terms, then
    one side navigation (`CurriculumRail`) over career prep, the AI journey, Live projects,
-   Internship, Learn by doing and Immersions; Innovation Lab, Super Mentor Sessions, Campus life, In
-   the news, Impact Foundation, Admissions, FAQ, all inside the site footer's lift reveal. Most
+   Internship, Learn by doing and Immersions; Innovation Lab, the founding team and backers, Campus
+   life, In the news, Impact Foundation, Admissions, FAQ, all inside the site footer's lift reveal
+   (Super Mentor Sessions came off on 2026-10-07; its component is kept). Most
    sections after Why SSB came from teammates' `ssb-sections` and `staging-for-review` branches; their
    history lives in their doc comments, not here. The first fold is the cinematic V2 only (staging,
    2026-10-06): the split `HeroCard` and its `?hero=split` toggle (`HeroVariantToggle`) are kept in
@@ -136,10 +137,11 @@ src/
     useSectionEntrance.ts  the entrance (below) almost every section imports; `decks` takes one selector
                         per group of cards, each wiped open on its own trigger
   sections/innovation-lab/
-    InnovationLabSection.tsx  the heading and line at the left, three figures at the right, a mosaic
-                        of the lab's photos under them (on desktop, a scroll moment: the first
-                        photo full-bleed, pulling back into its tile); then the startups as Beyond
-                        Placements' cards (VentureCard, their banners in public/startups) on RowSection
+    InnovationLabSection.tsx  the section header and green figures, a mosaic of the lab's photos (on
+                        desktop a scroll moment: the first photo full-bleed, pulling back into its
+                        tile); then
+                        the startups as Beyond Placements' cards (VentureCard, their banners in
+                        public/startups) on RowSection
   sections/curriculum/  SsbCurriculum renders the curriculum lab's `journey/` code (config-driven:
                         `config.ts`, saved state in `lab-settings.ts`) in parts placed apart on the
                         page (`part`: terms, career, ai, learn; `main` is terms + career, unused on
@@ -652,39 +654,48 @@ alumni photos).
 Rebuilt on 2026-10-07 (the team's brief: "a breaker instead of this section", the name "written
 boldly"; then "generate excitement"; then, of the footage framed on white, "looks flat, doesn't
 excite anyone", with the photos of scaler.com/innovation-lab to use). **Now: one scroll moment
-over the lab's photos.** The head is the page's section header (`Heading size="display"`, `Text
-size="lg"`), with SSB's own copy from the live site ("Scaler's Innovation Lab for non-technical
+over the lab's photos** (desktop at least 640px tall, with motion): the track is a screen under
+the nav plus 0.75 of one, its stage sticky under the nav; the drone-build photo arrives
+full-bleed and, scrubbed, its frame closes into the middle tile of a mosaic while the other tiles
+settle in from 1.28 times their distance and size, under it, and the head fades up. The head:
+the curriculum's header (eyebrow "Startup ecosystem", ours; `Heading size="display"`; `Text
+size="lg"`) with SSB's own copy from the live site ("Scaler's Innovation Lab for non-technical
 leaders" / "Enter without code. Exit with the capability to build real world products as a Mini
-CEO.", the team's ask), balanced, "non-technical" kept whole (`HeroTitle`); the three figures at
-its right ($1B+, ₹10Cr+, $2M+: the team's "top 3", team members left out; "Revenue generated",
-shortened from the deck's) at `type-h1` (at the display size they weighed as much as the heading),
-feet level. Under it a mosaic of five photos: the drone build in the middle, twice as wide; a tall
-and a short tile either side, offset (`'a hero d' 'a hero e' 'b hero e'`); on a phone the build
-across the top and the four in two rows. **The moment** (desktop at least 640px tall, with
-motion): the track is a screen under the nav plus 0.75 of one, its stage sticky under the nav;
-the build photo arrives full-bleed and, scrubbed, its frame closes into its tile while the other
-tiles settle in from 1.28 times their distance and size, under it, and the head fades up. Things
-learnt:
+CEO.", the team's ask), balanced, "non-technical" kept whole (`HeroTitle`); at its right the three
+figures ($1B+, ₹10Cr+, $2M+) at `type-h1` in the logo's green (`--color-ssb-light-9`, the team's
+call), feet level. Below desktop, on a short screen and under reduced motion the mosaic is simply
+there (tiles wipe open, the head fades up). Then the startups, **as the same section** (the
+team's call): a subheading (`h3`, `size="1"` at medium weight: 28px, 24 on a phone; `size="2"` read small: "Network with **industry leaders** / incubated in
+our startup ecosystem.", the team's words; 16px over the cards, the row's own gap between them, the team's call) 40px under the photos (the lab drops its bottom
+padding, the row's top padding is 40px), and their cards, whose photo is a rectangle below
+desktop (16:9 over the copy on a phone, 4:3 beside it on a tablet; a square made a phone's card
+tall). The lab has a margin above it (64px, 40 on a phone): the full-bleed photo needs a breath
+after the curriculum's last cards. Super Mentor Sessions came off the page that day (the team's
+call; the component is kept).
 
-- **Close a frame with `clip-path`, and only ever scale the photo down.** The photo is lifted out
-  of its tile over the whole stage (`data-lab-live`, set by the motion) and trimmed by `inset()`
-  from the stage's edges to the tile's, its corners rounding in, while it scales about the tile's
-  centre just enough to keep covering it (about 0.9: the tile is tall and low in the stage). A
-  scale-up from the tile's size would draw it soft at full bleed.
-- **Nothing positioned between the stage and the photo** (`.lab-frame { position: static }`), or
-  the lifted photo covers the `Container`, not the window's width.
-- **The stage clips** (`overflow: clip`): tiles transformed beyond the window add to the page's
-  scrollable width, a sideways scroll.
-- Boxes are measured on refresh with the tiles' transforms cleared.
+Tried that day after the moment, then dropped for it ("go with the older layout"): the header
+and the photos simply rising in (a wipe sweep, a scroll drift); the figures in a band of their
+own under the photos; the figures on brand-green tiles among the photos, one grid ("looks like
+Lumia"); the figures in a quiet box above the grid. Things learnt:
+
+- **Close a frame with `clip-path`, and only ever scale the photo down** (the moment): the photo
+  laid over the whole stage, trimmed by `inset()` to its tile while it scales about the tile's
+  centre just enough to keep covering it. A scale-up from the tile's size draws it soft.
+- **A sticky element keeps its margin box inside its parent.** The curriculum rail's list
+  (`.cr-nav`) stuck until the rail's very end, 64px below the last section's content (its
+  padding), so "Immersions" hung over the next section's heading; a bottom margin of the
+  sections' padding (`--space-16`) stops it level with the content.
+- Two sections' paddings stacked (128px) read as a new topic between the grid and the startups'
+  row: the lab's section drops its bottom padding.
 - `motionTokens.offset.enter` is a string ("0.75rem"), not a number: convert it before
   arithmetic.
+- **Don't run prettier on `src/app/v2/page.tsx`**: the rail's entries are kept on one line past
+  110 columns, and prettier reflows them.
 
 Photos: Scaler's own, from its Innovation Lab page (framerusercontent.com), resized to
 `public/media/lab-*-<width>.webp`; three more there went unused (a student presenting, a board
 room, students at a robotic arm), with four product renders of its domains (a humanoid, a robotic
-hand, a smart speaker, a crypto flower) and its mentors' companies' logos. Measured: no sideways
-overflow at 1440 or 390. Below desktop, on a short screen and under reduced motion the mosaic is
-simply there (its tiles wipe open as the faculty cards do, the head fades up).
+hand, a smart speaker, a crypto flower) and its mentors' companies' logos.
 
 **Before the photos, the team's footage** of the lab: their GIF (`src/Scaler Innovation Lab.gif`,
 46 MB, gitignored), re-cut to six shots, slowed with motion interpolation (`minterpolate` mci,

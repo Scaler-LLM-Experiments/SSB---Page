@@ -30,8 +30,9 @@ const AREAS = ['a', 'b', 'd', 'e'] as const;
  * building a drone arrives full-bleed, sticks under the nav, and the camera pulls back: its frame
  * closes into the middle tile of a mosaic of the lab (a robotic hand, the glass-walled labs, a
  * drone in flight, a mentor trying a student's build), the other tiles settling in from beyond
- * the edges as the name, its line and the three figures come up over them. Then the startups the
- * lab incubates, as Beyond Placements' cards, headed by a turn as that section is.
+ * the edges as the header (eyebrow, heading, line, as the curriculum's) and the three figures
+ * (green, at its right) come up over them. Then the startups the lab incubates, as Beyond
+ * Placements' cards, under a subheading (one section: a smaller heading, closer).
  *
  * The frame closes with `clip-path` and the photo inside it only ever scales down, so it stays
  * sharp; the tiles move by transforms. Below desktop, on a short screen and under reduced motion
@@ -44,8 +45,11 @@ const AREAS = ['a', 'b', 'd', 'e'] as const;
  * and fade looking weird"); one even blur ("make it premium"); a feathered backdrop; the hero's
  * layout on black; that blur over a cropped clip ("getting cropped, looks bad"); the clip uncropped
  * with the copy on a blur from the left ("ghatiya"); then the footage framed under the name and
- * figures, on white ("looks flat, doesn't excite anyone"). Before all that: a sticky pitch beside
- * count-up stat cards and a framed row of banner cards (in git history).
+ * figures, on white ("looks flat, doesn't excite anyone"). After this moment, that day: the
+ * photos simply rising in under the header; the figures in a band of their own, then on green
+ * tiles in the grid ("looks like Lumia"), then in a box above it; the team came back to this
+ * ("go with the older layout"). Before all that: a sticky pitch beside count-up stat cards and a
+ * framed row of banner cards (in git history).
  */
 export function InnovationLabSection() {
   return (
@@ -55,12 +59,13 @@ export function InnovationLabSection() {
         id="sil"
         title="Startups incubated in the Innovation Lab"
         heading={
+          // a subheading within the lab's section (the team's call): h3, a step smaller
           <Heading
-            as="h2"
-            size="display"
+            as="h3"
+            size="1"
             id="sil-title"
             data-enter="headline"
-            className="max-w-(--size-measure-max)"
+            className="lab-sub max-w-(--size-measure-max) [text-wrap:balance]"
           >
             <span className="block">
               <Accent text={labTurn.setup} word={labTurn.accent} />
@@ -90,8 +95,11 @@ function LabBand() {
         <div data-lab-stage className="lab-stage">
           <Container className="lab-frame">
             <div data-lab-head className="lab-head">
-              {/* the page's section header: display heading, the line under it */}
+              {/* the page's section header, as the curriculum's: eyebrow, heading, the line under it */}
               <div className="lab-copy flex flex-col gap-3">
+                <Heading as="p" size="eyebrow" className="text-content-brand">
+                  {labBand.eyebrow}
+                </Heading>
                 <Heading as="h2" size="display" id="sil-band-title">
                   {/* keeps "non-technical" whole: it broke after "non-" */}
                   <HeroTitle title={labBand.title} />
