@@ -14,9 +14,10 @@ built on the Scaler Design System package `@kishanscaler/ssx-ui`. The bar the te
 
 1. **Now:** the whole home page on /v2, in the agreed sequence (the doc comment in
    `src/app/v2/page.tsx` lists it; since staging's rework of 2026-10-06): hero, Placements (the
-   showcase), Why SSB (Kamath's breaker, then the answer), Alumni, Beyond Placements (student
-   founders), the people tabs (faculty, mentors, founding team, investors and founders), the
-   Testimonial (a banner carousel of investors and founders on campus), the curriculum's terms, then
+   showcase), Why SSB (Kamath's breaker, then the answer), Alumni (our earlier cohorts, already in
+   the roles Why SSB names), the second breaker (`TestimonialSection`: founders and investors
+   backing the students, below), Beyond Placements (student founders), the people tabs (faculty,
+   mentors, founding team, investors and founders), the curriculum's terms, then
    one side navigation (`CurriculumRail`) over career prep, the AI journey, Live projects,
    Internship, Learn by doing and Immersions; Innovation Lab, Super Mentor Sessions, Campus life, In
    the news, Impact Foundation, Admissions, FAQ, all inside the site footer's lift reveal. Most
@@ -36,7 +37,7 @@ space until asked. What we do now to prepare: each section takes its content as 
 (plain strings, string unions, lists of small objects), kept separate from layout. Those props become
 the blok schema later. Today only the hero (`HeroContent`), Placements (`PlacementsContent`) and Why
 SSB (`WhyContent`) do; the sections merged from `ssb-sections` import their copy from `src/content/`
-inside the component (`<FacultySection />` takes no props), and Live projects and Internship keep
+inside the component (`<AlumniSection />` takes no props), and Live projects and Internship keep
 theirs inline. Move a section to props before it becomes a blok.
 
 This is design exploration, not a live A/B test. Nothing here serves production traffic.
@@ -53,7 +54,7 @@ npm run dev        # http://localhost:3000 (the lab index lists every variation)
 npm run build      # production build (also type-checks)
 npm run typecheck
 npm start          # serves the production build (use it for frame-time and layout-shift checks)
-npx prettier --write <files>   # .prettierrc: single quotes, 110 wide (the code's style)
+npx prettier --write <files>   # .prettierrc: single quotes, 110 wide; prettier is not installed, npx fetches it
 ```
 
 There are no tests and no linter. A change is checked by `npm run typecheck` / `npm run build`, then
@@ -74,13 +75,15 @@ src/
   content/              one file per section's copy, from the deck (each file names its slides; the
                         FAQ's is `faqs` in admissions.ts; Live projects and Internship have none);
                         also home.ts (the first fold's copy, both variants),
-                        people.ts (faculty, mentors, founding team), company-logos.ts (faculty cards'
+                        people.ts (faculty, mentors, founding team), community.ts (Beyond Placements,
+                        the people tabs' mentors, founding team and investors, Shark Tank, Super
+                        Mentors, campus life, in the news), company-logos.ts (faculty cards'
                         wordmarks, files in public/logos); site/data.ts and site/navdata.ts hold the
                         footer's and navbar's
   lib/
     logos.ts            logos sized to equal ink (`LogoSizing`: the ticker's, the placements grid's),
                         from our own files or Wikidata (P154) lookups
-    youtube.ts          the YouTube IFrame API loader and types, shared by the hero film and the breaker
+    youtube.ts          the YouTube IFrame API loader and types, for the hero film
   sections/home/client.tsx  the page's client pieces: HomeNav (the site navbar in hero mode), Curriculum
                         (dynamic, `ssr: false`), FooterShell, ScrollRefresh (below, under Motion rules)
   sections/site/        Navbar.tsx (SSB navbar: the live site's nav from navdata.ts, mega menus, m-web
@@ -89,7 +92,10 @@ src/
                         ParticleText.tsx (canvas text at the footer's foot), theme.ts
   sections/shared/      CardStack.tsx (phones' carousel: front card, neighbours tucked behind, drag to
                         swipe, autoplay), ScrollDots.tsx (progress dots), MarkTicker.tsx (colour marks
-                        with names, as the AI curriculum's tools)
+                        with names, as the AI curriculum's tools), RowSection.tsx (the Alumni layout
+                        for any cards: header, a row running off the right edge, dots), MediaSlot.tsx
+                        (a photo or video, or a dashed placeholder naming the asset to come),
+                        cards.tsx (PersonCard, StoryCard), ClampText.tsx (text cut to n lines, "more")
   sections/hero/
     types.ts            HeroContent: the content contract every variation shares
     HeroTitle.tsx       title with a pure-white phrase; keeps "B-school" unbroken
@@ -120,8 +126,9 @@ src/
       film-player.css     those controls, in YouTube's own values (not the design system)
   sections/faculty/     the source of the page's shared section vocabulary
     PeopleShowcase.tsx  header (eyebrow, headline, sub, arrows), then the looping card row from `sm` up
-                        and the shared CardStack on phones, with ScrollDots; Faculty and Impact use it
-    FacultySection.tsx  PeopleShowcase over the faculty (portraits in public/faculty, 640x800 WebP)
+                        and the shared CardStack on phones, with ScrollDots; Impact uses it
+    FacultySection.tsx  PeopleShowcase over the faculty (portraits in public/faculty, 640x800 WebP);
+                        no route renders it now (the people tabs carry the faculty)
     HScroller.tsx       the row: a real scroller that loops, pauses on hover/focus/touch, arrow buttons;
                         Live projects, Innovation Lab and Alumni reuse it or its controls
     MeetCard.tsx        photo card: "Meet" kicker, name, role in capitals, company logo in white;
@@ -133,8 +140,16 @@ src/
                         (banners in public/startups) on the right; same entrance as Faculty
     StartupCard.tsx     banner, name, founders, description, Know more
   sections/curriculum/  SsbCurriculum renders the curriculum lab's `journey/` code (config-driven:
-                        `config.ts`, saved state in `lab-settings.ts`) in three parts (`part`: learn,
-                        ai, main) placed apart on the page; client-only
+                        `config.ts`, saved state in `lab-settings.ts`) in parts placed apart on the
+                        page (`part`: terms, career, ai, learn; `main` is terms + career, unused on
+                        /v2); client-only. CurriculumRail.tsx: the side navigation over the later
+                        parts and sections (a sticky list on desktop, a floating pill below it)
+  sections/people-tabs/ faculty, mentors, founding team, investors and founders as one section with
+                        a pill switcher; each tab its own header and MeetCard row (HScroller), the
+                        shared CardStack on phones; tabs advance by themselves
+  sections/community/   CommunitySections.tsx: Beyond Placements (VentureCard), Super Mentor Sessions,
+                        Campus life, In the news, on RowSection and MediaSlot, copy from
+                        content/community.ts
   sections/internship/  stats, a card stack of learners (its own CardStack), companies; reuses the
                         Placements grid's markup hooks, PlacementsMotion and placements.css (and
                         alumni.css)
@@ -265,11 +280,15 @@ smoothing lagged a quick flick past the end of the short track, so the hero bega
 before the moment had finished (it read as a glitch). History: the next section began 2,195px down
 the page at 240svh (~6 flicks); 1,377px now.
 
+## Sections
+
 **The Faculty entrance** plays in two moments, each once, when its part is on screen: the header
 (eyebrow, headline line by line, then the rest) when it is 85% of the way up, and the cards (wiped
 open bottom to top, one after another) when their row is at 75%. One trigger for the whole section
 fired while the cards were still below the fold. Starts use `clamp()` so they stay reachable when
 the section is the last thing on the page.
+
+### Placements
 
 **Placements is neutral at rest; green is only motion** (the team's call: green figures and green
 icons read dated, "2016", as did grey-bordered cards with icons in pale tiles, a dashed logo grid,
@@ -381,7 +400,7 @@ on 2026-10-05 from English Wikipedia's article images (Aviva, CKA Birla Group, F
 HealthifyMe, Landmark Group, The Times Group), trimmed and measured as before; Wikidata had only
 Aviva's. Not used: Wikidata's "Muthoot FinCorp" logo is Muthoot Finance's (another company), and
 "Noise (company)" on Wikipedia shows a mark that isn't the wearables brand's. The rest of the
-deck's 62 have no logo on either. Grey until the pointer is on one (its own colours, as the hero's ticker). Tried that day: a
+deck's 62 have no logo on either. Tried that day: a
 marquee row of the logos; six light-grey boxes with gaps between.
 
 Tried on 2026-10-05: a horizontal scroller (the cards slid); the chips under the copy at the cards'
@@ -394,36 +413,92 @@ label, hairline, sentence). Earlier: everything centred (the line-by-line headli
 320 when SplitText reverted, a 0.006 layout shift; left-aligned headers don't); a white panel on a
 campus photo; logos on tiles over a washed-out photo; claims in near-black over a light frost.
 
+**"The carousel is not working" (2026-10-01)** was a page left open while its server-rendered markup
+changed under a hot reload: the client motion had bound to the old nodes, so the tabs did nothing
+and the pill stayed hidden. A reload fixes it; production never does this. CSS lights the first
+chip until the motion has set the active one (`data-ready`), so a stale page still reads right.
+
+**The grid variation's moment** is the stats: each cell comes up one after another (like the
+faculty cards), wiped open from the bottom in the brand green (a `data-card-tint` layer, a
+deep-green gradient), which clears to white as its content fades in. The panel's `overflow:
+hidden` rounds the outer corners, so the wipe needs no radius. `ScrollTrigger.batch` groups the
+cells by arrival, so the desktop row of four staggers and a phone's column brings each up as it is
+reached. Cells are tight (icon, figure, label, one short line).
+
+**The logo grid** (solid hairlines: a 1px gap over the line colour) holds twelve logos (6 × 2,
+4 × 3, 3 × 4); every 4s all of them cross-fade to their cell's next logo together. Pointing at a
+logo turns its cell over in one 3D move (rotateX to 180°, `preserve-3d`, both faces drawn, the back
+hidden by `backface-visibility`) to "N students placed" on one line, while the other logos fade to
+grey; a tap does it on a touch screen; under reduced motion it turns at once. The cycle waits while
+the pointer is on the grid. The logos cross-fade inside the front face, never on the flipper or its
+parents: opacity below 1 flattens an element's 3D children, which would show both faces mid-turn.
+Earlier versions flipped random cells on a timer (busy at 1.2s; the team asked for hover only).
+Logos are in their own colours (the team's call), sized to equal ink in a 128 × 36 box. Measured
+(both variations): no layout shift, no horizontal overflow at 320 and 390; 60fps through the
+stats' entrance (p95 16.8ms).
+
+Tried and dropped on 2026-10-01, at the team's request: stat bars drawn to scale (each grew at one
+speed to its value), edge-to-edge rows of recruiter names drifting with the scroll, per-stat SVG
+drawings (coin stack, before/after bars, a ring, a dot sphere), a report callout, green figures
+and icons, cards in a bezel tray, timed random flips, and a grey line beside the recruiters'
+heading ("MNCs, AI companies and top startups", a hover hint). The team's
+reference was a stat card with its figure big in the brand colour, a rule, then a sentence.
+
+The grid's 24 logos came from Wikidata (P154) and, where Wikidata has none, English Wikipedia's
+article images (`Special:FilePath`, on Commons or, for non-free logos, on en.wikipedia). Dropped:
+Edelweiss (a tiny boxed lockup), Meesho and Rapido (app icons on solid boxes), Reckitt (Wikipedia
+still has the old Reckitt Benckiser mark). Each was trimmed to its ink in headless Chrome (render,
+find the ink's bounds, crop the viewBox) and its `ink` measured the same way. Myntra's SVG wraps a
+raster (139 KB). **Placeholders in `placements.ts`, to replace before anything ships:** the hires
+counts; the stories' and showcases' copy (only the first card's claim is the team's), the `lead`,
+and the report link; "50+ startups" (the deck lists 62 recruiters, about 43 of them startups);
+"10+ MNCs" (our count of the deck's list); "200+ recruiters" (the deck lists 62). The `roles` are real (the deck's "Strong Alumni Base"),
+but only Emergent is an AI company: "AI titles" need the team's data. No logo on Wikidata for
+Emergent, Avendus, Ninjacart or The Whole Truth, so the stories' career-switch card shows the four of
+the eight whose logos we have (the showcase's roles card names all eight).
+Campus photos are stills from the campus film until the team's arrive.
+
+### Why SSB
+
 **Why SSB** (deck slide 4) opens with **the page's first breaker** (2026-10-06, `WhyBreaker`), after
 Apple's product blocks ("Power on full display", the team's reference): Nikhil Kamath's remark,
 the clip of it the full width of the page with him on its left looking right (shifted left so his
-face clears the words), and the words on the right where he is looking (the team's call), the
-clip melting into the page under them (a progressive blur, a `backdrop-filter` masked left to
-right, then the page's grey) and at its foot only (no top fade, the team's call). The section's
-eyebrow ("Why the traditional MBA doesn't work", uppercase, brand green, as every section's), the
-words as the title at the display size and medium weight (several lines: kept quiet, the team's
-call), lit from grey to ink top line first as they scroll up, then just his name, and the 60% and
-62% as Apple's spec figures (source over, figure, line under). On a phone the clip is a block
-above the words, re-centred on his face. Tried that day: a dark full-bleed scene with the clip
-faded behind white words (the team: "doesn't look good"); a line saying where he said it and "He
-isn't alone in that read."; a "Watch the clip" button that played it with sound (both cut). Below it the section has no
-header (the deck's "MBA is not dead…" and the mock's description were cut: the breaker makes that
-argument). Things learnt:
+face clears the words), and the words on the right where he is looking (the team's call). The
+words are a dark island (`data-theme="dark"` on their block), white over a dark progressive frost
+(a `backdrop-filter` strengthening toward them), and the clip fades into the page at the breaker's
+foot only (no top fade, the team's call). The eyebrow ("Why the traditional MBA doesn't work") is
+white like the words, not the brand green other sections use; the words are the title at the
+display size and medium weight (several lines: kept quiet, the team's call); who said it is a
+small footnote under them; then the 60% and the 62% more as Apple's spec figures (figure, its
+line, then its source's logo: Forbes and PwC from Wikidata, heights set so the two weigh alike).
+On a phone the clip is at the top with a blurred copy of it under it to the foot, and the words
+and figures sit over its lower part on a frost rising behind them. The clip is the team's cut
+(`public/media/kamath-clip.mp4`, from their GIF, gitignored; H.264 at CRF 12, 36 MB, since 1.3 MB
+looked soft), used with Zerodha's permission (`public/media/CREDITS.md`). Tried that day: the
+words lit from grey to ink on the page's grey with the clip melting into it, each figure's source
+over it (the first cut, on YouTube's player, below); a dark full-bleed scene with the clip faded
+behind white words (the team: "doesn't look good"); a line saying where he said it and "He isn't
+alone in that read."; a "Watch the clip" button that played it with sound (both cut). Below it the
+section has no header (the deck's "MBA is not dead…" and the mock's description were cut: the
+breaker makes that argument). Things learnt:
 
 - **Check a quote against its source.** The deck had Kamath "telling students" that an MBA at 25
   "must be some kind of **an** idiot" and that it "went viral this year". The video (Zerodha's
   15th-anniversary AMA, uploaded 24 October 2025) has, at 1:43:21: "If you're 25 and going to a
   MBA college today, you must be some kind of idiot, if you ask me." Found by fetching only its
   captions (`yt-dlp --skip-download --write-auto-subs`); no video downloaded.
-- **The clip is YouTube's player, not a copy** (the footage is Zerodha's and the repo is public):
-  youtube-nocookie, muted, made a screen away, played only on screen. The video has subtitles burned
-  in (no caption track to switch off) in its bottom 12%, and YouTube's title bar covers its top 7%:
-  the frame is drawn 35% larger than covering and hung 9% above the top, so both fall outside. It
-  loops by polling the time and seeking back 0.3s before its end: letting it reach `end` showed
-  YouTube's end screen (a still of the founders) for a moment each loop.
-- **Lighting text with `background-clip: text` needs a block.** On an inline span the gradient
-  restarts on every line (so the lines light at once, not in order) and clips the descenders.
-- 60fps (p95 16.7ms) scrolling past it while the clip plays; one 67ms frame as the video starts.
+- **The first cut embedded YouTube's player, not a copy** (before the team's cut and Zerodha's
+  permission; the repo is public): youtube-nocookie, muted, made a screen away, played only on
+  screen. If a clip is embedded from YouTube again: this one had subtitles burned in (no caption
+  track to switch off) in its bottom 12%, and YouTube's title bar covers its top 7%: the frame was
+  drawn 35% larger than covering and hung 9% above the top, so both fell outside. It looped by
+  polling the time and seeking back 0.3s before its end: letting it reach `end` showed YouTube's
+  end screen (a still of the founders) for a moment each loop.
+- **Lighting text with `background-clip: text` needs a block** (the first cut's grey-to-ink
+  words). On an inline span the gradient restarts on every line (so the lines light at once, not
+  in order) and clips the descenders.
+- 60fps (p95 16.7ms) scrolling past it while the clip played (the YouTube cut); one 67ms frame as
+  the video started.
 
 Then the section answers it. **The turn:** the deck's "Nobody is preparing you for emerging roles
 like" (now the section's heading), large, its last words turning over in green through the deck's
@@ -485,50 +560,88 @@ Emergent, with Warikoo's line. Things learnt:
 Mittal's visit, a GradeSense screen from its Product Hunt listing (cropped below the reviewer bar,
 which named a student), and a campus photo from SSB's own site standing in for the convocation.
 
-**"The carousel is not working" (2026-10-01)** was a page left open while its server-rendered markup
-changed under a hot reload: the client motion had bound to the old nodes, so the tabs did nothing
-and the pill stayed hidden. A reload fixes it; production never does this. CSS lights the first
-chip until the motion has set the active one (`data-ready`), so a stale page still reads right.
+### The second breaker (testimonial)
 
-**The grid variation's moment** is the stats: each cell comes up one after another (like the
-faculty cards), wiped open from the bottom in the brand green (a `data-card-tint` layer, a
-deep-green gradient), which clears to white as its content fades in. The panel's `overflow:
-hidden` rounds the outer corners, so the wipe needs no radius. `ScrollTrigger.batch` groups the
-cells by arrival, so the desktop row of four staggers and a phone's column brings each up as it is
-reached. Cells are tight (icon, figure, label, one short line).
+**The second breaker** (2026-10-07, `TestimonialSection`) carries the story on from the alumni
+("already in roles like these") to the people who build companies backing the students: Anupam
+Mittal's offer of funding, Ankur Warikoo's line at the convocation (an investor's word, off for now); a person to
+a slide. It is the Why breaker's treatment exactly (the team's call): its classes from `why.css`
+and its motion, shared as `useBreakerMotion` (exported from `WhyBreaker.tsx`); the section only
+adds the stacking of slides, the plate for slides without media, the dots, and a profile card
+(name, credentials, the logos in white; no photo, the team's call) under the statement, well
+clear of it and over the dots, since not everyone knows the faces. Statements name the person
+("In July 2026, Anupam Mittal heard…", not "he"). It auto-plays every 7s, advanced by the active
+dot's fill (`animationend`), so it stops off screen and under reduced motion with no timer to keep
+in step. Its dots are the page's `CarouselNav` (dark tone, left-aligned under the copy; since
+2026-10-07, the team's call): the band listens for the `cn-fill` animation ending, bubbling up from
+the nav, since the component has no callback for it. **No pause under the pointer**: a reader's pointer rests on the band, so it looked stuck
+(as the recruiters' cycle did). Section titles are medium weight page-wide since that day
+(`--type-display-weight` in `globals.css`, the alumni cards' titles' weight; the package's is 600).
+On each turn (the team's ask, 2026-10-07: "flair, very subtle") the new slide's words, then its
+profile card 120ms later, slide in 12px (`--motion-offset-enter`) from the side the band turned
+from as they fade up: a CSS keyframe on inner `.oc-in` elements, never the `[data-breaker-part]`s
+the GSAP entrance tweens, and only once the band has turned (`data-turned`), so first paint and
+the scroll entrance are untouched. A keyframe, not a transition: a parked transition offset can't
+know which side the next turn comes from. The profile card is an 8px panel (`--radius-lg`, the
+team's call that day), not a pill.
 
-**The logo grid** (solid hairlines: a 1px gap over the line colour) holds twelve logos (6 × 2,
-4 × 3, 3 × 4); every 4s all of them cross-fade to their cell's next logo together. Pointing at a
-logo turns its cell over in one 3D move (rotateX to 180°, `preserve-3d`, both faces drawn, the back
-hidden by `backface-visibility`) to "N students placed" on one line, while the other logos fade to
-grey; a tap does it on a touch screen; under reduced motion it turns at once. The cycle waits while
-the pointer is on the grid. The logos cross-fade inside the front face, never on the flipper or its
-parents: opacity below 1 flattens an element's 3D children, which would show both faces mid-turn.
-Earlier versions flipped random cells on a timer (busy at 1.2s; the team asked for hover only).
-Logos are in their own colours (the team's call), sized to equal ink in a 128 × 36 box. Measured
-(both variations): no layout shift, no horizontal overflow at 320 and 390; 60fps through the
-stats' entrance (p95 16.8ms).
+**Mittal's clip was widened on Magnific** (the team's ask: no blurred duplicate of the clip
+behind the words; extend it instead, his placement unchanged). The GIF was cropped of the
+recorder's marks (`crop=980:706:44:4`, which also drops the cursor in the pitch shot), flipped,
+and padded with black to 21:9 (1648 × 706) on its right, so the model fills only that side and
+the footage stays exactly where it was (an outpaint to a ratio, as Aleph's `targetAspectRatio`,
+centres the original instead). Uploaded with `creations_request_upload` and a `curl` PUT. Then:
 
-Tried and dropped on 2026-10-01, at the team's request: stat bars drawn to scale (each grew at one
-speed to its value), edge-to-edge rows of recruiter names drifting with the scroll, per-stat SVG
-drawings (coin stack, before/after bars, a ring, a dot sphere), a report callout, green figures
-and icons, cards in a bezel tray, timed random flips, and a grey line beside the recruiters'
-heading ("MNCs, AI companies and top startups", a hover hint). The team's
-reference was a stat card with its figure big in the brand colour, a rule, then a sentence.
+- Gemini Omni 1.1 (`video_modify`) rejected 21:9 (a 400, refunded): it only makes 16:9 or 9:16.
+- Seedance 2.5 at 720p (6,240 credits) was the one used: it kept all four shots and their cuts,
+  continued the room believably (students at round desks; the pitch shot's screen with
+  unreadable text, which sits under the blur), and kept his face close to the source. It returns
+  1470 × 630 at 24fps (the source was 30), 12.375s.
+- Runway Aleph 2 (7,020) warped the desks into floating slabs and put a smeared face over the
+  close-up's right half.
+- Magnific Precision upscale (`strength` 40, about 5,100 credits) took it to 3360 × 1440 with
+  sharper hair and glasses and the same face; encoded at 2560 × 1098, CRF 16, 10.7 MB. 60fps
+  (p95 16.7ms) with it playing under the blur. A higher strength risks reinventing the face.
 
-The grid's 24 logos came from Wikidata (P154) and, where Wikidata has none, English Wikipedia's
-article images (`Special:FilePath`, on Commons or, for non-free logos, on en.wikipedia). Dropped:
-Edelweiss (a tiny boxed lockup), Meesho and Rapido (app icons on solid boxes), Reckitt (Wikipedia
-still has the old Reckitt Benckiser mark). Each was trimmed to its ink in headless Chrome (render,
-find the ink's bounds, crop the viewBox) and its `ink` measured the same way. Myntra's SVG wraps a
-raster (139 KB). **Placeholders in `placements.ts`, to replace before anything ships:** the hires
-counts; the stories' and showcases' copy (only the first card's claim is the team's), the `lead`,
-and the report link; "50+ startups" (the deck lists 62 recruiters, about 43 of them startups);
-"10+ MNCs" (our count of the deck's list); "200+ recruiters" (the deck lists 62). The `roles` are real (the deck's "Strong Alumni Base"),
-but only Emergent is an AI company: "AI titles" need the team's data. No logo on Wikidata for
-Emergent, Avendus, Ninjacart or The Whole Truth, so the stories' career-switch card shows the four of
-the eight whose logos we have (the showcase's roles card names all eight).
-Campus photos are stills from the campus film until the team's arrive.
+**Warikoo's clip** (2026-10-07, the team's GIF of his convocation speech) is one handheld shot,
+no cuts (`scdet` peaks at 2.8), his face drifting from 44% to 52% across the frame: where the
+words begin (54%) and inside the blur's ramp (42% to 64%). Cropped of its left 300px
+(`crop=980:720:300:0`, then `hqdn3d=1.5:1.5:3:3` for the GIF's dither, CRF 16, 10.9 MB) so he
+holds the left third (face at 27% to 36%), no Magnific: the frame already has real footage under
+the words. Not flipped: the banners behind him carry text. Its scene is a white tent, about 200
+of 255 under the words (Mittal's room 86, Kamath's 126; the right 46% averaged), so a slide's
+clip can be `bright`: the section gets `data-bright` and the frost darkens (45% to 70% on
+desktop, 55% to 75% on a phone), turning with the slide. On wide screens the 980px file is
+drawn up to 2× and cropped hard top and bottom (at 1920 × 736 his cap clears the top by ~40px):
+a Magnific upscale or a widened 21:9 cut, as Mittal's, if it reads soft. Shantanu Deshpande and
+Kiran Shah (dummy copy, no media) are off the band for now, and so is Sidhant Goyal's quote
+(`SIDHANT`, kept in the file), all the team's calls of 2026-10-07: only the people in `PEOPLE`
+are shown.
+
+### Beyond Placements
+
+Rebuilt on 2026-10-07 (the team's brief). No eyebrow, title or line: a turn carries on from the
+second breaker ("Students at SSB didn't just build careers. / They built companies.", display
+size, both in ink: the setup was grey first, the team asked for black), as Why SSB's turn hands
+over to its chapters; it is passed to `RowSection` as `heading` (an h2 with the id
+`${id}-title`). Then a row of cards (`VentureCard`, 38rem: 44rem was too wide, the team's call):
+a square photo inset at the left as Why SSB's chapter cards inset theirs (12px in, 12px photo
+corners, a 16px card; the team: "our style"), its field on Why's light glass chip at the top and
+its figure in white over a progressive blur at the foot (the Why stories' technique: two blurred
+copies revealed by gradients, a scrim). At the right: the company; its founders (32px round
+photos, overlapping, initials until there is one) with their cohort under the names ("Cohort 1" by default; it read Founder / Co-founders first); and at the foot, level with
+the figure, the line (the year founded and the city, behind a hairline, were tried that day
+and cut). Below `sm` the card stacks, the square photo over the copy. No photo yet: the
+internship cards' dark plate, no blur. Content: `beyondPlacements.ventures` (`Venture`, flat
+props). **Everything marked PLACEHOLDER in `community.ts` is made up** (the team: "fabricate
+for now, we will add real stats later"): GradeSense's, Tally Konnect's, the valet app's and
+the bridal line's figures, and those two companies' names. Real:
+Hummusapiens' ₹50L (an offer, from the Shark Tank slide), Gredo's ₹1Cr+ ARR, Dream Kit's
+12,000+ students, Paritosh Sinha's 200K followers. Gredo's founders (Mayank Kelwani, Sanskriti
+Deshmukh) are from Skope Kitchens' release on the vending launch at SSB, which doesn't say they
+are students: to confirm. No photos for now, every card on the plate (the team's call that day; Hummusapiens and
+GradeSense had the Why stories' photos first); only Aashish US and Moh Agarwal have avatars (the
+alumni photos).
 
 ## Motion rules
 
@@ -547,12 +660,19 @@ Campus photos are stills from the campus film until the team's arrive.
 - **Content enters with one gentle fade, not part by part.** No word splits, no staggered pieces,
   no count-ups on numbers: they read as the page stuttering in. (Exceptions, the team's asks: the
   stories variation's figures roll in like counter reels; the showcase's and Why SSB's figures
-  slide up into their lines; Why SSB's "old MBA" is struck through as its line arrives.)
+  slide up into their lines; Why SSB's "old MBA" is struck through as its line arrives; the
+  testimonial band's words, then its profile card, slide in a step on each turn.)
 - **Never let the DOM move under a CSS animation.** Re-inserting an element restarts its CSS
   animations (the ticker jumped back). ScrollTrigger `pin` does this; use CSS sticky instead.
 - **Never lock scrolling with `overflow: hidden`.** On screens that always show a scrollbar it hides
   the scrollbar, and when it comes back the page narrows and everything jumps sideways. The intro
   blocks wheel, touch and scroll keys instead (`holdScroll` in `intro.ts`).
+- **Never stack two videos.** The testimonial band's Mittal clip, sharp, over the same clip blurred
+  (2026-10-07) dropped the band to 30fps against the page's 60, even with both paused; either alone
+  ran at 60 (bisected in headless Chrome, `--use-angle=metal`). The blur wasn't the cost: the
+  Kamath breaker blurs live over its clip at 60. Compose such layers into one video in the file
+  instead (`ffmpeg -filter_complex`: the clip over itself blurred, an alpha ramp from `geq`). On a
+  phone the breakers' blurred under-layer can be the poster, a still: the frost blurs it anyway.
 - **Big scale animations need `will-change: transform`**, or the browser redraws the layer at full
   resolution every frame and stalls (the zoom did, 250–770ms). Measure frame times, don't eyeball.
 - **Move things with transforms, never `left`/`top`/`width`/`height`.** Layout properties make every
