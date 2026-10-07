@@ -15,8 +15,9 @@
   --why-shade: var(--color-neutral-dark-2);
   --why-line: color-mix(in oklab, var(--on-image-ink) 35%, transparent);
   /* Phone: the height the clip is framed for (its face clear above the words). */
-  /* compact since 2026-10-07 (the team: every breaker shorter); it was max(40rem, 92svh) */
-  --why-clip: max(34rem, 80svh);
+  /* compact since 2026-10-07 (the team: every breaker shorter; then "slightly" taller again): it
+     was max(40rem, 92svh), then max(34rem, 80svh) */
+  --why-clip: max(36rem, 86svh);
   /* How far the clip takes to fade out into the page at the breaker's foot. */
   --why-fade: 5rem;
   position: relative;
@@ -28,8 +29,9 @@
   .why-breaker {
     --why-fade: 6rem;
     display: grid;
-    /* compact since 2026-10-07; it was clamp(34rem, 80svh, 46rem) */
-    min-height: clamp(28rem, 64svh, 38rem);
+    /* compact since 2026-10-07, then a little taller again: it was clamp(34rem, 80svh, 46rem),
+       then clamp(28rem, 64svh, 38rem) */
+    min-height: clamp(30rem, 72svh, 42rem);
   }
 }
 .why-breaker-media {

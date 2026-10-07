@@ -724,7 +724,9 @@ cards (`StartupCard`, removed; in git history).
 **Every breaker is more compact since that day** (the team's call): desktop `min-height`
 clamp(28rem, 64svh, 38rem), was clamp(34rem, 80svh, 46rem); the phone's frame `--why-clip`
 max(34rem, 80svh), was max(40rem, 92svh); the fade 6rem (5 on a phone), was 8 (6); less room
-over the copy and above the figures; the profile card closer to the statement.
+over the copy and above the figures; the profile card closer to the statement. Then a little
+taller again the same day ("slightly increase the height"): desktop clamp(30rem, 72svh, 42rem),
+the phone's frame max(36rem, 86svh).
 
 ### One roundness
 
