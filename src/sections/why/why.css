@@ -519,3 +519,6 @@
   .why-chapter, .why-chapter:last-child { padding-bottom: 0; }
   .why-chapter + .why-chapter { margin-top: var(--space-4); }
 }
+
+/* the chapters' icons in the logo's green, as the term cards' and the rest of the page's (2026-10-07) */
+.why-chapter-icon { color: var(--color-ssb-light-9); }

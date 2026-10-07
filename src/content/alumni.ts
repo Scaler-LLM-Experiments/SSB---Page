@@ -91,6 +91,28 @@ export const alumni: Alumnus[] = [
   },
 ];
 
+// The internship section's learner cards, moved here (2026-10-07, the team's ask: that carousel keeps
+// only the video stories). From the live site's "Success stories and pivots" (scaler.com/school-of-business);
+// Uttara Nambiar and Bharath Ramesh were in both and keep their cards above. No portraits in the card's
+// style yet: AlumniCard draws the empty-room plate and their initials.
+const internMarks = {
+  tooljet: { name: 'ToolJet', src: '/internship/marks/tooljet.png', fill: true },
+  pync: { name: 'Pync', src: '/internship/marks/pync.png' },
+  razorpay: { name: 'Razorpay', src: '/logos/marks/razorpay.png' },
+  loestro: { name: 'LoEstro', src: '/internship/marks/loestro.png' },
+  limechat: { name: 'LimeChat', src: '/internship/marks/limechat.png' },
+  onsurity: { name: 'Onsurity', src: '/internship/marks/onsurity.png', fill: true },
+} satisfies Record<string, CompanyMark>;
+
+export const pivotAlumni: Alumnus[] = [
+  { name: 'Sanyam Maheshwari', before: 'Analyst, Deloitte', role: 'Product Strategy', company: internMarks.tooljet },
+  { name: 'Akarsh Sharma', before: 'Data Analyst, Uber', role: 'Founder’s Office', company: internMarks.pync },
+  { name: 'Sarosha Pais', before: 'HR, Aquarelle', role: 'Partnerships', company: internMarks.razorpay },
+  { name: 'Ayush Poojary', before: 'Trainee, Mutha & Co.', role: 'Investment Banking', company: internMarks.loestro },
+  { name: 'Rohan Kumar', before: 'Finance Associate, KPMG', role: 'Operations', company: internMarks.limechat },
+  { name: 'Impana Reddy', before: 'Founder, Papermint', role: 'Product Management', company: internMarks.onsurity },
+];
+
 // Your peers come from: the deck's list, in its order. Our own files in
 // public/logos, trimmed to their edges; `ink` measured in one tone (CLAUDE.md, "Logos").
 export const peerCompanies: HeroLogo[] = [

@@ -3,14 +3,15 @@
 import * as React from 'react';
 import { Container, Heading, Section, Text } from '@kishanscaler/ssx-ui';
 
-import { alumni as allAlumni } from '@/content/alumni';
+import { alumni as allAlumni, pivotAlumni } from '@/content/alumni';
 import { useSectionEntrance } from '@/sections/faculty/useSectionEntrance';
 import { ScrollDots } from '@/sections/shared/ScrollDots';
 import { AlumniCard } from './AlumniCard';
 import './alumni.css';
 
-// Only those with a photo in the card's landscape style.
-const alumni = allAlumni.filter((a) => a.photo);
+// Those with a photo in the card's landscape style, then the internship section's learners (2026-10-07),
+// who have no portrait yet (the card's empty-room plate with their initials).
+const alumni = [...allAlumni.filter((a) => a.photo), ...pivotAlumni];
 
 /** `peers` is the logo ticker under the cards (a server component, so it comes in from the page). */
 export function AlumniSection({ peers }: { peers?: React.ReactNode }) {

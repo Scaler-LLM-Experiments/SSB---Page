@@ -233,3 +233,8 @@
   filter: none;
   opacity: 1;
 }
+
+/* A learner with no portrait in the card's style yet (the internship section's, moved here
+   2026-10-07): the empty-room plate, the initials where the person would stand, as the internship
+   cards drew them. In the card's design units (it is scaled as a whole). */
+.alumni-card__initials { position: absolute; left: 23%; top: 50%; translate: -50% -50%; color: var(--on-image-ink); font-size: 3.5rem; line-height: 1; font-weight: var(--font-weight-medium); letter-spacing: -0.01em; }

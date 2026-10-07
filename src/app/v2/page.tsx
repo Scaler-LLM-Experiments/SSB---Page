@@ -12,6 +12,7 @@ import { ImmersionsSection } from '@/sections/immersions/ImmersionsSection';
 import { ImpactSection } from '@/sections/impact/ImpactSection';
 import { InnovationLabSection } from '@/sections/innovation-lab/InnovationLabSection';
 import { InternshipSection } from '@/sections/internship/InternshipSection';
+import { LearnByDoingSection } from '@/sections/learn-by-doing/LearnByDoingSection';
 import { LiveProjectsSection } from '@/sections/live-projects/LiveProjectsSection';
 import { PeopleTabsSection } from '@/sections/people-tabs/PeopleTabsSection';
 import { PlacementsShowcase } from '@/sections/placements/PlacementsShowcase';
@@ -20,6 +21,7 @@ import {
   BeyondPlacementsSection,
   CampusLifeSection,
   InTheNewsSection,
+  SuperMentorsSection,
 } from '@/sections/community/CommunitySections';
 import { WhySection } from '@/sections/why/WhySection';
 
@@ -32,8 +34,8 @@ export const metadata: Metadata = { title: 'V2 hero · SSB home page lab' };
  * tabs, the curriculum's terms, then one side navigation over career prep, the AI journey, live
  * projects, the internship, learn by doing and immersions; the innovation lab, the founding team
  * and backers, campus life, in the news, the impact foundation, admissions and the FAQ. All lifting
- * off the footer. Super Mentor Sessions is off the page (the team's call, 2026-10-07; the component
- * is kept in CommunitySections). Of the three Placements takes, the showcase is the one used.
+ * off the footer. Super Mentor Sessions: taken off the page on main (2026-10-07), then put back as the
+ * curriculum rail's last item (the team's ask, the same day). Of the three Placements takes, the showcase is the one used.
  */
 export default function V2Page() {
   // The first fold is the cinematic hero only (the split variant and its toggle were dropped, 2026-10-06).
@@ -66,16 +68,20 @@ export default function V2Page() {
         <Curriculum part="terms" />
         <CurriculumRail
           sections={[
-            { id: 'career-prep', label: 'Career prep', icon: 'career', node: <Curriculum part="career" /> },
+            // the team's order (2026-10-07): AI journey, career prep, learn by doing, internship, immersions;
+            // Live projects is off the rail for now (<LiveProjectsSection /> was between the AI journey and the internship)
             { id: 'ai-journey', label: 'AI journey', icon: 'ai', node: <Curriculum part="ai" /> },
-            { id: 'live-projects-rail', label: 'Live projects', icon: 'projects', node: <LiveProjectsSection /> },
+            { id: 'career-prep', label: 'Career prep', icon: 'career', node: <Curriculum part="career" /> },
+            { id: 'learn-by-doing', label: 'Learn by doing', icon: 'learn', node: <LearnByDoingSection /> },
             { id: 'internship-rail', label: 'Internship', icon: 'internship', node: <InternshipSection /> },
-            { id: 'learn-by-doing', label: 'Learn by doing', icon: 'learn', node: <Curriculum part="learn" /> },
             { id: 'immersions-rail', label: 'Immersions', icon: 'immersions', node: <ImmersionsSection /> },
+            // Super Mentor Sessions, into the curriculum's rail (2026-10-07, the team's ask; it followed the Innovation Lab)
+            { id: 'sessions-rail', label: 'Super Mentor Sessions', icon: 'sessions', node: <SuperMentorsSection /> },
           ]}
         />
         {/* innovation lab */}
         <InnovationLabSection />
+        {/* the founding team and investors */}
         <PeopleTabsSection groups={['founding', 'investors']} id="founders" label="The team and backers behind SSB" />
         {/* campus life, then in the news (deck p24, p25) */}
         <CampusLifeSection />

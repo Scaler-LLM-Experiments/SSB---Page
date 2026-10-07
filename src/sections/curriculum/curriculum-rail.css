@@ -205,3 +205,61 @@
   .cr-main .sj-ps-card[data-k='oneToOne'] .sj-ps-stat dt, .cr-main .sj-ps-card[data-k='interviews'] .sj-ps-stat dt, .cr-main .sj-ps-card[data-k='behaviour'] .sj-ps-stat dt { font-size: 1rem; }
   .cr-main .sj-ps-card[data-k='oneToOne'] .sj-ps-copy, .cr-main .sj-ps-card[data-k='interviews'] .sj-ps-copy, .cr-main .sj-ps-card[data-k='behaviour'] .sj-ps-copy, .cr-main .sj-ps-card[data-k='hours'] .sj-ps-copy { min-height: 84px; padding: 14px 24px; }
 }
+
+/* AI journey cards in the rail (2026-10-07): the photo strip a little taller (5:2, was 7:2), so the
+   photos keep their people; each photo's own crop (imagePos, inline) places them in it */
+@media (min-width: 1056px) { .cr-main .sj-ai[data-layout='split'] .ss-hero .sj-ai-photo { aspect-ratio: 3 / 1; } } /* 3:1 since the team asked for smaller photos (5:2 before, the same day) */
+
+/* ── Career prep on phones and tablets, as on desktop (2026-10-07, the m-web sweep) ──
+   Each stat card on its illustrated scene, the figure and its line on the frosted green bar at the
+   card's foot, in white; the small drawings and the waveform are off. One card to a row. */
+@media (max-width: 1055px) {
+  .cr-main .sj-pbento { display: grid; grid-template-columns: minmax(0, 1fr); grid-auto-rows: auto; gap: 12px; }
+  .cr-main .sj-pb-card { position: relative; display: flex; flex-direction: column; justify-content: flex-end; grid-column: auto; grid-row: auto; min-height: 220px; height: auto; padding: 0; overflow: hidden;
+    border: 0; border-radius: 20px; box-shadow: none; background: #c9ecd9 center / cover no-repeat; text-align: left; }
+  .cr-main .sj-pb-card[data-k='hours'] { background-image: url('/career/hours-scene.webp'); background-position: 30% 70%; }
+  .cr-main .sj-pb-card[data-k='oneToOne'] { background-image: url('/career/solving-scene.webp'); background-position: 30% 60%; }
+  .cr-main .sj-pb-card[data-k='interviews'] { background-image: url('/career/interviews-scene.webp'); background-position: 30% 40%; }
+  .cr-main .sj-pb-card[data-k='behaviour'] { background-image: url('/career/behaviour-scene.webp'); background-position: 25% 55%; }
+  .cr-main .sj-pb-card .sj-pb-art, .cr-main .sj-pb-card .sj-pb-wave { display: none; }
+  .cr-main .sj-pb-card .sj-pb-text { --pb-bar: blur(22px) saturate(1.5); position: relative; inset: auto; display: flex; flex-direction: row; align-items: center; gap: 0; margin: 12px; padding: 12px 16px;
+    border: 1px solid rgb(255 255 255 / 0.22); border-radius: 16px; background: rgb(8 60 38 / 0.38); -webkit-backdrop-filter: var(--pb-bar); backdrop-filter: var(--pb-bar); text-align: left; }
+  .cr-main .sj-pb-card .sj-pb-stat { display: flex; flex: 1; flex-direction: row-reverse; justify-content: flex-end; align-items: center; gap: 12px; min-width: 0; margin: 0; }
+  .cr-main .sj-pb-card .sj-pb-stat + .sj-pb-stat { margin-left: 14px; padding-left: 14px; border-left: 1px solid rgb(255 255 255 / 0.28); }
+  .cr-main .sj-pb-card .sj-pb-stat dd { flex: none; margin: 0; font-size: 1.75rem; line-height: 1; white-space: nowrap; color: #fff; }
+  .cr-main .sj-pb-card .sj-pb-stat dt { min-width: 0; margin: 0; font-size: 0.8125rem; line-height: 1.3; color: rgb(255 255 255 / 0.88); }
+}
+@media (max-width: 1055px) {
+  /* the figure first, then its line; the hours card's two figures one under the other */
+  .cr-main .sj-pb-card .sj-pb-stat { flex-direction: row; justify-content: flex-start; }
+  .cr-main .sj-pb-card .sj-pb-stat dd { order: -1; }
+  .cr-main .sj-pb-card .sj-pb-text[data-pair] { flex-direction: column; align-items: stretch; }
+  .cr-main .sj-pb-card .sj-pb-text[data-pair] .sj-pb-stat + .sj-pb-stat { margin: 10px 0 0; padding: 10px 0 0; border-left: 0; border-top: 1px solid rgb(255 255 255 / 0.28); }
+  .cr-main .sj-pb-card { min-height: 240px; }
+}
+@media (max-width: 1055px) {
+  .cr-main .sj-pb-card .sj-pb-stat dd, .cr-main .sj-pb-card .sj-pb-stat dd * { color: #fff; }
+  .cr-main .sj-pb-card[data-k] .sj-pb-text, .cr-main .sj-pb-card[data-k] .sj-pb-stat { justify-content: flex-start; text-align: left; }
+  .cr-main .sj-pb-card[data-k] .sj-pb-stat dt { margin-left: 0; text-align: left; }
+}
+@media (max-width: 1055px) {
+  /* the "+" is drawn with text-fill-color in journey.css: white too, on the bar */
+  .cr-main .sj-pb-card .sj-pb-text .sj-speed > span, .cr-main .sj-pb-card .sj-pb-text dd { color: #fff; -webkit-text-fill-color: #fff; }
+}
+
+/* Career prep below desktop as a carousel (2026-10-07, the team's ask): the scene cards in one swipe
+   row, a card and a slice of the next on screen, snapping; the page's dots under them. */
+.sj-pbento-dots { display: none; }
+@media (max-width: 1055px) {
+  .cr-main .sj-pbento { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 86%; gap: 12px; overflow-x: auto; overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: calc(var(--space-gutter) * -1); padding-inline: var(--space-gutter); scroll-padding-inline: var(--space-gutter); }
+  .cr-main .sj-pbento::-webkit-scrollbar { display: none; }
+  .cr-main .sj-pbento > .sj-pb-card { scroll-snap-align: start; min-height: 280px; }
+  .sj-pbento-dots { display: block; margin-top: 16px; }
+}
+@media (min-width: 672px) and (max-width: 1055px) { .cr-main .sj-pbento { grid-auto-columns: 48%; } }
+@media (max-width: 1055px) {
+  /* one row: the bento's own rows and areas off */
+  .cr-main .sj-pbento { grid-template-rows: none; grid-template-areas: none; grid-auto-rows: auto; }
+  .cr-main .sj-pbento > .sj-pb-card { grid-area: auto; grid-row: 1; grid-column: auto; }
+}

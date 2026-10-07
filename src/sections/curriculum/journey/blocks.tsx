@@ -35,6 +35,7 @@ import { SCENES, SceneCanvas } from './scene';
 import { YearDetail, YearRow } from './cards';
 import { ForkPaths } from './fork';
 import { SwipeDeck } from './learn';
+import { ScrollDots } from '@/sections/shared/ScrollDots';
 
 /** Width of an element, for the few decisions CSS container queries cannot make (sheet vs inline). */
 export function useWidth<T extends HTMLElement>(): [React.RefObject<T | null>, number] {
@@ -552,6 +553,8 @@ export function CareerPrepBlock({ prep, cfg }: { prep: CareerPrep; cfg: JourneyC
   }, []);
   const fallbackStat: CareerIcon[] = ['hours', 'interviews', 'oneToOne', 'domain', 'behaviour'];
   const card = React.useRef<HTMLDivElement>(null);
+  // the bento's row on phones and tablets: a carousel with the page's dots under it (2026-10-07)
+  const bento = React.useRef<HTMLDListElement>(null);
   return (
     <section className="sj-career" aria-labelledby={id} {...c(cfg, 'career')}>
       {/* desktop: the bento on the left; the title and the phases down the right, as tall as the bento.
@@ -562,6 +565,11 @@ export function CareerPrepBlock({ prep, cfg }: { prep: CareerPrep; cfg: JourneyC
         <Heading as="h2" size="display" id={id} className="sj-career-head">
           {prep.title}
         </Heading>
+        {prep.lede ? (
+          <Text size="lg" tone="secondary" className="sj-lede">
+            {prep.lede}
+          </Text>
+        ) : null}
       </header>
       <div className="sj-career-split">
       <div className="sj-career-col">
@@ -581,11 +589,15 @@ export function CareerPrepBlock({ prep, cfg }: { prep: CareerPrep; cfg: JourneyC
           <>
             {/* desktop: the sliding showcase; smaller screens: the bento (CSS shows one of the two) */}
             <PrepShowcase cards={sorted} />
-            <dl className="sj-pbento">
+            <dl ref={bento} className="sj-pbento">
               {sorted.map(([k, stats]) => (
                 <SceneCard key={k} kind={k} stats={stats} />
               ))}
             </dl>
+            {/* below desktop the bento is a swipe row; the page's carousel dots under it */}
+            <div className="sj-pbento-dots">
+              <ScrollDots scroller={bento} count={sorted.length} itemName="stat" fill="solid" autoplay={false} />
+            </div>
           </>
         );
       })()}

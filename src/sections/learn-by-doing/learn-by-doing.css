@@ -1,0 +1,127 @@
+/* Learn by doing on Beyond Placements' card (vc-*, community.css): only what a video adds. */
+
+/* The play disc, centred on the photo, the duration beside it on the same glass as the chip. */
+.lb-play {
+  all: unset;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.lb-play:focus-visible .lb-play-disc {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+.lb-play-disc {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #fff;
+  color: #171717;
+  box-shadow: 0 10px 30px -10px rgb(0 0 0 / 0.5);
+  transition: transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.lb-play-disc svg {
+  width: 20px;
+  height: 20px;
+  translate: 2px 0;
+}
+.lb-play:hover .lb-play-disc {
+  transform: scale(1.08);
+}
+/* (the duration is in the views line: on the 16rem square it ran into the chip, then the figure) */
+/* the chip and the figure above the play button's hit area */
+.lb-card .vc-tag,
+.lb-card .vc-stat {
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* The channel where the founders sit: the shield in a ringed circle, the name with its tick. */
+.lb-avatar {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: var(--surface-page);
+  box-shadow: inset 0 0 0 1px var(--border-subtle);
+}
+.lb-avatar svg {
+  width: 16px;
+  height: auto;
+}
+.lb-channel {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.lb-channel svg {
+  width: 14px;
+  height: 14px;
+  color: var(--content-secondary);
+}
+
+/* The lightbox: the video at 16:9, as wide as fits, over a dark page. */
+.lb-box {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: var(--space-6);
+  background: rgb(0 0 0 / 0.82);
+  animation: lb-in 240ms ease both;
+}
+.lb-box-frame {
+  width: min(100%, 1100px, calc((100svh - 6rem) * 16 / 9));
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  background: #000;
+}
+.lb-box-frame iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.lb-box-close {
+  all: unset;
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.14);
+  color: #fff;
+  cursor: pointer;
+}
+.lb-box-close:focus-visible {
+  outline: 2px solid #fff;
+}
+.lb-box-close svg {
+  width: 20px;
+  height: 20px;
+}
+@keyframes lb-in {
+  from {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lb-box {
+    animation: none;
+  }
+  .lb-play-disc {
+    transition: none;
+  }
+}

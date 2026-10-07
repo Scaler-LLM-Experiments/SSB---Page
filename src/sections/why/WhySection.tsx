@@ -140,7 +140,7 @@ function Chapter({ pillar }: { pillar: WhyPillar }) {
     <article data-why-card className="why-card">
       <div className="why-card-copy">
         {/* 40px: between the scale's 2xl (48, the team: a touch big) and xl (32) */}
-        <Icon size="2xl" className="size-10 min-w-10 text-content">
+        <Icon size="2xl" className="why-chapter-icon size-10 min-w-10">
           {ICONS[pillar.icon]}
         </Icon>
         <div>

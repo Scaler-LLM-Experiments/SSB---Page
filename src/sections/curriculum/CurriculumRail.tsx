@@ -11,11 +11,11 @@
  * only (sticky, held inside the block).
  */
 import * as React from 'react';
-import { BriefcaseIcon, FactoryIcon, RocketLaunchIcon, HandshakeIcon, IdentificationBadgeIcon, SparkleIcon } from '@phosphor-icons/react';
+import { BriefcaseIcon, FactoryIcon, RocketLaunchIcon, HandshakeIcon, IdentificationBadgeIcon, MicrophoneStageIcon, SparkleIcon } from '@phosphor-icons/react';
 
 import './curriculum-rail.css';
 
-const ICONS = { career: BriefcaseIcon, ai: SparkleIcon, projects: HandshakeIcon, internship: IdentificationBadgeIcon, immersions: FactoryIcon, learn: RocketLaunchIcon };
+const ICONS = { career: BriefcaseIcon, ai: SparkleIcon, projects: HandshakeIcon, internship: IdentificationBadgeIcon, immersions: FactoryIcon, learn: RocketLaunchIcon, sessions: MicrophoneStageIcon };
 
 export type RailSection = { id: string; label: string; icon: keyof typeof ICONS; node: React.ReactNode };
 
