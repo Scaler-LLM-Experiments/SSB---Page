@@ -19,7 +19,8 @@ main section.lab.cm[data-density='roomy'] {
 }
 
 /* Follow campus life: two glass buttons floating on the cohort photo, at its lower left (light,
-   transparent glass: white type over the photo). In the slot's cell, over the photo; on desktop the
+   transparent glass: white type and Instagram's glyph in white over the photo, 4px corners), under
+   "Follow us on"). In the slot's cell, over the photo; on desktop the
    moment brings them up with the heading (data-lab-overlay). Nothing between them and the photo
    has a filter, mask or opacity below 1, or the glass would blur nothing. */
 /* the buttons share the photo's grid cell, at its lower left: placed by the grid, not by
@@ -36,6 +37,7 @@ main section.lab.cm[data-density='roomy'] {
   margin: var(--space-4);
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: var(--space-2);
   max-width: calc(100% - var(--space-8));
 }
@@ -47,7 +49,7 @@ main section.lab.cm[data-density='roomy'] {
   height: 44px;
   padding: 0 var(--space-4) 0 var(--space-3);
   border: 1px solid color-mix(in srgb, var(--content-on-image) 35%, transparent);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-md);
   background: color-mix(in srgb, var(--content-on-image) 16%, transparent);
   -webkit-backdrop-filter: var(--cm-glass);
   backdrop-filter: var(--cm-glass);
@@ -57,6 +59,16 @@ main section.lab.cm[data-density='roomy'] {
   text-decoration: none;
   white-space: nowrap;
   transition: background-color 0.2s linear;
+}
+.cm-social__label {
+  flex-basis: 100%;
+  margin: 0 0 var(--space-1);
+  font-size: var(--type-caption-size);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.04em;
+  color: var(--content-on-image);
+  /* legible over a light patch of the photo */
+  text-shadow: 0 1px 8px rgb(0 0 0 / 0.45);
 }
 .cm-glass:hover {
   background: color-mix(in srgb, var(--content-on-image) 28%, transparent);
