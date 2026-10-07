@@ -1,0 +1,261 @@
+/* CarouselNav: Apple's gallery controls (apple.com/iphone-18-pro), tightened: a 40px
+   track of 8px dots between two 40px arrow buttons, in the design system's colours and
+   corners: the sunken surface, inert dots, the brand fill, radius-lg. Inverse tokens
+   over dark sections. */
+.cn {
+  --cn-h: 40px;
+  --cn-radius: var(--radius-lg);
+  --cn-pill: var(--surface-sunken);
+  --cn-pill-hover: var(--surface-raised-active);
+  --cn-dot: var(--border-inert);
+  --cn-dot-hover: var(--content-disabled);
+  --cn-fill: var(--surface-brand-solid);
+  --cn-ink: var(--content-primary);
+  --cn-active: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-8);
+}
+.cn[data-tone='dark'] {
+  --cn-pill: var(--surface-inverse-sunken);
+  --cn-pill-hover: var(--surface-inverse);
+  --cn-dot: var(--content-inverse-secondary);
+  --cn-dot-hover: var(--content-inverse);
+  --cn-fill: var(--content-inverse);
+  --cn-ink: var(--content-inverse);
+}
+.cn-dots,
+.cn-arrow {
+  height: var(--cn-h);
+  border-radius: var(--cn-radius);
+  background: var(--cn-pill);
+}
+.cn-dots {
+  display: flex;
+  align-items: center;
+  padding: 0 calc(var(--space-3) - var(--cn-gap) / 2);
+}
+/* Each dot's button is a tap target around the 8px dot. */
+.cn-dot {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 100%;
+  padding: 0 calc(var(--cn-gap) / 2);
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.cn-dot::before {
+  content: '';
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 10px;
+  background: var(--cn-dot);
+  transition:
+    width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.25s linear;
+}
+.cn-dot:hover::before {
+  background: var(--cn-dot-hover);
+}
+.cn-dot[aria-current='true']::before {
+  width: var(--cn-active);
+  background: var(--cn-dot);
+}
+/* The fill: from a dot's width to the whole track. */
+.cn-fill {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--cn-gap) / 2);
+  width: calc(8px + (var(--cn-active) - 8px) * var(--cn-p, 0));
+  height: 8px;
+  border-radius: 10px;
+  background: var(--cn-fill);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.cn-fill[data-timed] {
+  width: 8px;
+  animation: cn-fill var(--cn-interval, 6000ms) linear forwards;
+}
+.cn-fill[data-paused] {
+  animation-play-state: paused;
+}
+@keyframes cn-fill {
+  to {
+    width: var(--cn-active);
+  }
+}
+
+.cn-arrow {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--cn-h);
+  padding: 0;
+  border: 0;
+  color: var(--cn-ink);
+  cursor: pointer;
+  transition:
+    background-color 0.15s linear,
+    opacity 0.15s linear;
+}
+.cn-arrow svg {
+  width: 18px;
+  height: 18px;
+}
+.cn-arrow:hover:not(:disabled) {
+  background: var(--cn-pill-hover);
+}
+.cn-arrow:disabled {
+  color: var(--content-disabled);
+  cursor: default;
+}
+.cn-dot:focus-visible,
+.cn-arrow:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+.cn-dot:focus-visible {
+  border-radius: var(--radius-sm);
+}
+
+/* ---- The entrance, once, when the controls first come fully on screen (the team's sketch):
+   one square springs up from below (overshoot, dip, settle); then it splits: the arrows
+   slide out from behind it to either side, overshooting a touch, while it stretches
+   into the dots' pill; the dots fade in last. Transforms, opacity and the pill's clip,
+   each on its own layer. --cn-shift (CarouselNav) is each arrow's distance from the centre. ---- */
+.cn {
+  --cn-bounce: cubic-bezier(0.22, 1, 0.36, 1);
+  --cn-split: cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+.cn-dots {
+  position: relative;
+  z-index: 1; /* the circle hides the arrows until they slide out */
+}
+.cn-dots,
+.cn-arrow {
+  will-change: transform, opacity;
+}
+/* Before: nothing shows; the arrows wait behind the centre. */
+.cn:not([data-shown]) {
+  opacity: 0;
+  transform: translate3d(0, 72px, 0);
+}
+.cn:not([data-shown]) .cn-dots {
+  clip-path: inset(0 calc(50% - var(--cn-h) / 2) round var(--cn-radius));
+}
+.cn:not([data-shown]) .cn-dot {
+  opacity: 0;
+}
+.cn:not([data-shown]) .cn-arrow {
+  opacity: 0;
+}
+.cn:not([data-shown]) .cn-arrow[data-side='prev'] {
+  transform: translate3d(var(--cn-shift, 0), 0, 0);
+}
+.cn:not([data-shown]) .cn-arrow[data-side='next'] {
+  transform: translate3d(calc(var(--cn-shift, 0) * -1), 0, 0);
+}
+/* 1. The circle rises (the whole control, all three stacked at its centre). */
+.cn[data-shown] {
+  animation: cn-rise 0.75s var(--cn-bounce) both;
+}
+/* 2. It splits: the pill opens, the arrows slide out. */
+.cn[data-shown] .cn-dots {
+  animation: cn-open 0.65s var(--cn-split) 0.5s both;
+}
+.cn[data-shown] .cn-arrow[data-side='prev'] {
+  animation: cn-out-left 0.65s var(--cn-split) 0.5s both;
+}
+.cn[data-shown] .cn-arrow[data-side='next'] {
+  animation: cn-out-right 0.65s var(--cn-split) 0.5s both;
+}
+.cn[data-shown] .cn-dot {
+  animation: cn-fade 0.3s ease-out 0.85s both;
+}
+@keyframes cn-rise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 72px, 0) scale(0.6);
+  }
+  45% {
+    opacity: 1;
+    transform: translate3d(0, -12px, 0) scale(1.08);
+  }
+  72% {
+    transform: translate3d(0, 4px, 0) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+@keyframes cn-open {
+  from {
+    clip-path: inset(0 calc(50% - var(--cn-h) / 2) round var(--cn-radius));
+  }
+  to {
+    clip-path: inset(0 0 round var(--cn-radius));
+  }
+}
+/* The arrows come out of the circle: unseen until they leave it. */
+@keyframes cn-out-left {
+  from {
+    opacity: 0;
+    transform: translate3d(var(--cn-shift, 0), 0, 0);
+  }
+  20% {
+    opacity: 1;
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes cn-out-right {
+  from {
+    opacity: 0;
+    transform: translate3d(calc(var(--cn-shift, 0) * -1), 0, 0);
+  }
+  20% {
+    opacity: 1;
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes cn-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Phones: a shorter track, so a long row of dots still fits between the arrows. */
+@media (max-width: 671px) {
+  .cn {
+    --cn-active: 28px;
+    margin-top: var(--space-6);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cn,
+  .cn .cn-dots,
+  .cn .cn-dot,
+  .cn .cn-arrow {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+  .cn-dot::before {
+    transition: none;
+  }
+  .cn-fill[data-timed] {
+    animation: none;
+    width: var(--cn-active);
+  }
+}

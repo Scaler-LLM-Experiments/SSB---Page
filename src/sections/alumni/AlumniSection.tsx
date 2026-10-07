@@ -4,7 +4,6 @@ import * as React from 'react';
 import { Container, Heading, Section, Text } from '@kishanscaler/ssx-ui';
 
 import { alumni as allAlumni } from '@/content/alumni';
-import { HScrollerControls } from '@/sections/faculty/HScroller';
 import { useSectionEntrance } from '@/sections/faculty/useSectionEntrance';
 import { ScrollDots } from '@/sections/shared/ScrollDots';
 import { AlumniCard } from './AlumniCard';
@@ -20,16 +19,6 @@ export function AlumniSection({ peers }: { peers?: React.ReactNode }) {
   // Same entrance as Faculty: the header, then the cards on screen wiped open.
   useSectionEntrance(sectionRef, { decks: ['.alumni-row > li > article'] });
 
-  // The same header arrows as Faculty: one card per press.
-  const page = (dir: 1 | -1) => {
-    const el = rowRef.current;
-    const card = el?.firstElementChild as HTMLElement | null;
-    if (!el || !card) return;
-    el.scrollBy({
-      left: dir * (card.offsetWidth + parseFloat(getComputedStyle(el).columnGap || '0')),
-      behavior: 'smooth',
-    });
-  };
 
   return (
     <Section ref={sectionRef} density="roomy" aria-labelledby="alumni-title" className="overflow-x-clip">
@@ -49,9 +38,6 @@ export function AlumniSection({ peers }: { peers?: React.ReactNode }) {
               They went beyond placements: engineers and analysts moved into program, growth and marketing
               roles at Blinkit, Emergent, BharatPe and more, and some built companies of their own.
             </Text>
-          </div>
-          <div data-enter="controls" className="hidden sm:block">
-            <HScrollerControls label="alumni" page={page} />
           </div>
         </div>
       </Container>

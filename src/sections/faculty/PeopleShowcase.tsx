@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { Container, Heading, Section, Text } from '@kishanscaler/ssx-ui';
 
-import { HScrollerControls, HScrollerTrack, useHScroller } from './HScroller';
+import { HScrollerTrack, useHScroller } from './HScroller';
 import { CardStack } from '@/sections/shared/CardStack';
 import { ScrollDots } from '@/sections/shared/ScrollDots';
 import { MeetCard, type CardLogo } from './MeetCard';
@@ -45,7 +45,7 @@ export function PeopleShowcase({
   after?: React.ReactNode;
 }) {
   // A plain carousel: no ticker, no loop (the team's call, 2026-10-06).
-  const { ref, page, goTo } = useHScroller({ auto: false });
+  const { ref, goTo } = useHScroller({ auto: false });
   const sectionRef = React.useRef<HTMLElement>(null);
   useSectionEntrance(sectionRef);
 
@@ -71,9 +71,6 @@ export function PeopleShowcase({
                 {sub}
               </Text>
             ) : null}
-          </div>
-          <div data-enter="controls" className="hidden sm:block">
-            <HScrollerControls label={itemName} page={page} />
           </div>
         </div>
       </Container>

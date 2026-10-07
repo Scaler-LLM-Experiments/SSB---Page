@@ -7,23 +7,12 @@ import { CountUp } from '@kishanscaler/ssx-ui/motion';
 import { labStartups, labStartupsIntro, labStats } from '@/content/innovation-lab';
 import './innovation-lab.css';
 import { useSectionEntrance } from '@/sections/faculty/useSectionEntrance';
-import { HScrollerControls } from '@/sections/faculty/HScroller';
 import { ScrollDots } from '@/sections/shared/ScrollDots';
 import { StartupCard } from './StartupCard';
 
 export function InnovationLabSection() {
   const sectionRef = React.useRef<HTMLElement>(null);
   const rowRef = React.useRef<HTMLUListElement>(null);
-  // The same header arrows as Faculty on the web: one card per press.
-  const page = (dir: 1 | -1) => {
-    const el = rowRef.current;
-    const card = el?.firstElementChild as HTMLElement | null;
-    if (!el || !card) return;
-    el.scrollBy({
-      left: dir * (card.offsetWidth + parseFloat(getComputedStyle(el).columnGap || '0')),
-      behavior: 'smooth',
-    });
-  };
   // Same entrance as Faculty: the header, then three decks wiped open in turn
   // as each comes up the screen — the stat cards, the startups panel, the startup cards.
   useSectionEntrance(sectionRef, {
@@ -82,9 +71,6 @@ export function InnovationLabSection() {
                       trigger="in-view"
                       className="type-display block font-semibold text-content-brand"
                     />
-                    <div className="hidden sm:block">
-                      <HScrollerControls label="startup" page={page} />
-                    </div>
                   </div>
                   <Text size="sm" tone="secondary" id="sil-startups-title" data-part="description">
                     {labStartupsIntro.subtext}

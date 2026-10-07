@@ -12,7 +12,7 @@
  */
 import * as React from 'react';
 import { Container, Heading, Section, Text } from '@kishanscaler/ssx-ui';
-import { HScrollerControls, HScrollerTrack, useHScroller } from '@/sections/faculty/HScroller';
+import { HScrollerTrack, useHScroller } from '@/sections/faculty/HScroller';
 import { useSectionEntrance } from '@/sections/faculty/useSectionEntrance';
 import { CardStack } from '@/sections/shared/CardStack';
 import { ScrollDots } from '@/sections/shared/ScrollDots';
@@ -63,7 +63,7 @@ function ProjectCard({ project: p, priority = false }: { project: Project; prior
 }
 
 export function LiveProjectsSection() {
-  const { ref, page, goTo } = useHScroller();
+  const { ref, goTo } = useHScroller();
   const sectionRef = React.useRef<HTMLElement>(null);
   useSectionEntrance(sectionRef);
   // a short list needs a third copy for the ticker to wrap seamlessly (as PeopleShowcase does)
@@ -83,9 +83,6 @@ export function LiveProjectsSection() {
             <Text size="lg" tone="secondary" data-enter="sub">
               Work through briefs with founders and operators, then defend your recommendations.
             </Text>
-          </div>
-          <div data-enter="controls" className="hidden sm:block">
-            <HScrollerControls label="project" page={page} />
           </div>
         </div>
       </Container>

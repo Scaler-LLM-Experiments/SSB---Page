@@ -23,13 +23,14 @@
 import * as React from 'react';
 import { createPortal } from 'react-dom';
 import { Heading, IconButton, Text } from '@kishanscaler/ssx-ui';
-import { ArrowCounterClockwise, ArrowLeft, ArrowRight, ArrowUpRight, BookOpenText, CaretDown, CaretLeft, CaretRight, ChalkboardTeacher, Path, Play, RocketLaunch, Star, X } from '@phosphor-icons/react';
+import { ArrowCounterClockwise, ArrowUpRight, BookOpenText, CaretDown, ChalkboardTeacher, Path, Play, RocketLaunch, Star, X } from '@phosphor-icons/react';
 import type { Journey, Lane, Year } from '../data';
 import { countSkills, fmt } from '../data';
 import { c, type JourneyConfig } from '../config';
 import { GroupLabel, LaneLabel, SummaryBadge, Visual, YearEyebrow } from '../atoms';
 import { JourneyTracker, OutcomeStrip, PerkGrid, ProjectCarousel, ProjectPlaylist, SkillGroups, WorkshopList, summaryParts, useLabels } from '../parts';
 import { prefersReducedMotion, useOpenYear, useSize } from './shared';
+import { ScrollDots } from '@/sections/shared/ScrollDots';
 
 /** One small line glyph per part of a card's summary line, in summaryParts' order. */
 function metaGlyphs(y: Year) {
@@ -1069,16 +1070,9 @@ export function StackJourney({ j, cfg, width, portal, initialOpen = null }: { j:
   };
 
   /* ── m-web: the scroll stack ───────────────────────────────────────────── */
-  // desktop carousel: the arrows step one card, greying out at either end
+  // desktop carousel: its row (the dots under it step it, shared/ScrollDots)
   const scroller = React.useRef<HTMLDivElement>(null);
-  const [edge, setEdge] = React.useState({ back: false, fwd: true });
-  const sync = React.useCallback(() => {
-    const el = scroller.current;
-    if (!el) return;
-    setEdge({ back: el.scrollLeft > 4, fwd: el.scrollLeft + el.clientWidth < el.scrollWidth - 4 });
-  }, []);
-  React.useEffect(sync, [sync, deck.w]);
-  // the section head's slot for the arrows (SectionFrame), when the head is on the page
+  // the section head's slot (SectionFrame): with the head on the page, the hint under the cards is left out
   const [navSlot, setNavSlot] = React.useState<HTMLElement | null>(null);
   React.useEffect(() => {
     setNavSlot(scroller.current?.closest('.sj')?.querySelector<HTMLElement>('[data-frame-controls]') ?? null);
@@ -1104,17 +1098,10 @@ export function StackJourney({ j, cfg, width, portal, initialOpen = null }: { j:
   const inHead = carousel && !!navSlot;
   const others = years.filter((y) => y.year !== pulled);
 
-  const step = (dir: number) => {
-    const el = scroller.current;
-    if (!el) return;
-    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    el.scrollBy({ left: dir * (rowW + ROW_GAP), behavior: reduce ? 'auto' : 'smooth' });
-  };
-
   return (
     <div className="cs-wrap" onKeyDown={onKey} {...c(cfg, 'stack')}>
       <div ref={deckRef} className="cs-scroller" data-carousel={carousel || undefined}>
-        <div ref={scroller} className="cs-scroll" onScroll={sync}>
+        <div ref={scroller} className="cs-scroll">
       <div className="cs-deck" data-open={pulled || undefined} style={{ width: carousel ? trackW : undefined, height: pulled ? Math.max(live.h, 420) + 16 : (live.h || 400) + (carousel ? 8 : 40) }}>
         {years.map((y, i) => {
           const isOpen = y.year === pulled;
@@ -1169,36 +1156,15 @@ export function StackJourney({ j, cfg, width, portal, initialOpen = null }: { j:
       </div>
         </div>
       </div>
-      {/* the arrows sit in the section head, beside the lede (the faculty section's layout) */}
-      {inHead && navSlot && !pulled
-        ? createPortal(
-            <div className="cs-nav">
-              <IconButton variant="secondary" size="md" aria-label={L.prevYear} disabled={!edge.back} onClick={() => step(-1)}>
-                <ArrowLeft weight="bold" />
-              </IconButton>
-              <IconButton variant="secondary" size="md" aria-label={L.nextYear} disabled={!edge.fwd} onClick={() => step(1)}>
-                <ArrowRight weight="bold" />
-              </IconButton>
-            </div>,
-            navSlot,
-          )
-        : null}
-      {/* without a section head: the hint under the cards, and the arrows beside it */}
+      {/* the gallery dots every carousel has (shared/ScrollDots), under the cards: a dot per term
+          (no autoplay here: the terms move only when asked); they replace the arrows in the section head */}
+      {carousel && !pulled ? <ScrollDots scroller={scroller} count={n} itemName="term" fill="solid" cardStep={rowW + ROW_GAP} autoplay={false} /> : null}
+      {/* without a section head: the hint under the cards */}
       {!pulled && !inHead ? (
         <div className="cs-foot-row" data-carousel={carousel || undefined}>
           <Text as="p" size="sm" tone="secondary" className="cs-hint">
             {L.pickYear}
           </Text>
-          {carousel ? (
-            <div className="cs-nav">
-              <IconButton variant="secondary" size="md" aria-label={L.prevYear} disabled={!edge.back} onClick={() => step(-1)}>
-                <CaretLeft weight="bold" />
-              </IconButton>
-              <IconButton variant="secondary" size="md" aria-label={L.nextYear} disabled={!edge.fwd} onClick={() => step(1)}>
-                <CaretRight weight="bold" />
-              </IconButton>
-            </div>
-          ) : null}
         </div>
       ) : null}
       {dialog}

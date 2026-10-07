@@ -79,6 +79,7 @@ export default function V2Page() {
         <InnovationLabSection />
         {/* Super Mentor Sessions (deck p15) */}
         <SuperMentorsSection />
+        <PeopleTabsSection groups={['founding', 'investors']} id="founders" label="The team and backers behind SSB" />
         {/* campus life, then in the news (deck p24, p25) */}
         <CampusLifeSection />
         <InTheNewsSection />
