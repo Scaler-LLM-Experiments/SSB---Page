@@ -569,3 +569,17 @@
    carousels do; its first card still lines up with the heading */
 .cs-scroller[data-carousel] .cs-scroll { width: auto; margin-right: calc(50% - 50vw); padding-right: calc(50vw - 50%); }
 .cs-scroller[data-carousel] .cs-scroll { margin-left: calc(50% - 50vw); padding-left: calc(50vw - 50%); scroll-padding-inline: calc(50vw - 50%); }
+/* the term sheet's type on phones (2026-10-08, the team's ask): a step down throughout, on the
+   page's phone scale (titles 24, lines 15, body 14, labels 11-12) */
+@media (max-width: 767px) {
+  .cs-sheet-head h3 { font-size: 24px !important; line-height: 1.2 !important; letter-spacing: -0.015em; }
+  .cs-sheet-head .cs-modal-ship { font-size: 15px; line-height: 1.4; }
+  .cs-sheet-head .sj-eyebrow { font-size: 11px; }
+  .cs-sheet-body { --ts: 0.88; gap: 20px; }
+  .cs-sheet-body p { font-size: 14px; line-height: 1.55; }
+  .cs-sheet-body dd { font-size: 22px !important; line-height: 1.1; }
+  .cs-sheet-body dt { font-size: 12px !important; }
+  .cs-sheet-body h4 { font-size: 16px !important; }
+  .cs-sheet-body li { font-size: 14px; line-height: 1.45; }
+  .cs-sheet-body .sj-eyebrow { font-size: 10.5px; }
+}
