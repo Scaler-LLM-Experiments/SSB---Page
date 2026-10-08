@@ -227,7 +227,7 @@ function Playlist({ projects, cfg }: { projects: Year['projects']; cfg: JourneyC
   );
 }
 
-function ModalBody({ y, cfg, only, noGlance }: { y: Year; cfg: JourneyConfig; /** /v2-stack splits the body across two columns: 'main' (intro, In class) or 'build' (Out of class) */ only?: 'main' | 'build'; /** the figures sit on the picture instead (MediaGlance) */ noGlance?: boolean }) {
+function ModalBody({ y, cfg, only, noGlance, noIntro }: { y: Year; cfg: JourneyConfig; /** /v2-stack splits the body across two columns: 'main' (intro, In class) or 'build' (Out of class) */ only?: 'main' | 'build'; /** the figures sit on the picture instead (MediaGlance) */ noGlance?: boolean; /** v3's sheet: In class and Out of class only */ noIntro?: boolean }) {
   const L = useLabels();
   const flagship = y.projects.find((p) => p.flagship);
   const projects = flagship ? [flagship, ...y.projects.filter((p) => p !== flagship)] : y.projects;
@@ -242,7 +242,7 @@ function ModalBody({ y, cfg, only, noGlance }: { y: Year; cfg: JourneyConfig; /*
 
   return (
     <div className="cm" {...c(cfg, 'cardBack')}>
-      {only === 'build' ? null : (
+      {only === 'build' || noIntro ? null : (
       <div className="cm-intro">
         {y.description ? <p className="cm-lede">{y.description}</p> : null}
         {glance.length && !noGlance ? (
@@ -371,10 +371,10 @@ function MediaGlance({ y }: { y: Year }) {
  * tall panel at the left; at the right, scrolling inside the card, the term, title and line, then
  * the sheet's body (description, figures, In class by lane, Out of class), with its "Scroll for more".
  */
-function StackSheet({ y, cfg }: { y: Year; cfg: JourneyConfig }) {
+function StackSheet({ y, cfg, onMore }: { y: Year; cfg: JourneyConfig; onMore?: () => void }) {
   const main = React.useRef<HTMLDivElement>(null);
   return (
-    <div className="cs-ss" data-term={y.year}>
+    <div className="cs-ss" data-term={y.year} data-short={cfg.termsSheet || undefined}>
       <div className="cs-sheet-media cs-ss-media">
         {cfg.showVisual && y.visual ? <Visual photo={y.visual} alt="" cfg={cfg} ratio={[800, 900]} /> : null}
         {/* the term as a tag on the picture (2026-10-08) */}
@@ -389,9 +389,20 @@ function StackSheet({ y, cfg }: { y: Year; cfg: JourneyConfig }) {
             {y.name}
           </Heading>
         </header>
-        <div className="cs-modal-body cs-sheet-body">
-          <ModalBody y={y} cfg={cfg} noGlance />
-        </div>
+        {cfg.termsSheet ? (
+          // v3: the card says what the term is; In class and Out of class open in the sheet
+          <div className="cs-ss-short">
+            <p className="cm-lede">{y.description || y.ship}</p>
+            <button type="button" className="cs-cover-cta cs-ss-more" onClick={onMore}>
+              View more
+              <ArrowUpRight weight="bold" aria-hidden="true" />
+            </button>
+          </div>
+        ) : (
+          <div className="cs-modal-body cs-sheet-body">
+            <ModalBody y={y} cfg={cfg} noGlance />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -833,7 +844,7 @@ function StackModal({ y, cfg, from, leaving, onClose, onGone, portal, sheet }: {
     const sheetNode = (
       <div className="cs-modal" data-sheet="" data-leaving={leaving || undefined} onKeyDown={onKey}>
         <div ref={backRef} className="cs-modal-back" onClick={onClose} />
-        <div ref={boxRef} tabIndex={-1} className="cs-modal-box cs-sheet" data-term={y.year} role="dialog" aria-modal="true" aria-labelledby={titleId} data-sheet="" style={{ left: frame.left, bottom: 0, width: frame.w, height: frame.maxH }}>
+        <div ref={boxRef} tabIndex={-1} className="cs-modal-box cs-sheet" data-term={y.year} data-compact={cfg.termsSheet || undefined} role="dialog" aria-modal="true" aria-labelledby={titleId} data-sheet="" style={{ left: frame.left, bottom: 0, width: frame.w, height: frame.maxH }}>
           <div className="cs-sheet-grip" aria-hidden="true" {...grip}>
             <span />
           </div>
@@ -855,7 +866,7 @@ function StackModal({ y, cfg, from, leaving, onClose, onGone, portal, sheet }: {
               </Heading>
             </header>
             <div ref={bodyRef} className="cs-modal-body cs-sheet-body">
-              <ModalBody y={y} cfg={cfg} noGlance />
+              <ModalBody y={y} cfg={cfg} noGlance noIntro={cfg.termsSheet} />
             </div>
             <ScrollCue box={mainRef} />
           </div>
@@ -1422,7 +1433,7 @@ export function StackJourney({ j, cfg, width, portal, initialOpen = null }: { j:
                 }}
               >
                 {cfg.termsStack ? (
-                  <StackSheet y={y} cfg={cfg} />
+                  <StackSheet y={y} cfg={cfg} onMore={() => setOpen(y.year)} />
                 ) : (
                   <button
                     ref={frontRef(y.year)}

@@ -1044,3 +1044,22 @@
 .cm-acc .cm-list { gap: 2px; }
 .cm-acc .cm-list li { position: relative; padding: 4px 0 4px 16px !important; font-size: 13.5px !important; line-height: 1.5; font-weight: 400; color: var(--content-secondary) !important; }
 .cm-acc .cm-list li::before { content: ''; position: absolute; left: 2px; top: calc(4px + 0.75em - 2.5px); width: 5px; height: 5px; border-radius: 50%; background: var(--content-brand); opacity: 0.55; }
+
+/* /v2-stack v3 (2026-10-08): the short stacked card (the picture with its months and figures; the
+   title, the line and View more), and the sheet it opens, sized to its content (no scrolling) */
+@media (min-width: 768px) { .cs-ss[data-short] { min-height: 340px; } }
+.cs-ss[data-short] .cs-ss-main { display: flex; flex-direction: column; justify-content: center; }
+.cs-ss-short { display: grid; gap: 18px; justify-items: start; padding-top: 10px; }
+.cs-ss-short .cm-lede { margin: 0; max-width: 62ch !important; }
+.cs-ss-more { all: unset; box-sizing: border-box; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px; border-radius: 8px;
+  background: var(--term-tint, var(--surface-brand-subtle)); color: var(--content-brand) !important; font-size: 14px; font-weight: 600; }
+.cs-ss-more svg { width: 15px; height: 15px; transition: transform 240ms ease; }
+.cs-ss-more:hover svg { transform: translate(2px, -2px); }
+.cs-ss-more:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+.cs-sheet[data-compact] { height: auto !important; max-height: 92svh; }
+.cs-sheet[data-compact] .cs-sheet-main { overflow: visible; }
+.cs-sheet[data-compact] .cs-scrollcue { display: none; }
+.cs-sheet[data-compact] .cs-sheet-body { padding-bottom: 8px !important; }
+.cs-sheet[data-compact] .cm { gap: 18px; }
+@media (min-width: 768px) { .cs-ss-short { padding-left: 32px; padding-right: 32px; } }
+@media (max-width: 767px) { .cs-ss-short { padding: 8px 4px 4px; } }
