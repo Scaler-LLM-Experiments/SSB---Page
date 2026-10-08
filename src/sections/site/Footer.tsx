@@ -11,8 +11,8 @@
  * scrolling lifts off the footer (it rises, a soft shadow grows on its edge),
  * uncovering the footer, which rises into place as it is revealed.
  * Scroll-driven (--lift, 0–1); reduced motion keeps the reveal, drops the lift.
- * Two looks for the footer itself (`variant`): `campus`, on trial (see CampusFoot), and
- * `classic`, described above.
+ * Three looks for the footer itself (`variant`): `building`, the page's (see BuildingFoot);
+ * `campus` (see CampusFoot); and `classic`, described above.
  * Layout switches on the footer's own width (container queries), so it drops
  * into any page. Pure CSS switch: both link layouts are in the markup and the
  * hidden one is display:none, so a screen reader meets one set only.
@@ -20,7 +20,7 @@
 import * as React from 'react';
 import { useDocTheme } from './theme';
 import { Button, Heading, Link, Logo, Text } from '@kishanscaler/ssx-ui';
-import { ArrowRight, ArrowUp, DownloadSimple } from '@phosphor-icons/react';
+import { ArrowRight, ArrowUp, ArrowUpRight, DownloadSimple } from '@phosphor-icons/react';
 import type { FooterContent, FooterLink } from './data';
 import { SSB_FOOTER } from './data';
 import { ParticleText } from './ParticleText';
@@ -139,7 +139,101 @@ function CampusFoot({ footRef, content }: { footRef: React.Ref<HTMLElement>; con
   );
 }
 
-export function SsbFooter({ content = SSB_FOOTER, showCta = true, settled, variant = 'campus', children }: { content?: FooterContent; showCta?: boolean; /** `campus` (on trial): a dark footer standing on the campus photo. `classic`: the light footer with the particle wordmark. */ variant?: 'campus' | 'classic'; /** Draw the particle wordmark in place (still previews). */ settled?: boolean; /** The page above the footer: it lifts off the footer with the CTA band. */ children?: React.ReactNode }) {
+/**
+ * The building footer (the team's mock, 2026-10-08): light. At the top, the logo, the tagline in
+ * grey and the two actions (each with an up-right arrow) at the left; the two link groups at the
+ * right, each under a green label. Below, the school's name across the full width in a green
+ * gradient, and the building standing in front of it, its roofline over the name's foot, fading
+ * into the page at its own foot, where the legal line sits.
+ * `green` (the team's second mock, 2026-10-08): the same on a green card (the brand's green at its
+ * top, fading to the page at its foot) inset from the window's edges, the type on it white (the top
+ * a dark island); the building, the window's full width, stands over the card's foot and past its
+ * sides.
+ * Parallax, scrubbed by the lift (--lift, 0 → 1 as the page lifts off the footer): the name rises
+ * a little, the building more, so the building comes up past the name, as nearer things move
+ * faster. Under reduced motion both are simply in place.
+ */
+function BuildingFoot({ footRef, content, green = false }: { footRef: React.Ref<HTMLElement>; content: FooterContent; /** The green look: a green card, white type on it, the building over its foot. */ green?: boolean }) {
+  const { cta, building } = content;
+  const [first, ...rest] = content.wordmark.split(/ (?=of )/);
+  const body = (
+    <>
+      <div className="sfb-top" {...(green ? { 'data-brand': 'ssb', 'data-theme': 'dark' } : {})}>
+        <div className="sfb-lead">
+          <Logo brand="ssb" size={green ? 'lg' : 'md'} surface={green ? 'dark' : 'auto'} />
+          {green ? (
+            <Text size="lg" className="sfb-tagline">
+              {content.tagline}
+            </Text>
+          ) : (
+            <Heading as="p" size="3" className="sfb-tagline">
+              {content.tagline}
+            </Heading>
+          )}
+          {/* the actions; on the green card the design system's buttons in their on-image look
+              (data-surface-ink: white), so neither melts into the green */}
+          <div className="sfb-actions" data-surface-ink={green ? 'on-image' : undefined}>
+            <Button asChild variant="primary" size="md">
+              <a href={cta.primary.href}>
+                {cta.primary.label}
+                <ArrowUpRight weight="bold" aria-hidden="true" />
+              </a>
+            </Button>
+            <Button asChild variant="secondary" size="md">
+              <a href={cta.secondary.href}>
+                {cta.secondary.label}
+                <ArrowUpRight weight="bold" aria-hidden="true" />
+              </a>
+            </Button>
+          </div>
+        </div>
+        <nav className="sfb-links" aria-label={content.navLabel}>
+          {content.columns.map((col) => (
+            <div key={col.title} className="sfb-col">
+              <Heading as="h3" size="eyebrow" className="text-content-brand">
+                {col.title}
+              </Heading>
+              <Links links={col.links} />
+            </div>
+          ))}
+        </nav>
+      </div>
+
+      <div className="sfb-stage">
+        {/* the name, one line on desktop (two on a phone); decorative, the logo names the school.
+            On the green card it rises from behind the building as the footer is uncovered. */}
+        {/* the name; on the green card it shimmers (a sheen sweeping across it) */}
+        <p className="sfb-wordmark" aria-hidden="true">
+          <span className="sfb-wm" data-layer="fill">
+            <span>{first}</span> <span>{rest.join(' ')}</span>
+          </span>
+        </p>
+        <img
+          className="sfb-building"
+          src={building.src}
+          srcSet={`${building.small} 800w, ${building.src} 1536w`}
+          sizes="100vw"
+          alt={building.alt}
+          width={1536}
+          height={1024}
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+    </>
+  );
+  return (
+    <footer ref={footRef} className="sf-foot" data-variant="building" data-green={green || undefined}>
+      {/* the green look: everything but the legal line inside the card, which clips the building */}
+      {green ? <div className="sfb-card">{body}</div> : body}
+      <Text size="sm" tone="secondary" className="sfb-legal">
+        {content.legal}
+      </Text>
+    </footer>
+  );
+}
+
+export function SsbFooter({ content = SSB_FOOTER, showCta = true, settled, variant = 'campus', children }: { content?: FooterContent; showCta?: boolean; /** `building` (the team's mock, 2026-10-08): light, the name with the building in front of it. `campus`: a dark footer standing on the campus photo. `classic`: the light footer with the particle wordmark. */ variant?: 'green' | 'building' | 'campus' | 'classic'; /** Draw the particle wordmark in place (still previews). */ settled?: boolean; /** The page above the footer: it lifts off the footer with the CTA band. */ children?: React.ReactNode }) {
   const ctaId = React.useId();
   const { cta } = content;
   const root = React.useRef<HTMLDivElement>(null);
@@ -177,7 +271,9 @@ export function SsbFooter({ content = SSB_FOOTER, showCta = true, settled, varia
     };
   }, []);
   return (
-    <div ref={root} className="sf" data-brand="ssb" data-theme={theme} data-lift="">
+    // the building looks are light whatever the OS's theme (the site is light; following a dark OS
+    // turned the footer's white, and the card's fade, black)
+    <div ref={root} className="sf" data-brand="ssb" data-theme={variant === 'building' || variant === 'green' ? 'light' : theme} data-lift="">
       {/* the sheet that lifts: the page and the CTA band, opaque, above the pinned footer */}
       <div ref={layer} className="sf-lift">
       {children}
@@ -218,7 +314,9 @@ export function SsbFooter({ content = SSB_FOOTER, showCta = true, settled, varia
       ) : null}
       </div>
 
-      {variant === 'campus' ? (
+      {variant === 'building' || variant === 'green' ? (
+        <BuildingFoot footRef={foot} content={content} green={variant === 'green'} />
+      ) : variant === 'campus' ? (
         <CampusFoot footRef={foot} content={content} />
       ) : (
       <footer ref={foot} className="sf-foot">
