@@ -73,7 +73,7 @@ export default function V2StackPage() {
           sections={[
             // the team's order (2026-10-07): AI journey, career prep, learn by doing, internship, immersions;
             // Live projects is off the rail for now (<LiveProjectsSection /> was between the AI journey and the internship)
-            { id: 'ai-journey', label: 'AI journey', icon: 'ai', node: <Curriculum part="ai" termsStack /> },
+            { id: 'ai-journey', label: 'AI journey', icon: 'ai', node: <Curriculum part="ai" /> },
             { id: 'career-prep', label: 'Career prep', icon: 'career', node: <Curriculum part="career" /> },
             { id: 'learn-by-doing', label: 'Learn by doing', icon: 'learn', node: <LearnByDoingSection /> },
             { id: 'internship-rail', label: 'Internship', icon: 'internship', node: <InternshipSection /> },

@@ -290,6 +290,105 @@ function StackDetails({ y }: { y: Year }) {
   );
 }
 
+/**
+ * A whole term, compact (/v2-stack, 2026-10-08: "too big, compress the information"): a short top row
+ * (a small picture beside the title, the line, and the counts in one row), then three tight columns
+ * (In class by lane, masterclasses and workshops, Out of class as one-line challenges), and "View
+ * more" opening the full sheet.
+ */
+function StackCompact({ y, cfg, onMore }: { y: Year; cfg: JourneyConfig; onMore: () => void }) {
+  const L = useLabels();
+  const laneName: Record<Lane, string> = { tech: L.laneTech ?? 'Tech', business: L.laneBusiness ?? 'Business', shared: L.laneShared ?? 'Both' };
+  const lanes = y.skills ? MODAL_LANES.filter((l) => y.skills![l].length) : [];
+  const workshops = y.workshops ?? [];
+  const flagship = y.projects.find((p) => p.flagship);
+  const projects = flagship ? [flagship, ...y.projects.filter((p) => p !== flagship)] : y.projects;
+  const courses = y.skills ? countSkills(y) : 0;
+  return (
+    <div className="cs-sc">
+      <div className="cs-sc-top">
+        <div className="cs-sc-media">{cfg.showVisual && y.visual ? <Visual photo={y.visual} alt="" cfg={cfg} ratio={[800, 450]} /> : null}</div>
+        <div className="cs-sc-head">
+          <YearEyebrow year={y.year} cfg={cfg} as="span" />
+          <Heading as="h3" size="3">
+            {y.name}
+          </Heading>
+          <p className="cs-sc-desc">{y.description || y.ship}</p>
+          <p className="cs-sc-counts">
+            {courses ? (
+              <span>
+                <BookOpenText aria-hidden="true" />
+                {courses} courses
+              </span>
+            ) : null}
+            {projects.length ? (
+              <span>
+                <RocketLaunch aria-hidden="true" />
+                {projects.length} live project{projects.length === 1 ? '' : 's'}
+              </span>
+            ) : null}
+            {workshops.length ? (
+              <span>
+                <ChalkboardTeacher aria-hidden="true" />
+                {workshops.length} masterclass{workshops.length === 1 ? '' : 'es'}
+              </span>
+            ) : null}
+            <button type="button" className="cs-sc-more" onClick={onMore}>
+              View more
+              <ArrowUpRight weight="bold" aria-hidden="true" />
+            </button>
+          </p>
+        </div>
+      </div>
+      <div className="cs-sc-cols">
+        {lanes.length ? (
+          <section className="cs-sc-col" aria-label={L.learn}>
+            <h4 className="cs-sc-h">{L.learn}</h4>
+            <div className="cs-sc-lanes">
+            {lanes.map((l) => (
+              <div key={l} className="cs-sc-lane">
+                <span className="cs-sc-lane-name">{laneName[l]}</span>
+                <ul>
+                  {y.skills![l].map((c) => (
+                    <li key={c}>{c}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+            </div>
+          </section>
+        ) : null}
+        {workshops.length ? (
+          <section className="cs-sc-col" aria-label={L.workshops ?? 'Masterclasses & workshops'}>
+            <h4 className="cs-sc-h">{L.workshops ?? 'Masterclasses & workshops'}</h4>
+            <ul>
+              {workshops.map((w) => (
+                <li key={w}>{w}</li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+        {projects.length ? (
+          <section className="cs-sc-col" aria-label={L.build}>
+            <h4 className="cs-sc-h">{L.build}</h4>
+            <ul className="cs-sc-proj">
+              {projects.map((p) => (
+                <li key={p.title}>
+                  <b>
+                    {p.title}
+                    {p.flagship ? <span className="cs-sc-flag">Flagship</span> : null}
+                  </b>
+                  <span>{p.desc}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
 /** The front of a card: the collapsed year (§5.1 anatomy). */
 /** A title split into two balanced lines at a word break, so every card's title is two lines. */
 function twoLines(title: string): [string, string] {
@@ -1215,28 +1314,7 @@ export function StackJourney({ j, cfg, width, portal, initialOpen = null }: { j:
                 }}
               >
                 {cfg.termsStack ? (
-                  // /v2-stack: the whole term at once, laid out as its sheet is (the picture beside the
-                  // title, the description and figures, In class by lane, Out of class as the playlist)
-                  <div className="cs-sfull">
-                    <div className="cs-sfull-side">
-                      <div className="cs-sfull-media">{cfg.showVisual && y.visual ? <Visual photo={y.visual} alt="" cfg={cfg} ratio={[800, 900]} /> : null}</div>
-                      <div className="cs-sheet-body cs-sfull-build">
-                        <ModalBody y={y} cfg={cfg} only="build" />
-                      </div>
-                    </div>
-                    <div className="cs-sfull-main">
-                      <header className="cs-sheet-head cs-sfull-head">
-                        <YearEyebrow year={y.year} cfg={cfg} as="span" />
-                        <Heading as="h3" size="2">
-                          {y.name}
-                        </Heading>
-                        <span className="cs-modal-ship">{y.ship}</span>
-                      </header>
-                      <div className="cs-sheet-body cs-sfull-body">
-                        <ModalBody y={y} cfg={cfg} only="main" />
-                      </div>
-                    </div>
-                  </div>
+                  <StackCompact y={y} cfg={cfg} onMore={() => setOpen(y.year)} />
                 ) : (
                   <button
                     ref={frontRef(y.year)}
