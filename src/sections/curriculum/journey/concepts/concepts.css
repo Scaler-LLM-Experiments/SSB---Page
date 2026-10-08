@@ -1011,3 +1011,8 @@
 .sj-ai-open .sj-ai-outcome-top { padding: 0 !important; border: 0 !important; }
 .sj-ai-open .sj-ai-outcome .sj-eyebrow { font-size: 11px; color: var(--content-secondary) !important; }
 .sj-ai-open .sj-ai-outcome p { margin: 0; font-size: 14px; line-height: 1.5; font-weight: 500; color: var(--content-primary); }
+/* (2026-10-08) the carousel cards: descriptions two lines at most, room between outcome and tools,
+   their labels in the brand green as on the stacked cards */
+.sj-ai-card .sj-ai-desc { display: -webkit-box !important; -webkit-box-orient: vertical !important; -webkit-line-clamp: 2 !important; line-clamp: 2 !important; overflow: hidden !important; min-height: 2lh; }
+.sj-ai-open { gap: 22px !important; }
+.sj-ai-open .sj-ai-outcome .sj-eyebrow, .sj-ai-open .sj-ai-toolset .sj-eyebrow { color: var(--content-brand) !important; font-weight: 700; letter-spacing: 0.08em; }

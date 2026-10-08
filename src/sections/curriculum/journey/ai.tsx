@@ -183,14 +183,12 @@ export function AiJourneyBlock({ ai, cfg, width }: { ai: AiJourney; cfg: Journey
       </div>
       <ol ref={track} className="sj-ai-track" aria-label={ai.eyebrow} onScroll={sync}>
         {ai.terms.map((t) => {
-          const Icon = ICON[t.icon];
           return (
             <li key={t.term} className="sj-ai-card" {...c(cfg, 'aiCard')}>
               <div className="sj-ai-media">
                 <img className="sj-ai-photo" src={t.image} alt="" loading="lazy" decoding="async" style={t.imagePos ? { objectPosition: t.imagePos } : undefined} />
                 <span className="sj-ai-tag">
                   <span>{termLabel(t.term)}</span>
-                  <Icon weight="bold" aria-hidden />
                 </span>
               </div>
               <div className="sj-ai-text">
