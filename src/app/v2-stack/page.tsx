@@ -76,6 +76,8 @@ export default function V2StackPage() {
             { id: 'ai-journey', label: 'AI journey', icon: 'ai', node: <Curriculum part="ai" termsStack /> },
             { id: 'career-prep', label: 'Career prep', icon: 'career', node: <Curriculum part="career" /> },
             { id: 'learn-by-doing', label: 'Learn by doing', icon: 'learn', node: <LearnByDoingSection /> },
+            // Live projects back on the rail (2026-10-08, the team's ask), after learn by doing
+            { id: 'live-projects-rail', label: 'Live projects', icon: 'projects', node: <LiveProjectsSection /> },
             { id: 'internship-rail', label: 'Internship', icon: 'internship', node: <InternshipSection /> },
             { id: 'immersions-rail', label: 'Immersions', icon: 'immersions', node: <ImmersionsSection /> },
             // Super Mentor Sessions, into the curriculum's rail (2026-10-07, the team's ask; it followed the Innovation Lab)
