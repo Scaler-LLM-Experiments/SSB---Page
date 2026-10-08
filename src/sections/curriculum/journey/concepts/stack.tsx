@@ -182,7 +182,7 @@ function Playlist({ projects, cfg }: { projects: Year['projects']; cfg: JourneyC
   );
 }
 
-function ModalBody({ y, cfg }: { y: Year; cfg: JourneyConfig }) {
+function ModalBody({ y, cfg, only }: { y: Year; cfg: JourneyConfig; /** /v2-stack splits the body across two columns: 'main' (intro, In class) or 'build' (Out of class) */ only?: 'main' | 'build' }) {
   const L = useLabels();
   const flagship = y.projects.find((p) => p.flagship);
   const projects = flagship ? [flagship, ...y.projects.filter((p) => p !== flagship)] : y.projects;
@@ -197,6 +197,7 @@ function ModalBody({ y, cfg }: { y: Year; cfg: JourneyConfig }) {
 
   return (
     <div className="cm" {...c(cfg, 'cardBack')}>
+      {only === 'build' ? null : (
       <div className="cm-intro">
         {y.description ? <p className="cm-lede">{y.description}</p> : null}
         {glance.length ? (
@@ -213,17 +214,18 @@ function ModalBody({ y, cfg }: { y: Year; cfg: JourneyConfig }) {
           </dl>
         ) : null}
       </div>
+      )}
 
-      {lanes.length || workshops.length ? (
+      {only !== 'build' && (lanes.length || workshops.length) ? (
         <section className="cm-section" aria-label={L.learn}>
           <h4 className="cm-h">{L.learn}</h4>
           <InClassColumns y={y} cfg={cfg} />
         </section>
       ) : null}
 
-      {y.youGet?.length ? <PerkGrid perks={y.youGet} cfg={cfg} idPrefix={`modal-${y.year}`} /> : null}
+      {only !== 'build' && y.youGet?.length ? <PerkGrid perks={y.youGet} cfg={cfg} idPrefix={`modal-${y.year}`} /> : null}
 
-      {projects.length ? (
+      {only === 'main' ? null : projects.length ? (
         <section className="cm-section" aria-label={L.build}>
           <h4 className="cm-h">{L.build}</h4>
           {/* a playlist: number, a video still with its play button, then one
@@ -1168,6 +1170,29 @@ export function StackJourney({ j, cfg, width, portal, initialOpen = null }: { j:
   /* ── m-web: the scroll stack ───────────────────────────────────────────── */
   // desktop carousel: its row (the dots under it step it, shared/ScrollDots)
   const scroller = React.useRef<HTMLDivElement>(null);
+  // the stacked cards: each sticks a step under the one before, or lower if it is taller than the
+  // room under the nav, so all of it is read before the next comes up over it
+  const mstackRef = React.useRef<HTMLOListElement>(null);
+  React.useEffect(() => {
+    const ol = mstackRef.current;
+    if (!ol) return undefined;
+    const place = () => {
+      const nav = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sn-h')) || 64;
+      Array.from(ol.children).forEach((li, i) => {
+        const el = li as HTMLElement;
+        const base = nav + 16 + i * 14;
+        el.style.top = `${Math.min(base, window.innerHeight - el.offsetHeight - 16)}px`;
+      });
+    };
+    place();
+    const ro = new ResizeObserver(place);
+    Array.from(ol.children).forEach((c) => ro.observe(c));
+    window.addEventListener('resize', place);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', place);
+    };
+  }, [narrow, years.length]);
   // the section head's slot (SectionFrame): with the head on the page, the hint under the cards is left out
   const [navSlot, setNavSlot] = React.useState<HTMLElement | null>(null);
   React.useEffect(() => {
@@ -1180,7 +1205,7 @@ export function StackJourney({ j, cfg, width, portal, initialOpen = null }: { j:
   if (narrow)
     return (
       <div className="cs-wrap" onKeyDown={onKey} {...c(cfg, 'stack')}>
-        <ol className="cs-deck cs-mstack" aria-label={L.years}>
+        <ol ref={mstackRef} className="cs-deck cs-mstack" aria-label={L.years}>
           {years.map((y, i) => (
             <li key={y.year} className="cs-mcard" style={{ '--i': i } as React.CSSProperties}>
               <div
@@ -1189,18 +1214,42 @@ export function StackJourney({ j, cfg, width, portal, initialOpen = null }: { j:
                   cards.current[y.year] = el;
                 }}
               >
-                <button
-                  ref={frontRef(y.year)}
-                  type="button"
-                  className="cs-face cs-front"
-                  data-cover={(cfg.showVisual && y.visual) || undefined}
-                  aria-expanded={open === y.year}
-                  aria-haspopup="dialog"
-                  onClick={() => setOpen(y.year)}
-                >
-                  <CardFront y={y} cfg={cfg} />
-                </button>
-                {cfg.termsStack ? <StackDetails y={y} /> : null}
+                {cfg.termsStack ? (
+                  // /v2-stack: the whole term at once, laid out as its sheet is (the picture beside the
+                  // title, the description and figures, In class by lane, Out of class as the playlist)
+                  <div className="cs-sfull">
+                    <div className="cs-sfull-side">
+                      <div className="cs-sfull-media">{cfg.showVisual && y.visual ? <Visual photo={y.visual} alt="" cfg={cfg} ratio={[800, 900]} /> : null}</div>
+                      <div className="cs-sheet-body cs-sfull-build">
+                        <ModalBody y={y} cfg={cfg} only="build" />
+                      </div>
+                    </div>
+                    <div className="cs-sfull-main">
+                      <header className="cs-sheet-head cs-sfull-head">
+                        <YearEyebrow year={y.year} cfg={cfg} as="span" />
+                        <Heading as="h3" size="2">
+                          {y.name}
+                        </Heading>
+                        <span className="cs-modal-ship">{y.ship}</span>
+                      </header>
+                      <div className="cs-sheet-body cs-sfull-body">
+                        <ModalBody y={y} cfg={cfg} only="main" />
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    ref={frontRef(y.year)}
+                    type="button"
+                    className="cs-face cs-front"
+                    data-cover={(cfg.showVisual && y.visual) || undefined}
+                    aria-expanded={open === y.year}
+                    aria-haspopup="dialog"
+                    onClick={() => setOpen(y.year)}
+                  >
+                    <CardFront y={y} cfg={cfg} />
+                  </button>
+                )}
               </div>
             </li>
           ))}

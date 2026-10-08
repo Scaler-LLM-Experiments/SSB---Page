@@ -622,3 +622,36 @@
 .cs-sdetail-list b { display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 1.35; font-weight: 600; color: var(--content-primary); }
 .cs-sdetail-list span { font-size: 13px; line-height: 1.45; color: var(--content-secondary); }
 .cs-sdetail-flag { padding: 2px 6px; border-radius: 4px; background: var(--surface-brand-subtle); color: var(--content-brand) !important; font-size: 10px !important; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+
+/* /v2-stack, the whole term on its card (2026-10-08): the sheet's layout and parts. The picture a
+   column at the left (pinned while the copy beside it is read), the copy at the right with room
+   between its groups: title, then the description and figures, In class by lane, Out of class. */
+[data-terms-stack] .cs-deck.cs-mstack .cs-mcard .cs-inner { padding: 16px !important; }
+.cs-sfull { display: grid; gap: 20px; }
+.cs-sfull-media { position: relative; overflow: hidden; border-radius: 8px; aspect-ratio: 16 / 9; background: var(--surface-sunken); }
+.cs-sfull-media .sj-visual { position: absolute; inset: 0; margin: 0; aspect-ratio: auto; border-radius: 0 !important; }
+.cs-sfull-media .sj-visual img { width: 100%; height: 100%; object-fit: cover; }
+.cs-sfull-head { padding: 0 !important; }
+.cs-sfull-body { padding: 24px 0 0 !important; }
+@media (min-width: 768px) {
+  .cs-sfull { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 0 48px; align-items: start; }
+  .cs-sfull-media { position: sticky; top: 0; aspect-ratio: 4 / 5; }
+  .cs-sfull-main { padding: 16px 16px 8px 0; }
+  .cs-sfull-head h3 { font-size: 28px; }
+  .cs-sfull-body { padding-top: 28px !important; }
+}
+/* the two columns: the picture with Out of class under it; the title, figures and In class beside */
+.cs-sfull-side { display: grid; gap: 20px; align-content: start; min-width: 0; }
+.cs-sfull-build { padding: 0 !important; }
+.cs-sfull-build .cm { gap: 0; padding: 0; }
+@media (min-width: 768px) {
+  .cs-sfull-media { position: relative; top: auto; aspect-ratio: 16 / 10; }
+  .cs-sfull { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); }
+  /* the challenges in the narrower column: the still over a slimmer line */
+  .cs-sfull-build .cm-h { font-size: 18px; }
+}
+/* /v2-stack: the AI journey's cards scroll by as plain cards, no stacking (2026-10-08, the team's ask) */
+[data-terms-stack] .sj-ai .ss-card { position: relative !important; top: auto !important; transform: none !important; clip-path: none !important; scale: none !important; margin-bottom: 24px !important; }
+[data-terms-stack] .sj-ai .ss-card > * { transform: none !important; filter: none !important; opacity: 1 !important; }
+[data-terms-stack] .sj-ai .ss { gap: 24px !important; row-gap: 24px !important; padding-bottom: 0 !important; }
+[data-terms-stack] .sj-ai .ss-card { margin: 0 !important; }
