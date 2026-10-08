@@ -817,3 +817,8 @@
   .cm-playlist .cm-tags .cm-tag:not(.cm-flag) { position: absolute; top: 14px; left: 14px; z-index: 2; max-width: 124px; white-space: normal; line-height: 1.25; border-radius: 6px; overflow: visible; }
   .cm-playlist .cm-track .cm-flag { position: absolute; top: auto !important; bottom: 14px; left: 14px; z-index: 2; }
 }
+/* (2026-10-08) no challenge-name chip on the still; only Flagship, at its top left */
+@media (min-width: 768px) {
+  .cm-playlist .cm-tags .cm-tag:not(.cm-flag) { display: none !important; }
+  .cm-playlist .cm-track .cm-flag { top: 14px !important; bottom: auto !important; left: 14px; transform: scale(0.85); transform-origin: top left; }
+}
