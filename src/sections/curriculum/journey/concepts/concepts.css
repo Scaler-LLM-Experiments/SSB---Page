@@ -608,3 +608,17 @@
   [data-terms-stack] .cs-deck.cs-mstack .cs-front[data-cover] > .cs-hero { min-height: 220px; }
 }
 @media (min-width: 768px) { [data-terms-stack] .cs-deck.cs-mstack { width: min(100%, 960px) !important; } }
+
+/* /v2-stack, 2026-10-08: the stack the content's full width, and each term's In class / Out of class under its card */
+@media (min-width: 768px) { [data-terms-stack] .cs-deck.cs-mstack { width: 100% !important; max-width: none; } }
+.cs-sdetail { display: grid; gap: 20px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-subtle); }
+@media (min-width: 768px) { .cs-sdetail { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; padding: 20px 8px 4px; } }
+.cs-sdetail-h { margin: 0 0 10px; font-size: 11px; line-height: 1.3; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--content-brand); }
+.cs-sdetail-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.cs-sdetail-chips li { padding: 5px 10px; border-radius: 8px; background: var(--surface-sunken); font-size: 13px; line-height: 1.3; color: var(--content-primary); }
+.cs-sdetail-chips li[data-workshop] { background: none; box-shadow: inset 0 0 0 1px var(--border-subtle); color: var(--content-secondary); }
+.cs-sdetail-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.cs-sdetail-list li { display: grid; gap: 2px; }
+.cs-sdetail-list b { display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 1.35; font-weight: 600; color: var(--content-primary); }
+.cs-sdetail-list span { font-size: 13px; line-height: 1.45; color: var(--content-secondary); }
+.cs-sdetail-flag { padding: 2px 6px; border-radius: 4px; background: var(--surface-brand-subtle); color: var(--content-brand) !important; font-size: 10px !important; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }

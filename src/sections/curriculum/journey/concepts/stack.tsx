@@ -240,6 +240,54 @@ function ModalBody({ y, cfg }: { y: Year; cfg: JourneyConfig }) {
   );
 }
 
+/**
+ * The term's details at a glance, under the card (the /v2-stack experiment, 2026-10-08): In class
+ * (its courses, then its workshops, as chips) and Out of class (its challenges, the flagship first).
+ */
+function StackDetails({ y }: { y: Year }) {
+  const L = useLabels();
+  const courses = y.skills ? MODAL_LANES.flatMap((l) => y.skills![l]) : [];
+  const workshops = y.workshops ?? [];
+  const flagship = y.projects.find((p) => p.flagship);
+  const projects = flagship ? [flagship, ...y.projects.filter((p) => p !== flagship)] : y.projects;
+  if (!courses.length && !projects.length) return null;
+  return (
+    <div className="cs-sdetail">
+      {courses.length || workshops.length ? (
+        <section className="cs-sdetail-col" aria-label={L.learn}>
+          <h4 className="cs-sdetail-h">{L.learn}</h4>
+          <ul className="cs-sdetail-chips">
+            {courses.map((c) => (
+              <li key={c}>{c}</li>
+            ))}
+            {workshops.map((w) => (
+              <li key={w} data-workshop="">
+                {w}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+      {projects.length ? (
+        <section className="cs-sdetail-col" aria-label={L.build}>
+          <h4 className="cs-sdetail-h">{L.build}</h4>
+          <ul className="cs-sdetail-list">
+            {projects.map((p) => (
+              <li key={p.title}>
+                <b>
+                  {p.title}
+                  {p.flagship ? <span className="cs-sdetail-flag">Flagship</span> : null}
+                </b>
+                <span>{p.desc}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+    </div>
+  );
+}
+
 /** The front of a card: the collapsed year (§5.1 anatomy). */
 /** A title split into two balanced lines at a word break, so every card's title is two lines. */
 function twoLines(title: string): [string, string] {
@@ -1152,6 +1200,7 @@ export function StackJourney({ j, cfg, width, portal, initialOpen = null }: { j:
                 >
                   <CardFront y={y} cfg={cfg} />
                 </button>
+                {cfg.termsStack ? <StackDetails y={y} /> : null}
               </div>
             </li>
           ))}
