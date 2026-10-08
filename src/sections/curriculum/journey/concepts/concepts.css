@@ -694,3 +694,17 @@
   .cs-sc-lanes { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
   .cs-sc-cols { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1.6fr); }
 }
+
+/* /v2-stack: each term as its sheet, on the card (2026-10-08). One screen tall at most; the copy
+   scrolls inside it. */
+.cs-ss { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); column-gap: 8px; height: min(640px, calc(100svh - var(--sn-h, 64px) - 120px)); }
+.cs-ss-media { height: 100%; }
+.cs-ss-main { position: relative; height: 100%; min-height: 0; overflow-y: auto; overscroll-behavior: auto; }
+.cs-ss-main .cs-sheet-head { padding-right: clamp(24px, 4vw, 56px); }
+.cs-ss-main .cs-sheet-body { padding-bottom: 32px; }
+[data-terms-stack] .cs-deck.cs-mstack .cs-mcard .cs-inner { padding: 12px !important; }
+@media (max-width: 767px) {
+  .cs-ss { grid-template-columns: minmax(0, 1fr); grid-template-rows: 160px minmax(0, 1fr); row-gap: 12px; height: min(640px, calc(100svh - var(--sn-h, 64px) - 64px)); }
+  .cs-ss-main .cs-sheet-head { padding: 4px 4px 0; }
+  .cs-ss-main .cs-sheet-body { padding: 20px 4px 24px; }
+}

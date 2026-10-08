@@ -291,6 +291,33 @@ function StackDetails({ y }: { y: Year }) {
 }
 
 /**
+ * A whole term as its sheet, set on the card (/v2-stack, 2026-10-08, the team's pick): the picture a
+ * tall panel at the left; at the right, scrolling inside the card, the term, title and line, then
+ * the sheet's body (description, figures, In class by lane, Out of class), with its "Scroll for more".
+ */
+function StackSheet({ y, cfg }: { y: Year; cfg: JourneyConfig }) {
+  const main = React.useRef<HTMLDivElement>(null);
+  return (
+    <div className="cs-ss">
+      <div className="cs-sheet-media cs-ss-media">{cfg.showVisual && y.visual ? <Visual photo={y.visual} alt="" cfg={cfg} ratio={[800, 900]} /> : null}</div>
+      <div ref={main} className="cs-sheet-main cs-ss-main">
+        <header className="cs-sheet-head">
+          <YearEyebrow year={y.year} cfg={cfg} as="span" />
+          <Heading as="h3" size="2">
+            {y.name}
+          </Heading>
+          <span className="cs-modal-ship">{y.ship}</span>
+        </header>
+        <div className="cs-modal-body cs-sheet-body">
+          <ModalBody y={y} cfg={cfg} />
+        </div>
+        <ScrollCue box={main} />
+      </div>
+    </div>
+  );
+}
+
+/**
  * A whole term, compact (/v2-stack, 2026-10-08: "too big, compress the information"): a short top row
  * (a small picture beside the title, the line, and the counts in one row), then three tight columns
  * (In class by lane, masterclasses and workshops, Out of class as one-line challenges), and "View
@@ -1314,7 +1341,7 @@ export function StackJourney({ j, cfg, width, portal, initialOpen = null }: { j:
                 }}
               >
                 {cfg.termsStack ? (
-                  <StackCompact y={y} cfg={cfg} onMore={() => setOpen(y.year)} />
+                  <StackSheet y={y} cfg={cfg} />
                 ) : (
                   <button
                     ref={frontRef(y.year)}
