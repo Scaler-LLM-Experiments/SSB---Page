@@ -325,7 +325,7 @@ function MediaGlance({ y }: { y: Year }) {
 function StackSheet({ y, cfg }: { y: Year; cfg: JourneyConfig }) {
   const main = React.useRef<HTMLDivElement>(null);
   return (
-    <div className="cs-ss">
+    <div className="cs-ss" data-term={y.year}>
       <div className="cs-sheet-media cs-ss-media">
         {cfg.showVisual && y.visual ? <Visual photo={y.visual} alt="" cfg={cfg} ratio={[800, 900]} /> : null}
         {/* the term as a tag on the picture (2026-10-08) */}
@@ -784,7 +784,7 @@ function StackModal({ y, cfg, from, leaving, onClose, onGone, portal, sheet }: {
     const sheetNode = (
       <div className="cs-modal" data-sheet="" data-leaving={leaving || undefined} onKeyDown={onKey}>
         <div ref={backRef} className="cs-modal-back" onClick={onClose} />
-        <div ref={boxRef} tabIndex={-1} className="cs-modal-box cs-sheet" role="dialog" aria-modal="true" aria-labelledby={titleId} data-sheet="" style={{ left: frame.left, bottom: 0, width: frame.w, height: frame.maxH }}>
+        <div ref={boxRef} tabIndex={-1} className="cs-modal-box cs-sheet" data-term={y.year} role="dialog" aria-modal="true" aria-labelledby={titleId} data-sheet="" style={{ left: frame.left, bottom: 0, width: frame.w, height: frame.maxH }}>
           <div className="cs-sheet-grip" aria-hidden="true" {...grip}>
             <span />
           </div>

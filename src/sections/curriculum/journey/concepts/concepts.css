@@ -836,3 +836,31 @@
   .cs-media-glance-icon { grid-row: auto; margin-bottom: 4px; }
   .cs-media-glance dd, .cs-media-glance dt { grid-column: auto; align-self: auto; }
 }
+
+/* (2026-10-08) the description closer to the title */
+.cs-sheet-head { gap: 4px; }
+.cs-sheet-body { padding-top: 12px !important; }
+.cs-ss .cs-sheet-body { padding-top: 10px !important; }
+.cm-intro { gap: 20px; }
+
+/* In class: the three columns closer, so each holds more on a line */
+.cm-col { padding: 0 12px; }
+.cm-col:first-child { padding-left: 0; }
+.cm-col:last-child { padding-right: 0; }
+.cm-learn { column-gap: 0; }
+
+/* each term's accents in its picture's colour: the green of 01 and 04, the blue of 02 and 05, the
+   violet of 03 (lane labels, icon tiles, bullets, tags, the figures' glass) */
+.cs-ss[data-term], .cs-sheet[data-term] { --term-ink: #1F7A4A; --term-tint: #E7F4EC; --term-glass: rgb(8 42 27 / 0.55); }
+.cs-ss[data-term='2'], .cs-ss[data-term='5'], .cs-sheet[data-term='2'], .cs-sheet[data-term='5'] { --term-ink: #1E5FD0; --term-tint: #E6EFFD; --term-glass: rgb(10 34 84 / 0.55); }
+.cs-ss[data-term='3'], .cs-sheet[data-term='3'] { --term-ink: #6A3BD3; --term-tint: #F0EAFD; --term-glass: rgb(44 20 96 / 0.55); }
+:is(.cs-ss, .cs-sheet)[data-term] { --content-brand: var(--term-ink); --surface-brand-subtle: var(--term-tint); }
+:is(.cs-ss, .cs-sheet)[data-term] .cm-col .sj-lane, :is(.cs-ss, .cs-sheet)[data-term] .cm-col .sj-lane * { color: var(--term-ink) !important; }
+:is(.cs-ss, .cs-sheet)[data-term] .sj-lane-icon, :is(.cs-ss, .cs-sheet)[data-term] .cm-col .sj-lane > span:first-child { background: var(--term-tint) !important; }
+:is(.cs-ss, .cs-sheet)[data-term] .cm-learn .cm-list li::before { background: var(--term-ink); }
+:is(.cs-ss, .cs-sheet)[data-term] .cs-media-tag .sj-eyebrow, :is(.cs-ss, .cs-sheet)[data-term] .cs-media-tag .sj-eyebrow * { color: var(--term-ink) !important; }
+:is(.cs-ss, .cs-sheet)[data-term] .cs-media-glance { background: var(--term-glass); }
+:is(.cs-ss, .cs-sheet)[data-term] .cm-tag:not(.cm-flag) { background: var(--term-tint) !important; color: var(--term-ink) !important; }
+/* the In class items in the description's style (2026-10-08): the same grey, size and weight */
+.cs-ss .cm-lede, .cs-sheet .cm-lede { font-size: 14.5px; line-height: 1.55; font-weight: 400; color: var(--content-secondary); }
+.cm-learn .cm-list li { font-size: 14.5px !important; line-height: 1.5; font-weight: 400; color: var(--content-secondary) !important; }
