@@ -933,3 +933,12 @@
   .cm-playlist .cm-track-title { margin: 0 !important; }
   .cm-playlist .cm-track-desc { margin-top: 8px !important; }
 }
+/* (2026-10-08) each figure: the icon and its number side by side, centred on one line; the word
+   under them, from the icon's left edge */
+@media (min-width: 768px) {
+  .cs-media-glance > div { grid-template-columns: auto 1fr !important; grid-template-rows: auto auto; column-gap: 8px; row-gap: 6px; align-items: center; justify-items: start; }
+  .cs-media-glance-icon { grid-row: 1 !important; grid-column: 1; margin: 0 !important; width: 26px; height: 26px; }
+  .cs-media-glance-icon svg { width: 15px; height: 15px; }
+  .cs-media-glance dd { grid-row: 1; grid-column: 2 !important; align-self: center !important; font-size: 18px; line-height: 1; }
+  .cs-media-glance dt { grid-row: 2; grid-column: 1 / span 2 !important; align-self: start !important; }
+}
