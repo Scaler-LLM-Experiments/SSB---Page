@@ -874,3 +874,15 @@
   .cm-playlist .cm-track-title { font-size: 14.5px !important; line-height: 1.4; }
   .cm-playlist .cm-track-desc { margin-top: 0; font-size: 12.5px !important; line-height: 1.55; }
 }
+/* (2026-10-08) the tag on the picture in the figures' dark glass and white type, the term's months */
+.cs-media-tag { height: 30px; padding: 0 12px; border: 1px solid rgb(255 255 255 / 0.18); border-radius: 6px; background: var(--term-glass, rgb(8 42 27 / 0.55)); color: #fff;
+  font-size: 12px; font-weight: 600; letter-spacing: 0.01em; white-space: nowrap; box-shadow: 0 6px 18px -10px rgb(0 0 0 / 0.45); }
+/* the figures: each starts at the same offset in its third, the icon and the text level */
+.cs-media-glance { padding: 12px 0; }
+.cs-media-glance > div { justify-content: start; padding-left: 16px; }
+@media (max-width: 767px) { .cs-media-glance > div { justify-content: center; padding-left: 0; } }
+/* lane headers on one line */
+.cm-col .sj-lane { flex-wrap: nowrap; }
+.cm-col .sj-lane > .sj-eyebrow { white-space: nowrap; letter-spacing: 0.05em; font-size: 11px; }
+/* (2026-10-08) a little more room between the title and the description */
+.cs-sheet-body, .cs-ss .cs-sheet-body { padding-top: 18px !important; }

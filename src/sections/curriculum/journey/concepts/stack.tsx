@@ -290,6 +290,10 @@ function StackDetails({ y }: { y: Year }) {
   );
 }
 
+/** Each term's three months, on its picture's tag (2026-10-08, the team's example "Jan - Mar 27").
+ *  [CONFIRM] the cohort's dates: Term 1 set to Jan–Mar 2027, each term three months after. */
+const TERM_MONTHS: Record<number, string> = { 1: 'Jan – Mar ’27', 2: 'Apr – Jun ’27', 3: 'Jul – Sep ’27', 4: 'Oct – Dec ’27', 5: 'Jan – Mar ’28' };
+
 /** The term's figures on its picture, over a frosted layer (2026-10-08): courses, live projects, masterclasses. */
 function MediaGlance({ y }: { y: Year }) {
   const L = useLabels();
@@ -329,8 +333,8 @@ function StackSheet({ y, cfg }: { y: Year; cfg: JourneyConfig }) {
       <div className="cs-sheet-media cs-ss-media">
         {cfg.showVisual && y.visual ? <Visual photo={y.visual} alt="" cfg={cfg} ratio={[800, 900]} /> : null}
         {/* the term as a tag on the picture (2026-10-08) */}
-        <span className="cs-media-tag">
-          <YearEyebrow year={y.year} cfg={cfg} as="span" />
+        <span className="cs-media-tag" aria-label={`Term ${y.year}, ${TERM_MONTHS[y.year] ?? ''}`}>
+          {TERM_MONTHS[y.year] ?? <YearEyebrow year={y.year} cfg={cfg} as="span" />}
         </span>
         <MediaGlance y={y} />
       </div>
@@ -794,8 +798,8 @@ function StackModal({ y, cfg, from, leaving, onClose, onGone, portal, sheet }: {
           </IconButton>
           <div className="cs-sheet-media" {...grip}>
             {photo ? <Visual photo={photo} alt="" cfg={cfg} ratio={[800, 900]} eager /> : null}
-            <span className="cs-media-tag">
-              <YearEyebrow year={y.year} cfg={cfg} as="span" />
+            <span className="cs-media-tag" aria-label={`Term ${y.year}, ${TERM_MONTHS[y.year] ?? ''}`}>
+              {TERM_MONTHS[y.year] ?? <YearEyebrow year={y.year} cfg={cfg} as="span" />}
             </span>
             <MediaGlance y={y} />
           </div>
