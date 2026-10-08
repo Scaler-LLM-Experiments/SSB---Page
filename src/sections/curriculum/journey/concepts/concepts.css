@@ -1018,3 +1018,29 @@
 .sj-ai-open .sj-ai-outcome .sj-eyebrow, .sj-ai-open .sj-ai-toolset .sj-eyebrow { color: var(--content-brand) !important; font-weight: 700; letter-spacing: 0.08em; }
 /* (2026-10-08) more room between the description and the outcome */
 .sj-ai-open { padding-top: 28px !important; }
+
+/* /v2-stack, In class v2: an accordion (2026-10-08) */
+.cm-acc { display: grid; border-top: 1px solid color-mix(in srgb, var(--border-subtle) 80%, transparent); }
+.cm-acc-row { border-bottom: 1px solid color-mix(in srgb, var(--border-subtle) 80%, transparent); }
+.cm-acc-head { all: unset; box-sizing: border-box; display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 2px; cursor: pointer; }
+.cm-acc-head .sj-lane { flex: 1; color: var(--content-brand); }
+.cm-acc-head .sj-lane > .sj-eyebrow { font-size: 11px; letter-spacing: 0.06em; white-space: nowrap; }
+.cm-acc-head .sj-lane svg { width: 16px; height: 16px; }
+.cm-acc-head:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; border-radius: 4px; }
+.cm-acc-count { min-width: 22px; height: 20px; padding: 0 6px; display: grid; place-items: center; border-radius: 999px; background: var(--surface-brand-subtle); color: var(--content-brand); font-size: 11px; font-weight: 700; }
+.cm-acc-caret { width: 14px; height: 14px; color: var(--content-secondary); transition: transform 240ms ease; }
+.cm-acc-row[data-open] .cm-acc-caret { transform: rotate(180deg); }
+.cm-acc-body .cm-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; padding: 0 2px 12px !important; }
+@media (max-width: 767px) { .cm-acc-body .cm-list { grid-template-columns: minmax(0, 1fr); } }
+@media (prefers-reduced-motion: reduce) { .cm-acc-caret { transition: none; } }
+/* the version switch, fixed at the window's foot on /v2-stack */
+.cs-variant { position: fixed; left: 16px; bottom: 16px; z-index: 900; display: flex; align-items: center; gap: 4px; padding: 4px; border: 1px solid var(--border-subtle); border-radius: 10px; background: var(--surface-page); box-shadow: 0 10px 28px -12px rgb(0 0 0 / 0.35); font-size: 12px; }
+.cs-variant > span { padding: 0 8px; font-weight: 700; color: var(--content-secondary); text-transform: uppercase; letter-spacing: 0.06em; font-size: 10.5px; }
+.cs-variant button { all: unset; cursor: pointer; padding: 7px 10px; border-radius: 7px; font-weight: 600; color: var(--content-primary); }
+.cs-variant button[aria-pressed='true'] { background: var(--content-primary); color: var(--surface-page); }
+.cs-variant button:focus-visible { outline: 2px solid var(--border-focus); }
+@media (max-width: 1055px) { .cs-variant { bottom: 76px; } }
+/* the accordion's lists in the columns' style: bullets in the term colour, the description's grey */
+.cm-acc .cm-list { gap: 2px; }
+.cm-acc .cm-list li { position: relative; padding: 4px 0 4px 16px !important; font-size: 13.5px !important; line-height: 1.5; font-weight: 400; color: var(--content-secondary) !important; }
+.cm-acc .cm-list li::before { content: ''; position: absolute; left: 2px; top: calc(4px + 0.75em - 2.5px); width: 5px; height: 5px; border-radius: 50%; background: var(--content-brand); opacity: 0.55; }

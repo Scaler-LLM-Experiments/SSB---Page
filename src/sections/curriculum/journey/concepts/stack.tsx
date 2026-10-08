@@ -97,6 +97,51 @@ export function CardBack({ y, cfg, onClose, bare, headless, active = true }: { y
 const MODAL_LANES: Lane[] = ['tech', 'business', 'shared'];
 const countWord = (label: string, n: number) => fmt(label, n).replace(/^\s*\d+\s*/, '');
 
+/**
+ * In class as an accordion (the /v2-stack experiment's second version, 2026-10-08): one row per lane
+ * and one for the masterclasses, each a header with its count that opens its list; the first open.
+ */
+function InClassAccordion({ y, cfg }: { y: Year; cfg: JourneyConfig }) {
+  const L = useLabels();
+  const lanes = y.skills ? MODAL_LANES.filter((l) => y.skills![l].length) : [];
+  const workshops = y.workshops ?? [];
+  const groups = [
+    ...lanes.map((lane) => ({ id: lane as string, head: <LaneLabel lane={lane} cfg={cfg} />, items: y.skills![lane] })),
+    ...(workshops.length
+      ? [{ id: 'workshops', head: (
+          <span className="sj-lane" data-lane="shared">
+            <ChalkboardTeacher aria-hidden="true" />
+            <span className="sj-eyebrow" style={{ color: 'inherit' }}>{L.workshops ?? 'Workshops'}</span>
+          </span>
+        ), items: workshops }]
+      : []),
+  ];
+  const [open, setOpen] = React.useState<string | null>(groups[0]?.id ?? null);
+  return (
+    <div className="cm-acc">
+      {groups.map((g) => {
+        const on = open === g.id;
+        return (
+          <div key={g.id} className="cm-acc-row" data-open={on || undefined}>
+            <button type="button" className="cm-acc-head" aria-expanded={on} onClick={() => setOpen(on ? null : g.id)}>
+              {g.head}
+              <span className="cm-acc-count">{g.items.length}</span>
+              <CaretDown weight="bold" className="cm-acc-caret" aria-hidden="true" />
+            </button>
+            <div className="cm-acc-body" hidden={!on}>
+              <ul className="cm-list">
+                {g.items.map((s) => (
+                  <li key={s}>{s}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 /** In class, as the sheet shows it: one column per lane (green header, plain rows) plus the masterclasses. Shared by the desktop sheet and the m-web cards. */
 function InClassColumns({ y, cfg }: { y: Year; cfg: JourneyConfig }) {
   const L = useLabels();
@@ -219,7 +264,7 @@ function ModalBody({ y, cfg, only, noGlance }: { y: Year; cfg: JourneyConfig; /*
       {only !== 'build' && (lanes.length || workshops.length) ? (
         <section className="cm-section" aria-label={L.learn}>
           <h4 className="cm-h">{L.learn}</h4>
-          <InClassColumns y={y} cfg={cfg} />
+          {cfg.inClassAccordion ? <InClassAccordion y={y} cfg={cfg} /> : <InClassColumns y={y} cfg={cfg} />}
         </section>
       ) : null}
 
