@@ -138,7 +138,14 @@ export function WhyBreaker({ quote, figures }: { quote: WhyQuote; figures: WhyFi
   useBreakerMotion(scope);
 
   return (
-    <section ref={scope} aria-labelledby="why-breaker-title" className="why-breaker">
+    <section
+      ref={scope}
+      aria-labelledby="why-breaker-title"
+      className="why-breaker"
+      // desktop: the clip at the band's full height, its poster blurred beyond it (why.css)
+      data-fit="height"
+      style={poster ? ({ '--why-poster': `url(${poster})` } as React.CSSProperties) : undefined}
+    >
       <div className="why-breaker-media" aria-hidden>
         <div data-breaker-stage className="why-breaker-stage">
           {video ? (

@@ -488,6 +488,11 @@ alone in that read."; a "Watch the clip" button that played it with sound (both 
 section has no header (the deck's "MBA is not dead…" and the mock's description were cut: the
 breaker makes that argument). Things learnt:
 
+- **Covering a band wider than 16:9 zooms a 16:9 clip in** (the frame's top and bottom are cut
+  away), the more so the wider the band. Kamath's clip is drawn at the
+  band's full height instead (`data-fit="height"`, 2026-10-07: "zoom out, then place him"), its
+  face a quarter across, feathered at its right into its own poster blurred 32px (a still, not a
+  second video) under the words' frost, which hides the seam.
 - **Check a quote against its source.** The deck had Kamath "telling students" that an MBA at 25
   "must be some kind of **an** idiot" and that it "went viral this year". The video (Zerodha's
   15th-anniversary AMA, uploaded 24 October 2025) has, at 1:43:21: "If you're 25 and going to a
