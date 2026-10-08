@@ -314,3 +314,31 @@
 }
 @media (min-width: 672px) and (max-width: 1055px) { .cr-main .sj-ps-view { height: 440px; } .cr-main .sj-tl { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 1055px) and (prefers-reduced-motion: reduce) { .cr-main .sj-ps-pill > i { animation: none; transform: scaleX(1); } .cr-main .sj-ps-track { transition: none; } }
+
+/* the AI journey on phones and tablets in the desktop card's layout (2026-10-07): heading over the stack */
+@media (max-width: 1055px) {
+  .cr-main .sj-ai[data-layout='split'] { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: var(--space-8); }
+  .cr-main .sj-ai[data-layout='split'] .sj-ai-aside { position: static; }
+}
+@media (max-width: 1055px) {
+  /* the AI cards on phones: the photo 16:9, the outcome and tools rows as desktop's (label, then the
+     line; the tools one row running sideways) with a narrower label column */
+  .cr-main .sj-ai[data-narrow] .ss-hero .sj-ai-photo { aspect-ratio: 16 / 9; }
+  .cr-main .sj-ai[data-narrow] .sj-ai-toolset { grid-template-columns: 64px minmax(0, 1fr); }
+  .cr-main .sj-ai[data-narrow] .sj-ai-outcome { grid-template-columns: 64px minmax(0, 1fr); column-gap: 12px; padding: 12px 14px; }
+  .cr-main .sj-ai[data-narrow] .sj-ai-outcome-top { padding-right: 12px; }
+  .cr-main .sj-ai[data-narrow] .sj-ai-outcome p { font-size: 14px; }
+  .cr-main .sj-ai[data-narrow] .sj-tools-set { flex-wrap: nowrap; }
+  .cr-main .sj-ai[data-narrow] .sj-ai-tools { overflow: hidden; }
+  .cr-main .sj-ai[data-narrow] .ss-body { padding: 12px 16px 16px; }
+}
+/* term cards on phones: the counts on one line, "View more" under them */
+@media (max-width: 767px) {
+  .cs-deck .cs-cover-foot { flex-wrap: wrap; row-gap: 8px; }
+  .cs-deck .cs-cover-foot .cs-cover-cta { flex-basis: 100%; }
+}
+@media (max-width: 1055px) {
+  /* the chips in desktop's colours: light glass at rest, the one on show dark */
+  .cr-main .sj-ps-tab { border-color: color-mix(in srgb, var(--content-primary) 10%, transparent); background: rgb(255 255 255 / 0.72); color: var(--content-primary); }
+  .cr-main .sj-ps-tab[aria-current='true'] { border-color: transparent; background: var(--content-primary); color: var(--surface-page); }
+}

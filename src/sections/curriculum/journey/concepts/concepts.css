@@ -543,3 +543,10 @@
 .cs-scrollcue-btn:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
 @keyframes cs-cue-bob { 50% { transform: translateY(3px); } }
 @media (prefers-reduced-motion: reduce) { .cs-scrollcue { transition: none; } .cs-scrollcue-btn svg { animation: none; } }
+/* the term sheet on phones (2026-10-07): one column, the image a short band over the copy */
+@media (max-width: 767px) {
+  .cs-sheet { grid-template-columns: minmax(0, 1fr); grid-template-rows: 140px minmax(0, 1fr); row-gap: 12px; padding: 28px 12px 0; }
+  .cs-sheet-head { padding: 8px 4px 0; padding-right: 60px; }
+  .cs-sheet-body { padding: 20px 4px 24px; }
+  .cs-sheet-close { top: 40px !important; right: 20px !important; }
+}

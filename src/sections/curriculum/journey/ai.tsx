@@ -157,10 +157,14 @@ export function AiJourneyBlock({ ai, cfg, width }: { ai: AiJourney; cfg: Journey
           </div>
         </section>
       );
+    // phones: the desktop card's layout too (2026-10-07: m-web's structure should match desktop), the
+    // heading over the stack; only the stacking on scroll is the phone's own
     return (
-      <section className="sj-ai" aria-labelledby={id} {...c(cfg, 'ai')}>
-        {head}
-        <CardStack items={items} cfg={cfg} label={ai.eyebrow} cKey="aiCard" meter={false} />
+      <section className="sj-ai" data-layout="split" data-narrow="" aria-labelledby={id} {...c(cfg, 'ai')}>
+        <div className="sj-ai-aside">{head}</div>
+        <div className="sj-ai-stack">
+          <CardStack items={items} cfg={cfg} label={ai.eyebrow} cKey="aiCard" soften={false} peek={12} dim={0} meter={false} />
+        </div>
       </section>
     );
   }
