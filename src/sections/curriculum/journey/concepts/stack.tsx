@@ -306,7 +306,6 @@ function StackSheet({ y, cfg }: { y: Year; cfg: JourneyConfig }) {
           <Heading as="h3" size="2">
             {y.name}
           </Heading>
-          <span className="cs-modal-ship">{y.ship}</span>
         </header>
         <div className="cs-modal-body cs-sheet-body">
           <ModalBody y={y} cfg={cfg} />
@@ -769,7 +768,6 @@ function StackModal({ y, cfg, from, leaving, onClose, onGone, portal, sheet }: {
               <Heading as="h3" size="2" id={titleId}>
                 {y.name}
               </Heading>
-              <span className="cs-modal-ship">{y.ship}</span>
             </header>
             <div ref={bodyRef} className="cs-modal-body cs-sheet-body">
               <ModalBody y={y} cfg={cfg} />
@@ -807,8 +805,7 @@ function StackModal({ y, cfg, from, leaving, onClose, onGone, portal, sheet }: {
             <Heading as="h3" size="2" id={titleId} style={{ color: 'inherit' }}>
               {y.name}
             </Heading>
-            <span className="cs-modal-ship">{y.ship}</span>
-          </div>
+            </div>
         </div>
         <div ref={bodyRef} className="cs-modal-body" style={{ width: frame.w }}>
           <ModalBody y={y} cfg={cfg} />
