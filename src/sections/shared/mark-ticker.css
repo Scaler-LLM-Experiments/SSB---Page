@@ -78,3 +78,10 @@
   box-shadow: none;
   outline: 0;
 }
+
+/* A mark that is the wordmark (BCG's) is drawn alone, at about the names' cap height, wider than
+   a square mark may be: beside its own name it read "BCG BCG". */
+.mt-list > li[data-wordmark] img {
+  height: var(--space-5);
+  max-width: none;
+}

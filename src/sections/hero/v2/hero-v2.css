@@ -1,13 +1,23 @@
 /*
- * Hero V2: on desktop the video blends into the black through feathered edges.
- * Each edge's feather is a custom property, so the motion can tween the edges
- * to hard (0%) and back. On a phone the video is a plain card: no feathers.
+ * Hero V2: the video blends into the black through feathered edges. Each edge's
+ * feather is a custom property, so the motion can tween the edges to hard (0%)
+ * and back. Below desktop only its foot is feathered, under the copy.
  */
+
+/* Below md: the video's height, and how far the copy rises over its feathered foot. Sized so
+   the title, the line and both actions are in the first screen on any phone (320 × 568 too),
+   capped so a tablet's poster doesn't grow past a screen. The overlap is at most a quarter of
+   the video, so on a short one the eyebrow still lands where the feather has darkened it. */
+.hero-v2 {
+  --hero-media-h: clamp(13rem, 100svh - var(--sn-h, 0px) - 22rem, 34rem);
+  --hero-overlap: min(var(--space-20), var(--hero-media-h) / 4);
+}
+
 .hero-v2-video {
   --feather-left: 0%;
   --feather-right: 0%;
   --feather-top: 0%;
-  --feather-bottom: 0%;
+  --feather-bottom: 45%;
   mask-image:
     linear-gradient(to right, transparent, #000 var(--feather-left)),
     linear-gradient(to left, transparent, #000 var(--feather-right)),
@@ -24,9 +34,10 @@
 }
 
 /* The fold's copy (shared/fold.css) over the black: the package's own CTAs (brand
-   green, then the dark secondary), and the line held to two lines. */
+   green, then the dark secondary). The line on one line on desktop (the team's ask, once
+   "Learn by doing" left it; it was held to two at 30rem). */
 .hero-v2-copy .fold-line {
-  max-width: 30rem;
+  max-width: 36rem;
 }
 /* A little more air between the line and the CTAs than the split's. */
 .hero-v2-copy .fold-actions {
@@ -37,18 +48,56 @@
    and fades down into the black where the copy sits. Its top and sides are
    hard: straight under the nav's line and out to the edges of the screen. */
 @media (min-width: 1056px) {
+  /* 68% of the hero, but on a short screen only as tall as leaves the eyebrow where the
+     feather has the film at 70% (the copy block, eyebrow to the hero's foot, is 27.5rem: the copy
+     (the facts' box beside it as tall), then the credits along the foot; the feather is half
+     the video). A fixed 68% put the eyebrow and title over the film at full strength on
+     768–800px-tall laptops (98% on 1366 × 768). Re-measure the 27.5rem if the copy's height
+     changes. */
+  .hero-v2 {
+    --hero-media-h: min(68%, (100% - var(--sn-h, 0px) - 27.5rem) / 0.65);
+  }
+  /* V3: the tags under the actions make the copy block about 3rem taller (estimated). */
+  .hero-v2[data-layout='v3'] {
+    --hero-media-h: min(68%, (100% - var(--sn-h, 0px) - 30.5rem) / 0.65);
+  }
+  /* V5: the tags under the actions, no credits row along the foot (estimated). */
+  .hero-v2:is([data-layout='v5'], [data-layout='v7']) {
+    --hero-media-h: min(68%, (100% - var(--sn-h, 0px) - 23rem) / 0.65);
+  }
+  /* V6: as V5, a step more space between the text and the tags (estimated). */
+  .hero-v2[data-layout='v6'] {
+    --hero-media-h: min(68%, (100% - var(--sn-h, 0px) - 24.5rem) / 0.65);
+  }
   .hero-v2-video {
     --feather-left: 0%;
     --feather-right: 0%;
     --feather-top: 0%;
     --feather-bottom: 50%;
   }
+}
 
-  /* The leaders, left-aligned like the copy, the foot of their marks level with the
-     CTAs': up from the copy's foot by the facts' line and the copy's gap. */
-  .fold-leaders.hero-v2-leaders {
-    align-items: flex-start;
-    text-align: left;
-    margin-bottom: calc(var(--type-body-sm-size) * var(--type-body-sm-lh) + var(--space-4));
-  }
+/* V3 and V5: "Built by alumni from" on its own line over the schools' logos, left-aligned inside a
+   block as wide as the logos' row, so the block sits flush at the right edge (V4 keeps them on
+   one line). A grid, not a wrapping flex row: that was as wide as label and logos side by side,
+   leaving the logos' row ending well short of the edge. */
+.hero-v2:is([data-layout='v3'], [data-layout='v5'], [data-layout='v6'], [data-layout='v7']) .fold-panel[data-schools-only] .fold-panel-alumni {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  justify-content: start;
+  column-gap: var(--space-6);
+  row-gap: var(--space-3);
+}
+.hero-v2:is([data-layout='v3'], [data-layout='v5'], [data-layout='v6'], [data-layout='v7']) .fold-panel[data-schools-only] .fold-panel-label {
+  grid-column: 1 / -1;
+  text-align: left;
+}
+
+/* V5's tags a touch larger (the team's ask): values 15px, captions 14px, a little more room. */
+.hero-v2:is([data-layout='v5'], [data-layout='v6'], [data-layout='v7']) .fold-tags li {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--type-label-size);
+}
+.hero-v2:is([data-layout='v5'], [data-layout='v6'], [data-layout='v7']) .fold-tags b {
+  font-size: 0.9375rem;
 }

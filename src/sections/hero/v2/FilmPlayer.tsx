@@ -93,7 +93,7 @@ export function FilmPlayer({
         <GlassButton
           size="icon-lg"
           aria-label="Play the campus film"
-          className="pointer-events-auto size-20"
+          className="pointer-events-auto size-16 sm:size-20"
           onClick={() => openFilm()}
         >
           <Play weight="fill" className="size-8" />

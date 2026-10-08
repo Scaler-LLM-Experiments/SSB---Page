@@ -27,3 +27,17 @@ export const MOMENT_SCREENS = MOMENT.frame + MOMENT.beat + MOMENT.white + MOMENT
  * MOMENT_SCREENS × the viewport height.
  */
 export const TRACK_HEIGHT = `calc(${1 + MOMENT_SCREENS} * 100svh - var(--space-16))`;
+
+/**
+ * Below desktop, the shorter moment (`phoneMoment` in HeroV2Motion), in screens of scroll: the
+ * copy rises to the top while the video comes down under it into the film's 16:9 frame, the spec
+ * sheet following (the play button and controls arriving over the last quarter), then a short
+ * hold. No fade to white: the hero then scrolls away as the page does.
+ */
+export const PHONE_MOMENT = {
+  frame: 0.36,
+  hold: 0.06,
+};
+
+/** The spacer after the hero below desktop: the hero sticks while exactly this scrolls past. */
+export const PHONE_TRACK = `calc(${PHONE_MOMENT.frame + PHONE_MOMENT.hold} * 100svh)`;
