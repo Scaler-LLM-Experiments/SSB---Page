@@ -726,3 +726,9 @@
   .cs-ss .cm-track { grid-template-columns: 112px minmax(0, 1fr) !important; gap: 16px !important; padding: 10px 12px !important; }
   .cs-ss .cm-track-n { display: none; }
 }
+/* the term figures (2026-10-08): a smaller tile, the figure and its word stacked level with it */
+.cm-glance > div { column-gap: 12px; row-gap: 0; align-content: center; }
+.cm-glance-icon { width: 40px; height: 40px; border-radius: 6px; }
+.cm-glance-icon svg { width: 20px; height: 20px; }
+.cm-glance dd { align-self: end; font-size: 22px !important; line-height: 22px; }
+.cm-glance dt { align-self: start; line-height: 18px; }
