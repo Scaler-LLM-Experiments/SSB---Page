@@ -732,3 +732,31 @@
 .cm-glance-icon svg { width: 20px; height: 20px; }
 .cm-glance dd { align-self: end; font-size: 22px !important; line-height: 22px; }
 .cm-glance dt { align-self: start; line-height: 18px; }
+/* In class lists (2026-10-08): smaller, bulleted, a little tighter */
+.cm-learn .cm-list { padding-top: 10px; gap: 2px; }
+.cm-learn .cm-list li { position: relative; padding: 4px 0 4px 16px; font-size: 14px; line-height: 1.45; color: var(--content-primary); }
+.cm-learn .cm-list li::before { content: ''; position: absolute; left: 2px; top: calc(4px + 0.725em - 2.5px); width: 5px; height: 5px; border-radius: 50%; background: var(--content-brand); opacity: 0.55; }
+/* Out of class as a row of cards (2026-10-08): the still on top, then the tags, title and line;
+   up to three across, no rules between */
+@media (min-width: 768px) {
+  .cm-playlist { list-style: none; margin: 0; padding: 0; display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .cm-playlist .cm-track { display: flex !important; flex-direction: column; align-items: stretch; gap: 12px !important; margin: 0 !important; padding: 0 !important; border-radius: 0; }
+  .cm-playlist .cm-track::before, .cm-playlist .cm-track + .cm-track::before { content: none !important; }
+  .cm-playlist .cm-track:hover { background: none; }
+  .cm-playlist .cm-track-n { display: none; }
+  .cm-playlist .cm-still { width: 100%; aspect-ratio: 16 / 9; border-radius: 8px; }
+  .cm-playlist .cm-track-main { display: grid; gap: 6px; }
+  .cm-playlist .cm-tags { flex-wrap: wrap; }
+  .cm-playlist .cm-track-title { font-size: 15px !important; line-height: 1.35; }
+  .cm-playlist .cm-track-desc { font-size: 13px !important; line-height: 1.45; }
+  .cs-ss .cm-track { grid-template-columns: none !important; }
+}
+@media (min-width: 768px) {
+  /* the Flagship tag on the still's corner, so the tag row stays one line */
+  .cm-playlist .cm-track { position: relative; }
+  .cm-playlist .cm-track .cm-flag { position: absolute; top: 8px; left: 8px; z-index: 2; }
+}
+/* the term as a tag on the picture's top left (2026-10-08): light glass, brand-green type */
+.cs-media-tag { position: absolute; top: 14px; left: 14px; z-index: 2; display: inline-flex; align-items: center; height: 28px; padding: 0 10px; border-radius: 6px;
+  background: rgb(255 255 255 / 0.82); -webkit-backdrop-filter: blur(12px) saturate(1.3); backdrop-filter: blur(12px) saturate(1.3); box-shadow: 0 1px 2px rgb(0 0 0 / 0.06); }
+.cs-media-tag .sj-eyebrow, .cs-media-tag .sj-eyebrow * { color: var(--content-brand) !important; font-size: 11px !important; line-height: 1 !important; font-weight: 700; letter-spacing: 0.08em; }

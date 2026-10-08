@@ -299,10 +299,15 @@ function StackSheet({ y, cfg }: { y: Year; cfg: JourneyConfig }) {
   const main = React.useRef<HTMLDivElement>(null);
   return (
     <div className="cs-ss">
-      <div className="cs-sheet-media cs-ss-media">{cfg.showVisual && y.visual ? <Visual photo={y.visual} alt="" cfg={cfg} ratio={[800, 900]} /> : null}</div>
+      <div className="cs-sheet-media cs-ss-media">
+        {cfg.showVisual && y.visual ? <Visual photo={y.visual} alt="" cfg={cfg} ratio={[800, 900]} /> : null}
+        {/* the term as a tag on the picture (2026-10-08) */}
+        <span className="cs-media-tag">
+          <YearEyebrow year={y.year} cfg={cfg} as="span" />
+        </span>
+      </div>
       <div ref={main} className="cs-sheet-main cs-ss-main">
         <header className="cs-sheet-head">
-          <YearEyebrow year={y.year} cfg={cfg} as="span" />
           <Heading as="h3" size="2">
             {y.name}
           </Heading>
@@ -761,10 +766,12 @@ function StackModal({ y, cfg, from, leaving, onClose, onGone, portal, sheet }: {
           </IconButton>
           <div className="cs-sheet-media" {...grip}>
             {photo ? <Visual photo={photo} alt="" cfg={cfg} ratio={[800, 900]} eager /> : null}
+            <span className="cs-media-tag">
+              <YearEyebrow year={y.year} cfg={cfg} as="span" />
+            </span>
           </div>
           <div ref={mainRef} className="cs-sheet-main">
             <header className="cs-sheet-head" {...grip}>
-              <YearEyebrow year={y.year} cfg={cfg} as="span" />
               <Heading as="h3" size="2" id={titleId}>
                 {y.name}
               </Heading>
