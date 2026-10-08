@@ -822,3 +822,17 @@
   .cm-playlist .cm-tags .cm-tag:not(.cm-flag) { display: none !important; }
   .cm-playlist .cm-track .cm-flag { top: 14px !important; bottom: auto !important; left: 14px; transform: scale(0.85); transform-origin: top left; }
 }
+/* the figures' glass, clearer (2026-10-08): a dark frosted layer, white type and icons, each figure
+   an icon beside its number and word, the three centred in their thirds on one line */
+.cs-media-glance { padding: 14px 6px; border-color: rgb(255 255 255 / 0.18); background: rgb(8 42 27 / 0.55); -webkit-backdrop-filter: blur(16px) saturate(1.3); backdrop-filter: blur(16px) saturate(1.3); box-shadow: 0 10px 28px -14px rgb(0 0 0 / 0.5); }
+.cs-media-glance > div { display: grid; grid-template-columns: auto auto; grid-template-rows: auto auto; justify-content: center; justify-items: start; align-items: center; column-gap: 8px; row-gap: 1px; text-align: left; }
+.cs-media-glance > div + div { border-left: 1px solid rgb(255 255 255 / 0.18); }
+.cs-media-glance-icon { grid-row: 1 / span 2; margin: 0; width: 30px; height: 30px; border-radius: 6px; background: rgb(255 255 255 / 0.14); color: #fff; }
+.cs-media-glance-icon svg { width: 16px; height: 16px; }
+.cs-media-glance dd { grid-column: 2; align-self: end; font-size: 17px; line-height: 17px; color: #fff; }
+.cs-media-glance dt { grid-column: 2; align-self: start; font-size: 11px; line-height: 14px; color: rgb(255 255 255 / 0.8); opacity: 1; white-space: nowrap; }
+@media (max-width: 767px) {
+  .cs-media-glance > div { grid-template-columns: none; justify-items: center; text-align: center; row-gap: 2px; }
+  .cs-media-glance-icon { grid-row: auto; margin-bottom: 4px; }
+  .cs-media-glance dd, .cs-media-glance dt { grid-column: auto; align-self: auto; }
+}
