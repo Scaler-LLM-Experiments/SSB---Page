@@ -996,3 +996,18 @@
 }
 /* (2026-10-08) a little less room above the title and under the last card */
 @media (min-width: 768px) { .cs-ss-main { padding-top: 16px !important; padding-bottom: 16px !important; } }
+
+/* The AI journey's carousel cards in the Super Mentor Sessions cards' form (2026-10-08): 384px wide,
+   no shadow, the same light hairline, the photo edge to edge across the top (no inset), the
+   outcome laid out as the tools are (a quiet label over its line, no panel) */
+.sj-ai-track > .sj-ai-card { flex: 0 0 384px !important; width: 384px !important; min-width: 384px; padding: 0 !important; overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--border-subtle) 60%, transparent) !important; border-radius: 8px !important; box-shadow: none !important; }
+.sj-ai-track > .sj-ai-card:hover { box-shadow: none !important; translate: none !important; }
+.sj-ai-card .sj-ai-media { margin: 0 !important; border-radius: 0 !important; aspect-ratio: 16 / 9; }
+.sj-ai-card .sj-ai-media .sj-ai-photo { border-radius: 0 !important; }
+.sj-ai-card .sj-ai-text { padding: 18px 20px 0 !important; }
+.sj-ai-open { padding: 16px 20px 20px !important; border-top: 0 !important; gap: 16px; }
+.sj-ai-open .sj-ai-outcome { display: grid !important; gap: 6px; padding: 0 !important; background: none !important; border: 0 !important; border-radius: 0; }
+.sj-ai-open .sj-ai-outcome-top { padding: 0 !important; border: 0 !important; }
+.sj-ai-open .sj-ai-outcome .sj-eyebrow { font-size: 11px; color: var(--content-secondary) !important; }
+.sj-ai-open .sj-ai-outcome p { margin: 0; font-size: 14px; line-height: 1.5; font-weight: 500; color: var(--content-primary); }
