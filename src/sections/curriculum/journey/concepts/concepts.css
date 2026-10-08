@@ -864,3 +864,13 @@
 /* the In class items in the description's style (2026-10-08): the same grey, size and weight */
 .cs-ss .cm-lede, .cs-sheet .cm-lede { font-size: 14.5px; line-height: 1.55; font-weight: 400; color: var(--content-secondary); }
 .cm-learn .cm-list li { font-size: 14.5px !important; line-height: 1.5; font-weight: 400; color: var(--content-secondary) !important; }
+/* Out of class cards, shorter (2026-10-08): a 112px still, even padding, a little more line height */
+@media (min-width: 768px) {
+  .cm-playlist .cm-track { grid-template-columns: 112px minmax(0, 1fr); gap: 14px !important; padding: 10px !important; align-items: center; }
+  .cm-playlist .cm-still { width: 112px; height: 112px; }
+  .cm-playlist .cm-track .cm-flag { top: 16px !important; left: 16px; transform: scale(0.75); }
+  .cm-playlist .cm-still-play { transform: scale(0.75); }
+  .cm-playlist .cm-track-main { gap: 6px; padding: 0 6px 0 0; justify-content: center; }
+  .cm-playlist .cm-track-title { font-size: 14.5px !important; line-height: 1.4; }
+  .cm-playlist .cm-track-desc { margin-top: 0; font-size: 12.5px !important; line-height: 1.55; }
+}
