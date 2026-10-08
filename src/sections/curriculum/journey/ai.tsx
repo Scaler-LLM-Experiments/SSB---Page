@@ -15,7 +15,7 @@ import { Badge, Heading, IconButton, Text } from '@kishanscaler/ssx-ui';
 import { ArrowsClockwise, CaretLeft, CaretRight, MagicWand, RocketLaunch, Robot, Waveform } from '@phosphor-icons/react';
 import type { AiIcon, AiJourney } from './data';
 import { c, type JourneyConfig } from './config';
-import { CardStack, Folds, type StackItem } from './concepts/stack';
+import { CardStack, type StackItem } from './concepts/stack';
 import { TOOL_LOGOS } from './tool-logos';
 
 const ICON: Record<AiIcon, React.ComponentType<{ weight?: 'bold' | 'regular'; 'aria-hidden'?: boolean }>> = {
@@ -201,12 +201,14 @@ export function AiJourneyBlock({ ai, cfg, width }: { ai: AiJourney; cfg: Journey
                   {t.desc}
                 </Text>
               </div>
-              <Folds
-                rows={[
-                  { id: 'outcome', title: 'Outcome', count: '', body: <Outcome text={t.outcome} label={false} /> },
-                  { id: 'tools', title: 'Tools', count: String(t.tools.length), body: <Tools tools={t.tools} /> },
-                ]}
-              />
+              {/* all up front, no folds (2026-10-08, the team's ask): the outcome, then the tools */}
+              <div className="sj-ai-open">
+                <Outcome text={t.outcome} />
+                <div className="sj-ai-toolset">
+                  <span className="sj-eyebrow">Tools</span>
+                  <Tools tools={t.tools} />
+                </div>
+              </div>
             </li>
           );
         })}

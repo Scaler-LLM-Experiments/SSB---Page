@@ -958,3 +958,32 @@
 @media (min-width: 768px) { .cm-playlist .cm-track { border-color: color-mix(in srgb, var(--border-subtle) 60%, transparent) !important; } }
 /* (2026-10-08) the description back closer to the title */
 .cs-sheet-body, .cs-ss .cs-sheet-body { padding-top: 10px !important; }
+/* the AI journey's carousel cards with everything up front (2026-10-08): the full line, the
+   outcome on its light panel, the tools as one row of marks */
+.sj-ai-card .sj-ai-desc { display: block !important; -webkit-line-clamp: unset !important; line-clamp: unset !important; overflow: visible !important; }
+.sj-ai-card { display: flex; flex-direction: column; }
+.sj-ai-open { display: grid; gap: 14px; margin-top: auto; padding: 14px 16px 16px; border-top: 1px solid color-mix(in srgb, var(--border-subtle) 60%, transparent); }
+.sj-ai-open .sj-ai-outcome { padding: 12px 14px; border-radius: 8px; }
+.sj-ai-open .sj-ai-outcome p { font-size: 13.5px; line-height: 1.5; font-weight: 500; }
+.sj-ai-open .sj-ai-toolset { display: grid; gap: 8px; padding-top: 0; border-top: 0; }
+.sj-ai-open .sj-ai-toolset .sj-eyebrow { font-size: 11px; color: var(--content-secondary); }
+/* every card the row's height, the outcome and tools level across them */
+.sj-ai-track { align-items: stretch !important; }
+.sj-ai-track > .sj-ai-card { height: auto !important; }
+.sj-ai-card .sj-ai-text { flex: 1 1 auto; }
+/* (2026-10-08) the term card's sections closer together; room above the title and under the last card */
+@media (min-width: 768px) {
+  .cs-ss-main { padding-top: 24px !important; padding-bottom: 24px !important; }
+  .cs-ss .cm { gap: 20px !important; }
+  .cs-ss .cm-intro { gap: 14px; }
+  .cs-ss .cm-section { gap: 10px !important; }
+  .cs-ss .cm-learn .cm-list { padding-top: 8px; }
+}
+/* (2026-10-08) In class items a step under the description, so they read the same size */
+.cm-learn .cm-list li { font-size: 13.5px !important; line-height: 1.5; }
+/* challenge titles: two lines at most; the cards of a row the same height */
+@media (min-width: 768px) {
+  .cm-playlist .cm-track-title { display: -webkit-box !important; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+  .cm-playlist .cm-track-desc { display: -webkit-box !important; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden; }
+  .cm-playlist { align-items: stretch; }
+}
