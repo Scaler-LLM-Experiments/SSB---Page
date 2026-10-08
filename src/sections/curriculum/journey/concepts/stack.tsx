@@ -182,7 +182,7 @@ function Playlist({ projects, cfg }: { projects: Year['projects']; cfg: JourneyC
   );
 }
 
-function ModalBody({ y, cfg, only }: { y: Year; cfg: JourneyConfig; /** /v2-stack splits the body across two columns: 'main' (intro, In class) or 'build' (Out of class) */ only?: 'main' | 'build' }) {
+function ModalBody({ y, cfg, only, noGlance }: { y: Year; cfg: JourneyConfig; /** /v2-stack splits the body across two columns: 'main' (intro, In class) or 'build' (Out of class) */ only?: 'main' | 'build'; /** the figures sit on the picture instead (MediaGlance) */ noGlance?: boolean }) {
   const L = useLabels();
   const flagship = y.projects.find((p) => p.flagship);
   const projects = flagship ? [flagship, ...y.projects.filter((p) => p !== flagship)] : y.projects;
@@ -200,7 +200,7 @@ function ModalBody({ y, cfg, only }: { y: Year; cfg: JourneyConfig; /** /v2-stac
       {only === 'build' ? null : (
       <div className="cm-intro">
         {y.description ? <p className="cm-lede">{y.description}</p> : null}
-        {glance.length ? (
+        {glance.length && !noGlance ? (
           <dl className="cm-glance">
             {glance.map((g) => (
               <div key={g.what}>
@@ -290,6 +290,33 @@ function StackDetails({ y }: { y: Year }) {
   );
 }
 
+/** The term's figures on its picture, over a frosted layer (2026-10-08): courses, live projects, masterclasses. */
+function MediaGlance({ y }: { y: Year }) {
+  const L = useLabels();
+  const courses = y.skills ? countSkills(y) : 0;
+  const projects = y.projects.length;
+  const workshops = (y.workshops ?? []).length;
+  const items = [
+    courses ? { n: courses, what: countWord(L.skills, courses), icon: <BookOpenText /> } : null,
+    projects ? { n: projects, what: countWord(L.projects, projects), icon: <RocketLaunch /> } : null,
+    workshops ? { n: workshops, what: (L.workshops ?? 'Workshops').split(' & ')[0].toLowerCase(), icon: <ChalkboardTeacher /> } : null,
+  ].filter(Boolean) as { n: number; what: string; icon: React.ReactNode }[];
+  if (!items.length) return null;
+  return (
+    <dl className="cs-media-glance">
+      {items.map((g) => (
+        <div key={g.what}>
+          <span className="cs-media-glance-icon" aria-hidden="true">
+            {g.icon}
+          </span>
+          <dd>{g.n}</dd>
+          <dt>{g.what}</dt>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
 /**
  * A whole term as its sheet, set on the card (/v2-stack, 2026-10-08, the team's pick): the picture a
  * tall panel at the left; at the right, scrolling inside the card, the term, title and line, then
@@ -305,6 +332,7 @@ function StackSheet({ y, cfg }: { y: Year; cfg: JourneyConfig }) {
         <span className="cs-media-tag">
           <YearEyebrow year={y.year} cfg={cfg} as="span" />
         </span>
+        <MediaGlance y={y} />
       </div>
       <div ref={main} className="cs-sheet-main cs-ss-main">
         <header className="cs-sheet-head">
@@ -313,7 +341,7 @@ function StackSheet({ y, cfg }: { y: Year; cfg: JourneyConfig }) {
           </Heading>
         </header>
         <div className="cs-modal-body cs-sheet-body">
-          <ModalBody y={y} cfg={cfg} />
+          <ModalBody y={y} cfg={cfg} noGlance />
         </div>
       </div>
     </div>
@@ -769,6 +797,7 @@ function StackModal({ y, cfg, from, leaving, onClose, onGone, portal, sheet }: {
             <span className="cs-media-tag">
               <YearEyebrow year={y.year} cfg={cfg} as="span" />
             </span>
+            <MediaGlance y={y} />
           </div>
           <div ref={mainRef} className="cs-sheet-main">
             <header className="cs-sheet-head" {...grip}>
@@ -777,7 +806,7 @@ function StackModal({ y, cfg, from, leaving, onClose, onGone, portal, sheet }: {
               </Heading>
             </header>
             <div ref={bodyRef} className="cs-modal-body cs-sheet-body">
-              <ModalBody y={y} cfg={cfg} />
+              <ModalBody y={y} cfg={cfg} noGlance />
             </div>
             <ScrollCue box={mainRef} />
           </div>
