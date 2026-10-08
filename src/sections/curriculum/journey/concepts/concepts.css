@@ -987,3 +987,10 @@
   .cm-playlist .cm-track-desc { display: -webkit-box !important; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden; }
   .cm-playlist { align-items: stretch; }
 }
+/* (2026-10-08) every challenge card on one grid (a card without a video got a wider first column);
+   In class and Out of class closer */
+@media (min-width: 768px) {
+  .cm-playlist .cm-track, .cm-playlist .cm-track[data-flagship] { grid-template-columns: 112px minmax(0, 1fr) !important; }
+  .cs-ss .cm { gap: 14px !important; }
+  .cs-ss .cm-learn .cm-list { padding-bottom: 0; }
+}
