@@ -374,3 +374,6 @@
 @keyframes cr-phase-drift { from { transform: translateX(0); } to { transform: translateX(calc(-100% + min(100vw, 1055px) - 2 * var(--space-gutter, 16px) - 8px)); } }
 @media (max-width: 1055px) and (prefers-reduced-motion: reduce) { .cr-main .sj-career-card .sj-tl { animation: none; } .cr-main .sj-career-split > .sj-career-card { overflow-x: auto; } }
 @media (min-width: 672px) and (max-width: 1055px) { .cr-main .sj-ps-view { height: 560px; } }
+/* no chips on phones (2026-10-07, the team's ask): the row is hidden, not removed, since its timer
+   advances the carousel; the cards move on by themselves */
+@media (max-width: 1055px) { .cr-main .sj-ps-switch { visibility: hidden; pointer-events: none; } }
