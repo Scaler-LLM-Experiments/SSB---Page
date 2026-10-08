@@ -12,7 +12,7 @@ export const PHOTOS: Record<string, { id?: string; src?: string; alt: string }> 
   // the team's illustration (2026-10-07): frosted green building blocks, in place of the selling-challenge photo (term1.webp)
   ssbT1: { src: '/ssb-terms/term1-blocks.webp', alt: 'Frosted green building blocks stacked on a soft green ground' },
   // the team's illustration (2026-10-07): a frosted blue tile with a path to a spark, in place of the campus photo (term2.webp)
-  ssbT2: { src: '/ssb-terms/term2-path.webp', alt: 'A frosted blue tile marked with a path of dots leading to a spark' },
+  ssbT2: { src: '/ssb-terms/term2-path-v2.webp', alt: 'A frosted blue tile marked with a path of dots leading to a spark' },
   // the team's illustration (2026-10-07): a frosted violet briefcase with a check, in place of the campus photo (term3.webp)
   ssbT3: { src: '/ssb-terms/term3-briefcase.webp', alt: 'A frosted violet briefcase marked with a check' },
   // the team's illustration (2026-10-07): a frosted green magnifier over a spark, in place of the campus photo (term4.webp)
