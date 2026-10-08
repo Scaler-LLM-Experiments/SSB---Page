@@ -311,7 +311,6 @@ function StackSheet({ y, cfg }: { y: Year; cfg: JourneyConfig }) {
         <div className="cs-modal-body cs-sheet-body">
           <ModalBody y={y} cfg={cfg} />
         </div>
-        <ScrollCue box={main} />
       </div>
     </div>
   );

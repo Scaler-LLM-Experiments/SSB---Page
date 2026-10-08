@@ -708,3 +708,21 @@
   .cs-ss-main .cs-sheet-head { padding: 4px 4px 0; }
   .cs-ss-main .cs-sheet-body { padding: 20px 4px 24px; }
 }
+/* no scrolling inside the card (2026-10-08, the team's ask): the whole term shows, the sheet's
+   spacing tightened so it stays compact; the picture runs the card's full height */
+.cs-ss { height: auto !important; align-items: stretch; }
+.cs-ss-media { height: auto; min-height: 100%; }
+.cs-ss-main { height: auto; overflow: visible; }
+.cs-ss .cs-sheet-head { padding-top: 20px; gap: 4px; }
+.cs-ss .cs-sheet-body { padding-top: 18px; padding-bottom: 20px; }
+.cs-ss .cm { gap: 26px; padding: 0; }
+.cs-ss .cm-intro { gap: 18px; }
+.cs-ss .cm-section { gap: 12px; }
+.cs-ss .cm-lede { font-size: 15px; line-height: 1.55; }
+.cs-ss .cm-glance dd { font-size: 22px; }
+/* the challenges on the card: slimmer rows, smaller stills */
+@media (min-width: 768px) {
+  .cs-ss .cm-list { padding-top: 0; }
+  .cs-ss .cm-track { grid-template-columns: 112px minmax(0, 1fr) !important; gap: 16px !important; padding: 10px 12px !important; }
+  .cs-ss .cm-track-n { display: none; }
+}
