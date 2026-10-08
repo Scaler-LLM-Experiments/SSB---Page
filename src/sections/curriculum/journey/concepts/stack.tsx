@@ -1124,18 +1124,50 @@ export function StackJourney({ j, cfg, width, portal, initialOpen = null }: { j:
   React.useEffect(() => {
     setNavSlot(scroller.current?.closest('.sj')?.querySelector<HTMLElement>('[data-frame-controls]') ?? null);
   }, [narrow]);
-  // phones show the desktop cards too (2026-10-07, the team: m-web's structure should match desktop),
-  // in a swipe row a card and a slice wide; the m-web scroll stack (ScrollStack) is kept but unused here
+  // phones: the desktop card (2026-10-07, the team: m-web's structure should match desktop) in the
+  // phone's own interaction, the scroll stack: each card sticks under the nav a step lower than the
+  // one before, so the next slides up over it; a tap opens the term's sheet, as on desktop.
+  // (ScrollStack, the earlier m-web cards with folds, is kept but unused here.)
+  if (narrow)
+    return (
+      <div className="cs-wrap" onKeyDown={onKey} {...c(cfg, 'stack')}>
+        <ol className="cs-deck cs-mstack" aria-label={L.years}>
+          {years.map((y, i) => (
+            <li key={y.year} className="cs-mcard" style={{ '--i': i } as React.CSSProperties}>
+              <div
+                className="cs-inner"
+                ref={(el) => {
+                  cards.current[y.year] = el;
+                }}
+              >
+                <button
+                  ref={frontRef(y.year)}
+                  type="button"
+                  className="cs-face cs-front"
+                  data-cover={(cfg.showVisual && y.visual) || undefined}
+                  aria-expanded={open === y.year}
+                  aria-haspopup="dialog"
+                  onClick={() => setOpen(y.year)}
+                >
+                  <CardFront y={y} cfg={cfg} />
+                </button>
+              </div>
+            </li>
+          ))}
+        </ol>
+        {dialog}
+      </div>
+    );
 
   /* ── desktop: the fan ───────────────────────────────────────────────────── */
   const W = deck.w || width || 1200;
   const cw = Math.min(380, W * 0.3);
   // collapsed: a plain row of equal cards, side by side (no fan, no overlap)
   // (wide gaps: the cards have no frame, so the space between them is what sets them apart)
-  const ROW_GAP = narrow ? 16 : 44; // 64, then 32 (2026-10-07: too wide, then a little tight); 16 on phones
+  const ROW_GAP = 44; // 64, then 32 (2026-10-07: too wide, then a little tight)
   // modal / sheet: a carousel showing three whole cards and a slice of the fourth (it says "more this way")
-  const carousel = (modal && n > 3) || narrow;
-  const rowW = narrow ? W * 0.84 : carousel ? (W - ROW_GAP * 3) / 3.2 : (W - ROW_GAP * (n - 1)) / n;
+  const carousel = modal && n > 3;
+  const rowW = carousel ? (W - ROW_GAP * 3) / 3.2 : (W - ROW_GAP * (n - 1)) / n;
   // + a little end room so the last card's border and shadow are never clipped
   const trackW = n * rowW + ROW_GAP * (n - 1) + 8;
   const pileStep = 64; // each piled card shows its eyebrow + name, like a file tab

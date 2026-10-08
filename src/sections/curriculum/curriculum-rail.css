@@ -342,3 +342,12 @@
   .cr-main .sj-ps-tab { border-color: color-mix(in srgb, var(--content-primary) 10%, transparent); background: rgb(255 255 255 / 0.72); color: var(--content-primary); }
   .cr-main .sj-ps-tab[aria-current='true'] { border-color: transparent; background: var(--content-primary); color: var(--surface-page); }
 }
+
+/* Career prep: every corner at the design language's 8px (2026-10-07, the team's ask), desktop and
+   phone: the frame, the card inside it, the chips and the frosted bar */
+.cr-main .sj-ps-view { border-width: 4px !important; border-radius: 8px !important; }
+.cr-main .sj-ps-card { border-radius: 4px; }
+.cr-main .sj-ps-tab, .cr-main .sj-ps-tab[aria-current='true'] { border-radius: 8px !important; }
+.cr-main .sj-ps-pill { border-radius: 0 0 8px 8px; }
+.cr-main .sj-ps-card .sj-ps-copy, .cr-main .sj-ps-card[data-k] .sj-ps-copy { border-radius: 8px !important; }
+.cr-main .sj-tl-item { border-radius: 8px !important; }

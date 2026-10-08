@@ -550,3 +550,18 @@
   .cs-sheet-body { padding: 20px 4px 24px; }
   .cs-sheet-close { top: 40px !important; right: 20px !important; }
 }
+/* the term cards on phones: desktop's card, stacking as the page scrolls (2026-10-07) */
+.cs-mstack { list-style: none; margin: 0; padding: 0; display: grid; gap: 24px; }
+.cs-mcard { position: sticky; top: calc(var(--sn-h, 64px) + 12px + var(--i) * 14px); }
+.cs-mcard .cs-inner { padding: 12px 12px 14px; border: 1px solid var(--border-subtle); border-radius: 20px; background: var(--surface-page); box-shadow: 0 -10px 24px -18px rgb(0 0 0 / 0.25); }
+.cs-mcard .cs-front { all: unset; box-sizing: border-box; display: flex; flex-direction: column; width: 100%; cursor: pointer; }
+.cs-mcard .cs-front:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 4px; border-radius: 12px; }
+.cs-mcard .cs-cover-foot { flex-wrap: wrap; row-gap: 8px; }
+.cs-mcard .cs-cover-cta { flex-basis: 100%; }
+@media (prefers-reduced-motion: reduce) { .cs-mcard { position: static; } }
+/* (the phone stack takes the desktop row's card styles through .cs-deck; its own layout here) */
+.cs-deck.cs-mstack { position: static; display: grid; height: auto !important; width: auto !important; }
+.cs-deck.cs-mstack .cs-front[data-cover] .cs-cover-text h3 { white-space: normal; font-size: 20px; }
+.cs-deck.cs-mstack .cs-front[data-cover] .cs-cover-text .cj-ship { min-height: 0; }
+.sj .cs-deck.cs-mstack .cs-mcard .cs-inner { padding: 12px 12px 14px; border: 1px solid var(--border-subtle) !important; border-radius: 20px !important; background: var(--surface-page) !important; box-shadow: 0 -10px 24px -18px rgb(0 0 0 / 0.25) !important; }
+.sj .cs-deck.cs-mstack .cs-mcard .cs-inner { padding: 12px 12px 14px; border: 1px solid var(--border-subtle) !important; border-radius: 8px !important; background: var(--surface-page) !important; box-shadow: 0 -10px 24px -18px rgb(0 0 0 / 0.25) !important; }
