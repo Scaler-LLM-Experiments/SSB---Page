@@ -43,7 +43,8 @@ const cfgFor = (part: Part) => normalize({ ...base, blocks: ORDER.map((id) => ({
 const CFG = { learn: cfgFor('learn'), ai: cfgFor('ai'), main: cfgFor('main'), terms: cfgFor('terms'), career: cfgFor('career') };
 
 export default function SsbCurriculum({ part = 'main', termsStack = false }: { part?: Part; /** the terms as stacking cards at every width (/v2-stack) */ termsStack?: boolean }) {
-  const config = React.useMemo(() => (termsStack ? { ...CFG[part], termsStack: true } : CFG[part]), [part, termsStack]);
+  // /v2-stack: the terms stack, and the AI journey runs as a carousel of cards instead (2026-10-08)
+  const config = React.useMemo(() => (termsStack ? { ...CFG[part], termsStack: true, aiLayout: 'carousel' as const } : CFG[part]), [part, termsStack]);
   return (
     <div className="pv-page pv-home" data-terms-stack={termsStack || undefined}>
       <CurriculumJourney config={config} />
