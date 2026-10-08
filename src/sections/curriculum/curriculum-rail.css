@@ -393,3 +393,16 @@
   /* the body on the title's inset, so title, description, Outcome and Tools share one left edge */
   .cr-main .sj-ai[data-narrow] .ss-body { padding-left: 32px; padding-right: 32px; }
 }
+/* AI cards on phones, tighter (2026-10-08, the team's ask): a lower photo, smaller type, and the
+   description, Outcome and Tools spaced apart as three groups (hairlines between, as desktop's) */
+@media (max-width: 1055px) {
+  .cr-main .sj-ai[data-narrow] .ss-hero .sj-ai-photo { aspect-ratio: 2 / 1; }
+  .cr-main .sj-ai[data-narrow] .ss-title { gap: 8px; }
+  .cr-main .sj-ai[data-narrow] .ss-title h3 { font-size: 20px; line-height: 1.25; }
+  .cr-main .sj-ai[data-narrow] .ss-ship { font-size: 14px; line-height: 1.5; }
+  .cr-main .sj-ai[data-narrow] .ss-body { gap: 0; padding-top: 4px; padding-bottom: 20px; }
+  .cr-main .sj-ai[data-narrow] .sj-ai-outcome, .cr-main .sj-ai[data-narrow] .sj-ai-toolset { padding-top: 14px; margin-top: 14px; border-top: 1px solid var(--border-subtle); }
+  .cr-main .sj-ai[data-narrow] .sj-ai-outcome p { font-size: 13px; line-height: 1.45; font-weight: 500; }
+  .cr-main .sj-ai[data-narrow] .sj-tools-set .sj-tool { font-size: 13px; }
+}
+@media (max-width: 1055px) { .cr-main .sj-ai[data-narrow] .sj-ai-outcome p { max-width: none; text-wrap: pretty; } }
