@@ -994,3 +994,5 @@
   .cs-ss .cm { gap: 14px !important; }
   .cs-ss .cm-learn .cm-list { padding-bottom: 0; }
 }
+/* (2026-10-08) a little less room above the title and under the last card */
+@media (min-width: 768px) { .cs-ss-main { padding-top: 16px !important; padding-bottom: 16px !important; } }
