@@ -954,3 +954,7 @@
 }
 /* (2026-10-08) the description runs the copy's full width */
 .cs-ss .cm-lede, .cs-sheet .cm-lede { max-width: none !important; }
+/* (2026-10-08) the challenge cards' border as light as the page's other cards (the venture cards' hairline) */
+@media (min-width: 768px) { .cm-playlist .cm-track { border-color: color-mix(in srgb, var(--border-subtle) 60%, transparent) !important; } }
+/* (2026-10-08) the description back closer to the title */
+.cs-sheet-body, .cs-ss .cs-sheet-body { padding-top: 10px !important; }
