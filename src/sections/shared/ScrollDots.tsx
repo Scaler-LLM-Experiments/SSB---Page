@@ -55,6 +55,13 @@ export function ScrollDots({
   // the button pauses the ticker rather than this stepping the row.
   const [ticker, setTicker] = React.useState(false);
 
+  // A move the visitor asked for (a dot, an arrow): the dot goes straight to its card and holds
+  // there while the row scrolls over (reading the row on the way lit every dot it passed, each
+  // restarting its stretch: the dots juddered). Cleared once the row is there, or after a beat.
+  const pending = React.useRef<{ index: number; until: number } | null>(null);
+  // a dot chosen that the row can only reach by scrolling to its end: kept lit while the row stays there
+  const chosenAtEnd = React.useRef<number | null>(null);
+
   const step = (el: HTMLElement) => {
     if (stepPx.current) return stepPx.current;
     const first = el.firstElementChild as HTMLElement | null;
@@ -74,6 +81,29 @@ export function ScrollDots({
       const s = step(el);
       if (!s) return;
       const atEnd = el.scrollLeft >= el.scrollWidth - el.clientWidth - 1;
+      const going = pending.current;
+      if (going) {
+        // there once the row reads as that card (counted as the fill counts: rounded for a row of
+        // cards, floored for a ticker), or at the row's end, or after the beat
+        const at0 = el.scrollLeft / s;
+        const idx = fill === 'solid' ? Math.round(at0) : Math.floor(at0 + 0.01);
+        if (idx !== going.index && !atEnd && performance.now() < going.until) {
+          setState({ active: going.index, progress: fill === 'solid' ? 1 : 0, atEnd: false });
+          return;
+        }
+        pending.current = null;
+        // a card chosen near the end of a row that can't scroll it to the start: the chosen dot stays lit
+        if (atEnd) {
+          chosenAtEnd.current = going.index;
+          setState({ active: going.index, progress: 1, atEnd: true });
+          return;
+        }
+      }
+      if (!atEnd) chosenAtEnd.current = null;
+      else if (chosenAtEnd.current !== null) {
+        setState({ active: chosenAtEnd.current, progress: 1, atEnd: true });
+        return;
+      }
       // A row that cannot scroll its last cards to the start: the end is the last card.
       if (atEnd && el.scrollWidth <= s * count + el.clientWidth) {
         setState({ active: count - 1, progress: 1, atEnd: true });
@@ -134,6 +164,9 @@ export function ScrollDots({
 
   const select = (i: number) => {
     if (timed) setPlaying(false); // the visitor has taken over
+    // the dot moves at once, and holds while the row travels (about the length of a smooth scroll)
+    pending.current = { index: i, until: performance.now() + 1100 };
+    setState((st) => ({ ...st, active: i, progress: fill === 'solid' ? 1 : 0 }));
     if (onSelect) return onSelect(i);
     const el = scroller.current;
     if (el) el.scrollTo({ left: i * step(el), behavior: 'smooth' });

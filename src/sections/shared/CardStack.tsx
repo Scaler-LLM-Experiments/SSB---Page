@@ -80,6 +80,10 @@ export function CardStack<T>({
     return { row, step, max: row.scrollWidth - row.clientWidth };
   }, []);
 
+  // A move asked for (a dot, an arrow, the timer): the card on show goes straight to it and holds
+  // while the row scrolls over, instead of lighting each card it passes (the dots juddered).
+  const pending = React.useRef<{ index: number; until: number } | null>(null);
+
   // The card on show follows the scroll position (a swipe, a dot, the timer alike).
   React.useEffect(() => {
     const row = rowRef.current;
@@ -90,6 +94,11 @@ export function CardStack<T>({
       const g = geometry();
       if (!g || !g.step) return;
       const i = row.scrollLeft >= g.max - 4 ? n - 1 : Math.round(row.scrollLeft / g.step);
+      const going = pending.current;
+      if (going) {
+        if (i !== going.index && performance.now() < going.until) return;
+        pending.current = null;
+      }
       setActive(Math.min(n - 1, Math.max(0, i)));
     };
     const onScroll = () => {
@@ -107,6 +116,8 @@ export function CardStack<T>({
       const g = geometry();
       if (!g) return;
       const i = loop ? ((to % n) + n) % n : Math.min(n - 1, Math.max(0, to));
+      pending.current = { index: i, until: performance.now() + 1100 };
+      setActive(i);
       g.row.scrollTo({ left: Math.min(i * g.step, g.max), behavior: reduced ? 'auto' : 'smooth' });
     },
     [geometry, loop, n, reduced],
