@@ -916,3 +916,14 @@
   .cs-media-glance dd, .cs-media-glance dt { grid-column: auto; align-self: auto; }
 }
 @media (min-width: 768px) { .cs-ss, .cs-sheet { grid-template-columns: minmax(300px, 1fr) minmax(0, 3fr) !important; } }
+/* (2026-10-08) the picture a little wider; each figure left-aligned in its third (icon, number, word) */
+@media (min-width: 768px) {
+  .cs-ss, .cs-sheet { grid-template-columns: minmax(330px, 1.15fr) minmax(0, 3fr) !important; }
+  .cs-media-glance { padding: 12px 6px; }
+  .cs-media-glance > div { justify-content: start; justify-items: start; text-align: left; padding: 0 8px 0 12px; }
+}
+/* (2026-10-08) a challenge card's still and copy both top-aligned */
+@media (min-width: 768px) {
+  .cm-playlist .cm-track { align-items: start !important; }
+  .cm-playlist .cm-track-main { justify-content: flex-start !important; padding-top: 2px !important; }
+}
