@@ -886,3 +886,5 @@
 .cm-col .sj-lane > .sj-eyebrow { white-space: nowrap; letter-spacing: 0.05em; font-size: 11px; }
 /* (2026-10-08) a little more room between the title and the description */
 .cs-sheet-body, .cs-ss .cs-sheet-body { padding-top: 18px !important; }
+/* the months tag, larger and flat (2026-10-08) */
+.cs-media-tag { height: 36px; padding: 0 14px; font-size: 14px; box-shadow: none; }
