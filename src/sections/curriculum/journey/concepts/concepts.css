@@ -888,3 +888,18 @@
 .cs-sheet-body, .cs-ss .cs-sheet-body { padding-top: 18px !important; }
 /* the months tag, larger and flat (2026-10-08) */
 .cs-media-tag { height: 36px; padding: 0 14px; font-size: 14px; box-shadow: none; }
+/* (2026-10-08) a wider picture, so the three figures fit on its glass */
+@media (min-width: 768px) {
+  .cs-ss { grid-template-columns: minmax(440px, 5fr) minmax(0, 8fr); }
+  .cs-sheet { grid-template-columns: minmax(440px, 5fr) minmax(0, 8fr); }
+  .cs-media-glance > div { padding-left: 14px; padding-right: 8px; }
+}
+/* (2026-10-08) the picture and the copy closer; the figures' parts closer together */
+@media (min-width: 768px) {
+  .cs-ss .cs-sheet-head, .cs-ss .cs-sheet-body { padding-left: 32px !important; }
+  .cs-sheet .cs-sheet-head, .cs-sheet .cs-sheet-body { padding-left: 36px !important; }
+}
+.cs-media-glance > div { column-gap: 6px; padding-left: 10px; padding-right: 4px; }
+.cs-media-glance-icon { width: 28px; height: 28px; }
+/* (2026-10-08) more room between a challenge's title and its line */
+@media (min-width: 768px) { .cm-playlist .cm-track-main { gap: 10px; } }
