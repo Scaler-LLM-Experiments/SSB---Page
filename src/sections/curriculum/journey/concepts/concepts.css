@@ -903,3 +903,16 @@
 .cs-media-glance-icon { width: 28px; height: 28px; }
 /* (2026-10-08) more room between a challenge's title and its line */
 @media (min-width: 768px) { .cm-playlist .cm-track-main { gap: 10px; } }
+/* (2026-10-08) the card on four equal columns: the picture one, the copy three; In class's three
+   lanes sit on those three columns exactly */
+@media (min-width: 768px) {
+  .cs-ss, .cs-sheet { grid-template-columns: minmax(0, 1fr) minmax(0, 3fr) !important; column-gap: 0; }
+  .cs-ss .cm-learn, .cs-sheet .cm-learn { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; column-gap: 24px; }
+  .cs-ss .cm-col, .cs-sheet .cm-col { padding: 0 !important; }
+  /* the narrower picture: each figure's icon over its number and word */
+  .cs-media-glance { padding: 12px 4px; }
+  .cs-media-glance > div { grid-template-columns: none; justify-content: center; justify-items: center; text-align: center; row-gap: 2px; padding: 0 2px; }
+  .cs-media-glance-icon { grid-row: auto; margin-bottom: 4px; }
+  .cs-media-glance dd, .cs-media-glance dt { grid-column: auto; align-self: auto; }
+}
+@media (min-width: 768px) { .cs-ss, .cs-sheet { grid-template-columns: minmax(300px, 1fr) minmax(0, 3fr) !important; } }
