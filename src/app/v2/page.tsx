@@ -8,6 +8,7 @@ import { CurriculumRail } from '@/sections/curriculum/CurriculumRail';
 import { FaqSection } from '@/sections/faq/FaqSection';
 import { HeroV2 } from '@/sections/hero/v2/HeroV2';
 import { Curriculum, FooterShell, HomeNav, ScrollRefresh } from '@/sections/home/client';
+import { BottomNav } from '@/sections/site/BottomNav';
 import { ImmersionsSection } from '@/sections/immersions/ImmersionsSection';
 import { ImpactSection } from '@/sections/impact/ImpactSection';
 import { InnovationLabSection } from '@/sections/innovation-lab/InnovationLabSection';
@@ -49,6 +50,7 @@ export default function V2Page() {
             over the black hero (HeroV2's motion turns it light with the page). Split: a light navbar
             over a light page, the film in a rounded card, the leaders at the right. */}
         <HomeNav />
+        <BottomNav />
         <HeroV2 {...hero} />
         {/* 2 placements (main's showcase take) */}
         <PlacementsShowcase {...placements} />

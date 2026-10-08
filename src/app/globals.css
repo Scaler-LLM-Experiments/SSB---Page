@@ -39,9 +39,11 @@
    Scoped to the home page (.pv-home), so the curriculum's own page and lab are unchanged. */
 
 /* rhythm: each curriculum block is a section like the rest; its own inner padding is dropped */
-main [data-slot='section'][data-density='roomy'], .pv-page.pv-home { padding-block: var(--space-10); }
+/* (2026-10-08, the team's ask for more air: the system's `roomy` rung, 96px / 48px, in place of the
+   `default` rung's 64 / 40 chosen on 2026-10-07) */
+main [data-slot='section'][data-density='roomy'], .pv-page.pv-home { padding-block: var(--space-12); }
 @media (min-width: 672px) {
-  main [data-slot='section'][data-density='roomy'], .pv-page.pv-home { padding-block: var(--space-16); }
+  main [data-slot='section'][data-density='roomy'], .pv-page.pv-home { padding-block: var(--space-24); }
 }
 .pv-home .sj-shell { padding-top: 0; padding-bottom: 0; }
 .pv-home .sj-shell > .sj-ai, .pv-home .sj-shell > .sj-learn { margin-top: 0; padding-top: 0; }
@@ -62,3 +64,43 @@ main [data-slot='section'][data-density='roomy'], .pv-page.pv-home { padding-blo
 /* corners: main's Placements showcase uses a larger corner than every other card (8px) */
 main section[aria-labelledby^='placements'] { --story-radius: var(--radius-lg); }
 main section[aria-labelledby^='placements'] :is(.rounded-2xl, .rounded-xl, .pl-figure-box, .pl-story) { border-radius: var(--radius-lg); }
+
+/* ── The design system's radii, across the page (the team's ask, 2026-10-08) ─────────────────────
+   Cards 8px (radius-lg, the package's Card); chips, tags, small controls and the panels inset in
+   a card 4px (radius-md, the package's Button). A frameless card's photo is its edge: 8px. The sections set their own radii (12–24px, and
+   pills); they are brought in line here, in one place, rather than in each section's file.
+   Left alone: the hero's framed video (its corners drawn by the scroll moment), the film player's
+   tooltip (YouTube's own), and round things (avatars, dots). */
+:is(main, footer) :is(
+    .pl-app-inner, .pl-figure-box, .sj-tl-item, .sj-ps-view, .sj-pb-card, .sj-ai-outcome,
+    .imm-feature, .imm-feature__media, .sfb-card, .pt-switch, .sj-ps-switch, .cr-list,
+    .sj-visual
+  ) { border-radius: var(--radius-lg) !important; }
+:is(main, footer, header, nav, aside) :is(
+    .pl-chip, .vc-tag, .why-story-tag, .sj-ps-tab, .in-lc-watch, .creator-card__badge, .sj-tool-mono,
+    .cr-item, .cn-arrow, .cn-dots,
+    .imm-feature__body, .creator-card__foot, .sj-ps-copy, .sj-pb-text
+  ) { border-radius: var(--radius-md) !important; }
+/* the carousel controls' own radius token, so their entrance (a clip to that radius) agrees */
+.cn { --cn-radius: var(--radius-md) !important; }
+
+/* ── One header, every section (2026-10-08, the team's ask: consistent hierarchy, a quieter
+   sub-line) ──────────────────────────────────────────────────────────────────────────────────
+   eyebrow (12px, 700, tracked) → 8px → title (the display size: 36px / 28px, medium) → 8px →
+   sub-line at the body size (16px, not the large 18px), 1.6 leading, in grey, at most ~70
+   characters a line. Every section header is the design system's display Heading followed by a
+   large Text; this brings them to one setting wherever they sit. */
+main :is(h2, h3).type-display + p.type-body-lg {
+  font-size: var(--type-body-size);
+  line-height: 1.6;
+  max-width: 40rem;
+  color: var(--content-secondary);
+  text-wrap: pretty;
+}
+main div:has(> :is(h2, h3).type-display + p.type-body-lg) { row-gap: var(--space-2); }
+/* career prep's title on phones was a step under every other (24px): the display size, as the rest */
+.pv-home .sj-career-header h2 { font-size: var(--type-display-size); line-height: var(--type-display-lh); letter-spacing: var(--type-display-tracking); font-weight: var(--type-display-weight); }
+/* the curriculum's own headers (plain CSS, not the Heading + Text pair): the same gaps and sub-line */
+.pv-home :is(.sj-ai-head, .sj-learn-head, .sj-career-header) { row-gap: var(--space-2) !important; }
+.pv-home :is(.sj-ai-head, .sj-learn-head, .sj-career-header) > :is(h2, h3) + p {
+  font-size: var(--type-body-size) !important; line-height: 1.6 !important; max-width: 40rem; color: var(--content-secondary); text-wrap: pretty; }
