@@ -360,6 +360,14 @@
 .sf-foot[data-green] { padding: 16px 16px 0; }
 .sfb-card { position: relative; overflow: hidden; padding: 40px 48px 0; border-radius: var(--radius-2xl);
   background: linear-gradient(to bottom, color-mix(in srgb, var(--surface-brand-solid), black 14%) 0%, var(--surface-brand-solid) 22%, color-mix(in srgb, var(--surface-brand-solid) 62%, var(--surface-page)) 50%, var(--surface-page) 96%); }
+/* white grain over the gradient (the team's ask, 2026-10-08): fractal noise, kept to its bright
+   specks and drawn in white, tiled; under the type and the building, and fading out over the card's
+   pale foot, where white grain would vanish anyway */
+.sfb-card::before { content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.22;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 2.2 -1.15'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent 85%); mask-image: linear-gradient(to bottom, #000 40%, transparent 85%); }
+.sf-foot[data-green] .sfb-stage { position: relative; z-index: 1; }
 .sf-foot[data-green] .sfb-top { position: relative; z-index: 3; }
 .sf-foot[data-green] .sfb-tagline { margin: 0; color: var(--content-on-image); font-weight: var(--font-weight-semibold, 600); }
 .sf-foot[data-green] .sfb-top .text-content-brand { color: var(--content-on-image) !important; opacity: 0.85; }
@@ -380,18 +388,25 @@
   -webkit-mask-composite: source-in;
   mask-image: linear-gradient(to bottom, #000 56%, transparent 71%), linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
   mask-composite: intersect; }
-/* The name shimmering (the team's ask, 2026-10-08): soft white, with a sheen sweeping across it
-   slowly and without end (a gradient clipped to the text, its position moving). It also rises from
+/* The name shimmering (the team's ask, 2026-10-08): soft white (42%), with a bright, wide sheen
+   sweeping across it slowly and without end, glowing as it passes (a gradient clipped to the text, its position moving). It also rises from
    behind the building as the footer is uncovered (the parallax, below). Under reduced motion: still. */
-.sf-foot[data-green] .sfb-wordmark { background: none; color: var(--content-on-image); -webkit-text-fill-color: currentColor; }
+.sf-foot[data-green] .sfb-wordmark { background: none; color: var(--content-on-image); -webkit-text-fill-color: currentColor;
+  /* the name a little lower, the building where it was: a relative offset moves it alone */
+  top: 20px; }
 .sf-foot[data-green] .sfb-wm[data-layer='fill'] { -webkit-text-fill-color: transparent;
   background: linear-gradient(105deg,
-      color-mix(in srgb, var(--content-on-image) 58%, transparent) 0%,
-      color-mix(in srgb, var(--content-on-image) 58%, transparent) 40%,
-      color-mix(in srgb, var(--content-on-image) 96%, transparent) 50%,
-      color-mix(in srgb, var(--content-on-image) 58%, transparent) 60%,
-      color-mix(in srgb, var(--content-on-image) 58%, transparent) 100%) 0 0 / 250% 100% no-repeat;
+      color-mix(in srgb, var(--content-on-image) 42%, transparent) 0%,
+      color-mix(in srgb, var(--content-on-image) 42%, transparent) 36%,
+      color-mix(in srgb, var(--content-on-image) 80%, transparent) 44%,
+      var(--content-on-image) 50%,
+      color-mix(in srgb, var(--content-on-image) 80%, transparent) 56%,
+      color-mix(in srgb, var(--content-on-image) 42%, transparent) 64%,
+      color-mix(in srgb, var(--content-on-image) 42%, transparent) 100%) 0 0 / 250% 100% no-repeat;
   -webkit-background-clip: text; background-clip: text;
+  /* the glow follows the sheen: a drop shadow is as strong as the paint under it, so it blooms
+     where the band is bright and barely shows where the letters rest dim (an HDR-like flare) */
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--content-on-image) 45%, transparent)) brightness(1.08);
   animation: sfb-shimmer 4.5s ease-in-out infinite; }
 @keyframes sfb-shimmer { 0% { background-position: 100% 0; } 100% { background-position: 0% 0; } }
 @media (prefers-reduced-motion: reduce) {
