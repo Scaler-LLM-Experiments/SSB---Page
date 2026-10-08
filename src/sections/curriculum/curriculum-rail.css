@@ -377,3 +377,19 @@
 /* no chips on phones (2026-10-07, the team's ask): the row is hidden, not removed, since its timer
    advances the carousel; the cards move on by themselves */
 @media (max-width: 1055px) { .cr-main .sj-ps-switch { visibility: hidden; pointer-events: none; } }
+/* AI cards on phones: Outcome and Tools labels over their content (the 64px label column left
+   "OUTCOME" pressed against its rule), every card alike */
+@media (max-width: 1055px) {
+  .cr-main .sj-ai[data-narrow] .sj-ai-outcome, .cr-main .sj-ai[data-narrow] .sj-ai-toolset { grid-template-columns: minmax(0, 1fr); row-gap: 6px; }
+  .cr-main .sj-ai[data-narrow] .sj-ai-outcome-top { padding: 0; border: 0; }
+}
+@media (max-width: 1055px) {
+  /* Outcome and Tools on one left edge: no inset on the outcome, no rule beside either label */
+  .cr-main .sj-ai[data-narrow] .sj-ai-outcome { padding: 0; background: none; }
+  .cr-main .sj-ai[data-narrow] .sj-ai-toolset > *, .cr-main .sj-ai[data-narrow] .sj-ai-toolset .sj-eyebrow { border: 0 !important; padding-left: 0; padding-right: 0; }
+  .cr-main .sj-ai[data-narrow] .sj-ai-toolset::before, .cr-main .sj-ai[data-narrow] .sj-ai-toolset::after, .cr-main .sj-ai[data-narrow] .sj-ai-tools::before { content: none; }
+}
+@media (max-width: 1055px) {
+  /* the body on the title's inset, so title, description, Outcome and Tools share one left edge */
+  .cr-main .sj-ai[data-narrow] .ss-body { padding-left: 32px; padding-right: 32px; }
+}
