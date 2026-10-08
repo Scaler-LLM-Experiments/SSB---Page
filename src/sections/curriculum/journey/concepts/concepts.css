@@ -793,3 +793,27 @@
   .cm-playlist .cm-track-title { font-size: 13.5px !important; line-height: 1.35; }
   .cm-playlist .cm-track-desc { font-size: 12px !important; line-height: 1.45; }
 }
+
+/* Out of class as Beyond Placements' venture cards, in a sideways-scrolling row (2026-10-08): each a
+   card with its still inset square at the left (the challenge on a glass chip at its top, the play
+   in its middle, Flagship at its foot) and the title over the line at its right */
+@media (min-width: 768px) {
+  .cm-playlist { display: flex !important; gap: 12px; margin: 0 !important; padding: 2px 0 8px !important; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .cm-playlist::-webkit-scrollbar { display: none; }
+  .cm-playlist .cm-track { flex: 0 0 min(400px, 86%); scroll-snap-align: start; display: grid !important; grid-template-columns: 136px minmax(0, 1fr); grid-template-rows: auto; align-items: stretch; gap: 14px !important;
+    padding: 8px !important; border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--surface-page); }
+  .cm-playlist .cm-still { grid-row: 1; grid-column: 1; width: 136px; height: 136px; aspect-ratio: 1 / 1; border-radius: 6px; }
+  .cm-playlist .cm-track-main { grid-row: 1; grid-column: 2; display: flex !important; flex-direction: column; gap: 6px; padding: 6px 4px 4px 0; min-width: 0; }
+  /* the challenge's name: a glass chip on the still's top left; Flagship on its foot */
+  .cm-playlist .cm-tags { position: absolute; top: 14px; left: 14px; z-index: 2; max-width: 124px; }
+  .cm-playlist .cm-tags .cm-tag:not(.cm-flag) { display: inline-block; max-width: 124px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 3px 7px !important; border-radius: 999px;
+    background: rgb(255 255 255 / 0.82) !important; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); color: var(--content-primary) !important; font-size: 10.5px !important; font-weight: 600; }
+  .cm-playlist .cm-track .cm-flag { top: auto !important; bottom: 14px; left: 14px; transform: scale(0.85); transform-origin: bottom left; }
+  .cm-playlist .cm-track-title { font-size: 15px !important; line-height: 1.3; font-weight: 600; }
+  .cm-playlist .cm-track-desc { margin-top: auto; font-size: 12.5px !important; line-height: 1.45; color: var(--content-secondary); }
+}
+@media (min-width: 768px) {
+  .cm-playlist .cm-tags { position: static; max-width: none; }
+  .cm-playlist .cm-tags .cm-tag:not(.cm-flag) { position: absolute; top: 14px; left: 14px; z-index: 2; max-width: 124px; white-space: normal; line-height: 1.25; border-radius: 6px; overflow: visible; }
+  .cm-playlist .cm-track .cm-flag { position: absolute; top: auto !important; bottom: 14px; left: 14px; z-index: 2; }
+}
