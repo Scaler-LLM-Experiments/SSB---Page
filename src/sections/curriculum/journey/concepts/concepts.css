@@ -942,3 +942,15 @@
   .cs-media-glance dd { grid-row: 1; grid-column: 2 !important; align-self: center !important; font-size: 18px; line-height: 1; }
   .cs-media-glance dt { grid-row: 2; grid-column: 1 / span 2 !important; align-self: start !important; }
 }
+/* (2026-10-08) the picture as tall as the copy: no spare room above the title or under the last card */
+@media (min-width: 768px) {
+  .cs-ss .cs-sheet-head { padding-top: 0 !important; }
+  .cs-ss .cs-sheet-body { padding-bottom: 0 !important; }
+  .cs-ss .cm { padding: 0 !important; }
+  .cs-ss .cm-playlist { padding-bottom: 0 !important; }
+  .cs-ss .cm > :last-child, .cs-ss .cm-section:last-child { margin-bottom: 0 !important; padding-bottom: 0 !important; }
+  .cs-ss { align-items: stretch; }
+  .cs-ss-main { align-self: stretch; }
+}
+/* (2026-10-08) the description runs the copy's full width */
+.cs-ss .cm-lede, .cs-sheet .cm-lede { max-width: none !important; }
