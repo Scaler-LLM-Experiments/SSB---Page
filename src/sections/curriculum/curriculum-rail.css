@@ -351,3 +351,26 @@
 .cr-main .sj-ps-pill { border-radius: 0 0 8px 8px; }
 .cr-main .sj-ps-card .sj-ps-copy, .cr-main .sj-ps-card[data-k] .sj-ps-copy { border-radius: 8px !important; }
 .cr-main .sj-tl-item { border-radius: 8px !important; }
+
+/* Career prep on phones, in the Placements phone card's form (2026-10-07): the scene, cut square
+   around its people (public/career/*-scene-phone.webp), across the card's top, fading into the
+   green; the figure bar under it; the three phases as white tiles drifting sideways at the foot,
+   as the Placements card's logo rows do. */
+@media (max-width: 1055px) {
+  .cr-main .sj-career-split { position: relative; }
+  .cr-main .sj-ps-view { height: 560px; }
+  .cr-main .sj-ps-card[data-k] { background-color: #2b7650; background-repeat: no-repeat; background-size: 100% 100%, 100% auto; background-position: 0 0, center top; }
+  .cr-main .sj-ps-card[data-k='hours'] { background-image: linear-gradient(to bottom, transparent 46%, #2b7650 62%), url('/career/hours-scene-phone.webp'); }
+  .cr-main .sj-ps-card[data-k='oneToOne'] { background-image: linear-gradient(to bottom, transparent 46%, #2b7650 62%), url('/career/solving-scene-phone.webp'); }
+  .cr-main .sj-ps-card[data-k='interviews'] { background-image: linear-gradient(to bottom, transparent 46%, #2b7650 62%), url('/career/interviews-scene-phone.webp'); }
+  .cr-main .sj-ps-card[data-k='behaviour'] { background-image: linear-gradient(to bottom, transparent 46%, #2b7650 62%), url('/career/behaviour-scene-phone.webp'); }
+  .cr-main .sj-ps-card .sj-ps-copy, .cr-main .sj-ps-card[data-k] .sj-ps-copy { bottom: 108px; background: rgb(255 255 255 / 0.12); border-color: rgb(255 255 255 / 0.2); }
+  /* the phases: one row of white tiles over the card's foot, drifting slowly sideways */
+  .cr-main .sj-career-split > .sj-career-card { position: absolute; z-index: 4; top: calc(560px - 4px - 12px - 84px); left: 4px; right: 4px; height: 84px; overflow: hidden; padding: 0; }
+  .cr-main .sj-career-card .sj-tl { display: flex; flex-wrap: nowrap; gap: 8px; width: max-content; padding: 0 12px; animation: cr-phase-drift 14s ease-in-out infinite alternate; }
+  .cr-main .sj-career-card .sj-tl-item { flex: none; width: 15rem; height: 84px; box-sizing: border-box; padding: 10px 12px; background: #fff; }
+  .cr-main .sj-career-card .sj-tl-items { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden; }
+}
+@keyframes cr-phase-drift { from { transform: translateX(0); } to { transform: translateX(calc(-100% + min(100vw, 1055px) - 2 * var(--space-gutter, 16px) - 8px)); } }
+@media (max-width: 1055px) and (prefers-reduced-motion: reduce) { .cr-main .sj-career-card .sj-tl { animation: none; } .cr-main .sj-career-split > .sj-career-card { overflow-x: auto; } }
+@media (min-width: 672px) and (max-width: 1055px) { .cr-main .sj-ps-view { height: 560px; } }
