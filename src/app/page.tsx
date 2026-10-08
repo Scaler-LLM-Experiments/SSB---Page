@@ -8,6 +8,11 @@ const variations = [
     summary:
       'Black page with the video blended into the hero. Scrolling pulls the video to the centre and hardens it into a frame.',
   },
+  {
+    href: '/v2-stack',
+    name: 'V2, terms stacked (experiment)',
+    summary: 'The same page, with the curriculum’s term cards stacking as you scroll at every width, as phones show them.',
+  },
 ];
 
 export default function LabIndex() {

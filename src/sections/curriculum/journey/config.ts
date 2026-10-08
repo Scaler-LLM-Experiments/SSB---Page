@@ -58,6 +58,8 @@ export interface JourneyConfig {
   artifactStyle: 'wire' | 'filled';
   explode: number; // × how far the exploded view pulls pieces apart
   stackFan: number; // degrees between fanned cards
+  /** the terms as the phones' stacking cards at every width (an experiment, /v2-stack) */
+  termsStack?: boolean;
   stackOpen: 'expand' | 'modal' | 'sheet'; // unfold in place, morph into a centred modal, or rise as a bottom sheet
   aiLayout: 'stack' | 'carousel'; // desktop AI journey: heading pinned left + cards stacking on scroll, or a carousel
   sheetTrigger: 'click' | 'peek' | 'hover'; // desktop sheet: open on click; hover peeks a strip, click opens; or open on hover (stays open until closed)

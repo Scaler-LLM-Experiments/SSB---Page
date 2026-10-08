@@ -1020,7 +1020,8 @@ if (typeof window !== 'undefined') {
 export function StackJourney({ j, cfg, width, portal, initialOpen = null }: { j: Journey; cfg: JourneyConfig; width: number; portal?: HTMLElement | null; initialOpen?: number | null }) {
   const L = useLabels();
   const { open, setOpen, close, opener } = useOpenYear(initialOpen);
-  const narrow = width > 0 && width < 768;
+  // phones, or every width when the page asks for the stack (cfg.termsStack, the /v2-stack experiment)
+  const narrow = (width > 0 && width < 768) || !!cfg.termsStack;
   const years = j.years;
   const n = years.length;
   const [deckRef, deck] = useSize<HTMLDivElement>();

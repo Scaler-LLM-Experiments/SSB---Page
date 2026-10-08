@@ -42,10 +42,11 @@ const ORDER: BlockId[] = ['frame', 'journey', 'fork', 'portfolio', 'career', 'fi
 const cfgFor = (part: Part) => normalize({ ...base, blocks: ORDER.map((id) => ({ id, on: ON[part].includes(id) })) });
 const CFG = { learn: cfgFor('learn'), ai: cfgFor('ai'), main: cfgFor('main'), terms: cfgFor('terms'), career: cfgFor('career') };
 
-export default function SsbCurriculum({ part = 'main' }: { part?: Part }) {
+export default function SsbCurriculum({ part = 'main', termsStack = false }: { part?: Part; /** the terms as stacking cards at every width (/v2-stack) */ termsStack?: boolean }) {
+  const config = React.useMemo(() => (termsStack ? { ...CFG[part], termsStack: true } : CFG[part]), [part, termsStack]);
   return (
-    <div className="pv-page pv-home">
-      <CurriculumJourney config={CFG[part]} />
+    <div className="pv-page pv-home" data-terms-stack={termsStack || undefined}>
+      <CurriculumJourney config={config} />
     </div>
   );
 }
