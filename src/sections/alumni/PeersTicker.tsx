@@ -2,11 +2,11 @@ import { Heading } from '@kishanscaler/ssx-ui';
 
 import { peerCompanies } from '@/content/alumni';
 import { resolveLogos } from '@/lib/logos';
-import { LogoTicker } from '@/sections/hero/shared/LogoTicker';
+import { PeersFlip } from './PeersFlip';
 import '@/sections/hero/shared/hero.css';
 import './alumni.css';
 
-/** "Your peers come from": the hero's logo ticker, on the light page. Server-only (reads the files). */
+/** "Your peers come from": the logos in a grid of cells that flip one at a time (PeersFlip; it was the hero's ticker). Server-only (reads the files). */
 export async function PeersTicker() {
   const logos = await resolveLogos(peerCompanies);
   return (
@@ -14,7 +14,7 @@ export async function PeersTicker() {
       <Heading as="h3" size="eyebrow" className="text-center text-content-secondary">
         Your peers come from
       </Heading>
-      <LogoTicker logos={logos} label="Companies our students come from" className="peers-ticker" />
+      <PeersFlip logos={logos} label="Companies our students come from" />
     </div>
   );
 }
