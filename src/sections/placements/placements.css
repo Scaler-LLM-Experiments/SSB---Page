@@ -832,3 +832,13 @@ html[data-placements='v3'] .pl-deck { display: none; }
   .pl-v3-stats { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
   .pl-v3-stats > div + div { padding: var(--space-4) 0 0; border-left: 0; border-top: 1px solid rgb(255 255 255 / 0.28); }
 }
+/* variant C, evened out (2026-10-09): every figure on one line, every label on one line, all at one baseline */
+.pl-v3-stats > div { align-content: start; }
+@media (width >= 672px) { .pl-v3-stats dt { white-space: nowrap; } }
+@media (width >= 1056px) { .pl-v3 .pl-app-copy { max-width: 64%; } .pl-v3-stats dd { font-size: clamp(2.25rem, 3.2vw, 3.25rem); } }
+/* the report strip under the card */
+.pl-v3-report { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); margin-top: var(--space-3); padding: var(--space-4) var(--space-4) var(--space-4) var(--space-6); border-radius: var(--radius-lg); background: var(--surface-sunken); }
+.pl-v3-report p { display: grid; gap: 2px; margin: 0; }
+.pl-v3-report strong { font-weight: 600; color: var(--content-primary); }
+.pl-v3-report span { font-size: 0.875rem; color: var(--content-secondary); }
+@media (width < 672px) { .pl-v3-report { flex-direction: column; align-items: stretch; padding: var(--space-4); } .pl-v3-report a { width: 100%; } }

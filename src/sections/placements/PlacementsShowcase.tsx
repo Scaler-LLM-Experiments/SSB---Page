@@ -163,6 +163,19 @@ export async function PlacementsShowcase({
                 </div>
               </div>
             </article>
+            {/* the report, a strip under the card (2026-10-09) */}
+            <div className="pl-v3-report">
+              <p>
+                <strong>Placement report</strong>
+                <span>Every figure above, cohort by cohort, audited.</span>
+              </p>
+              <Button asChild size="md" variant="secondary">
+                <a href={reportHref}>
+                  {reportLabel}
+                  <CtaIcon icon="download" />
+                </a>
+              </Button>
+            </div>
           </div>
 
           {/* The cards, with the chips that name them laid over the cards' top left (after the team's
