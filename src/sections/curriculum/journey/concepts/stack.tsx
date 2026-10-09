@@ -398,13 +398,14 @@ function StackSheet({ y, cfg, onMore }: { y: Year; cfg: JourneyConfig; onMore?: 
         {cfg.showVisual && y.visual ? <Visual photo={y.visual} alt="" cfg={cfg} ratio={[800, 900]} /> : null}
         {/* the term as a tag on the picture (2026-10-08) */}
         <span className="cs-media-tag" aria-label={`Term ${y.year}, ${TERM_MONTHS[y.year] ?? ''}`}>
-          {/* the term with its months (2026-10-09: "Term 02 · Apr – Jun '27") */}
-          {TERM_MONTHS[y.year] ? `Term ${String(y.year).padStart(2, '0')} · ${TERM_MONTHS[y.year]}` : <YearEyebrow year={y.year} cfg={cfg} as="span" />}
+          {TERM_MONTHS[y.year] ?? <YearEyebrow year={y.year} cfg={cfg} as="span" />}
         </span>
         {cfg.termsSheet ? null : <MediaGlance y={y} />}
       </div>
       <div ref={main} className="cs-sheet-main cs-ss-main">
         <header className="cs-sheet-head">
+          {/* the term over the title (2026-10-09); its months stay on the picture */}
+          {cfg.termsSheet ? <span className="cs-ss-term">Term {String(y.year).padStart(2, '0')}</span> : null}
           {/* v3: the months over the title, in the card (no tags on the picture) */}
           <Heading as="h3" size="2">
             {y.name}
@@ -923,6 +924,7 @@ function StackModal({ y, cfg, from, leaving, onClose, onGone, portal, sheet }: {
           </div>
           <div ref={mainRef} className="cs-sheet-main">
             <header className="cs-sheet-head" {...grip}>
+              {cfg.termsSheet ? <span className="cs-ss-term">Term {String(y.year).padStart(2, '0')}</span> : null}
               <Heading as="h3" size="2" id={titleId}>
                 {y.name}
               </Heading>
