@@ -174,23 +174,35 @@ export async function PlacementsShowcase({
               </div>
             </article>
             {/* the report, a strip under the card (2026-10-09) */}
-            <div className="pl-v3-report">
-              {/* the lead's second half, redistributed (2026-10-09): a short line, then where they went */}
-              <div className="pl-v3-report-text">
+            <a className="pl-v3-report" href={reportHref}>
+              {/* a little report cover, so the strip reads as "a document you can take away" */}
+              <span className="pl-v3-cover" aria-hidden>
+                <span className="pl-v3-cover-band">SSB</span>
+                <span className="pl-v3-cover-bars">
+                  <i style={{ height: '40%' }} />
+                  <i style={{ height: '65%' }} />
+                  <i style={{ height: '52%' }} />
+                  <i style={{ height: '88%' }} />
+                </span>
+                <span className="pl-v3-cover-lines" />
+              </span>
+              <span className="pl-v3-report-text">
+                <span className="pl-v3-report-eyebrow">Placement report · PDF</span>
                 <strong>Where the founding cohort landed</strong>
-                <ul>
-                  <li>Indian startups</li>
-                  <li>Global MNCs</li>
-                  <li>Digital-first companies</li>
-                </ul>
-              </div>
-              <Button asChild size="md" variant="secondary">
-                <a href={reportHref}>
-                  {reportLabel}
-                  <CtaIcon icon="download" />
-                </a>
-              </Button>
-            </div>
+                <span className="pl-v3-report-tags">
+                  {showcases.map((sc) => (
+                    <span key={sc.label}>
+                      {ICONS[sc.icon]}
+                      {sc.label === 'AI-first roles' ? 'Digital-first companies' : sc.label}
+                    </span>
+                  ))}
+                </span>
+              </span>
+              <span className="pl-v3-report-cta">
+                {reportLabel}
+                <CtaIcon icon="download" />
+              </span>
+            </a>
           </div>
 
           {/* The cards, with the chips that name them laid over the cards' top left (after the team's
