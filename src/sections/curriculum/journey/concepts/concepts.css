@@ -1100,3 +1100,6 @@
 .cs-ss[data-short] .cs-sheet-head { margin-bottom: 4px; }
 .cs-ss-short { gap: 26px; padding-top: 12px; }
 .cs-ss-foot { margin-top: 0; padding-top: 20px; }
+/* (2026-10-08) more room between the counts in v3's foot */
+.cs-ss-foot .cs-meta { gap: 10px 36px; }
+.cs-ss-foot .cs-meta > span { gap: 10px; }
