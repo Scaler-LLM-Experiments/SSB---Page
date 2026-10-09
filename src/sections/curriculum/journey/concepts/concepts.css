@@ -1161,3 +1161,5 @@
 .cs-ss-btn svg { width: 14px; height: 14px; transition: transform 240ms ease; }
 .cs-ss[data-short][role='button']:hover .cs-ss-btn svg { transform: translate(2px, -2px); }
 @media (prefers-reduced-motion: reduce) { .cs-ss-btn svg { transition: none; } }
+/* the stacked term cards read as a deck: a soft shadow lifts each card off the one behind */
+.sj .cs-deck.cs-mstack .cs-mcard .cs-inner { box-shadow: 0 -2px 6px -2px rgb(0 0 0 / 0.06), 0 -14px 28px -18px rgb(0 0 0 / 0.22) !important; will-change: transform; }

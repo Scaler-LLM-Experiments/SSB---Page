@@ -1478,9 +1478,42 @@ export function StackJourney({ j, cfg, width, portal, initialOpen = null }: { j:
     const ro = new ResizeObserver(place);
     Array.from(ol.children).forEach((c) => ro.observe(c));
     window.addEventListener('resize', place);
+    // a deck, not a list (2026-10-09): each card shrinks a step (and dims a touch) for every card that
+    // has come up over it, scrubbed by how far the next card has travelled to its place, so the cards
+    // behind read as a pile with their edges showing
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    let raf = 0;
+    const deck = () => {
+      raf = 0;
+      const items = Array.from(ol.children) as HTMLElement[];
+      const progress = items.map((el) => {
+        const top = parseFloat(el.style.top) || 0;
+        const r = el.getBoundingClientRect();
+        // 0 while a card is a screen below its place, 1 once it has landed
+        return Math.max(0, Math.min(1, 1 - (r.top - top) / Math.max(1, window.innerHeight * 0.6)));
+      });
+      items.forEach((el, i) => {
+        let over = 0;
+        for (let j = i + 1; j < items.length; j++) over += progress[j];
+        const inner = el.firstElementChild as HTMLElement | null;
+        if (!inner) return;
+        inner.style.transformOrigin = '50% 0';
+        inner.style.transform = over ? `scale(${Math.max(0.88, 1 - over * 0.03)})` : '';
+        inner.style.filter = over ? `brightness(${Math.max(0.92, 1 - over * 0.02)})` : '';
+      });
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(deck);
+    };
+    if (!reduce) {
+      deck();
+      window.addEventListener('scroll', onScroll, { passive: true });
+    }
     return () => {
       ro.disconnect();
       window.removeEventListener('resize', place);
+      window.removeEventListener('scroll', onScroll);
+      cancelAnimationFrame(raf);
     };
   }, [narrow, years.length]);
   // the section head's slot (SectionFrame): with the head on the page, the hint under the cards is left out
