@@ -56,7 +56,9 @@ export default function V2Page() {
         {/* 2 placements (main's showcase take) */}
         <PlacementsShowcase {...placements} />
         {/* why SSB (deck slide 4) */}
-        <WhySection {...why} />
+        {/* The "He’s right about the old MBA" turn and its Build / Grow cards hidden for now (2026-10-09);
+            drop answer={false} to bring them back. The breaker above them stays. */}
+        <WhySection {...why} answer={false} />
         {/* 3 alumni: our earlier cohorts, already in the roles Why SSB names */}
         <AlumniSection peers={<PeersTicker />} />
         {/* the second breaker: founders backing the students (a judge's offer of funding, a founder's
