@@ -1063,3 +1063,17 @@
 .cs-sheet[data-compact] .cm { gap: 18px; }
 @media (min-width: 768px) { .cs-ss-short { padding-left: 32px; padding-right: 32px; } }
 @media (max-width: 767px) { .cs-ss-short { padding: 8px 4px 4px; } }
+
+/* v3 (2026-10-08): no tags on the picture; the months over the title and the figures under the line,
+   in the card; View more in the design system's brand green on every term (not the term's colour) */
+.cs-ss-months { display: block; margin-bottom: 6px; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--term-ink, var(--content-brand)); }
+.cs-ss-figures .cs-media-glance { position: static; display: inline-grid; grid-template-columns: repeat(3, auto) !important; gap: 0; margin: 0; padding: 0;
+  border: 0; border-radius: 0; background: none !important; -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none; }
+.cs-ss-figures .cs-media-glance > div { padding: 0 22px !important; justify-content: start; }
+.cs-ss-figures .cs-media-glance > div:first-child { padding-left: 0 !important; }
+.cs-ss-figures .cs-media-glance > div + div { border-left: 1px solid color-mix(in srgb, var(--border-subtle) 80%, transparent); }
+.cs-ss-figures .cs-media-glance-icon { background: var(--term-tint, var(--surface-brand-subtle)); color: var(--term-ink, var(--content-brand)); }
+.cs-ss-figures .cs-media-glance dd { color: var(--content-primary); }
+.cs-ss-figures .cs-media-glance dt { color: var(--content-secondary); }
+.cs-ss[data-short] .cs-ss-more { background: var(--surface-brand-solid); color: var(--content-on-brand-solid, #fff) !important; }
+.cs-ss[data-short] .cs-ss-more:hover { background: var(--surface-brand-solid-hover, var(--surface-brand-solid)); }
