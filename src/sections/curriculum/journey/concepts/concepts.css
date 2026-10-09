@@ -1130,3 +1130,7 @@
   .cs-ss[data-short] .cs-ss-foot { margin-top: auto; }
   .cs-ss[data-short] .cs-ss-short .cm-lede { margin-bottom: 32px; }
 }
+/* the stacked terms: spacing in the flow as top margins (the foot margins are the stack's steps) */
+.cs-deck.cs-mstack { gap: 0 !important; }
+.cs-deck.cs-mstack > .cs-mcard + .cs-mcard { margin-top: 24px; }
+@media (min-width: 768px) { [data-terms-stack] .cs-deck.cs-mstack > .cs-mcard + .cs-mcard { margin-top: 32px; } }

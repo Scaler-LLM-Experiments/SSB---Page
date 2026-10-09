@@ -1457,10 +1457,16 @@ export function StackJourney({ j, cfg, width, portal, initialOpen = null }: { j:
     if (!ol) return undefined;
     const place = () => {
       const nav = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sn-h')) || 64;
-      Array.from(ol.children).forEach((li, i) => {
-        const el = li as HTMLElement;
-        const base = nav + 16 + i * 14;
-        el.style.top = `${Math.min(base, window.innerHeight - el.offsetHeight - 16)}px`;
+      const items = Array.from(ol.children) as HTMLElement[];
+      const tops = items.map((el, i) => Math.min(nav + 16 + i * 14, window.innerHeight - el.offsetHeight - 16));
+      const last = items.length - 1;
+      // the finished stack leaves as one piece (2026-10-08): a sticky card is let go when the list's end
+      // reaches the foot of its margin box. Each card's foot margin is set so that happens for all of
+      // them at once, the moment the last card lands (cards of different heights included)
+      const landed = tops[last] + items[last].offsetHeight;
+      items.forEach((el, i) => {
+        el.style.top = `${tops[i]}px`;
+        el.style.marginBottom = `${Math.max(0, landed - tops[i] - el.offsetHeight)}px`;
       });
     };
     place();
