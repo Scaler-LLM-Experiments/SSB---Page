@@ -90,7 +90,7 @@ export async function PlacementsShowcase({
             aside={
               // The hero's secondary CTA, as it is: large, its download icon after the label; the
               // full width on a phone, as the hero's CTAs are.
-              <Button asChild size="lg" variant="secondary" className="w-full sm:w-auto">
+              <Button asChild size="lg" variant="secondary" className="pl-head-report w-full sm:w-auto">
                 <a href={reportHref}>
                   {reportLabel}
                   <CtaIcon icon="download" />
@@ -175,10 +175,15 @@ export async function PlacementsShowcase({
             </article>
             {/* the report, a strip under the card (2026-10-09) */}
             <div className="pl-v3-report">
-              <p>
-                <strong>Placement report</strong>
-                <span>{leadRest}</span>
-              </p>
+              {/* the lead's second half, redistributed (2026-10-09): a short line, then where they went */}
+              <div className="pl-v3-report-text">
+                <strong>Where the founding cohort landed</strong>
+                <ul>
+                  <li>Indian startups</li>
+                  <li>Global MNCs</li>
+                  <li>Digital-first companies</li>
+                </ul>
+              </div>
               <Button asChild size="md" variant="secondary">
                 <a href={reportHref}>
                   {reportLabel}
