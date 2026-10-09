@@ -42,17 +42,17 @@ const ORDER: BlockId[] = ['frame', 'journey', 'fork', 'portfolio', 'career', 'fi
 const cfgFor = (part: Part) => normalize({ ...base, blocks: ORDER.map((id) => ({ id, on: ON[part].includes(id) })) });
 const CFG = { learn: cfgFor('learn'), ai: cfgFor('ai'), main: cfgFor('main'), terms: cfgFor('terms'), career: cfgFor('career') };
 
-export default function SsbCurriculum({ part = 'main', termsStack = false }: { part?: Part; /** the terms as stacking cards at every width (/v2-stack) */ termsStack?: boolean }) {
+export default function SsbCurriculum({ part = 'main', termsStack = false, termsVersion }: { part?: Part; /** the terms as stacking cards at every width (/v2-stack) */ termsStack?: boolean; /** a fixed version, no switch (/v2 uses v3, the team's pick of 2026-10-09) */ termsVersion?: 1 | 2 | 3 }) {
   // /v2-stack: the terms stack, and the AI journey runs as a carousel of cards instead (2026-10-08)
   // /v2-stack's versions: v1 In class in columns, v2 as an accordion, v3 a short card with In class and
   // Out of class in a no-scroll sheet (?v=2, ?v=3; ?inclass=accordion is v2 too)
-  const [version, setVersion] = React.useState<1 | 2 | 3>(1);
+  const [version, setVersion] = React.useState<1 | 2 | 3>(termsVersion ?? 1);
   React.useEffect(() => {
-    if (!termsStack) return;
+    if (!termsStack || termsVersion) return;
     const q = new URLSearchParams(window.location.search);
     const v = q.get('v');
     setVersion(v === '3' ? 3 : v === '2' || q.get('inclass') === 'accordion' ? 2 : 1);
-  }, [termsStack]);
+  }, [termsStack, termsVersion]);
   const pick = (v: 1 | 2 | 3) => {
     setVersion(v);
     const u = new URL(window.location.href);
@@ -64,13 +64,13 @@ export default function SsbCurriculum({ part = 'main', termsStack = false }: { p
   const config = React.useMemo(
     () =>
       termsStack
-        ? { ...CFG[part], termsStack: true, aiLayout: 'carousel' as const, inClassAccordion: version === 2, termsSheet: version === 3 }
+        ? { ...CFG[part], termsStack: true, ...(termsVersion ? {} : { aiLayout: 'carousel' as const }), inClassAccordion: version === 2, termsSheet: version === 3 }
         : CFG[part],
     [part, termsStack, version],
   );
   return (
     <div className="pv-page pv-home" data-terms-stack={termsStack || undefined}>
-      {termsStack && part === 'terms' ? (
+      {termsStack && part === 'terms' && !termsVersion ? (
         <div className="cs-variant" role="group" aria-label="Term card version">
           <span>Terms</span>
           <button type="button" aria-pressed={version === 1} onClick={() => pick(1)}>
