@@ -744,3 +744,40 @@
 }
 /* (2026-10-09) the showcase card a little lower on desktop (34rem before) */
 @media (width >= 1056px) { .pl-app-inner { min-height: 28rem; } }
+
+/* ── Placements variant B (2026-10-09): one static card, three figures, a strip of logos ── */
+.pl-static { display: none; position: relative; isolation: isolate; overflow: hidden; margin-top: var(--space-10); border: 8px solid var(--surface-sunken); border-radius: 24px; min-height: 22rem; color: #fff; }
+html[data-placements='static'] .pl-static { display: flex; flex-direction: column; justify-content: space-between; }
+html[data-placements='static'] .pl-deck { display: none; }
+.pl-static-media { position: absolute; inset: 0; z-index: -1; }
+.pl-static-media img { width: 100%; height: 100%; object-fit: cover; filter: blur(2px); transform: scale(1.04); }
+.pl-static-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgb(10 14 22 / 0.15) 0%, rgb(10 14 22 / 0.35) 45%, rgb(10 14 22 / 0.82) 100%); }
+/* the logos: one row of white tiles drifting sideways across the top */
+.pl-static-strip { display: flex; width: max-content; padding: var(--space-6) 0 0; animation: pl-static-run 40s linear infinite; mask-image: none; }
+.pl-static:hover .pl-static-strip { animation-play-state: paused; }
+.pl-static-set { display: flex; gap: var(--space-3); padding-right: var(--space-3); }
+.pl-static-logo { display: grid; place-items: center; flex: none; width: 9rem; height: 3.5rem; padding: 0 var(--space-3); border-radius: 10px; background: #fff; }
+.pl-static-logo img { zoom: 0.62; }
+@keyframes pl-static-run { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .pl-static-strip { animation: none; } }
+/* the figures: three side by side at the foot */
+.pl-static-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-6); margin: 0; padding: var(--space-10) var(--space-10) var(--space-8); }
+.pl-static-stats > div { display: grid; gap: var(--space-2); align-content: end; }
+.pl-static-stats > div + div { padding-left: var(--space-6); border-left: 1px solid rgb(255 255 255 / 0.25); }
+.pl-static-stats dd { order: -1; margin: 0; font-size: clamp(2.5rem, 4.4vw, 4rem); line-height: 1; letter-spacing: -0.03em; font-weight: 500; }
+.pl-static-stats dt { font-size: var(--type-body-lg-size, 1.125rem); line-height: 1.35; color: rgb(255 255 255 / 0.88); }
+@media (width < 672px) {
+  .pl-static { min-height: 0; border-width: 4px; border-radius: 16px; }
+  .pl-static-stats { grid-template-columns: minmax(0, 1fr); gap: var(--space-5); padding: var(--space-12) var(--space-5) var(--space-6); }
+  .pl-static-stats > div + div { padding: var(--space-5) 0 0; border-left: 0; border-top: 1px solid rgb(255 255 255 / 0.25); }
+  .pl-static-logo { width: 7.5rem; height: 3rem; }
+}
+/* the switch, at the window's foot (right of the terms' one) */
+.pl-variant { position: fixed; right: 16px; bottom: 16px; z-index: 900; display: flex; align-items: center; gap: 4px; padding: 4px; border: 1px solid var(--border-subtle); border-radius: 10px; background: var(--surface-page); box-shadow: 0 10px 28px -12px rgb(0 0 0 / 0.35); font-size: 12px; }
+.pl-variant > span { padding: 0 8px; font-weight: 700; color: var(--content-secondary); text-transform: uppercase; letter-spacing: 0.06em; font-size: 10.5px; }
+.pl-variant button { all: unset; cursor: pointer; padding: 7px 10px; border-radius: 7px; font-weight: 600; color: var(--content-primary); }
+.pl-variant button[aria-pressed='true'] { background: var(--content-primary); color: var(--surface-page); }
+.pl-variant button:focus-visible { outline: 2px solid var(--border-focus); }
+@media (max-width: 1055px) { .pl-variant { bottom: 136px; right: 12px; } }
+/* clear of the site's bottom nav and its callback button */
+@media (min-width: 1056px) { .pl-variant { bottom: 84px; } }

@@ -6,6 +6,7 @@ import { resolveLogos, type LogoSizing, type ResolvedLogo } from '@/lib/logos';
 import { CtaIcon } from '@/sections/hero/CtaIcon';
 import { Drift, LogoImage, LogoTile, PlacementsHeader, RoleTile, TILE_SIZING } from './shared';
 import { ShowcaseMotion } from './ShowcaseMotion';
+import { PlacementsVariant } from './PlacementsVariant';
 import type { PlacementRole, PlacementShowcase, PlacementsContent, ShowcaseIcon } from './types';
 import './placements.css';
 
@@ -87,6 +88,36 @@ export async function PlacementsShowcase({
               </Button>
             }
           />
+
+          {/* Variant B (2026-10-09, the team's ask; ?placements=static, PlacementsVariant): one static card,
+              the three figures side by side, the recruiters' logos as a horizontal strip across its top;
+              no carousel and no chips. Both are rendered; the variant shows one. */}
+          <PlacementsVariant />
+          <article className="pl-static" aria-label="Placement highlights">
+            <div className="pl-static-media" aria-hidden>
+              {/* eslint-disable-next-line @next/next/no-img-element -- fills its box */}
+              <img src={showcases[0].imageUrl} srcSet={showcases[0].imageSrcSet} sizes="(min-width: 1280px) 1232px, 100vw" alt="" loading="lazy" decoding="async" style={showcases[0].imagePosition ? { objectPosition: showcases[0].imagePosition } : undefined} />
+            </div>
+            <div className="pl-static-strip" aria-hidden>
+              {[0, 1].map((copy) => (
+                <div key={copy} className="pl-static-set">
+                  {resolved.slice(0, 18).map((logo) => (
+                    <span key={logo.name} className="pl-static-logo">
+                      <LogoImage logo={logo} />
+                    </span>
+                  ))}
+                </div>
+              ))}
+            </div>
+            <dl className="pl-static-stats">
+              {showcases.map((sc) => (
+                <div key={sc.label}>
+                  <dd>{sc.statValue}</dd>
+                  <dt>{sc.title.replace(/\.$/, '')}</dt>
+                </div>
+              ))}
+            </dl>
+          </article>
 
           {/* The cards, with the chips that name them laid over the cards' top left (after the team's
               slideshow card): they stay put as the cards change under them. */}
