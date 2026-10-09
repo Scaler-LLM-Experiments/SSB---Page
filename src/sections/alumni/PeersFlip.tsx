@@ -3,10 +3,10 @@
 import * as React from 'react';
 import type { ResolvedLogo } from '@/lib/logos';
 
-/** Twelve cells at most (6 × 2 on desktop, 4 × 2 on a tablet, 2 × 3 on a phone: CSS hides the rest). */
-const CELLS = 12;
+/** Fourteen cells at most (7 × 2 on desktop, 5 × 2 on a tablet, 3 × 3 on a phone: CSS hides the rest). */
+const CELLS = 14;
 /** One cell turns every this many ms. */
-const EVERY = 1800;
+const EVERY = 1000;
 
 function Logo({ logo }: { logo: ResolvedLogo }) {
   return logo.src ? (
