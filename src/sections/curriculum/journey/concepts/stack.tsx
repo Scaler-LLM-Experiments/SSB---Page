@@ -374,7 +374,26 @@ function MediaGlance({ y }: { y: Year }) {
 function StackSheet({ y, cfg, onMore }: { y: Year; cfg: JourneyConfig; onMore?: () => void }) {
   const main = React.useRef<HTMLDivElement>(null);
   return (
-    <div className="cs-ss" data-term={y.year} data-short={cfg.termsSheet || undefined}>
+    <div
+      className="cs-ss"
+      data-term={y.year}
+      data-short={cfg.termsSheet || undefined}
+      // v3: the whole card opens the term's sheet (View more stays, as the visible cue)
+      {...(cfg.termsSheet && onMore
+        ? {
+            role: 'button',
+            tabIndex: 0,
+            'aria-label': `${y.name}: view more`,
+            onClick: onMore,
+            onKeyDown: (e: React.KeyboardEvent) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onMore();
+              }
+            },
+          }
+        : {})}
+    >
       <div className="cs-sheet-media cs-ss-media">
         {cfg.showVisual && y.visual ? <Visual photo={y.visual} alt="" cfg={cfg} ratio={[800, 900]} /> : null}
         {/* the term as a tag on the picture (2026-10-08) */}
@@ -426,7 +445,15 @@ function StackSheet({ y, cfg, onMore }: { y: Year; cfg: JourneyConfig; onMore?: 
                   );
                 })()}
               </span>
-              <button type="button" className="cs-cover-cta cs-ss-link" onClick={onMore}>
+              <button
+                type="button"
+                className="cs-cover-cta cs-ss-link"
+                tabIndex={-1}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onMore?.();
+                }}
+              >
                 View more
                 <ArrowUpRight weight="bold" aria-hidden="true" />
               </button>

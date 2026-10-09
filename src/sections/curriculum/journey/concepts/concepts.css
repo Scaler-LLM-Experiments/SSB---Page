@@ -1103,3 +1103,11 @@
 /* (2026-10-08) more room between the counts in v3's foot */
 .cs-ss-foot .cs-meta { gap: 10px 36px; }
 .cs-ss-foot .cs-meta > span { gap: 10px; }
+/* v3: the whole card is the button */
+.cs-ss[data-short][role='button'] { cursor: pointer; }
+.cs-ss[data-short][role='button']:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 4px; border-radius: 8px; }
+.cs-ss[data-short][role='button']:hover .cs-ss-link { text-decoration: underline; text-underline-offset: 3px; }
+.cs-ss[data-short][role='button']:hover .cs-ss-link svg { transform: translate(2px, -2px); }
+.cs-ss[data-short][role='button'] .sj-visual img { transition: transform 600ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+.cs-ss[data-short][role='button']:hover .sj-visual img { transform: scale(1.04); }
+@media (prefers-reduced-motion: reduce) { .cs-ss[data-short][role='button'] .sj-visual img { transition: none; } }
