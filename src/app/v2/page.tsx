@@ -72,7 +72,7 @@ export default function V2Page() {
           sections={[
             // the team's order (2026-10-07): AI journey, career prep, learn by doing, internship, immersions;
             // Live projects is off the rail for now (<LiveProjectsSection /> was between the AI journey and the internship)
-            { id: 'ai-journey', label: 'AI journey', icon: 'ai', node: <Curriculum part="ai" /> },
+            { id: 'ai-journey', label: 'AI journey', icon: 'ai', node: <Curriculum part="ai" aiCarousel /> }, // the experiment's carousel of cards (2026-10-09)
             { id: 'career-prep', label: 'Career prep', icon: 'career', node: <Curriculum part="career" /> },
             { id: 'learn-by-doing', label: 'Learn by doing', icon: 'learn', node: <LearnByDoingSection /> },
             // Live projects back on the rail (2026-10-08, the team's ask), after learn by doing
