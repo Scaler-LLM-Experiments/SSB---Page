@@ -124,6 +124,47 @@ export async function PlacementsShowcase({
             </div>
           </article>
 
+          {/* Variant C (2026-10-09, ?placements=v3): the carousel's card, held still: the photo, the
+              logos drifting in two columns at its right, a line naming them where the chips were,
+              and all three figures at its foot. */}
+          <div className="pl-v3">
+            <article className="pl-story pl-app" aria-label="Placement highlights">
+              <div className="pl-app-inner">
+                <div className="pl-app-media" aria-hidden>
+                  {PHOTO_LAYERS.map((layer) => (
+                    // eslint-disable-next-line @next/next/no-img-element -- fills its box
+                    <img
+                      key={layer}
+                      src={showcases[0].imageUrl}
+                      srcSet={showcases[0].imageSrcSet}
+                      sizes="(min-width: 1280px) 1232px, 100vw"
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      className={cn('pl-app-photo', layer && `pl-app-blur pl-app-blur-${layer}`)}
+                      style={showcases[0].imagePosition ? { objectPosition: showcases[0].imagePosition } : undefined}
+                    />
+                  ))}
+                  <span className="pl-app-frost" />
+                </div>
+                <p className="pl-v3-title">Companies that have visited Scaler School of Business</p>
+                <div className="pl-app-visual">
+                  <Drift className="pl-app-drift" tiles={resolved.map((logo) => <LogoTile key={logo.name} logo={logo} large />)} />
+                </div>
+                <div className="pl-app-copy">
+                  <dl className="pl-v3-stats">
+                    {showcases.map((sc) => (
+                      <div key={sc.label}>
+                        <dd>{sc.statValue}</dd>
+                        <dt>{sc.title.replace(/\.$/, '')}</dt>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              </div>
+            </article>
+          </div>
+
           {/* The cards, with the chips that name them laid over the cards' top left (after the team's
               slideshow card): they stay put as the cards change under them. */}
           <div data-deck className="pl-deck">

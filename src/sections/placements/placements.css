@@ -804,3 +804,31 @@ html[data-placements='static'] .pl-static { justify-content: flex-end; }
 .pl-static-stats { padding-top: var(--space-6); padding-bottom: var(--space-6); }
 .pl-static-stats > div { align-content: end; }
 .pl-static-media::after { background: linear-gradient(to bottom, rgb(10 14 22 / 0.05) 0%, rgb(10 14 22 / 0.12) 35%, rgb(10 14 22 / 0.5) 62%, rgb(10 14 22 / 0.62) 100%); }
+
+/* ── Placements variant C (2026-10-09, ?placements=v3): A's card held still, a line naming the logos
+   where the chips were, all three figures at its foot, the logos drifting at its right ── */
+.pl-v3 { display: none; --app-frame: 0.375rem; --app-pad: var(--space-6); }
+@media (width >= 672px) { .pl-v3 { --app-pad: var(--space-10); } }
+html[data-placements='v3'] .pl-v3 { display: block; }
+html[data-placements='v3'] .pl-deck { display: none; }
+.pl-v3-title { position: relative; z-index: 1; margin: 0; padding: var(--app-pad) var(--app-pad) 0; max-width: 55%; color: #fff; font-size: var(--type-h3-size, 1.5rem); line-height: 1.25; font-weight: var(--font-weight-medium); text-shadow: 0 1px 12px rgb(0 0 0 / 0.25); }
+.pl-v3-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-6); margin: 0; color: #fff; }
+.pl-v3-stats > div { display: grid; gap: var(--space-2); align-content: end; }
+.pl-v3-stats > div + div { padding-left: var(--space-6); border-left: 1px solid rgb(255 255 255 / 0.28); }
+.pl-v3-stats dd { order: -1; margin: 0; font-size: clamp(2.25rem, 3.6vw, 3.5rem); line-height: 1; letter-spacing: -0.03em; font-weight: 500; }
+.pl-v3-stats dt { font-size: var(--type-body-size, 1rem); line-height: 1.35; color: rgb(255 255 255 / 0.88); }
+@media (width >= 1056px) {
+  .pl-v3 .pl-app-inner { justify-content: space-between; }
+  .pl-v3 .pl-app-copy { max-width: 66%; }
+  .pl-v3-stats dt { text-wrap: balance; }
+}
+@media (width < 1056px) {
+  .pl-v3 .pl-app-inner { justify-content: flex-start; }
+  .pl-v3-title { max-width: none; padding-bottom: var(--space-16, 4rem); }
+  .pl-v3 .pl-app-copy { margin-top: auto; }
+}
+@media (width < 672px) {
+  .pl-v3-title { font-size: 1.125rem; }
+  .pl-v3-stats { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+  .pl-v3-stats > div + div { padding: var(--space-4) 0 0; border-left: 0; border-top: 1px solid rgb(255 255 255 / 0.28); }
+}
