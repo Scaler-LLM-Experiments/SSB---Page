@@ -1111,3 +1111,6 @@
 .cs-ss[data-short][role='button'] .sj-visual img { transition: transform 600ms cubic-bezier(0.2, 0.8, 0.2, 1); }
 .cs-ss[data-short][role='button']:hover .sj-visual img { transform: scale(1.04); }
 @media (prefers-reduced-motion: reduce) { .cs-ss[data-short][role='button'] .sj-visual img { transition: none; } }
+/* (2026-10-08) more room between the description and the foot (above and below its rule) */
+.cs-ss-short { gap: 36px; }
+.cs-ss-foot { padding-top: 24px; }
