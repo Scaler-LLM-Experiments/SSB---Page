@@ -119,7 +119,8 @@ export function AiJourneyBlock({ ai, cfg, width }: { ai: AiJourney; cfg: Journey
     el.scrollBy({ left: dir * (card.offsetWidth + 16), behavior: reduce ? 'auto' : 'smooth' });
   };
   const stackDesktop = !narrow && cfg.aiLayout === 'stack';
-  if (narrow || stackDesktop) {
+  // the carousel layout is used on phones too (2026-10-09, the team's ask); 'stack' keeps the phone stack
+  if ((narrow && cfg.aiLayout !== 'carousel') || stackDesktop) {
     const items: StackItem[] = ai.terms.map((t) => {
       return {
         key: t.term,

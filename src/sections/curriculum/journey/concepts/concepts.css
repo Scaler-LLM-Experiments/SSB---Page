@@ -1134,3 +1134,17 @@
 .cs-deck.cs-mstack { gap: 0 !important; }
 .cs-deck.cs-mstack > .cs-mcard + .cs-mcard { margin-top: 24px; }
 @media (min-width: 768px) { [data-terms-stack] .cs-deck.cs-mstack > .cs-mcard + .cs-mcard { margin-top: 32px; } }
+/* the AI carousel on phones (2026-10-09): a card and a slice of the next, snapping; arrows hidden (swipe) */
+@media (max-width: 767px) {
+  .sj-ai-track { gap: 12px !important; scroll-snap-type: x mandatory; padding-right: 16px; }
+  .sj-ai-track > .sj-ai-card { flex: 0 0 86% !important; width: 86% !important; min-width: 0 !important; scroll-snap-align: start; }
+  .sj-ai-headrow { display: block !important; }
+  .sj-ai-nav { display: none !important; }
+  .sj-ai-card .sj-ai-text { padding: 16px 16px 0 !important; }
+  .sj-ai-open { padding: 22px 16px 18px !important; }
+}
+@media (max-width: 767px) {
+  .sj-ai-open .sj-tools-set { flex-wrap: nowrap !important; }
+  .sj-ai-open .sj-ai-tools { overflow: hidden; }
+  .sj-ai-open .sj-tools-set .sj-tool { font-size: 14px; }
+}
