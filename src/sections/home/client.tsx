@@ -13,7 +13,11 @@ export const Curriculum = dynamic(() => import('@/sections/curriculum/SsbCurricu
 
 export function FooterShell({ children }: { children: React.ReactNode }) {
   // no "Your next step" banner above the footer: the footer has the same two actions
-  return <SsbFooter showCta={false}>{children}</SsbFooter>;
+  return (
+    <SsbFooter showCta={false} variant="green">
+      {children}
+    </SsbFooter>
+  );
 }
 
 /**

@@ -1,6 +1,6 @@
 /* =========================================================
    The first fold's copy (FoldCopy), the same in both variants:
-   the copy at the left, the leaders at the right. Each variant
+   the copy at the left, the spec sheet at the right. Each variant
    positions the two blocks, lays the ground under them and styles
    the CTAs (`fold-primary`, `fold-secondary`) for that ground.
    ========================================================= */
@@ -14,8 +14,8 @@
   max-width: 44rem;
 }
 .fold-eyebrow {
+  /* full white (the team's ask; it was at 90%) */
   color: var(--on-image-ink);
-  opacity: 0.9;
 }
 .fold-line {
   color: var(--on-image-ink);
@@ -41,74 +41,342 @@
   }
 }
 
-.fold-facts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-1) var(--space-4);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  font-size: var(--type-body-sm-size);
-  line-height: var(--type-body-sm-lh);
-  color: rgb(255 255 255 / 0.8);
-}
-.fold-facts b {
-  color: #fff;
-  font-weight: var(--font-weight-semibold);
-}
-/* The dot ends a fact rather than starting the next, so a wrapped line starts with a fact. */
-.fold-facts li:not(:last-child)::after {
-  content: '·';
-  margin-left: var(--space-4);
-  color: rgb(255 255 255 / 0.5);
-}
-/* Phones: one fact a line, no dots (wrapped, a dot would start a line). */
-@media (max-width: 671px) {
-  .fold-facts {
-    flex-direction: column;
-  }
-  .fold-facts li:not(:last-child)::after {
-    content: none;
-  }
-}
-
-/* ---- Right: the leaders. ---- */
-.fold-leaders {
+/* ---- Beside the copy (FoldFacts), one box, everything left-aligned: the caption as a strip
+   along its top, the values' row, a stroke across, then "Built by alumni from" and the
+   schools' logos. Its foot is level with the
+   actions'. Two
+   looks (FactsStyleToggle): `box` (the default), the system's dark glass; `none`, no box (its tokens:
+   `--glass-surface` over `--glass-blur`) with a faint ring and fainter top light, 8px corners
+   as every card, padded by one step (`--panel-space`, 24px, 20 on a phone). ---- */
+.fold-panel {
+  --panel-space: var(--space-5);
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
   min-width: 0;
 }
-.fold-leaders-line {
-  margin: 0;
-  font-size: var(--type-h3-size);
-  line-height: var(--type-h3-lh);
-  font-weight: var(--font-weight-medium);
-  color: var(--on-image-ink);
+.fold-panel[data-facts-style='box'] {
+  padding: var(--panel-space);
+  border: var(--border-width-hair) solid color-mix(in oklab, var(--on-image-ink) 10%, transparent);
+  border-radius: var(--radius-lg);
+  background: var(--glass-surface);
+  box-shadow: inset 0 1px 0 color-mix(in oklab, var(--on-image-ink) 6%, transparent);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+}
+@media (max-width: 1055px) {
+  /* the facts stack in a narrow block (containment: here it takes the column's width) */
+  .fold-panel {
+    container-type: inline-size;
+  }
+}
+@media (min-width: 672px) {
+  .fold-panel {
+    --panel-space: var(--space-6);
+  }
 }
 @media (min-width: 1056px) {
-  .fold-leaders {
+  .fold-panel {
     flex: none;
-    width: 28rem;
-    align-items: flex-end;
-    text-align: right;
-    /* level with the actions, as the reference's logos sit by its buttons */
-    margin-bottom: calc(var(--space-12) + var(--space-2));
+    width: fit-content;
+    max-width: 44%;
   }
 }
 
-/* "Built by alumni from", then the schools, on one line under the leaders (names until their logos arrive). */
-.fold-alumni { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); margin: var(--space-4) 0 0; font-size: var(--type-body-sm-size); line-height: 1.4; color: var(--on-image-ink-secondary); }
-.fold-alumni-name { padding: var(--space-1) var(--space-3); border-radius: var(--radius-md); background: rgb(255 255 255 / 0.12); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.22); color: var(--on-image-ink); font-weight: var(--font-weight-semibold); white-space: nowrap; }
+/* The caption strip, along the top: in the box, attached to its top edge, the box's full width
+   (its top corners its own), a shade lighter; with no box, a small rounded band of its own. */
+.fold-panel-strip {
+  margin: 0;
+  padding: var(--space-1-5) var(--space-3);
+  text-align: center;
+  border-radius: var(--radius-md);
+  background: color-mix(in oklab, var(--on-image-ink) 7%, transparent);
+  font-size: var(--type-body-sm-size);
+  line-height: var(--type-body-sm-lh);
+  color: var(--on-image-ink-secondary);
+}
+.fold-panel[data-facts-style='box'] .fold-panel-strip {
+  margin: calc(var(--panel-space) * -1) calc(var(--panel-space) * -1) 0;
+  padding-inline: var(--panel-space);
+  border-radius: calc(var(--radius-lg) - var(--border-width-hair)) calc(var(--radius-lg) - var(--border-width-hair)) 0 0;
+  border-bottom: var(--border-width-hair) solid color-mix(in oklab, var(--on-image-ink) 8%, transparent);
+}
 
-/* each school's mark before its name, on a small white tile so it keeps its own colours on the dark ground */
-.fold-alumni-name { display: inline-flex; align-items: center; gap: var(--space-2); padding-left: var(--space-1); }
-.fold-alumni-logo { display: block; box-sizing: border-box; width: 1.75rem; height: 1.75rem; padding: 3px; border-radius: var(--radius-sm); background: #fff; object-fit: contain; }
-/* (no tile behind the schools' marks either) */
-.fold-alumni-logo { width: auto; height: 1.75rem; padding: 0; border-radius: 0; background: none; }
-/* the schools' marks, larger: the chip grows with them */
-.fold-alumni-logo { height: 2.5rem; }
-.fold-alumni-name { gap: var(--space-3); padding: var(--space-2) var(--space-4) var(--space-2) var(--space-3); }
-/* the line on its own row, so the two schools sit side by side under it */
-.fold-alumni-line { flex: 0 0 100%; }
-.fold-alumni-logo { height: 2.25rem; }
+/* The values: side by side, one size (the line under the title's, `body-lg`), left-aligned,
+   the same gap either side of each short divider (an item of its own). */
+.fold-figures {
+  display: flex;
+  align-items: center;
+  column-gap: var(--space-4);
+}
+.fold-figures > [role='listitem'] {
+  flex: none;
+  font-size: var(--type-body-lg-size);
+  line-height: var(--type-body-lg-lh);
+  font-weight: var(--font-weight-medium);
+  color: var(--on-image-ink);
+  white-space: nowrap;
+}
+.fold-figures-rule {
+  flex: none;
+  align-self: stretch;
+  width: 1px;
+  margin-block: 0.3em;
+  background: color-mix(in oklab, var(--on-image-ink) 12%, transparent);
+}
+@media (min-width: 672px) {
+  .fold-figures {
+    column-gap: var(--space-5);
+  }
+}
+/* (The block is the container below desktop: its content width is 342px on a 390 phone, where
+   the three fit; 272 on a 360 one in the box, where they stack.) */
+@container (max-width: 18.5rem) {
+  .fold-figures {
+    flex-direction: column;
+    row-gap: var(--space-1);
+  }
+  .fold-figures-rule {
+    display: none;
+  }
+}
+
+/* The schools: "Built by / alumni from", then their wide logos, white (the ticker's one-tone
+   filter: ink goes white, white details go dark), on one line from the block's left edge. */
+.fold-panel-alumni {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--space-3) var(--space-5);
+  /* the stroke across, between the values and the schools */
+  padding-top: var(--space-4);
+  border-top: var(--border-width-hair) solid color-mix(in oklab, var(--on-image-ink) 12%, transparent);
+
+  font-size: var(--type-body-sm-size);
+  line-height: var(--type-body-sm-lh);
+  color: var(--on-image-ink-secondary);
+}
+.fold-panel-label {
+  flex: none;
+  /* the content's newline breaks it, so the box is only as wide as its longer line */
+  white-space: pre-line;
+  text-align: left;
+}
+.fold-panel-alumni img {
+  display: block;
+  flex: none;
+  max-width: 100%;
+  height: auto;
+  filter: grayscale(1) invert(1) brightness(1.8);
+  opacity: 0.9;
+}
+.fold-panel-alumni b {
+  font-weight: var(--font-weight-medium);
+  color: var(--on-image-ink);
+}
+
+/* V3: the schools alone at the right (the facts are tags under the actions), no box: "Built by
+   alumni from" and the two logos on one line, the logos a size up (36px tall, from the box's
+   30), right-aligned to the content's edge on desktop. */
+.fold-panel[data-schools-only] .fold-panel-alumni {
+  padding-top: 0;
+  border-top: 0;
+}
+/* desktop: right-aligned to the content's edge (the team's ask); below it, after the copy, left */
+/* V4: the tags on top of the schools, at the right */
+.fold-panel[data-schools-only] .fold-tags {
+  margin-top: 0;
+}
+@media (min-width: 1056px) {
+  .fold-panel[data-schools-only] .fold-panel-alumni,
+  .fold-panel[data-schools-only] .fold-tags {
+    justify-content: flex-end;
+  }
+  
+}
+.fold-panel[data-schools-only] .fold-panel-alumni img {
+  width: auto;
+  height: 2.25rem;
+}
+
+/* V5: the faculty above the schools, at the right: "100+ industry-leading faculty from" over
+   their marks and names running past (fading out at the block's edges, the ticker's own mask),
+   a divider, then the schools. A set width: the ticker has no width of its own to fit. */
+.fold-panel-faculty {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+  font-size: var(--type-body-sm-size);
+  line-height: var(--type-body-sm-lh);
+  color: var(--on-image-ink-secondary);
+}
+.fold-panel:has(.fold-panel-faculty) {
+  gap: var(--space-5);
+}
+/* One grey tone, one size (the team's ask): both labels at 16px; the faculty's icons grey and
+   24px, their names grey at 16px; the schools' logos grey. Under the pointer an icon shows its
+   colours and its name turns white; a school's logo turns full white (its own colours, navy and
+   near-black, would vanish on the dark ground). */
+.fold-panel:has(.fold-panel-faculty) .fold-panel-label {
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-lh);
+}
+.fold-panel-faculty .mt[data-tone='dark'] .mt-list > li {
+  gap: var(--space-2);
+  padding-right: var(--space-6);
+  font-size: var(--type-body-size);
+  color: var(--on-image-ink-secondary);
+  transition: color var(--motion-duration-fast) var(--motion-easing-productive-in-out);
+}
+.fold-panel-faculty .mt-list img {
+  width: var(--space-6);
+  height: var(--space-6);
+  filter: grayscale(1);
+  opacity: 0.55;
+  transition:
+    filter var(--motion-duration-fast) var(--motion-easing-productive-in-out),
+    opacity var(--motion-duration-fast) var(--motion-easing-productive-in-out);
+}
+.fold-panel-faculty .mt-list > li[data-wordmark] img {
+  width: auto;
+  height: var(--space-4);
+}
+.fold-panel-faculty .mt[data-tone='dark'] .mt-list > li:hover {
+  color: var(--on-image-ink);
+}
+.fold-panel-faculty .mt-list > li:hover img {
+  filter: none;
+  opacity: 1;
+}
+.fold-panel:has(.fold-panel-faculty) .fold-panel-alumni img {
+  opacity: 0.8;
+  transition: opacity var(--motion-duration-fast) var(--motion-easing-productive-in-out);
+}
+.fold-panel:has(.fold-panel-faculty) .fold-panel-alumni img:hover {
+  opacity: 1;
+}
+/* V5's wordmark logos a touch smaller than the foot row's (they run wider than icons did);
+   `zoom` shrinks the layout box too, so the ticker's gaps stay even */
+.fold-panel-faculty .hero-ticker-logo {
+  zoom: 0.9;
+  /* brighter than the ticker's muted 60% (the team's ask) */
+  opacity: 0.8;
+}
+/* a divider between the faculty and the schools (the team's ask) */
+.fold-panel[data-schools-only]:has(.fold-panel-faculty) .fold-panel-alumni {
+  padding-top: var(--space-5);
+  border-top: var(--border-width-hair) solid color-mix(in oklab, var(--on-image-ink) 14%, transparent);
+}
+@media (min-width: 1056px) {
+  /* 25rem ("shortened, thoda"), 28 for the logos, then 26 with the wordmarks */
+  .fold-panel:has(.fold-panel-faculty) {
+    width: min(26rem, 44%);
+  }
+}
+
+/* V6 (FoldCopy `tagsFirst`): the text, then a step more space, then the tags over the actions
+   as one group. */
+.fold-copy[data-split] .fold-act {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+.fold-copy[data-split] .fold-act .fold-tags,
+.fold-copy[data-split] .fold-act .fold-actions {
+  margin-top: 0;
+}
+
+/* V7 (FoldCopy `actionsToTags`): the actions over the tags, one group as wide as the tags' row
+   (`fit-content`: the widest child sets it, and the tags' row is wider than the two buttons),
+   the two buttons sharing that width. On a phone the actions stack full width as everywhere. */
+.fold-copy[data-actions-to-tags] .fold-act {
+  display: flex;
+  flex-direction: column;
+  /* one gap throughout the group (the team's ask): between the buttons, between the tags, and
+     from the buttons down to the tags, all the buttons' 12px */
+  gap: var(--space-3);
+}
+.fold-copy[data-actions-to-tags] .fold-act .fold-tags {
+  gap: var(--space-3);
+  margin-top: 0;
+}
+@media (min-width: 672px) {
+  .fold-copy[data-actions-to-tags] .fold-act {
+    width: fit-content;
+    max-width: 100%;
+  }
+  .fold-copy[data-actions-to-tags] .fold-act .fold-actions > * {
+    flex: 1 1 0;
+    justify-content: center;
+  }
+}
+
+/* ---- V3's tags (FoldCopy `tags`): the facts right under the actions, each a chip with 8px
+   corners (the page's card radius; the team's call over round), the value white, its caption
+   grey. ---- */
+.fold-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.fold-tags li {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-1-5);
+  padding: var(--space-1-5) var(--space-3);
+  border-radius: var(--radius-lg);
+  background: color-mix(in oklab, var(--on-image-ink) 9%, transparent);
+  font-size: var(--type-body-sm-size);
+  line-height: var(--type-body-sm-lh);
+  white-space: nowrap;
+}
+.fold-tags b {
+  /* the value a step up from its caption (14px over 13; 16 read large) */
+  font-size: var(--type-label-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--on-image-ink);
+}
+.fold-tags span {
+  color: var(--on-image-ink-secondary);
+}
+
+/* ---- The credits (FoldCredits) along the hero's foot: one hairline, then the line as plain
+   grey text at the left and the leaders' logos running past to the hairline's end (on a phone
+   the line over the logos). No box. ---- */
+.fold-credits {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+  padding-top: var(--space-6);
+  border-top: var(--border-width-hair) solid color-mix(in oklab, var(--on-image-ink) 14%, transparent);
+}
+.fold-credits-label {
+  margin: 0;
+  font-size: var(--type-body-sm-size);
+  line-height: var(--type-body-sm-lh);
+  color: var(--on-image-ink-secondary);
+}
+@media (min-width: 1056px) {
+  .fold-credits {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-6);
+    padding-top: var(--space-5);
+  }
+  .fold-credits-label {
+    flex: none;
+    white-space: nowrap;
+  }
+  /* From the line to the hairline's end, faded at both ends (the ticker's own mask). */
+  .fold-credits .hero-ticker {
+    flex: 1;
+    min-width: 0;
+  }
+}

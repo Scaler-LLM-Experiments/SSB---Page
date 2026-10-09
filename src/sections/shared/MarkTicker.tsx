@@ -1,16 +1,24 @@
 import './mark-ticker.css';
 
-export type Mark = { name: string; mark: string };
+/** `wordmark`: the mark already spells the name (BCG's), so it is drawn alone, the name its alt. */
+export type Mark = { name: string; mark: string; wordmark?: boolean };
 
-/** One run of the organisations: each colour mark on a white tile, its name beside it. */
+/** One run of the organisations: each colour mark, its name beside it. */
 function MarkList({ marks, copy }: { marks: Mark[]; copy?: boolean }) {
   return (
     <ul className="mt-list" aria-hidden={copy || undefined}>
       {marks.map((m) => (
-        <li key={m.name}>
+        <li key={m.name} data-wordmark={m.wordmark || undefined}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={m.mark} alt="" width={32} height={32} loading="lazy" decoding="async" />
-          <span>{m.name}</span>
+          <img
+            src={m.mark}
+            alt={m.wordmark ? m.name : ''}
+            width={32}
+            height={32}
+            loading="lazy"
+            decoding="async"
+          />
+          {m.wordmark ? null : <span>{m.name}</span>}
         </li>
       ))}
     </ul>

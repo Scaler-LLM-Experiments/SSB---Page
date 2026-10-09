@@ -90,6 +90,30 @@
     mask-image: none;
   }
 }
+/* Kamath's breaker (data-fit="height", 2026-10-07; the team: "zoom out, then place him"). Covering
+   a band wider than 16:9 cropped the frame's top and bottom away and drew him huge, his head at the
+   band's top edge, worse once the breakers grew taller. Here the clip is drawn at the band's full
+   height (4% over), so all of the frame shows, him in it with room over his head; its left edge
+   just off the band (-6%) puts his face about a quarter of the way across. On a band wider than the
+   clip it ends before the right edge: it feathers out into its own poster (a still, not a second
+   video, which halves the frame rate), blurred far past recognition and covering the stage; the
+   words' frost over that side hides the seam. */
+@media (width >= 1056px) {
+  .why-breaker[data-fit='height'] .why-breaker-stage::before {
+    content: '';
+    position: absolute;
+    inset: -8%;
+    background: var(--why-poster) center / cover no-repeat var(--why-shade);
+    filter: blur(32px) saturate(1.1);
+  }
+  .why-breaker[data-fit='height'] .why-breaker-clip {
+    left: 0;
+    width: calc(177.78cqh * 1.04);
+    height: calc(100cqh * 1.04);
+    translate: -6% 0;
+    mask-image: linear-gradient(to right, #000 62%, transparent 96%);
+  }
+}
 /* Phone: the copy under it, covering the whole breaker. It is blurred by the
    frost over it (.why-breaker-copy::before), so it needs no filter of its own;
    above the frost the sharp clip covers it. Hidden (and not played) on desktop. */

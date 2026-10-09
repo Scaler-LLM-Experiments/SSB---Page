@@ -277,3 +277,158 @@
    straight down to the photo, and anything behind the sheet is white. */
 .sf[data-lift] .sf-lift { padding-bottom: 0; }
 .sf[data-lift] { background: #fff; }
+
+/* ── The building footer (the team's mock, 2026-10-08) ─────────────────────────────────────────
+   Light, compact, in the design system's parts (Logo md, Heading 3 for the tagline, md Buttons as drawn,
+   eyebrow Headings over quiet Links, Text sm for the legal line). The top: logo, tagline, the two
+   actions | the link groups. Then the stage: the name in a green gradient, edge to edge, and the building in
+   front of it (centred, at most 1040px wide), its roofline just over the name's foot (the image
+   is transparent above the roofline: its top 261px, 17% of its width), fading into the page at
+   its foot, where the legal line sits.
+   Parallax on the lift (--lift 0 → 1): the name rises 24px, the building 80px, so it comes up past
+   the name. Plain CSS (the site folder isn't scanned by Tailwind); tokens throughout. */
+.sf-foot[data-variant='building'] { background: var(--surface-page); padding: 56px var(--sf-gutter) 0; overflow: hidden; }
+.sf-foot[data-variant='building']::before, .sf-foot[data-variant='building']::after { content: none; }
+.sf[data-lift] .sf-foot[data-variant='building'] { background: var(--surface-page); }
+/* the lift's own fade-up of the footer's children is replaced by the parallax below */
+.sf[data-lift] .sf-foot[data-variant='building'] > * { transform: none; opacity: 1; }
+
+.sfb-top { width: 100%; max-width: 1232px; margin: 0 auto; box-sizing: border-box; display: flex; justify-content: space-between; align-items: flex-start; gap: 40px; }
+.sfb-lead { display: grid; justify-items: start; gap: 12px; }
+.sfb-tagline { color: color-mix(in srgb, var(--content-secondary) 60%, var(--surface-page)); }
+.sfb-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+.sfb-links { display: flex; gap: 72px; }
+.sfb-col { display: grid; gap: 14px; align-content: start; min-width: 9rem; }
+.sf-foot[data-variant='building'] .sf-links { gap: 10px; }
+
+/* the stage: out of the footer's gutter to the window's edges; a size container for the name */
+/* --wm: the name edge to edge: it measures 11.38em on one line, so the window's width / 11.6 */
+.sfb-stage { --wm: calc(100cqi / 11.6); --bw: min(100cqi, 1040px); position: relative; container-type: inline-size; margin: 72px calc(var(--sf-gutter) * -1) 0; }
+.sfb-wordmark { position: relative; z-index: 1; margin: 0; text-align: center;
+  font-size: var(--wm); line-height: 1.05; letter-spacing: -0.035em; font-weight: var(--font-weight-semibold, 600); white-space: nowrap;
+  background: linear-gradient(to bottom, var(--color-ssb-light-9) 35%, color-mix(in srgb, var(--color-ssb-light-9) 55%, var(--surface-page)) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent; }
+.sfb-wordmark > span { display: inline; }
+/* the building over the name: pulled up by its transparent top, less a sixth of the name, so the
+   roofline just meets the name's foot; centred, faded into the page at its own foot */
+.sfb-building { position: relative; z-index: 2; display: block; width: var(--bw); max-width: none; height: auto; margin: calc(var(--bw) * -0.17 - var(--wm) * 0.16) auto 0;
+  -webkit-mask-image: linear-gradient(to bottom, #000 58%, transparent 94%); mask-image: linear-gradient(to bottom, #000 58%, transparent 94%); }
+/* narrower than the window: its cut-off sides fade into the page as its foot does */
+@media (min-width: 1041px) {
+  .sfb-building {
+    -webkit-mask-image: linear-gradient(to bottom, #000 58%, transparent 94%), linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to bottom, #000 58%, transparent 94%), linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
+    mask-composite: intersect;
+  }
+}
+.sfb-legal { position: relative; z-index: 3; margin: -40px auto 0 !important; padding: 0 var(--sf-gutter) 20px; text-align: center; }
+
+/* parallax, scrubbed by the lift */
+.sf[data-lift] .sf-foot[data-variant='building'] .sfb-wordmark { transform: translateY(calc((1 - var(--lift)) * 24px)); }
+.sf[data-lift] .sf-foot[data-variant='building'] .sfb-building { transform: translateY(calc((1 - var(--lift)) * 80px)); will-change: transform; }
+@media (prefers-reduced-motion: reduce) {
+  .sf[data-lift] .sf-foot[data-variant='building'] .sfb-wordmark, .sf[data-lift] .sf-foot[data-variant='building'] .sfb-building { transform: none; }
+}
+
+@media (max-width: 760px) {
+  .sf-foot[data-variant='building'] { padding-top: 40px; }
+  .sfb-top { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .sfb-actions { display: grid; width: 100%; gap: 10px; }
+  .sfb-actions > * { width: 100%; justify-content: center; }
+  .sfb-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .sfb-col { min-width: 0; gap: 12px; }
+  /* the name on two lines; the building wider than the screen (its sides cropped) so it reads */
+  /* two lines, the longer ("Scaler School", 6.15em) edge to edge */
+  .sfb-stage { --wm: calc(100cqi / 6.3); --bw: 150cqi; margin-top: 40px; }
+  .sfb-wordmark { white-space: normal; line-height: 1; }
+  .sfb-wordmark > span { display: block; }
+  .sfb-building { margin-left: -25cqi; }
+  .sfb-legal { margin-top: -12px !important; padding-bottom: 16px; }
+}
+
+
+/* ── The green look (data-green; the team's second mock, 2026-10-08) ─────────────────────────────
+   A green card inset from the window (16px; 8px on a phone; radius-2xl), the brand's green at its
+   top fading to the page by its foot. Everything but the legal line inside it, padded (48px; 24px
+   on a phone), the card clipping the building at its foot; on desktop the building is smaller than
+   the card (1000px at most) and centred, so it shows whole. The top in white on it (a
+   dark island, so the design system's logo and links take their light-on-colour looks); the two
+   actions the design system's buttons in their on-image look (data-surface-ink). The name in white,
+   rising from behind the building as the footer is uncovered (--lift): it starts its own height
+   and more below, hidden by the building, which itself moves only 16px. */
+.sf-foot[data-green] { padding: 16px 16px 0; }
+.sfb-card { position: relative; overflow: hidden; padding: 40px 48px 0; border-radius: var(--radius-2xl);
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--surface-brand-solid), black 14%) 0%, var(--surface-brand-solid) 22%, color-mix(in srgb, var(--surface-brand-solid) 62%, var(--surface-page)) 50%, var(--surface-page) 96%); }
+/* white grain over the gradient (the team's ask, 2026-10-08): fractal noise, kept to its bright
+   specks and drawn in white, tiled; under the type and the building, and fading out over the card's
+   pale foot, where white grain would vanish anyway */
+.sfb-card::before { content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.22;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 2.2 -1.15'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent 85%); mask-image: linear-gradient(to bottom, #000 40%, transparent 85%); }
+.sf-foot[data-green] .sfb-stage { position: relative; z-index: 1; }
+.sf-foot[data-green] .sfb-top { position: relative; z-index: 3; }
+.sf-foot[data-green] .sfb-tagline { margin: 0; color: var(--content-on-image); font-weight: var(--font-weight-semibold, 600); }
+.sf-foot[data-green] .sfb-top .text-content-brand { color: var(--content-on-image) !important; opacity: 0.85; }
+.sf-foot[data-green] .sf-links { gap: 8px; }
+.sf-foot[data-green] .sf-links a { color: var(--content-on-image) !important; font-size: var(--type-body-sm-size, 0.875rem); }
+.sf-foot[data-green] .sf-links a:hover { opacity: 0.8; }
+.sf-foot[data-green] .sfb-col { gap: 12px; }
+/* the stage: the card's inner width; the building out to the card's edges, its railings cropped */
+/* the stage in the top's column (1232px at most), so the name's ends line up with the logo and the links */
+.sf-foot[data-green] .sfb-stage { --wm: calc(100cqi / 11.45); --bw: calc(100vw - 32px); max-width: 1232px; margin: 32px auto 0; }
+/* the building centred, 1100px at most (the card's width less a little on smaller screens), its
+   dome just under the name. Shown down to 72% of its height (past the entrance to its steps; the
+   image is 1536 × 1024, so 18.7% of its width is cropped off its foot), clear down to the entrance
+   and fading out below it, its sides fading into the card */
+.sf-foot[data-green] .sfb-building { --bw2: min(var(--bw), 1100px); width: var(--bw2); max-width: none;
+  margin: calc(var(--bw2) * -0.17 - var(--wm) * 0.16) auto calc(var(--bw2) * -0.187) calc(50% - var(--bw2) / 2);
+  -webkit-mask-image: linear-gradient(to bottom, #000 56%, transparent 71%), linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to bottom, #000 56%, transparent 71%), linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+  mask-composite: intersect; }
+/* The name shimmering (the team's ask, 2026-10-08): soft white (42%), with a bright, wide sheen
+   sweeping across it slowly and without end, glowing as it passes (a gradient clipped to the text, its position moving). It also rises from
+   behind the building as the footer is uncovered (the parallax, below). Under reduced motion: still. */
+.sf-foot[data-green] .sfb-wordmark { background: none; color: var(--content-on-image); -webkit-text-fill-color: currentColor;
+  /* the name a little lower, the building where it was: a relative offset moves it alone */
+  top: 20px; }
+.sf-foot[data-green] .sfb-wm[data-layer='fill'] { -webkit-text-fill-color: transparent;
+  background: linear-gradient(105deg,
+      color-mix(in srgb, var(--content-on-image) 42%, transparent) 0%,
+      color-mix(in srgb, var(--content-on-image) 42%, transparent) 36%,
+      color-mix(in srgb, var(--content-on-image) 80%, transparent) 44%,
+      var(--content-on-image) 50%,
+      color-mix(in srgb, var(--content-on-image) 80%, transparent) 56%,
+      color-mix(in srgb, var(--content-on-image) 42%, transparent) 64%,
+      color-mix(in srgb, var(--content-on-image) 42%, transparent) 100%) 0 0 / 250% 100% no-repeat;
+  -webkit-background-clip: text; background-clip: text;
+  /* the glow follows the sheen: a drop shadow is as strong as the paint under it, so it blooms
+     where the band is bright and barely shows where the letters rest dim (an HDR-like flare) */
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--content-on-image) 45%, transparent)) brightness(1.08);
+  animation: sfb-shimmer 4.5s ease-in-out infinite; }
+@keyframes sfb-shimmer { 0% { background-position: 100% 0; } 100% { background-position: 0% 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .sf-foot[data-green] .sfb-wm[data-layer='fill'] { animation: none; }
+}
+.sf-foot[data-green] .sfb-legal { margin: 0 !important; padding: 16px var(--sf-gutter) 20px; }
+/* the name rises from behind the building; the building moves a little */
+.sf[data-lift] .sf-foot[data-green] .sfb-wordmark { transform: translateY(calc((1 - var(--lift)) * var(--wm) * 1.3)); }
+.sf[data-lift] .sf-foot[data-green] .sfb-building { transform: translateY(calc((1 - var(--lift)) * 16px)); }
+@media (prefers-reduced-motion: reduce) {
+  .sf[data-lift] .sf-foot[data-green] .sfb-wordmark, .sf[data-lift] .sf-foot[data-green] .sfb-building { transform: none; }
+}
+@media (max-width: 760px) {
+  .sf-foot[data-green] { padding: 8px 8px 0; }
+  .sfb-card { padding: 28px 24px 0; }
+  .sf-foot[data-green] .sfb-stage { --wm: calc(100cqi / 6.3); --bw: calc(100cqi + 48px); margin-top: 40px; }
+  .sfb-wm > span { display: block; }
+  /* phones: edge to edge across the card, no side fade */
+  .sf-foot[data-green] .sfb-building { --bw2: var(--bw); margin-left: -24px; margin-bottom: calc(var(--bw2) * -0.187);
+    -webkit-mask-image: linear-gradient(to bottom, #000 56%, transparent 71%); mask-image: linear-gradient(to bottom, #000 56%, transparent 71%);
+    -webkit-mask-composite: source-over; mask-composite: add; }
+  .sf-foot[data-green] .sfb-legal { padding: 12px 16px 16px; }
+}
+/* no shadow on the page's edge as it lifts off the green footer (the team's call, 2026-10-08) */
+.sf[data-lift]:has(.sf-foot[data-green]) .sf-lift { box-shadow: none; }

@@ -20,6 +20,8 @@ export type HeroFact = {
   value: string;
   /** An optional supporting line, e.g. "Includes a 3-6 month internship". */
   caption?: string;
+  /** A shorter caption where room is tight (V4's tags at the right), e.g. "incl. internships". */
+  shortCaption?: string;
 };
 
 export type HeroLogo = {
@@ -35,13 +37,6 @@ export type HeroLogo = {
   /** The share of the logo's box its artwork fills, 0–1 (default 0.4), so every logo is drawn
    * with the same amount of ink. Measured once per file: see CLAUDE.md, "Logos". */
   ink?: number;
-};
-
-/** An organisation the programme's industry leaders come from: its colour mark and its name. */
-export type HeroLeader = {
-  name: string;
-  /** A square image of its own colour mark (its site or app icon), e.g. `/logos/marks/lead-bcg.png`. */
-  mark: string;
 };
 
 export type HeroMedia = {
@@ -66,12 +61,17 @@ export type HeroContent = {
   primaryCta: HeroCta;
   secondaryCta?: HeroCta;
   facts?: HeroFact[];
-  /** The line over the leaders' marks: "Built by 100+ industry leaders from". */
+  /** The line over the leaders' marks: "100+ industry-leading faculty from". */
   leadersLine?: string;
-  /** Where the programme's industry leaders come from, running past under `leadersLine`. */
-  leaders?: HeroLeader[];
-  /** A second line under the leaders: "Built by alumni from", then the schools' names. */
-  alumniLine?: string;
-  alumniFrom?: { name: string; logo?: string }[];
+  /** Where the programme's industry leaders come from: their logos, running past under
+   * `leadersLine` at one visual weight (`resolveLogos`; measure each file's `ink`). */
+  leaders?: HeroLogo[];
+  /** V5's faculty ticker: each organisation's colour icon with its name beside it (MarkTicker). */
+  leaderMarks?: { name: string; mark: string; wordmark?: boolean }[];
+  /** The label before the schools' logos: "Built by alumni from" (a newline breaks it). */
+  alumniLead?: string;
+  /** The schools: their `wordmark`s are the names in the sentence (their logos are kept for
+   * a logo treatment: `resolveLogos`; each file's `ink` measured). */
+  alumniFrom?: HeroLogo[];
   media?: HeroMedia;
 };

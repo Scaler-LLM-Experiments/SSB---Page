@@ -25,6 +25,8 @@ export interface FooterContent {
   wordmark: string;
   /** The campus footer: the photo the footer stands on, and the short line beside the tagline. */
   campus: { image: { src: string; small: string; alt: string }; place: string };
+  /** The building footer: the SSB building cut out (transparent around it), standing in front of the name. */
+  building: { src: string; small: string; alt: string };
 }
 
 export const SSB_FOOTER: FooterContent = {
@@ -35,7 +37,7 @@ export const SSB_FOOTER: FooterContent = {
     note: 'Applications are open for the next cohort.',
     image: { src: 'https://ssb-school-concept.vercel.app/assets/program.webp', alt: 'Illustrative scene of learners together outdoors' },
     primary: { label: 'Apply now', href: 'https://www.scaler.com/school-of-business/admission/' },
-    secondary: { label: 'Download brochure', href: 'https://www.scaler.com/school-of-business/' },
+    secondary: { label: 'Download Brochure', href: 'https://www.scaler.com/school-of-business/' },
   },
   tagline: 'For people who build.',
   columns: [
@@ -50,8 +52,8 @@ export const SSB_FOOTER: FooterContent = {
     {
       title: 'Next steps',
       links: [
-        { label: 'Program details', href: '#curriculum' },
-        { label: 'Admissions', href: '#admissions' },
+        { label: 'Program Details', href: '#curriculum' },
+        { label: 'Admission Process', href: '#admissions' },
         { label: 'FAQs', href: '#faq' },
       ],
     },
@@ -62,4 +64,6 @@ export const SSB_FOOTER: FooterContent = {
   wordmark: 'Scaler School of Business',
   // the school's own photo of the campus entrance (DSC06135, supplied 2026-10-05); served by the page
   campus: { image: { src: '/footer/campus.webp', small: '/footer/campus-1200.webp', alt: 'The Scaler School of Business campus entrance at dusk' }, place: 'Campus: Bengaluru' },
+  // the team's cut-out of the building with its walkway (2026-10-08): 1536 × 1024, transparent above the roofline (its top 261px, 17% of its width)
+  building: { src: '/footer/building.webp', small: '/footer/building-800.webp', alt: 'The Scaler School of Business building in Bengaluru' },
 };

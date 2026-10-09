@@ -58,3 +58,6 @@ next-env.d.ts
 
 # the Innovation Lab's source GIF (the team's, 2026-10-07); not used on the page yet
 /src/Scaler Innovation Lab.gif
+
+# the HBS lockup as the team dropped it; the page uses the copy in public/logos/hbs-lockup.svg
+/src/HBS.svg

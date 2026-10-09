@@ -31,6 +31,12 @@ export type LogoSizing = { height: number; maxWidth: number; maxHeight?: number 
 /** The hero's ticker. */
 export const TICKER_SIZING: LogoSizing = { height: 30, maxWidth: 196 };
 
+/** The hero's credits: the ticker's, but no taller than 40px (Airtel's square logo came out 64). */
+export const CREDITS_SIZING: LogoSizing = { ...TICKER_SIZING, maxHeight: 40 };
+
+/** The schools after "Built by alumni from": Oxford's and HBS's lockups both come out 30px tall. */
+export const SCHOOLS_SIZING: LogoSizing = { height: 21, maxWidth: 300, maxHeight: 30 };
+
 function displaySize(ratio: number, ink = 0.4, { height: base, maxWidth, maxHeight = Infinity }: LogoSizing) {
   let height = Math.sqrt((0.4 * 3 * base ** 2) / (ink * ratio));
   let width = height * ratio;

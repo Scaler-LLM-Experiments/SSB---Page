@@ -18,13 +18,6 @@ main section.lab.cm[data-density='roomy'] {
   margin-top: 0;
 }
 
-/* a club's line at the large body size, never cut (the startups' line clamps at three) */
-.vc-text.cm-club-text {
-  display: block;
-  -webkit-line-clamp: unset;
-  line-clamp: none;
-}
-
 /* Follow campus life: two glass buttons floating on the cohort photo, at its lower left (light,
    transparent glass: white type and Instagram's glyph in white over the photo, 4px corners), under
    "Follow us on"). In the slot's cell, over the photo; on desktop the
