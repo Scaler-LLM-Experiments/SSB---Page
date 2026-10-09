@@ -793,3 +793,7 @@ html[data-placements='static'] .pl-deck { display: none; }
   .pl-static-stats { padding: var(--space-8) var(--space-5) var(--space-6); }
   .pl-static-rows { padding-bottom: var(--space-5); }
 }
+/* variant B (2026-10-09): the photo sharp and a little brighter; the scrim lighter, kept only where the
+   white figures sit */
+.pl-static-media img { filter: none; transform: none; }
+.pl-static-media::after { background: linear-gradient(to bottom, rgb(10 14 22 / 0.55) 0%, rgb(10 14 22 / 0.18) 38%, rgb(10 14 22 / 0.06) 62%, rgb(10 14 22 / 0.3) 100%); }
