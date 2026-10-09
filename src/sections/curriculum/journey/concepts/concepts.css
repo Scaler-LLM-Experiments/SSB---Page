@@ -1122,3 +1122,11 @@
 }
 /* (2026-10-08) more room between a challenge's title and its line */
 @media (min-width: 768px) { .cm-playlist .cm-track-desc { margin-top: 12px !important; } }
+/* v3 (2026-10-08): title and line at the top, the foot (counts + View more) at the bottom; the card's
+   top and bottom padding kept, the room between the two groups is what grows */
+@media (min-width: 768px) {
+  .cs-ss[data-short] .cs-ss-main { justify-content: flex-start !important; padding-top: 28px !important; padding-bottom: 24px !important; }
+  .cs-ss[data-short] .cs-ss-short { display: flex; flex-direction: column; flex: 1 1 auto; gap: 0; padding-top: 10px; }
+  .cs-ss[data-short] .cs-ss-foot { margin-top: auto; }
+  .cs-ss[data-short] .cs-ss-short .cm-lede { margin-bottom: 32px; }
+}
