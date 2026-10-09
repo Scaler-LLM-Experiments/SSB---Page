@@ -24,7 +24,7 @@ export function PlacementsHeader({
 }: {
   eyebrow: string;
   title: string;
-  description: string;
+  description: ReactNode;
   titleId: string;
   aside?: ReactNode;
   asideAt?: 'end' | 'title';

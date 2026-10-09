@@ -842,3 +842,7 @@ html[data-placements='v3'] .pl-deck { display: none; }
 .pl-v3-report strong { font-weight: 600; color: var(--content-primary); }
 .pl-v3-report span { font-size: 0.875rem; color: var(--content-secondary); }
 @media (width < 672px) { .pl-v3-report { flex-direction: column; align-items: stretch; padding: var(--space-4); } .pl-v3-report a { width: 100%; } }
+/* variant C: the header's lead cut to its first sentence; the rest is in the report strip */
+html[data-placements='v3'] .pl-lead-more { display: none; }
+.pl-v3-report p { max-width: 48rem; }
+.pl-v3-report span { font-size: 0.9375rem; line-height: 1.45; }

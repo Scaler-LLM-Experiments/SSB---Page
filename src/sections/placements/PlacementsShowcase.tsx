@@ -67,6 +67,9 @@ export async function PlacementsShowcase({
     TILE_SIZING,
   );
 
+  const cut = lead.indexOf('. ') + 1;
+  const [leadHead, leadRest] = cut ? [lead.slice(0, cut), lead.slice(cut + 1)] : [lead, ''];
+
   return (
     <Section density="roomy" aria-labelledby="placements-showcase-title" className="overflow-x-clip">
       <ShowcaseMotion>
@@ -74,7 +77,14 @@ export async function PlacementsShowcase({
           <PlacementsHeader
             eyebrow={eyebrow}
             title={title}
-            description={lead}
+            // Variant C carries the lead's second half in its report strip, so there the header keeps
+            // only the first sentence (CSS hides the rest).
+            description={
+              <>
+                {leadHead}
+                <span className="pl-lead-more"> {leadRest}</span>
+              </>
+            }
             titleId="placements-showcase-title"
             asideAt="title"
             aside={
@@ -167,7 +177,7 @@ export async function PlacementsShowcase({
             <div className="pl-v3-report">
               <p>
                 <strong>Placement report</strong>
-                <span>Every figure above, cohort by cohort, audited.</span>
+                <span>{leadRest}</span>
               </p>
               <Button asChild size="md" variant="secondary">
                 <a href={reportHref}>
