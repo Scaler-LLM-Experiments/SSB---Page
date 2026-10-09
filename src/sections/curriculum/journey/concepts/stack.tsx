@@ -398,7 +398,8 @@ function StackSheet({ y, cfg, onMore }: { y: Year; cfg: JourneyConfig; onMore?: 
         {cfg.showVisual && y.visual ? <Visual photo={y.visual} alt="" cfg={cfg} ratio={[800, 900]} /> : null}
         {/* the term as a tag on the picture (2026-10-08) */}
         <span className="cs-media-tag" aria-label={`Term ${y.year}, ${TERM_MONTHS[y.year] ?? ''}`}>
-          {TERM_MONTHS[y.year] ?? <YearEyebrow year={y.year} cfg={cfg} as="span" />}
+          {/* the term with its months (2026-10-09: "Term 02 · Apr – Jun '27") */}
+          {TERM_MONTHS[y.year] ? `Term ${String(y.year).padStart(2, '0')} · ${TERM_MONTHS[y.year]}` : <YearEyebrow year={y.year} cfg={cfg} as="span" />}
         </span>
         {cfg.termsSheet ? null : <MediaGlance y={y} />}
       </div>

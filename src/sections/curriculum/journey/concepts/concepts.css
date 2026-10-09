@@ -1148,3 +1148,9 @@
   .sj-ai-open .sj-ai-tools { overflow: hidden; }
   .sj-ai-open .sj-tools-set .sj-tool { font-size: 14px; }
 }
+/* (2026-10-09) the short term cards a little lower */
+@media (min-width: 768px) {
+  .cs-ss[data-short] { min-height: 280px !important; height: 280px; }
+  .cs-ss[data-short] .cs-ss-media { height: 100%; min-height: 0; }
+  .cs-ss[data-short] .cs-ss-main { padding-top: 22px !important; padding-bottom: 20px !important; }
+}
