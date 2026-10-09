@@ -853,3 +853,17 @@ html[data-placements='v3'] .pl-head-report { display: none; }
 .pl-v3-report-text strong { font-weight: 600; color: var(--content-primary); }
 .pl-v3-report-text ul { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
 .pl-v3-report-text li { padding: 4px 10px; border-radius: 999px; background: var(--surface-page); box-shadow: inset 0 0 0 1px var(--border-subtle); font-size: 0.8125rem; line-height: 1.3; color: var(--content-secondary); }
+/* variant C (2026-10-09): the logos a step smaller, so more show at once; the logo rows under the card
+   repeat them, so they go */
+@media (width >= 1056px) {
+  .pl-v3 .pl-app-drift { width: min(30%, 18rem); }
+  .pl-v3 .pl-app-drift .pl-wall-tile > * { height: 3.25rem !important; border-radius: 8px; }
+  .pl-v3 .pl-app-drift .pl-wall-tile img { zoom: 0.56; }
+  .pl-v3 .pl-app-drift .pl-wall-tile { margin-block-end: var(--space-2); }
+}
+@media (width < 1056px) {
+  .pl-v3 .pl-app-drift > div { height: 2.75rem; }
+  .pl-v3 .pl-app-drift .pl-wall-tile { width: 6.5rem; }
+  .pl-v3 .pl-app-drift .pl-wall-tile img { zoom: 0.5; }
+}
+html[data-placements='v3'] .pl-recruiters { display: none; }

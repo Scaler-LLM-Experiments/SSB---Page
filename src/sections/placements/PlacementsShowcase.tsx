@@ -245,7 +245,7 @@ export async function PlacementsShowcase({
           {/* The companies under the cards, as one list (no "more hiring partners" split): two rows
               of logos running past in opposite directions, by themselves (CSS; they hold on hover and
               under reduced motion). Screen readers get the deck's full list instead. */}
-          <div data-strip className="mt-12 sm:mt-16">
+          <div data-strip className="pl-recruiters mt-12 sm:mt-16">
             <Heading as="h3" size="3" className="pl-recruiters-title mb-5">
               {recruitersTitle}
             </Heading>
