@@ -92,3 +92,34 @@
 .in-boxes { display: grid; gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
 @media (width >= 672px) { .in-boxes { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); } }
 .in-boxes .pl-figure-box { border-radius: var(--radius-2xl); }
+
+/* ── success stories as shorts (2026-10-09): a row of 9:16 cards, the content's left edge to the
+   window's right, a card at a time ── */
+.in-reels { position: relative; }
+.in-reels-row {
+  --reels-inset: calc(max(0px, (100vw - var(--size-container-max)) / 2) + var(--space-gutter));
+  display: grid; grid-auto-flow: column; grid-auto-columns: 15rem; gap: var(--space-3);
+  margin: 0 calc(var(--reels-inset) * -1); padding: 0 var(--reels-inset) var(--space-2); list-style: none;
+  overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--reels-inset); scrollbar-width: none; overscroll-behavior-x: contain;
+}
+.in-reels-row::-webkit-scrollbar { display: none; }
+.in-reels-row > li { scroll-snap-align: start; }
+@media (width < 672px) { .in-reels-row { grid-auto-columns: 62vw; } }
+.in-reel { all: unset; position: relative; display: block; width: 100%; aspect-ratio: 9 / 16; overflow: hidden; border-radius: var(--radius-lg); background: #111; cursor: pointer; isolation: isolate; }
+.in-reel:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+.in-reel video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1); }
+.in-reel:hover video { transform: scale(1.03); }
+.in-reel-shade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgb(0 0 0 / 0.25) 0%, transparent 22%, transparent 50%, rgb(0 0 0 / 0.78) 100%); }
+.in-reel-sound { position: absolute; top: 12px; right: 12px; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: rgb(0 0 0 / 0.4); color: #fff; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.in-reel-sound svg { width: 16px; height: 16px; }
+.in-reel-copy { position: absolute; inset: auto 16px 16px; display: grid; gap: 4px; color: #fff; }
+.in-reel-name { font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.02em; color: rgb(255 255 255 / 0.8); }
+.in-reel-line { font-size: 1.0625rem; line-height: 1.3; font-weight: 600; text-wrap: balance; }
+.in-reels-nav { display: flex; justify-content: center; gap: var(--space-2); margin-top: var(--space-6); }
+.in-reels-nav button { all: unset; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 10px; background: var(--surface-sunken); color: var(--content-primary); cursor: pointer; }
+.in-reels-nav button:disabled { opacity: 0.4; cursor: default; }
+.in-reels-nav button:focus-visible { outline: 2px solid var(--border-focus); }
+.in-reels-nav svg { width: 18px; height: 18px; }
+@media (prefers-reduced-motion: reduce) { .in-reel video { transition: none; } }
+/* inside the curriculum rail's column: no bleed past it (the first card was cut at the left) */
+.in-reels-row { margin: 0; padding: 0 0 var(--space-2); scroll-padding-inline: 0; }

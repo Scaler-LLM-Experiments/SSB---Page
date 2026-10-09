@@ -23,6 +23,7 @@ import { Briefcase, CaretUp, Play } from '@phosphor-icons/react';
 import { PlacementsMotion } from '@/sections/placements/PlacementsMotion';
 import { CardStack as PhoneCarousel } from '@/sections/shared/CardStack';
 import { CardStack } from './CardStack';
+import { StoryReels, type Reel } from './StoryReels';
 import '@/sections/alumni/alumni.css';
 import '@/sections/placements/placements.css';
 import './internship.css';
@@ -53,13 +54,23 @@ const PIVOTS: [string, string, string, string, string][] = [
 // headline and play mark. [CONFIRM] which name goes with which cover: taken from the order the
 // live page lists them in. `video` is the story's link once it is known; a cover without one
 // is not a link.
-const STORIES: { name: string; line: string; cover: string; video?: string }[] = [
+const STORIES: { name: string; line: string; cover: string; video?: string; clip?: string }[] = [
   { name: 'Akarsh', line: 'Created a GTM strategy for BSLR Technologies', cover: 'akarsh' },
   { name: 'Yukthi', line: 'Career pivot from operations to strategy', cover: 'yukthi' },
   { name: 'Moh', line: 'Building a Shark Tank funded startup', cover: 'moh' },
   { name: 'Ayush', line: 'From CA to private equity', cover: 'ayush' },
   { name: 'Yash', line: 'From fintech intern to Founder’s Office', cover: 'yash' },
 ];
+
+// The stories as shorts (2026-10-09). PLACEHOLDER: no learner's short is in the project yet, so each
+// plays the campus film from a different moment; set a story's `clip` to its own short.
+const REELS: Reel[] = STORIES.map((s, i) => ({
+  name: s.name,
+  line: s.line,
+  clip: s.clip ?? '/media/campus-film.mp4',
+  start: s.clip ? 0 : i * 3,
+  poster: s.clip ? undefined : '/media/campus-film-poster.jpg',
+}));
 
 // Where learners have interned: the live site's grid ("Our Learners are now creating Impact at",
 // scaler.com/school-of-business), cut into its 24 logos (public/internship/logos), in the order given.
@@ -228,6 +239,7 @@ function LearnerCard({ card }: { card: Card }) {
  * neighbours are tucked behind; on desktop the stage is the full column and the neighbours stand
  * out at its two ends, almost whole (internship.css).
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- kept to bring the card stack back
 function Stories() {
   const announce = (c: Card) => (c.kind === 'video' ? `${c.story.name}: ${c.story.line}` : `${c.pivot[0]}: ${c.pivot[4]} at ${c.pivot[3]}`);
   // the alumni card is one fixed design scaled to its slot: this is the slot
@@ -343,7 +355,8 @@ export function InternshipSection() {
           <Heading as="h3" size="eyebrow" className="mb-4 text-content-secondary">
             Success stories
           </Heading>
-          <Stories />
+          {/* shorts, in a reel row (2026-10-09); the card stack (<Stories />) was here */}
+          <StoryReels reels={REELS} label="Learners: success stories" />
         </div>
 
         {/* where they interned: the Placements grid's logo frame, one logo to a cell */}
