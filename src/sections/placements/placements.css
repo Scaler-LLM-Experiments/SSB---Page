@@ -870,3 +870,7 @@ html[data-placements='v3'] .pl-recruiters { display: none; }
 /* the strip's tags with their icons (2026-10-09): the carousel chips' rocket, globe and sparkle, small and green */
 .pl-v3-report-text li { display: inline-flex; align-items: center; gap: 6px; padding-left: 8px; }
 .pl-v3-report-text li svg { width: 14px; height: 14px; flex: none; color: var(--content-brand, var(--color-ssb-light-9)); }
+/* a pinned version (/v3): shown from the server's HTML, before the switch's script has run */
+[data-pl-fixed='v3'] .pl-deck, [data-pl-fixed='v3'] .pl-recruiters, [data-pl-fixed='v3'] .pl-head-report { display: none; }
+[data-pl-fixed='v3'] .pl-v3 { display: block; }
+[data-pl-fixed='v3'] .pl-lead-more { display: none; }

@@ -54,7 +54,11 @@ export async function PlacementsShowcase({
   roles,
   logos,
   recruiters,
-}: PlacementsContent) {
+  fixed,
+}: PlacementsContent & {
+  /** Pin one version and drop the switch (the /v3 link, 2026-10-09: version C). */
+  fixed?: 'carousel' | 'static' | 'v3';
+}) {
   const resolved = await resolveLogos(
     logos.map(({ name, logoUrl, ink }) => ({ name, logoUrl, ink, wordmark: name })),
     FLOAT_SIZING,
@@ -71,7 +75,7 @@ export async function PlacementsShowcase({
   const [leadHead, leadRest] = cut ? [lead.slice(0, cut), lead.slice(cut + 1)] : [lead, ''];
 
   return (
-    <Section density="roomy" aria-labelledby="placements-showcase-title" className="overflow-x-clip">
+    <Section density="roomy" aria-labelledby="placements-showcase-title" className="overflow-x-clip" data-pl-fixed={fixed}>
       <ShowcaseMotion>
         <Container>
           <PlacementsHeader
@@ -102,7 +106,7 @@ export async function PlacementsShowcase({
           {/* Variant B (2026-10-09, the team's ask; ?placements=static, PlacementsVariant): one static card,
               the three figures side by side, the recruiters' logos as a horizontal strip across its top;
               no carousel and no chips. Both are rendered; the variant shows one. */}
-          <PlacementsVariant />
+          <PlacementsVariant fixed={fixed} />
           <article className="pl-static" aria-label="Placement highlights">
             <div className="pl-static-media" aria-hidden>
               {/* eslint-disable-next-line @next/next/no-img-element -- fills its box */}

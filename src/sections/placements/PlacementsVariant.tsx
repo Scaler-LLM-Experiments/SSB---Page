@@ -11,9 +11,10 @@ import * as React from 'react';
  */
 type Version = 'carousel' | 'static' | 'v3';
 
-export function PlacementsVariant() {
-  const [v, setV] = React.useState<Version>('carousel');
+export function PlacementsVariant({ fixed }: { fixed?: Version } = {}) {
+  const [v, setV] = React.useState<Version>(fixed ?? 'carousel');
   React.useEffect(() => {
+    if (fixed) return;
     const p = new URLSearchParams(window.location.search).get('placements');
     setV(p === 'static' || p === 'v3' ? p : 'carousel');
   }, []);
@@ -27,6 +28,7 @@ export function PlacementsVariant() {
     else u.searchParams.delete('placements');
     window.history.replaceState(null, '', u);
   };
+  if (fixed) return null;
   return (
     <div className="pl-variant" role="group" aria-label="Placements card version">
       <span>Placements</span>
