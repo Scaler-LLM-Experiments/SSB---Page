@@ -399,13 +399,16 @@ function StackSheet({ y, cfg, onMore }: { y: Year; cfg: JourneyConfig; onMore?: 
           // v3: the card says what the term is; In class and Out of class open in the sheet
           <div className="cs-ss-short">
             <p className="cm-lede">{y.description || y.ship}</p>
-            <div className="cs-ss-figures">
-              <MediaGlance y={y} />
+            {/* the figures and View more on one row */}
+            <div className="cs-ss-foot">
+              <div className="cs-ss-figures">
+                <MediaGlance y={y} />
+              </div>
+              <button type="button" className="cs-ss-more" onClick={onMore}>
+                View more
+                <ArrowUpRight weight="bold" aria-hidden="true" />
+              </button>
             </div>
-            <button type="button" className="cs-ss-more" onClick={onMore}>
-              View more
-              <ArrowUpRight weight="bold" aria-hidden="true" />
-            </button>
           </div>
         ) : (
           <div className="cs-modal-body cs-sheet-body">

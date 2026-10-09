@@ -1077,3 +1077,6 @@
 .cs-ss-figures .cs-media-glance dt { color: var(--content-secondary); }
 .cs-ss[data-short] .cs-ss-more { background: var(--surface-brand-solid); color: var(--content-on-brand-solid, #fff) !important; }
 .cs-ss[data-short] .cs-ss-more:hover { background: var(--surface-brand-solid-hover, var(--surface-brand-solid)); }
+/* v3: the figures and View more on one row, the button at the right, level with the figures */
+.cs-ss-short { justify-items: stretch; }
+.cs-ss-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px 24px; flex-wrap: wrap; }
