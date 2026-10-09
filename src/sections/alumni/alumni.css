@@ -276,3 +276,5 @@
 }
 .peers-flip-card { transition-duration: 450ms; }
 @media (width < 672px) { .peers-flip { gap: var(--space-2); } .peers-flip-cell { height: 4rem; } .peers-flip-face { padding: 0 var(--space-2); } .peers-flip-logo { max-height: 1.5rem; } }
+/* the flip grid's heading: ssx-ui's size 3 at a medium weight, as Placements' recruiters line */
+.peers-title { font-weight: var(--font-weight-medium); }

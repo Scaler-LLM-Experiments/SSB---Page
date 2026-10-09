@@ -179,9 +179,18 @@ export async function PlacementsShowcase({
               <div className="pl-v3-report-text">
                 <strong>Where the founding cohort landed</strong>
                 <ul>
-                  <li>Indian startups</li>
-                  <li>Global MNCs</li>
-                  <li>Digital-first companies</li>
+                  <li>
+                    {ICONS.rocket}
+                    Indian startups
+                  </li>
+                  <li>
+                    {ICONS.globe}
+                    Global MNCs
+                  </li>
+                  <li>
+                    {ICONS.sparkle}
+                    Digital-first companies
+                  </li>
                 </ul>
               </div>
               <Button asChild size="md" variant="secondary">

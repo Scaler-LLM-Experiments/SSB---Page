@@ -867,3 +867,6 @@ html[data-placements='v3'] .pl-head-report { display: none; }
   .pl-v3 .pl-app-drift .pl-wall-tile img { zoom: 0.5; }
 }
 html[data-placements='v3'] .pl-recruiters { display: none; }
+/* the strip's tags with their icons (2026-10-09): the carousel chips' rocket, globe and sparkle, small and green */
+.pl-v3-report-text li { display: inline-flex; align-items: center; gap: 6px; padding-left: 8px; }
+.pl-v3-report-text li svg { width: 14px; height: 14px; flex: none; color: var(--content-brand, var(--color-ssb-light-9)); }

@@ -62,11 +62,11 @@ export default function V2Page() {
         <WhySection {...why} answer={false} />
         {/* 3 alumni: our earlier cohorts, already in the roles Why SSB names */}
         <AlumniSection peers={<PeersTicker />} />
+        {/* student founders (deck p5); before the second breaker since 2026-10-09 (the team's call) */}
+        <BeyondPlacementsSection />
         {/* the second breaker: founders backing the students (a judge's offer of funding, a founder's
             advice), a person to a slide */}
         <TestimonialSection />
-        {/* student founders (deck p5) */}
-        <BeyondPlacementsSection />
         {/* faculty and mentors (the founding team and investors come after the innovation lab) */}
         <PeopleTabsSection />
         {/* the curriculum, together (the team's call, 2026-10-06): the terms, then learn by doing, career prep, the
