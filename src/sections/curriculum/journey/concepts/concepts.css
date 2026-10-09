@@ -1114,3 +1114,9 @@
 /* (2026-10-08) more room between the description and the foot (above and below its rule) */
 .cs-ss-short { gap: 36px; }
 .cs-ss-foot { padding-top: 24px; }
+/* (2026-10-08) the challenge cards a little taller: a 128px still, more padding */
+@media (min-width: 768px) {
+  .cm-playlist .cm-track, .cm-playlist .cm-track[data-flagship] { grid-template-columns: 128px minmax(0, 1fr) !important; padding: 14px !important; gap: 16px !important; }
+  .cm-playlist .cm-still { width: 128px; height: 128px; }
+  .cm-playlist .cm-track-main { padding-top: 4px !important; }
+}
