@@ -59,7 +59,7 @@ export function AlumniSection({ peers }: { peers?: React.ReactNode }) {
           </li>
         ))}
       </ul>
-      <ScrollDots scroller={rowRef} count={Math.ceil(alumni.length / rows)} itemName="alumni" fill="solid" />
+      <ScrollDots scroller={rowRef} count={Math.ceil(alumni.length / rows)} itemName="alumni" fill="solid" interval={2800} loop />
 
       {peers ? <Container className="mt-16 sm:mt-20">{peers}</Container> : null}
     </Section>

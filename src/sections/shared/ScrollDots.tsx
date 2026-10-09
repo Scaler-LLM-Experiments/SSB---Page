@@ -34,6 +34,8 @@ export function ScrollDots({
   tone = 'light',
   cardStep,
   autoplay = true,
+  interval = INTERVAL,
+  loop = false,
 }: {
   scroller: React.RefObject<HTMLElement | null>;
   count: number;
@@ -44,6 +46,10 @@ export function ScrollDots({
   cardStep?: number;
   /** false: a row of cards that never moves by itself (the curriculum's terms); the dots and arrows only. */
   autoplay?: boolean;
+  /** ms a card holds before the row moves on (6s by default). */
+  interval?: number;
+  /** true: at the end the row goes back to its start and keeps playing, instead of stopping. */
+  loop?: boolean;
 }) {
   const stepPx = React.useRef(cardStep);
   stepPx.current = cardStep;
@@ -154,13 +160,17 @@ export function ScrollDots({
       const el = scroller.current;
       if (!el) return;
       if (state.atEnd || state.active >= count - 1) {
-        setPlaying(false);
+        if (loop) {
+          pending.current = { index: 0, until: performance.now() + 1100 };
+          setState((st) => ({ ...st, active: 0, atEnd: false }));
+          el.scrollTo({ left: 0, behavior: 'smooth' });
+        } else setPlaying(false);
         return;
       }
       el.scrollTo({ left: (state.active + 1) * step(el), behavior: 'smooth' });
-    }, INTERVAL);
+    }, interval);
     return () => window.clearTimeout(id);
-  }, [running, state.active, state.atEnd, count, scroller]);
+  }, [running, state.active, state.atEnd, count, scroller, interval, loop]);
 
   const select = (i: number) => {
     if (timed) setPlaying(false); // the visitor has taken over
@@ -189,7 +199,7 @@ export function ScrollDots({
       // a timed fill only while autoplay is still on: once the visitor has taken over, or it has
       // played through (or never runs, reduced motion), the current dot simply shows full,
       // not frozen empty as if broken
-      interval={timed && playing && !reduced ? INTERVAL : undefined}
+      interval={timed && playing && !reduced ? interval : undefined}
       progress={timed && playing && !reduced ? undefined : fill === 'solid' ? 1 : state.progress}
       tone={tone}
     />
