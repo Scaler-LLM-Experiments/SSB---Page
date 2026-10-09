@@ -797,3 +797,10 @@ html[data-placements='static'] .pl-deck { display: none; }
    white figures sit */
 .pl-static-media img { filter: none; transform: none; }
 .pl-static-media::after { background: linear-gradient(to bottom, rgb(10 14 22 / 0.55) 0%, rgb(10 14 22 / 0.18) 38%, rgb(10 14 22 / 0.06) 62%, rgb(10 14 22 / 0.3) 100%); }
+/* variant B (2026-10-09, corrected): a light blur (not none, not the earlier 2px), and the figures set
+   just above the logos at the foot, the two as one block */
+.pl-static-media img { filter: blur(1px) brightness(1.04); transform: scale(1.02); }
+html[data-placements='static'] .pl-static { justify-content: flex-end; }
+.pl-static-stats { padding-top: var(--space-6); padding-bottom: var(--space-6); }
+.pl-static-stats > div { align-content: end; }
+.pl-static-media::after { background: linear-gradient(to bottom, rgb(10 14 22 / 0.05) 0%, rgb(10 14 22 / 0.12) 35%, rgb(10 14 22 / 0.5) 62%, rgb(10 14 22 / 0.62) 100%); }
