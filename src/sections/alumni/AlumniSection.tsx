@@ -61,6 +61,29 @@ export function AlumniSection({ peers }: { peers?: React.ReactNode }) {
       </ul>
       <ScrollDots scroller={rowRef} count={Math.ceil(alumni.length / rows)} itemName="alumni" fill="solid" interval={2800} loop />
 
+      {/* From the tablet up (2026-10-09, the team's ask, after Placements' drifting logos): the cards in
+          two rows drifting sideways without stopping, the top row left and the bottom row right, each
+          its cards twice over so the loop has no seam; held on hover, still under reduced motion.
+          (The scrolling grid and its dots above are the phone's.) */}
+      <div className="alumni-drift">
+        {[0, 1].map((r) => {
+          const mine = alumni.filter((_, i) => i % 2 === r);
+          return (
+            <div key={r} className="alumni-drift-row" data-dir={r ? 'back' : undefined} style={{ '--n': mine.length } as React.CSSProperties}>
+              {[0, 1].map((copy) => (
+                <ul key={copy} className="alumni-drift-set" aria-label={copy ? undefined : 'Alumni'} aria-hidden={copy ? true : undefined}>
+                  {mine.map((a) => (
+                    <li key={a.name}>
+                      <AlumniCard alumnus={a} />
+                    </li>
+                  ))}
+                </ul>
+              ))}
+            </div>
+          );
+        })}
+      </div>
+
       {peers ? <Container className="mt-16 sm:mt-20">{peers}</Container> : null}
     </Section>
   );

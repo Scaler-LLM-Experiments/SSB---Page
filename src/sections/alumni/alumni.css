@@ -295,3 +295,19 @@
 @media (width >= 1056px) {
   .alumni-row { grid-auto-columns: 21.5rem; gap: var(--space-4); }
 }
+
+/* ── the drifting rows (2026-10-09): from the tablet up, in place of the scrolling grid and its dots ── */
+.alumni-drift { display: none; }
+@media (width >= 672px) {
+  .alumni-row, .alumni-row + * { display: none !important; }
+  .alumni-drift { display: grid; gap: var(--space-4); overflow: hidden; }
+  .alumni-drift-row { --card-w: 20rem; --gap: var(--space-3); display: flex; width: max-content; animation: alumni-drift calc(var(--n) * 9s) linear infinite; }
+  .alumni-drift-row[data-dir='back'] { animation-direction: reverse; }
+  .alumni-drift:hover .alumni-drift-row { animation-play-state: paused; }
+  .alumni-drift-set { display: flex; gap: var(--gap); margin: 0; padding: 0 var(--gap) 0 0; list-style: none; }
+  .alumni-drift-set > li { position: relative; flex: none; width: var(--card-w); aspect-ratio: 3 / 2; }
+}
+@media (width >= 1056px) { .alumni-drift-row { --card-w: 21.5rem; --gap: var(--space-4); } }
+@keyframes alumni-drift { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .alumni-drift-row { animation: none; } }
+@media (width >= 672px) { .alumni-drift { mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent); } }
