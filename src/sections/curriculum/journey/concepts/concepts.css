@@ -1120,3 +1120,5 @@
   .cm-playlist .cm-still { width: 128px; height: 128px; }
   .cm-playlist .cm-track-main { padding-top: 4px !important; }
 }
+/* (2026-10-08) more room between a challenge's title and its line */
+@media (min-width: 768px) { .cm-playlist .cm-track-desc { margin-top: 12px !important; } }
