@@ -100,8 +100,9 @@ export const placements: PlacementsContent = {
       label: 'Indian startups',
       icon: 'rocket',
       // The title reads on from the figure: "50+ startups from Bengaluru…".
-      statValue: '50+',
-      title: 'startups from Bengaluru, Hyderabad and beyond are picking SSB candidates.',
+      // the team's figures (2026-10-09), in place of the startup / MNC / AI-role counts
+      statValue: '₹25.7L',
+      title: 'Top-quartile average CTC.',
       logos: ['Swiggy', 'Zomato', 'Zepto', 'Blinkit', 'Razorpay', 'PhonePe', 'Urban Company', 'Lenskart'],
       imageUrl: '/media/bengaluru-vidhana-soudha-1280.webp',
       imageSrcSet:
@@ -112,8 +113,8 @@ export const placements: PlacementsContent = {
     {
       label: 'Global MNCs',
       icon: 'globe',
-      statValue: '10+',
-      title: 'global MNCs hire from SSB’s founding cohort, too.',
+      statValue: '3.2x',
+      title: 'Average hike vs. pre-SSB.',
       logos: ['Amazon', 'Goldman Sachs', 'EY', 'Nomura', 'Samsung', 'Uber', 'Zendesk', 'ArcelorMittal'],
       imageUrl: '/media/san-francisco-golden-gate-1280.webp',
       imageSrcSet:
@@ -124,8 +125,8 @@ export const placements: PlacementsContent = {
     {
       label: 'AI-first roles',
       icon: 'sparkle',
-      statValue: '55%+',
-      title: 'of the founding cohort went into digital and AI-first roles.',
+      statValue: '87%',
+      title: 'Switched industries or roles.',
       roles: true,
       imageUrl: '/media/campus-entrance-1280.webp',
       imageSrcSet: '/media/campus-entrance-1280.webp 1280w, /media/campus-entrance-1920.webp 1920w',

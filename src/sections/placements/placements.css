@@ -732,3 +732,13 @@
 /* The cohort boxes sit as close under the deck as they sit to each other (2026-10-07, the team's ask). */
 .pl-cohorts { margin-top: var(--space-3); }
 @media (width >= 672px) { .pl-cohorts { margin-top: var(--space-4); } }
+
+/* (2026-10-09) the showcase's logo tiles smaller, so more show at a glance: shorter tiles, a
+   tighter gap, the logos scaled down with them (still legible) */
+@media (width >= 1056px) {
+  .pl-app-drift { width: min(34%, 21rem); }
+  .pl-app-drift .pl-wall { gap: var(--space-2); }
+  .pl-app-drift .pl-wall-tile { margin-block-end: var(--space-2); }
+  .pl-app-drift .pl-wall-tile > * { height: 4.25rem !important; padding-inline: var(--space-3) !important; border-radius: 10px; }
+  .pl-app-drift .pl-wall-tile img { zoom: 0.72; }
+}
