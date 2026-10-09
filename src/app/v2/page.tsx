@@ -4,6 +4,7 @@ import { placements } from '@/content/placements';
 import { why } from '@/content/why';
 import { AdmissionsSection } from '@/sections/admissions/AdmissionsSection';
 import { AlumniSection } from '@/sections/alumni/AlumniSection';
+import { PeersTicker } from '@/sections/alumni/PeersTicker';
 import { CurriculumRail } from '@/sections/curriculum/CurriculumRail';
 import { FaqSection } from '@/sections/faq/FaqSection';
 import { HeroV2 } from '@/sections/hero/v2/HeroV2';
@@ -57,7 +58,7 @@ export default function V2Page() {
         {/* why SSB (deck slide 4) */}
         <WhySection {...why} />
         {/* 3 alumni: our earlier cohorts, already in the roles Why SSB names */}
-        <AlumniSection />
+        <AlumniSection peers={<PeersTicker />} />
         {/* the second breaker: founders backing the students (a judge's offer of funding, a founder's
             advice), a person to a slide */}
         <TestimonialSection />
