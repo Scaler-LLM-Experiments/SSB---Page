@@ -35,7 +35,14 @@ import './hero-v2.css';
  * the site navbar with `heroNav` above it at page level (`HomeNav`); the motion
  * turns the nav light once the page is white.
  */
-export async function HeroV2(hero: HeroContent) {
+export async function HeroV2({
+  moment = true,
+  ...hero
+}: HeroContent & {
+  /** false: the scroll moment off (2026-10-09, hidden for now): no framed film, caption or play button;
+      the footage stays behind the first fold and the hero scrolls away. */
+  moment?: boolean;
+}) {
   const { media } = hero;
   const [leaders, schools] = await Promise.all([
     hero.leaders?.length ? resolveLogos(hero.leaders, CREDITS_SIZING) : [],
@@ -43,7 +50,7 @@ export async function HeroV2(hero: HeroContent) {
   ]);
 
   return (
-    <HeroV2Motion>
+    <HeroV2Motion moment={moment}>
       {/* Pulled up under the site navbar (--sn-h, its height), so the film runs behind its frosted glass. */}
       <div data-brand="ssb" data-theme="dark" className="-mt-(--sn-h) bg-page text-content">
         <Splash />
@@ -55,7 +62,7 @@ export async function HeroV2(hero: HeroContent) {
             a spacer after it adds the moment's length (sticky holds the hero for exactly that). */}
         <div
           data-hero-pin
-          className="motion-safe:md:h-(--hero-track)"
+          className={moment ? 'motion-safe:md:h-(--hero-track)' : undefined}
           style={{ '--hero-track': TRACK_HEIGHT } as React.CSSProperties}
         >
           {/* One screen, from the top of the window: the nav floats over its top (--sn-h). */}
@@ -122,7 +129,7 @@ export async function HeroV2(hero: HeroContent) {
                       played, the YouTube film. Drawn 1:1 however the card is scaled
                       (frame.ts drawCard), and sized to the scroll frame on desktop. */}
                   <div data-video-overlay className="pointer-events-none absolute left-0 top-0 h-full w-full">
-                    {media?.caption ? (
+                    {moment && media?.caption ? (
                       <div
                         data-video-caption
                         data-surface-ink="on-image"
@@ -133,7 +140,7 @@ export async function HeroV2(hero: HeroContent) {
                     ) : null}
                     {/* The big play button, faded in as the video frames on scroll; it opens the
                         full film from YouTube, under YouTube-style controls. */}
-                    {media?.youtubeId ? (
+                    {moment && media?.youtubeId ? (
                       <FilmPlayer youtubeId={media.youtubeId} length={media.youtubeLength} />
                     ) : null}
                   </div>
@@ -142,12 +149,14 @@ export async function HeroV2(hero: HeroContent) {
             </Container>
           </section>
           {/* Below desktop: the moment's length, scrolled past while the hero holds (`phoneMoment`). */}
-          <div
-            data-hero-phone-track
-            aria-hidden="true"
-            className="hidden h-(--hero-phone-track) motion-safe:block motion-safe:md:hidden"
-            style={{ '--hero-phone-track': PHONE_TRACK } as React.CSSProperties}
-          />
+          {moment ? (
+            <div
+              data-hero-phone-track
+              aria-hidden="true"
+              className="hidden h-(--hero-phone-track) motion-safe:block motion-safe:md:hidden"
+              style={{ '--hero-phone-track': PHONE_TRACK } as React.CSSProperties}
+            />
+          ) : null}
         </div>
       </div>
     </HeroV2Motion>

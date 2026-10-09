@@ -52,7 +52,8 @@ export default function V2Page() {
             over a light page, the film in a rounded card, the leaders at the right. */}
         <HomeNav />
         <BottomNav />
-        <HeroV2 {...hero} />
+        {/* the framed film (scroll moment, caption, play button) hidden for now (2026-10-09); drop moment={false} to bring it back */}
+        <HeroV2 {...hero} moment={false} />
         {/* 2 placements (main's showcase take) */}
         <PlacementsShowcase {...placements} />
         {/* why SSB (deck slide 4) */}

@@ -26,7 +26,7 @@ const OTHERWISE = '(max-width: 1055px), (prefers-reduced-motion: reduce)';
  * transforms only (`drawCard`): none of it is a layout shift. Below desktop, a
  * shorter moment of its own (`phoneMoment`).
  */
-export function HeroV2Motion({ children }: { children: React.ReactNode }) {
+export function HeroV2Motion({ children, moment = true }: { children: React.ReactNode; moment?: boolean }) {
   const scope = React.useRef<HTMLDivElement>(null);
 
   useMotion((context) => {
@@ -72,6 +72,11 @@ export function HeroV2Motion({ children }: { children: React.ReactNode }) {
           });
       },
       onDone: () => {
+        // Without the moment (HeroV2 `moment={false}`), the hero simply scrolls away: only the nav follows.
+        if (!moment) {
+          scroll.add('all', () => navFollowsPage(hooksIn(root)));
+          return;
+        }
         scroll.add(DESKTOP_WITH_MOTION, () => videoMoment(hooksIn(root), closeFilm));
         scroll.add(PHONE_WITH_MOTION, () => phoneMoment(hooksIn(root), closeFilm));
         scroll.add(OTHERWISE, () => navFollowsPage(hooksIn(root)));
