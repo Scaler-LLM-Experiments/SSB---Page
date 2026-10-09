@@ -1095,3 +1095,8 @@
   .cs-mcard .cs-ss-foot .cs-ss-link { flex-basis: auto !important; margin-left: auto; }
   .cs-ss-foot { flex-wrap: nowrap; }
 }
+/* v3 (2026-10-08): the foot's glyphs in the term's colour; more room between the groups */
+.cs-ss-foot .cs-meta svg { color: var(--term-ink, var(--content-brand)) !important; }
+.cs-ss[data-short] .cs-sheet-head { margin-bottom: 4px; }
+.cs-ss-short { gap: 26px; padding-top: 12px; }
+.cs-ss-foot { margin-top: 0; padding-top: 20px; }

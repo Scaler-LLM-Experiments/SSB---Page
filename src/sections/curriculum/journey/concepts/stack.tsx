@@ -378,19 +378,14 @@ function StackSheet({ y, cfg, onMore }: { y: Year; cfg: JourneyConfig; onMore?: 
       <div className="cs-sheet-media cs-ss-media">
         {cfg.showVisual && y.visual ? <Visual photo={y.visual} alt="" cfg={cfg} ratio={[800, 900]} /> : null}
         {/* the term as a tag on the picture (2026-10-08) */}
-        {cfg.termsSheet ? null : (
-          <>
-            <span className="cs-media-tag" aria-label={`Term ${y.year}, ${TERM_MONTHS[y.year] ?? ''}`}>
-              {TERM_MONTHS[y.year] ?? <YearEyebrow year={y.year} cfg={cfg} as="span" />}
-            </span>
-            <MediaGlance y={y} />
-          </>
-        )}
+        <span className="cs-media-tag" aria-label={`Term ${y.year}, ${TERM_MONTHS[y.year] ?? ''}`}>
+          {TERM_MONTHS[y.year] ?? <YearEyebrow year={y.year} cfg={cfg} as="span" />}
+        </span>
+        {cfg.termsSheet ? null : <MediaGlance y={y} />}
       </div>
       <div ref={main} className="cs-sheet-main cs-ss-main">
         <header className="cs-sheet-head">
           {/* v3: the months over the title, in the card (no tags on the picture) */}
-          {cfg.termsSheet ? <span className="cs-ss-months">{TERM_MONTHS[y.year]}</span> : null}
           <Heading as="h3" size="2">
             {y.name}
           </Heading>
