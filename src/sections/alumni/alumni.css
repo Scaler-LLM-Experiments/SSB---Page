@@ -328,3 +328,12 @@
 .peers-title { text-wrap: balance; }
 @media (width < 672px) { .peers-title { font-size: 1.25rem; line-height: 1.3; } }
 @media (prefers-reduced-motion: reduce) { .alumni-drift-row { animation: none !important; } }
+/* the flip without a back face (2026-10-09; Safari drew the hidden face mirrored): a new logo's face
+   turns in from edge-on, flat, so nothing depends on backface-visibility */
+.peers-flip-card { transform: none; transform-style: flat; transition: none; }
+.peers-flip-card[data-turned] { animation: peers-flip-in 520ms cubic-bezier(0.2, 0.7, 0.2, 1) both; transform-origin: 50% 50%; }
+@keyframes peers-flip-in { from { transform: rotateX(-90deg); opacity: 0.4; } to { transform: rotateX(0deg); opacity: 1; } }
+.peers-flip-face { backface-visibility: visible; -webkit-backface-visibility: visible; }
+@media (prefers-reduced-motion: reduce) { .peers-flip-card[data-turned] { animation: none; } }
+/* Safari drew the drifting cards over the sticky menu bar: the rows kept in a stacking context of their own, under it */
+.alumni-drift { position: relative; z-index: 0; isolation: isolate; }

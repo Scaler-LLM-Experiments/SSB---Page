@@ -1163,3 +1163,8 @@
 @media (prefers-reduced-motion: reduce) { .cs-ss-btn svg { transition: none; } }
 /* the stacked term cards read as a deck: a soft shadow lifts each card off the one behind */
 .sj .cs-deck.cs-mstack .cs-mcard .cs-inner { box-shadow: 0 -2px 6px -2px rgb(0 0 0 / 0.06), 0 -14px 28px -18px rgb(0 0 0 / 0.22) !important; will-change: transform; }
+/* m-web (2026-10-09): the term card's "View more" the card's full width under its counts */
+@media (max-width: 671px) {
+  .cs-ss-foot { flex-wrap: wrap; }
+  .cs-ss-btn { flex: 1 1 100%; width: 100%; margin-left: 0; justify-content: center; }
+}

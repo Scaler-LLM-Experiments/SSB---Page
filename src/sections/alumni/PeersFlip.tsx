@@ -20,7 +20,7 @@ function Logo({ logo }: { logo: ResolvedLogo }) {
 /**
  * "Your peers come from" (2026-10-09): the logos in a grid of white cells, two rows on desktop. Every
  * couple of seconds one cell, picked at random, flips over (a turn on its horizontal axis) to a logo
- * not on show. Each cell has two faces; the hidden one takes the new logo, then the cell turns.
+ * not on show: the cell's face is replaced by one carrying the new logo, which turns in.
  * Still under reduced motion. Screen readers get the full list.
  */
 export function PeersFlip({ logos, label }: { logos: ResolvedLogo[]; label: string }) {
@@ -69,12 +69,11 @@ export function PeersFlip({ logos, label }: { logos: ResolvedLogo[]; label: stri
       <ul ref={gridRef} className="peers-flip" aria-hidden>
         {cells.map((c, i) => (
           <li key={i} className="peers-flip-cell">
-            <div className="peers-flip-card" style={{ transform: `rotateX(${c.turns * 180}deg)` }}>
+            {/* one face: a new logo remounts it (its key), and it turns in on its horizontal axis
+                (CSS). No hidden back face: Safari drew those mirrored. */}
+            <div key={`${c.turns}`} className="peers-flip-card" data-turned={c.turns ? '' : undefined}>
               <div className="peers-flip-face">
-                <Logo logo={logos[c.faces[0]]} />
-              </div>
-              <div className="peers-flip-face" data-back>
-                <Logo logo={logos[c.faces[1]]} />
+                <Logo logo={logos[c.faces[c.turns % 2]]} />
               </div>
             </div>
           </li>
