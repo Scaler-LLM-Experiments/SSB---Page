@@ -311,3 +311,20 @@
 @keyframes alumni-drift { to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) { .alumni-drift-row { animation: none; } }
 @media (width >= 672px) { .alumni-drift { mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent); } }
+
+/* m-web (2026-10-09): the drifting rows on phones too (smaller cards, 19rem), in place of the one-card
+   row and its dots, so more of the alumni show in a fold */
+@media (width < 672px) {
+  .alumni-row, .alumni-row + * { display: none !important; }
+  .alumni-drift { display: grid; gap: var(--space-3); overflow: hidden; }
+  .alumni-drift-row { --card-w: 19rem; --gap: var(--space-3); display: flex; width: max-content; animation: alumni-drift calc(var(--n) * 8s) linear infinite; }
+  .alumni-drift-row[data-dir='back'] { animation-direction: reverse; }
+  .alumni-drift-set { display: flex; gap: var(--gap); margin: 0; padding: 0 var(--gap) 0 0; list-style: none; }
+  .alumni-drift-set > li { position: relative; flex: none; width: var(--card-w); aspect-ratio: 3 / 2; }
+  /* touch: a press holds the row, as hover does on desktop */
+  .alumni-drift:active .alumni-drift-row { animation-play-state: paused; }
+}
+/* the peers' heading: balanced lines, a step smaller on a phone */
+.peers-title { text-wrap: balance; }
+@media (width < 672px) { .peers-title { font-size: 1.25rem; line-height: 1.3; } }
+@media (prefers-reduced-motion: reduce) { .alumni-drift-row { animation: none !important; } }
