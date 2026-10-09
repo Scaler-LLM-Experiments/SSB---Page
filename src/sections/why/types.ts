@@ -78,6 +78,8 @@ export type WhyPillar = {
   title: string;
   description: string;
   story: WhyStory;
+  /** Kept in the content but not shown (true: the page leaves it out); delete the line to bring it back. */
+  hidden?: boolean;
 };
 
 export type WhyContent = {

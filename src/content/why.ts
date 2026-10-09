@@ -76,6 +76,8 @@ export const why: WhyContent = {
     {
       icon: 'rocket',
       title: 'Ship',
+      // Hidden for now (2026-10-09, the team's ask); delete this line to show the card again.
+      hidden: true,
       description:
         'Use AI as a working tool. Start without code, then ship products, automations and agents for real use cases: five before you graduate.',
       // The deck's "AI-Powered Grading, Built by a Student"; what it does from its Product Hunt

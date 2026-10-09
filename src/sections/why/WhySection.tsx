@@ -48,7 +48,7 @@ export function WhySection({
               <Roles roles={roles} />
 
               <ol className="why-chapters">
-                {pillars.map((pillar, i) => (
+                {pillars.filter((p) => !p.hidden).map((pillar, i) => (
                   <li
                     key={pillar.title}
                     data-why-chapter
