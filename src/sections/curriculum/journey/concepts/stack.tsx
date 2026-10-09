@@ -400,11 +400,38 @@ function StackSheet({ y, cfg, onMore }: { y: Year; cfg: JourneyConfig; onMore?: 
           <div className="cs-ss-short">
             <p className="cm-lede">{y.description || y.ship}</p>
             {/* the figures and View more on one row */}
+            {/* the term cards' foot (/v2's): a rule, the counts inline, View more as the secondary link */}
             <div className="cs-ss-foot">
-              <div className="cs-ss-figures">
-                <MediaGlance y={y} />
-              </div>
-              <button type="button" className="cs-ss-more" onClick={onMore}>
+              <span className="cs-meta" data-glyphs="">
+                {(() => {
+                  const courses = y.skills ? countSkills(y) : 0;
+                  const projects = y.projects.length;
+                  const workshops = (y.workshops ?? []).length;
+                  return (
+                    <>
+                      {courses ? (
+                        <span>
+                          <BookOpenText weight="regular" aria-hidden="true" />
+                          {courses} courses
+                        </span>
+                      ) : null}
+                      {projects ? (
+                        <span>
+                          <RocketLaunch weight="regular" aria-hidden="true" />
+                          {projects} live project{projects === 1 ? '' : 's'}
+                        </span>
+                      ) : null}
+                      {workshops ? (
+                        <span>
+                          <ChalkboardTeacher weight="regular" aria-hidden="true" />
+                          {workshops} masterclass{workshops === 1 ? '' : 'es'}
+                        </span>
+                      ) : null}
+                    </>
+                  );
+                })()}
+              </span>
+              <button type="button" className="cs-cover-cta cs-ss-link" onClick={onMore}>
                 View more
                 <ArrowUpRight weight="bold" aria-hidden="true" />
               </button>

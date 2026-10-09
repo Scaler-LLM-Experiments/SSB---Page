@@ -1080,3 +1080,18 @@
 /* v3: the figures and View more on one row, the button at the right, level with the figures */
 .cs-ss-short { justify-items: stretch; }
 .cs-ss-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px 24px; flex-wrap: wrap; }
+/* v3's foot as /v2's term cards have it (2026-10-08): a hairline, the counts inline with green glyphs,
+   View more as the secondary (text) CTA in the brand green */
+.cs-ss-foot { width: 100%; margin-top: 6px; padding-top: 16px; border-top: 1px solid color-mix(in srgb, var(--border-subtle) 80%, transparent); }
+.cs-ss-foot .cs-meta { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 15px; font-weight: 500; color: var(--content-primary); }
+.cs-ss-foot .cs-meta > span { display: inline-flex; align-items: center; gap: 8px; }
+.cs-ss-foot .cs-meta svg { width: 1.2em; height: 1.2em; color: var(--surface-brand-solid); }
+.cs-ss-link { all: unset; box-sizing: border-box; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 600; color: var(--surface-brand-solid) !important; white-space: nowrap; }
+.cs-ss-link svg { width: 16px; height: 16px; transition: transform 240ms ease; }
+.cs-ss-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+.cs-ss-link:hover svg { transform: translate(2px, -2px); }
+.cs-ss-link:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 3px; border-radius: 4px; }
+@media (min-width: 768px) {
+  .cs-mcard .cs-ss-foot .cs-ss-link { flex-basis: auto !important; margin-left: auto; }
+  .cs-ss-foot { flex-wrap: nowrap; }
+}
