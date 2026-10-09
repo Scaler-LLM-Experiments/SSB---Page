@@ -278,3 +278,20 @@
 @media (width < 672px) { .peers-flip { gap: var(--space-2); } .peers-flip-cell { height: 4rem; } .peers-flip-face { padding: 0 var(--space-2); } .peers-flip-logo { max-height: 1.5rem; } }
 /* the flip grid's heading: ssx-ui's size 3 at a medium weight, as Placements' recruiters line */
 .peers-title { font-weight: var(--font-weight-medium); }
+
+/* Two rows of smaller cards from the tablet up (2026-10-09), so more of the alumni show in one fold:
+   the row becomes a grid filled column by column, scrolling sideways a column at a time. Each card
+   is the same 480 x 320 design scaled to its slot (AlumniCard), here 20rem wide (0.67). */
+@media (width >= 672px) {
+  .alumni-row {
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+    grid-auto-flow: column;
+    grid-auto-columns: 20rem;
+    gap: var(--space-3);
+  }
+  .alumni-row > li { width: auto; }
+}
+@media (width >= 1056px) {
+  .alumni-row { grid-auto-columns: 21.5rem; gap: var(--space-4); }
+}

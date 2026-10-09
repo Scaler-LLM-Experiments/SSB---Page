@@ -19,6 +19,15 @@ export function AlumniSection({ peers }: { peers?: React.ReactNode }) {
   const rowRef = React.useRef<HTMLUListElement>(null);
   // Same entrance as Faculty: the header, then the cards on screen wiped open.
   useSectionEntrance(sectionRef, { decks: ['.alumni-row > li > article'] });
+  // From the tablet up the cards run in two rows (2026-10-09), so the dots count columns, not cards.
+  const [rows, setRows] = React.useState(1);
+  React.useEffect(() => {
+    const mq = window.matchMedia('(min-width: 672px)');
+    const set = () => setRows(mq.matches ? 2 : 1);
+    set();
+    mq.addEventListener('change', set);
+    return () => mq.removeEventListener('change', set);
+  }, []);
 
 
   return (
@@ -50,7 +59,7 @@ export function AlumniSection({ peers }: { peers?: React.ReactNode }) {
           </li>
         ))}
       </ul>
-      <ScrollDots scroller={rowRef} count={alumni.length} itemName="alumni" fill="solid" />
+      <ScrollDots scroller={rowRef} count={Math.ceil(alumni.length / rows)} itemName="alumni" fill="solid" />
 
       {peers ? <Container className="mt-16 sm:mt-20">{peers}</Container> : null}
     </Section>
