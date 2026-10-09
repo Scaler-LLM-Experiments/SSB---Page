@@ -1156,3 +1156,8 @@
 }
 /* (2026-10-09) the term over the title, in the term's colour */
 .cs-ss-term { display: block; margin-bottom: 6px; font-size: 12px; line-height: 1.3; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--term-ink, var(--content-brand)); }
+/* View more as the design system's secondary button; the arrow nudges on the card's hover */
+.cs-ss-btn { flex: none; margin-left: auto; }
+.cs-ss-btn svg { width: 14px; height: 14px; transition: transform 240ms ease; }
+.cs-ss[data-short][role='button']:hover .cs-ss-btn svg { transform: translate(2px, -2px); }
+@media (prefers-reduced-motion: reduce) { .cs-ss-btn svg { transition: none; } }

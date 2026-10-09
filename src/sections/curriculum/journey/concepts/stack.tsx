@@ -22,7 +22,7 @@
  */
 import * as React from 'react';
 import { createPortal } from 'react-dom';
-import { Heading, IconButton, Text } from '@kishanscaler/ssx-ui';
+import { Button, Heading, IconButton, Text } from '@kishanscaler/ssx-ui';
 import { ArrowCounterClockwise, ArrowUpRight, BookOpenText, CaretDown, ChalkboardTeacher, Path, Play, RocketLaunch, Star, X } from '@phosphor-icons/react';
 import type { Journey, Lane, Year } from '../data';
 import { countSkills, fmt } from '../data';
@@ -447,18 +447,20 @@ function StackSheet({ y, cfg, onMore }: { y: Year; cfg: JourneyConfig; onMore?: 
                   );
                 })()}
               </span>
-              <button
-                type="button"
-                className="cs-cover-cta cs-ss-link"
+              {/* the design system's secondary button (2026-10-09) */}
+              <Button
+                variant="secondary"
+                size="sm"
+                className="cs-ss-btn"
                 tabIndex={-1}
-                onClick={(e) => {
+                onClick={(e: React.MouseEvent) => {
                   e.stopPropagation();
                   onMore?.();
                 }}
               >
                 View more
                 <ArrowUpRight weight="bold" aria-hidden="true" />
-              </button>
+              </Button>
             </div>
           </div>
         ) : (
