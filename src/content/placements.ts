@@ -150,10 +150,9 @@ export const placements: PlacementsContent = {
   // source before this goes anywhere near production.
   // Feedback, 2026-10-06: the highlights split by cohort. TO CONFIRM: Cohort 2's final figure
   // (the note said ₹23-24 LPA).
-  cohorts: [
-    { cohort: 'Cohort 1', value: '₹19 LPA', label: 'Average CTC' },
-    { cohort: 'Cohort 2', value: '₹23–24 LPA', label: 'Average CTC' },
-  ],
+  // The two cohort boxes are off the page (2026-10-09, the team's ask); their figures were Cohort 1
+  // ₹19 LPA and Cohort 2 ₹23–24 LPA (Average CTC).
+  cohorts: [],
   // One merged list, framed as visits (feedback, 2026-10-06).
   recruitersTitle: 'Companies that have visited Scaler School of Business',
   // The grid's logos, best known first (the first twelve are what the grid opens on). Files trimmed
