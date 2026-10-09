@@ -781,3 +781,15 @@ html[data-placements='static'] .pl-deck { display: none; }
 @media (max-width: 1055px) { .pl-variant { bottom: 136px; right: 12px; } }
 /* clear of the site's bottom nav and its callback button */
 @media (min-width: 1056px) { .pl-variant { bottom: 84px; } }
+/* variant B, taller (2026-10-09): the figures at the top, the logos in two rows below */
+.pl-static { min-height: 30rem; }
+.pl-static-media::after { background: linear-gradient(to bottom, rgb(10 14 22 / 0.72) 0%, rgb(10 14 22 / 0.35) 40%, rgb(10 14 22 / 0.35) 60%, rgb(10 14 22 / 0.7) 100%); }
+.pl-static-stats { padding: var(--space-10) var(--space-10) var(--space-6); }
+.pl-static-stats > div { align-content: start; }
+.pl-static-rows { display: grid; gap: var(--space-3); padding: 0 0 var(--space-8); overflow: hidden; }
+.pl-static-strip { padding: 0; }
+.pl-static-strip[data-dir='back'] { animation-direction: reverse; }
+@media (width < 672px) {
+  .pl-static-stats { padding: var(--space-8) var(--space-5) var(--space-6); }
+  .pl-static-rows { padding-bottom: var(--space-5); }
+}

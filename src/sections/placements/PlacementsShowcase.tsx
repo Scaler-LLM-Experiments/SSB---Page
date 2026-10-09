@@ -98,17 +98,7 @@ export async function PlacementsShowcase({
               {/* eslint-disable-next-line @next/next/no-img-element -- fills its box */}
               <img src={showcases[0].imageUrl} srcSet={showcases[0].imageSrcSet} sizes="(min-width: 1280px) 1232px, 100vw" alt="" loading="lazy" decoding="async" style={showcases[0].imagePosition ? { objectPosition: showcases[0].imagePosition } : undefined} />
             </div>
-            <div className="pl-static-strip" aria-hidden>
-              {[0, 1].map((copy) => (
-                <div key={copy} className="pl-static-set">
-                  {resolved.slice(0, 18).map((logo) => (
-                    <span key={logo.name} className="pl-static-logo">
-                      <LogoImage logo={logo} />
-                    </span>
-                  ))}
-                </div>
-              ))}
-            </div>
+            {/* the figures above (2026-10-09), then the logos in two rows drifting opposite ways below */}
             <dl className="pl-static-stats">
               {showcases.map((sc) => (
                 <div key={sc.label}>
@@ -117,6 +107,21 @@ export async function PlacementsShowcase({
                 </div>
               ))}
             </dl>
+            <div className="pl-static-rows" aria-hidden>
+              {[0, 1].map((r) => (
+                <div key={r} className="pl-static-strip" data-dir={r ? 'back' : undefined}>
+                  {[0, 1].map((copy) => (
+                    <div key={copy} className="pl-static-set">
+                      {resolved.filter((_, k) => k % 2 === r).slice(0, 14).map((logo) => (
+                        <span key={logo.name} className="pl-static-logo">
+                          <LogoImage logo={logo} />
+                        </span>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
           </article>
 
           {/* The cards, with the chips that name them laid over the cards' top left (after the team's
