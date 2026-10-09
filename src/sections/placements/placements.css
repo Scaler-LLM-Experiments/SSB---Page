@@ -742,3 +742,5 @@
   .pl-app-drift .pl-wall-tile > * { height: 4.25rem !important; padding-inline: var(--space-3) !important; border-radius: 10px; }
   .pl-app-drift .pl-wall-tile img { zoom: 0.72; }
 }
+/* (2026-10-09) the showcase card a little lower on desktop (34rem before) */
+@media (width >= 1056px) { .pl-app-inner { min-height: 28rem; } }
