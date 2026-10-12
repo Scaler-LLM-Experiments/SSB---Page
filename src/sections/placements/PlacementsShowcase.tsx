@@ -163,7 +163,8 @@ export async function PlacementsShowcase({
                   ))}
                   <span className="pl-app-frost" />
                 </div>
-                <p className="pl-v3-title">Companies that have visited Scaler School of Business</p>
+                {/* (the card's title, "Companies that have visited Scaler School of Business", moved to the
+                    logo grid under the card, 2026-10-12) */}
                 <div className="pl-app-visual">
                   <Drift className="pl-app-drift" tiles={resolved.map((logo) => <LogoTile key={logo.name} logo={logo} large />)} />
                 </div>
@@ -191,10 +192,15 @@ export async function PlacementsShowcase({
                 </div>
               </div>
             </article>
-            {/* "Your peers come from", the alumni section's flip grid, again here after the figures
-                (2026-10-12, the team's ask) */}
+            {/* The alumni section's flip grid after the figures (2026-10-12, the team's ask), with the
+                companies that have visited: the card's title moved here, over them */}
             <div className="pl-v3-peers">
-              <PeersTicker />
+              <PeersTicker
+                companies={logos.map(({ name, logoUrl, ink }) => ({ name, logoUrl, ink, wordmark: name }))}
+                title={recruitersTitle ?? 'Companies that have visited Scaler School of Business'}
+                sub={null}
+                label="Companies that have visited SSB"
+              />
             </div>
             {/* the report, a strip under the card (2026-10-09) */}
             <div className="pl-v3-report">
