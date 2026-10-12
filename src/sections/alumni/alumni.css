@@ -337,3 +337,13 @@
 @media (prefers-reduced-motion: reduce) { .peers-flip-card[data-turned] { animation: none; } }
 /* Safari drew the drifting cards over the sticky menu bar: the rows kept in a stacking context of their own, under it */
 .alumni-drift { position: relative; z-index: 0; isolation: isolate; }
+
+/* m-web (2026-10-12): 4 × 4, so more logos are in view; desktop and tablet keep their two rows */
+@media (width < 672px) {
+  .peers-flip { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+  .peers-flip-cell:nth-child(n) { display: block; }
+  .peers-flip-cell { height: 3.5rem; }
+  .peers-flip-face { padding: 0 6px; border-radius: var(--radius-md); }
+  .peers-flip-logo { max-width: 86%; max-height: 1.25rem; }
+}
+@media (width >= 1056px) { .peers-flip-cell:nth-child(n + 15) { display: none; } }
