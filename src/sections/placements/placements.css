@@ -1049,62 +1049,15 @@ html[data-placements='v3'] .pl-recruiters { display: none; }
 /* a phone: the figures sit higher in the taller stacked card, so its shade starts earlier */
 @media (width < 1056px) { .pl-merge-bg::after { background: linear-gradient(to bottom, rgb(10 14 20 / 0.35) 0%, rgb(10 14 20 / 0.6) 30%, rgb(10 14 20 / 0.78) 100%); } .pl-merge-blur-soft { -webkit-mask-image: linear-gradient(to bottom, transparent 5%, #000 25%); mask-image: linear-gradient(to bottom, transparent 5%, #000 25%); } .pl-merge-blur-deep { -webkit-mask-image: linear-gradient(to bottom, transparent 20%, #000 45%); mask-image: linear-gradient(to bottom, transparent 20%, #000 45%); } }
 
-/* ── The press clipping (2026-10-12): newsprint inside the design system ──
-   One typeface (the system's sans), its tokens; the newspaper comes from the paper, the rules and the
-   scale. Warm paper with a fine grain; the masthead in spaced capitals over a double rule (thick, then
-   hairline) with the section and dateline under it; the headline large, heavy and tight; a byline; a
-   halftoned photo beside the opening lines, set close and hyphenated like a column. Laid on the card a
-   degree off straight, its foot torn; it settles straight under the pointer. */
+/* ── The press clipping (2026-10-12): ssx-ui's parts only (ClickableCard, Heading, Divider,
+   Timestamp, Text, AspectRatio); layout only here, no paper, grain, tears or filters of our own ── */
 @media (width >= 1056px) { .pl-merge { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); } }
-.pl-clip {
-  --ink: var(--content-primary);
-  --ink-soft: color-mix(in oklab, var(--content-primary) 62%, transparent);
-  --paper: color-mix(in oklab, var(--surface-page) 93%, #c8a46a);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  padding: var(--space-5) var(--space-5) var(--space-6);
-  background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.28 0 0 0 0 0.18 0 0 0 .08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
-    var(--paper);
-  color: var(--ink);
-  text-decoration: none;
-  border-radius: 2px;
-  /* the torn foot: a ragged edge cut by a repeating mask along the bottom */
-  -webkit-mask: linear-gradient(#000, #000) top / 100% calc(100% - 7px) no-repeat, conic-gradient(from 135deg at 50% 0, #000 90deg, transparent 0) bottom / 9px 7px repeat-x;
-  mask: linear-gradient(#000, #000) top / 100% calc(100% - 7px) no-repeat, conic-gradient(from 135deg at 50% 0, #000 90deg, transparent 0) bottom / 9px 7px repeat-x;
-  filter: drop-shadow(0 18px 28px rgb(0 0 0 / 0.35));
-  transform: rotate(-1.2deg);
-  transition: transform 420ms cubic-bezier(0.2, 0.7, 0.2, 1);
-}
-.pl-clip:hover { transform: rotate(0deg) translateY(-3px); }
-.pl-clip:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
-.pl-clip-masthead { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding-bottom: var(--space-2); border-bottom: 3px solid var(--ink); box-shadow: 0 4px 0 -3px var(--paper), 0 5px 0 -3px var(--ink); }
-.pl-clip-paper { font-size: 1.125rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
-.pl-clip-out { width: 16px; height: 16px; color: var(--ink-soft); transition: transform 300ms ease; }
-.pl-clip:hover .pl-clip-out { transform: translate(2px, -2px); }
-.pl-clip-dateline { display: flex; justify-content: space-between; margin-top: 2px; font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); }
-.pl-clip-headline { font-size: clamp(1.5rem, 1.1rem + 1.1vw, 2rem); line-height: 1.08; font-weight: 800; letter-spacing: -0.025em; text-wrap: balance; }
-.pl-clip-byline { padding-bottom: var(--space-3); border-bottom: 1px solid color-mix(in oklab, var(--ink) 22%, transparent); font-size: 0.75rem; font-style: italic; color: var(--ink-soft); }
-.pl-clip-body { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--space-3); align-items: start; }
-/* newsprint photo: grey, a touch of contrast, a dot screen over it */
-.pl-clip-photo { position: relative; display: block; overflow: hidden; aspect-ratio: 4 / 3; }
-.pl-clip-photo img { display: block; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.15) brightness(1.04); mix-blend-mode: multiply; }
-.pl-clip-photo::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle, rgb(0 0 0 / 0.22) 0.6px, transparent 1.1px) 0 0 / 3px 3px; mix-blend-mode: multiply; pointer-events: none; }
-.pl-clip-lede { font-size: 0.8125rem; line-height: 1.45; text-align: justify; hyphens: auto; color: color-mix(in oklab, var(--ink) 82%, transparent); }
-.pl-clip-lede::first-letter { float: left; margin: 2px 4px 0 0; font-size: 2.1em; line-height: 0.8; font-weight: 800; color: var(--ink); }
-@media (width < 672px) {
-  .pl-clip { transform: none; padding: var(--space-4) var(--space-4) var(--space-5); }
-  .pl-clip:hover { transform: none; }
-  .pl-clip-headline { font-size: 1.375rem; }
-}
-@media (prefers-reduced-motion: reduce) { .pl-clip, .pl-clip-out { transition: none; } }
-/* the tear finer and rougher (two offset sawtooths), the shadow softer so it doesn't draw a dark zigzag;
-   the lede ragged-right on a phone (justified, the narrow column opened gaps) */
-.pl-clip {
-  -webkit-mask: linear-gradient(#000, #000) top / 100% calc(100% - 4px) no-repeat, conic-gradient(from 135deg at 50% 0, #000 90deg, transparent 0) bottom / 5px 4px repeat-x;
-  mask: linear-gradient(#000, #000) top / 100% calc(100% - 4px) no-repeat, conic-gradient(from 135deg at 50% 0, #000 90deg, transparent 0) bottom / 5px 4px repeat-x;
-  filter: drop-shadow(0 14px 22px rgb(0 0 0 / 0.28));
-}
-@media (width < 672px) { .pl-clip-lede { text-align: start; } }
+.pl-clip-body { display: flex; flex-direction: column; gap: var(--space-3); }
+.pl-clip-masthead { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.pl-clip-paper { text-transform: uppercase; letter-spacing: 0.12em; }
+.pl-clip-out { width: 16px; height: 16px; flex: none; color: var(--content-secondary); }
+.pl-clip-dateline { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); }
+.pl-clip-headline { text-wrap: balance; }
+.pl-clip-story { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--space-4); align-items: start; }
+.pl-clip-photo { overflow: hidden; border-radius: var(--radius-md); }
+.pl-clip-photo img { width: 100%; height: 100%; object-fit: cover; }

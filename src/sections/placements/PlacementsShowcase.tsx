@@ -1,6 +1,18 @@
 import { PeersTicker } from '@/sections/alumni/PeersTicker';
 import type { ReactElement } from 'react';
-import { Button, Container, Heading, Section, cn } from '@kishanscaler/ssx-ui';
+import {
+  AspectRatio,
+  Button,
+  CardBody,
+  ClickableCard,
+  Container,
+  Divider,
+  Heading,
+  Section,
+  Text,
+  Timestamp,
+  cn,
+} from '@kishanscaler/ssx-ui';
 import { ArrowUpRight, GlobeHemisphereWest, RocketLaunch, Sparkle } from '@phosphor-icons/react/ssr';
 
 import { resolveLogos, type LogoSizing, type ResolvedLogo } from '@/lib/logos';
@@ -194,33 +206,45 @@ export async function PlacementsShowcase({
                   </a>
                 </Button>
               </div>
-              {/* PLACEHOLDER press clipping (2026-10-12): newsprint inside the design system (its one
-                  typeface and tokens): warm paper with a grain, the masthead over a double rule with the
-                  dateline, the section, a large tight headline, the byline, then a halftoned photo beside
-                  the opening lines. Every word, the masthead, the photo and the link stand in until the
-                  real coverage is chosen (then the masthead is the publication's own logo). */}
-              <a className="pl-clip" href="#press" aria-label="Read the article (placeholder)">
-                <span className="pl-clip-masthead">
-                  <span className="pl-clip-paper">The Publication</span>
-                  <ArrowUpRight weight="bold" aria-hidden className="pl-clip-out" />
-                </span>
-                <span className="pl-clip-dateline">
-                  <span>Education</span>
-                  <span>12 Oct 2026</span>
-                </span>
-                <span className="pl-clip-headline">Headline of the article on SSB’s placements goes here</span>
-                <span className="pl-clip-byline">By Staff Reporter · 4 min read</span>
-                <span className="pl-clip-body">
-                  <span className="pl-clip-photo">
-                    {/* eslint-disable-next-line @next/next/no-img-element -- a fixed-ratio box */}
-                    <img src="/media/campus-students.webp" alt="" loading="lazy" decoding="async" />
-                  </span>
-                  <span className="pl-clip-lede">
-                    The opening lines of the article go here: what it reports on the founding cohort’s placements,
-                    in two or three short sentences.
-                  </span>
-                </span>
-              </a>
+              {/* PLACEHOLDER press clipping (2026-10-12), built only from ssx-ui's own parts: a
+                  ClickableCard; the masthead a Heading over a Divider; the section (eyebrow) and the
+                  date (Timestamp); the headline a Heading 1; the byline Text; a Divider; then the photo
+                  (AspectRatio) beside the opening lines (Text). Every word, the photo and the link stand
+                  in until the real coverage is chosen (then the masthead is the publication's logo). */}
+              <ClickableCard href="#press" aria-label="Read the article (placeholder)" className="pl-clip">
+                <CardBody className="pl-clip-body">
+                  <div className="pl-clip-masthead">
+                    <Heading as="p" size="3" className="pl-clip-paper">
+                      The Publication
+                    </Heading>
+                    <ArrowUpRight weight="bold" aria-hidden className="pl-clip-out" />
+                  </div>
+                  <Divider />
+                  <div className="pl-clip-dateline">
+                    <Heading as="p" size="eyebrow">
+                      Education
+                    </Heading>
+                    <Timestamp date="2026-10-12T00:00:00+05:30" format="date" />
+                  </div>
+                  <Heading as="h3" size="1" className="pl-clip-headline">
+                    Headline of the article on SSB’s placements goes here
+                  </Heading>
+                  <Text size="xs" tone="secondary">
+                    By Staff Reporter · 4 min read
+                  </Text>
+                  <Divider />
+                  <div className="pl-clip-story">
+                    <AspectRatio ratio="4:3" className="pl-clip-photo">
+                      {/* eslint-disable-next-line @next/next/no-img-element -- fills the ratio box */}
+                      <img src="/media/campus-students.webp" alt="" loading="lazy" decoding="async" />
+                    </AspectRatio>
+                    <Text size="sm" tone="secondary">
+                      The opening lines of the article go here: what it reports on the founding cohort’s
+                      placements, in two or three short sentences.
+                    </Text>
+                  </div>
+                </CardBody>
+              </ClickableCard>
             </article>
             {/* (the figures' card and the report strip, before they were merged, 2026-10-12: kept, off) */}
             {SPLIT_C ? (
