@@ -135,4 +135,17 @@ export const peerCompanies: HeroLogo[] = [
   { name: 'Lufthansa', logoUrl: '/logos/lufthansa.svg', wordmark: 'Lufthansa', ink: 0.26 },
   { name: 'ZS Associates', logoUrl: '/logos/zs.svg', wordmark: 'ZS', ink: 0.2 },
   { name: 'Freshworks', logoUrl: '/logos/freshworks.svg', wordmark: 'Freshworks', ink: 0.24 },
+  // More from Placements' logo list (the team, 2026-10-12, "pick it up from this list"), so the
+  // phone's 4 × 6 grid has logos to turn to; `ink` as there.
+  { name: 'BigBasket', logoUrl: '/logos/bigbasket.svg', wordmark: 'BigBasket', ink: 0.26 },
+  { name: 'Zendesk', logoUrl: '/logos/zendesk.svg', wordmark: 'Zendesk', ink: 0.27 },
+  { name: 'Aviva', logoUrl: '/logos/aviva.svg', wordmark: 'Aviva', ink: 0.31 },
+  { name: 'Swiggy', logoUrl: '/logos/swiggy.svg', wordmark: 'Swiggy', ink: 0.36 },
+  { name: 'Flipkart', logoUrl: '/logos/flipkart.svg', wordmark: 'Flipkart', ink: 0.28 },
+  { name: 'PhonePe', logoUrl: '/logos/phonepe.svg', wordmark: 'PhonePe', ink: 0.33 },
+  { name: 'Samsung', logoUrl: '/logos/samsung.svg', wordmark: 'Samsung', ink: 0.51 },
+  { name: 'Goldman Sachs', logoUrl: '/logos/goldman-sachs.svg', wordmark: 'Goldman Sachs', ink: 0.32 },
+  { name: 'Zomato', logoUrl: '/logos/zomato.svg', wordmark: 'Zomato', ink: 0.49 },
+  { name: 'Razorpay', logoUrl: '/logos/razorpay.svg', wordmark: 'Razorpay', ink: 0.27 },
+  { name: 'Nomura', logoUrl: '/logos/nomura.svg', wordmark: 'Nomura', ink: 0.47 },
 ];
