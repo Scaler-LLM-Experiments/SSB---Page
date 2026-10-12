@@ -1031,3 +1031,20 @@ html[data-placements='v3'] .pl-recruiters { display: none; }
 .pl-merge-bg img { filter: blur(2px); transform: scale(1.02); }
 .pl-merge-bg::after { background: linear-gradient(100deg, rgb(10 14 20 / 0.6) 0%, rgb(10 14 20 / 0.38) 55%, rgb(10 14 20 / 0.2) 100%); }
 .pl-merge-main { text-shadow: 0 1px 12px rgb(0 0 0 / 0.35); }
+/* the blur grows downwards (2026-10-12, as the card before the merge): the photo sharp at the top,
+   a soft blur from the middle, a deep one over the lower third, under a shade that darkens to the
+   foot; the figures and the CTA sit at the foot, on the dark */
+.pl-merge-bg img { position: absolute; inset: 0; filter: none; transform: none; }
+.pl-merge-bg img.pl-merge-blur { transform: scale(1.04); }
+.pl-merge-blur-soft { filter: blur(6px); -webkit-mask-image: linear-gradient(to bottom, transparent 30%, #000 60%); mask-image: linear-gradient(to bottom, transparent 30%, #000 60%); }
+.pl-merge-blur-deep { filter: blur(18px); -webkit-mask-image: linear-gradient(to bottom, transparent 55%, #000 85%); mask-image: linear-gradient(to bottom, transparent 55%, #000 85%); }
+.pl-merge-bg::after { z-index: 1; background: linear-gradient(to bottom, rgb(10 14 20 / 0.12) 0%, rgb(10 14 20 / 0.2) 35%, rgb(10 14 20 / 0.62) 72%, rgb(10 14 20 / 0.8) 100%); }
+.pl-merge-main { justify-content: flex-start; }
+.pl-merge-stats { margin-top: auto; }
+@media (width >= 1056px) { .pl-merge-main { gap: var(--space-5); } }
+@media (width < 1056px) { .pl-merge-stats { margin-top: var(--space-10, 2.5rem); } }
+/* (specific enough to beat `.pl-merge-bg img`) */
+.pl-merge-bg img.pl-merge-blur-soft { filter: blur(6px); }
+.pl-merge-bg img.pl-merge-blur-deep { filter: blur(18px); }
+/* a phone: the figures sit higher in the taller stacked card, so its shade starts earlier */
+@media (width < 1056px) { .pl-merge-bg::after { background: linear-gradient(to bottom, rgb(10 14 20 / 0.35) 0%, rgb(10 14 20 / 0.6) 30%, rgb(10 14 20 / 0.78) 100%); } .pl-merge-blur-soft { -webkit-mask-image: linear-gradient(to bottom, transparent 5%, #000 25%); mask-image: linear-gradient(to bottom, transparent 5%, #000 25%); } .pl-merge-blur-deep { -webkit-mask-image: linear-gradient(to bottom, transparent 20%, #000 45%); mask-image: linear-gradient(to bottom, transparent 20%, #000 45%); } }

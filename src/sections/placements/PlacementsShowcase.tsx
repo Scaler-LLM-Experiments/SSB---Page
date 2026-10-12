@@ -155,17 +155,23 @@ export async function PlacementsShowcase({
                 to Mesa"): the photo behind, at the left a line, the four figures and the report's CTA, at
                 the right the article (PLACEHOLDER: its words, photo and link stand in for real coverage). */}
             <article className="pl-merge" aria-label="Placement highlights">
+              {/* the photo, then two blurred copies masked in from the middle and the lower third, so
+                  the blur grows downwards (as the card before it) and the figures sit on the dark */}
               <div className="pl-merge-bg" aria-hidden>
-                {/* eslint-disable-next-line @next/next/no-img-element -- fills its box */}
-                <img
-                  src={showcases[0].imageUrl}
-                  srcSet={showcases[0].imageSrcSet}
-                  sizes="(min-width: 1280px) 1232px, 100vw"
-                  alt=""
-                  loading="lazy"
-                  decoding="async"
-                  style={showcases[0].imagePosition ? { objectPosition: showcases[0].imagePosition } : undefined}
-                />
+                {(['', 'soft', 'deep'] as const).map((layer) => (
+                  // eslint-disable-next-line @next/next/no-img-element -- fills its box
+                  <img
+                    key={layer}
+                    src={showcases[0].imageUrl}
+                    srcSet={showcases[0].imageSrcSet}
+                    sizes="(min-width: 1280px) 1232px, 100vw"
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    className={layer ? `pl-merge-blur pl-merge-blur-${layer}` : undefined}
+                    style={showcases[0].imagePosition ? { objectPosition: showcases[0].imagePosition } : undefined}
+                  />
+                ))}
               </div>
               <div className="pl-merge-main">
                 <p className="pl-merge-title">Where the founding cohort landed</p>
