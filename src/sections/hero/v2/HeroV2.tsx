@@ -98,7 +98,7 @@ export async function HeroV2({
                   data-hero-copy
                   hero={hero}
                   titleId="hero-title"
-                  tags
+                  // the facts' tags moved to the right, over the schools (2026-10-12)
                   // the faculty's line and logos under the title, above the CTAs (2026-10-12; they were
                   // at the right, over the schools)
                   leaders={leaders}
@@ -110,6 +110,7 @@ export async function HeroV2({
                   hero={hero}
                   schools={schools}
                   schoolsOnly
+                  tags
                   // (the faculty's ticker was here, over the schools, until 2026-10-12: `faculty={{
                   // line: hero.leadersLine, logos: leaders }}` brings it back)
                   className="relative z-lift"

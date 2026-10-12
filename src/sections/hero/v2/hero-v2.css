@@ -117,3 +117,19 @@
     --hero-media-h: min(68%, (100% - var(--sn-h, 0px) - 26rem) / 0.65);
   }
 }
+
+/* The facts' tags at the right, over the schools (2026-10-12). The right column is wider for them,
+   so the title keeps its two lines by running past the copy's column: it sits higher than that
+   column's top, so nothing is under it. The schools right-aligned under the tags. */
+@media (min-width: 1056px) {
+  .hero-v2 .fold-title-leaders {
+    width: 60rem;
+    max-width: calc(100vw - 2 * var(--space-gutter, 1.5rem));
+  }
+  .hero-v2 .fold-panel[data-schools-only]:has(.fold-tags) {
+    align-items: flex-end;
+  }
+  .hero-v2:is([data-layout='v5']) .fold-panel[data-schools-only]:has(.fold-tags) .fold-panel-alumni {
+    justify-content: end;
+  }
+}

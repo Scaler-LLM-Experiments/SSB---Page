@@ -180,7 +180,8 @@ export function FoldFacts({
             .join(' · ')}
         </p>
       ) : null}
-      {tags ? <FoldTags facts={hero.facts} short /> : null}
+      {/* the full captions (2026-10-12, V2: the tags moved here from under the actions) */}
+      {tags ? <FoldTags facts={hero.facts} /> : null}
       {facts?.length ? (
         /* The values and, between them, their dividers as items of their own. */
         <div className="fold-figures" role="list">
