@@ -100,6 +100,8 @@ export type PlacementsContent = {
   recruitersTitle: string;
   /** The average CTC, cohort by cohort, shown over the recruiters. */
   cohorts?: { cohort: string; value: string; label: string }[];
+  /** Version C's card: these in place of the last showcase's figure (2026-10-12). */
+  v3Cohorts?: { value: string; label: string }[];
   /** Roles alumni moved into, from the deck: what the roles cards float. */
   roles: PlacementRole[];
   /** Every logo we have a file for: the grid flips through them, the stories pick theirs by name. */

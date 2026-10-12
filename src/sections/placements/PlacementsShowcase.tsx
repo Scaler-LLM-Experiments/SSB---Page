@@ -51,6 +51,7 @@ export async function PlacementsShowcase({
   showcases,
   recruitersTitle,
   cohorts,
+  v3Cohorts,
   roles,
   logos,
   recruiters,
@@ -167,10 +168,17 @@ export async function PlacementsShowcase({
                 </div>
                 <div className="pl-app-copy">
                   <dl className="pl-v3-stats">
-                    {showcases.map((sc) => (
-                      <div key={sc.label}>
-                        <dd>{sc.statValue}</dd>
-                        <dt>{sc.title.replace(/\.$/, '')}</dt>
+                    {/* the cohorts' figures in place of the last showcase's (2026-10-12) */}
+                    {(v3Cohorts?.length
+                      ? [
+                          ...showcases.slice(0, -1).map((sc) => ({ value: sc.statValue, label: sc.title.replace(/\.$/, '') })),
+                          ...v3Cohorts,
+                        ]
+                      : showcases.map((sc) => ({ value: sc.statValue, label: sc.title.replace(/\.$/, '') }))
+                    ).map((st) => (
+                      <div key={st.label}>
+                        <dd>{st.value}</dd>
+                        <dt>{st.label}</dt>
                       </div>
                     ))}
                   </dl>
