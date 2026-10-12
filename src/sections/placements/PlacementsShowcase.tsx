@@ -178,7 +178,12 @@ export async function PlacementsShowcase({
                     ).map((st) => (
                       <div key={st.label}>
                         <dd>{st.value}</dd>
-                        <dt>{st.label}</dt>
+                        {/* two lines on desktop, each broken before its last two words, so the four
+                            labels sit alike (2026-10-12) */}
+                        <dt>
+                          {st.label.split(' ').slice(0, -2).join(' ')}{' '}
+                          <span className="pl-v3-stat-tail">{st.label.split(' ').slice(-2).join(' ')}</span>
+                        </dt>
                       </div>
                     ))}
                   </dl>
