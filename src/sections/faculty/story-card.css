@@ -157,3 +157,12 @@
   flex: none;
   width: min(78vw, 20rem);
 }
+
+/* (2026-10-12, the team's ask) the names a step down so the company logo leads: 18px on the desktop
+   row (was the h2, 24px), 16px on a phone (was 20px); the logos a step up (28px / 24px tall) */
+.ssx-card .meet-card__name,
+.ssx-card[data-align='start'] .meet-card__name { font-size: 1.125rem; line-height: 1.3; letter-spacing: -0.01em; }
+.ssx-card[data-align='center'] .meet-card__name { font-size: 1rem; }
+.ssx-card[data-align='start'] .meet-card__logo { --meet-logo-h: 1.75rem; }
+.ssx-card[data-align='center'] .meet-card__logo { --meet-logo-h: 1.5rem; }
+.meet-card__logo img { max-width: 11rem; }
