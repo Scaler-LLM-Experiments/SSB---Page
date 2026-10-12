@@ -953,3 +953,23 @@ html[data-placements='v3'] .pl-recruiters { display: none; }
 .pl-v3-report .pl-press-section { font-size: 0.75rem; color: var(--content-brand, var(--color-ssb-light-9)); }
 .pl-v3-report .pl-press-headline { font-size: clamp(1.375rem, 1rem + 1.1vw, 1.875rem); line-height: 1.2; color: var(--content-primary); }
 .pl-v3-report .pl-press-synopsis { font-size: 0.8125rem; line-height: 1.45; }
+
+/* The press card, compact (2026-10-12, "reduce the height, it can't be the same as Mesa"): one row,
+   a small photo, then where it ran and the headline in the page's own type; the strip's text and
+   actions beside it. No masthead, no synopsis, no tags. */
+.pl-v3-report[data-press] { gap: var(--space-4); padding: var(--space-3); }
+@media (width >= 1056px) { .pl-v3-report[data-press] { grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-8); padding: var(--space-3) var(--space-6) var(--space-3) var(--space-3); } }
+.pl-press { display: flex; align-items: center; gap: var(--space-4); padding: var(--space-2); }
+.pl-press > img { flex: none; width: 7.5rem; aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--radius-md, 8px); background: var(--surface-sunken); }
+.pl-press-copy { display: grid; gap: 4px; min-width: 0; }
+.pl-v3-report .pl-press-source { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--content-brand, var(--color-ssb-light-9)); }
+.pl-v3-report .pl-press-headline { font-family: inherit; font-size: 1.0625rem; line-height: 1.35; font-weight: 600; color: var(--content-primary); text-wrap: balance; }
+.pl-v3-report[data-press] .pl-v3-report-text { gap: var(--space-2); }
+.pl-v3-report[data-press] .pl-v3-report-text strong { font-size: 1rem; }
+.pl-press-actions { margin-top: 0; flex-wrap: nowrap; }
+@media (width < 672px) {
+  .pl-press { gap: var(--space-3); }
+  .pl-press > img { width: 5.5rem; }
+  .pl-v3-report .pl-press-headline { font-size: 0.9375rem; }
+  .pl-press-actions { flex-wrap: wrap; }
+}

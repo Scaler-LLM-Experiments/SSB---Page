@@ -204,41 +204,21 @@ export async function PlacementsShowcase({
             </div>
             {/* the report, a strip under the card (2026-10-09) */}
             <div className="pl-v3-report" data-press>
-              {/* PLACEHOLDER press card (2026-10-12, after Mesa's): an article on SSB's placements, the
-                  publication's name, its section, the headline, a photo and a synopsis. Every word and
-                  the link are stand-ins until the real coverage is chosen. */}
+              {/* PLACEHOLDER press card (2026-10-12): a compact row, the article's photo, then where it ran
+                  and its headline. Every word and the link are stand-ins until the real coverage is chosen. */}
               <a className="pl-press" href="#press" aria-label="Read the article (placeholder)">
-                <div className="pl-press-copy">
-                  <span className="pl-press-masthead">Publication name</span>
-                  <span className="pl-press-section">Education</span>
+                {/* eslint-disable-next-line @next/next/no-img-element -- a fixed-ratio box */}
+                <img src="/media/campus-students.webp" alt="" loading="lazy" decoding="async" />
+                <span className="pl-press-copy">
+                  <span className="pl-press-source">In the news · Publication name</span>
                   <span className="pl-press-headline">Headline of the article on SSB’s placements goes here</span>
-                </div>
-                <div className="pl-press-side">
-                  {/* eslint-disable-next-line @next/next/no-img-element -- a fixed-ratio box */}
-                  <img src="/media/campus-students.webp" alt="" loading="lazy" decoding="async" />
-                  <span className="pl-press-synopsis">
-                    <b>Synopsis</b>
-                    Two or three lines from the article: what it reports on the founding cohort’s placements.
-                  </span>
-                </div>
+                </span>
               </a>
               {/* the lead's second half, redistributed (2026-10-09): a short line, then where they went */}
               <div className="pl-v3-report-text">
                 <strong>Where the founding cohort landed</strong>
-                <ul>
-                  <li>
-                    {ICONS.rocket}
-                    Indian startups
-                  </li>
-                  <li>
-                    {ICONS.globe}
-                    Global MNCs
-                  </li>
-                  <li>
-                    {ICONS.sparkle}
-                    Digital-first companies
-                  </li>
-                </ul>
+                {/* (the three tags, Indian startups / Global MNCs / Digital-first companies, were here
+                    until 2026-10-12) */}
                 {/* the actions, at the right with the text (2026-10-12) */}
                 <div className="pl-press-actions">
                   <Button asChild size="md" variant="secondary">
