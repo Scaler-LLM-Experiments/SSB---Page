@@ -559,8 +559,9 @@
   color: var(--on-image-ink);
   text-wrap: balance;
 }
+/* white like the rest (2026-10-12: the green taken off, the team's ask) */
 .why-breaker-kicker-em {
-  color: color-mix(in srgb, var(--color-ssb-light-9) 62%, #fff);
+  color: inherit;
 }
 .why-breaker-kicker + .why-breaker-words {
   margin-top: var(--space-6);
