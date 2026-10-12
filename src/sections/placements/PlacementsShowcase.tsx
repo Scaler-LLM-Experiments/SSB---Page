@@ -1,7 +1,7 @@
 import { PeersTicker } from '@/sections/alumni/PeersTicker';
 import type { ReactElement } from 'react';
 import { Button, Container, Heading, Section, cn } from '@kishanscaler/ssx-ui';
-import { GlobeHemisphereWest, RocketLaunch, Sparkle } from '@phosphor-icons/react/ssr';
+import { ArrowUpRight, GlobeHemisphereWest, RocketLaunch, Sparkle } from '@phosphor-icons/react/ssr';
 
 import { resolveLogos, type LogoSizing, type ResolvedLogo } from '@/lib/logos';
 import { CtaIcon } from '@/sections/hero/CtaIcon';
@@ -194,15 +194,30 @@ export async function PlacementsShowcase({
                   </a>
                 </Button>
               </div>
-              <a className="pl-merge-press" href="#press" aria-label="Read the article (placeholder)">
-                {/* eslint-disable-next-line @next/next/no-img-element -- a fixed-ratio box */}
-                <img src="/media/campus-students.webp" alt="" loading="lazy" decoding="async" />
-                <span className="pl-merge-press-copy">
-                  <span className="pl-merge-press-source">In the news · Publication name</span>
-                  <span className="pl-merge-press-headline">Headline of the article on SSB’s placements goes here</span>
-                  <span className="pl-merge-press-more">
-                    Read the article
-                    <CtaIcon icon="arrow" />
+              {/* PLACEHOLDER press clipping (2026-10-12): newsprint inside the design system (its one
+                  typeface and tokens): warm paper with a grain, the masthead over a double rule with the
+                  dateline, the section, a large tight headline, the byline, then a halftoned photo beside
+                  the opening lines. Every word, the masthead, the photo and the link stand in until the
+                  real coverage is chosen (then the masthead is the publication's own logo). */}
+              <a className="pl-clip" href="#press" aria-label="Read the article (placeholder)">
+                <span className="pl-clip-masthead">
+                  <span className="pl-clip-paper">The Publication</span>
+                  <ArrowUpRight weight="bold" aria-hidden className="pl-clip-out" />
+                </span>
+                <span className="pl-clip-dateline">
+                  <span>Education</span>
+                  <span>12 Oct 2026</span>
+                </span>
+                <span className="pl-clip-headline">Headline of the article on SSB’s placements goes here</span>
+                <span className="pl-clip-byline">By Staff Reporter · 4 min read</span>
+                <span className="pl-clip-body">
+                  <span className="pl-clip-photo">
+                    {/* eslint-disable-next-line @next/next/no-img-element -- a fixed-ratio box */}
+                    <img src="/media/campus-students.webp" alt="" loading="lazy" decoding="async" />
+                  </span>
+                  <span className="pl-clip-lede">
+                    The opening lines of the article go here: what it reports on the founding cohort’s placements,
+                    in two or three short sentences.
                   </span>
                 </span>
               </a>
