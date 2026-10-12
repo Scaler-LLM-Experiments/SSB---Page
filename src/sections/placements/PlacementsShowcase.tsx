@@ -173,7 +173,11 @@ export async function PlacementsShowcase({
                   {v3Stats.map((st) => (
                     <div key={st.label}>
                       <dd>{st.value}</dd>
-                      <dt>{st.label}</dt>
+                      {/* broken before the last two words on desktop, so the four labels sit alike */}
+                      <dt>
+                        {st.label.split(' ').slice(0, -2).join(' ')}{' '}
+                        <span className="pl-merge-tail">{st.label.split(' ').slice(-2).join(' ')}</span>
+                      </dt>
                     </div>
                   ))}
                 </dl>
