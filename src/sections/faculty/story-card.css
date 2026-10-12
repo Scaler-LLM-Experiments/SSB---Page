@@ -232,3 +232,20 @@
   .pt-stack-row .meet-card__bio { font-size: 0.8125rem; line-height: 1.4; }
   .pt-stack-row .ssx-card[data-layout='stacked'] .meet-card__content { padding-top: var(--space-3); }
 }
+
+/* Compact (2026-10-12, mentors): the photo cards unchanged, smaller. Desktop: four across the
+   content's width; phones: the swipe row, two in view and the next peeking. */
+.pt-panel[data-compact] .h-scroller > li {
+  width: calc((min(100vw, var(--size-container-max)) - 2 * var(--space-gutter) - 3 * var(--space-4)) / 4);
+}
+.pt-panel[data-compact] .ssx-card .meet-card__content { padding: var(--space-5) var(--space-4); }
+@media (width < 1056px) { .pt-panel[data-compact] .h-scroller > li { width: calc((100vw - 2 * var(--space-gutter) - 2 * var(--space-4)) / 3.2); } }
+/* compact on a phone: the text a step down to suit the narrower card, so it keeps to the photo's foot */
+@media (width < 672px) {
+  .pt-stack-row[data-compact] .meet-card__content { gap: 4px; padding: var(--space-3) var(--space-2); }
+  .pt-stack-row[data-compact] .meet-card__kicker { display: none; }
+  .pt-stack-row[data-compact] .ssx-card .meet-card__name { font-size: 0.875rem; line-height: 1.25; }
+  .pt-stack-row[data-compact] .ssx-card .meet-card__role { font-size: 0.5625rem; }
+  .pt-stack-row[data-compact] .meet-card__logo { margin-top: 2px; --meet-logo-h: 1.125rem; }
+  .pt-stack-row[data-compact] .meet-card__logo img { max-width: 100%; }
+}

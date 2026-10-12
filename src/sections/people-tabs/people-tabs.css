@@ -24,3 +24,4 @@
 .pt-tabs .pt-tab { border-radius: var(--radius-md); }
 .pt-tabs .pt-tab[aria-selected='true'] { color: var(--content-on-brand-solid); }
 .pt-tabs .pt-pill { border-radius: var(--radius-md); background: var(--surface-brand-solid); }
+.pt-tabs[hidden] { display: none; }
