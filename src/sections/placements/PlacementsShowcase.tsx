@@ -13,7 +13,7 @@ import {
   Timestamp,
   cn,
 } from '@kishanscaler/ssx-ui';
-import { ArrowUpRight, GlobeHemisphereWest, RocketLaunch, Sparkle } from '@phosphor-icons/react/ssr';
+import { GlobeHemisphereWest, RocketLaunch, Sparkle } from '@phosphor-icons/react/ssr';
 
 import { resolveLogos, type LogoSizing, type ResolvedLogo } from '@/lib/logos';
 import { CtaIcon } from '@/sections/hero/CtaIcon';
@@ -213,13 +213,8 @@ export async function PlacementsShowcase({
                   in until the real coverage is chosen (then the masthead is the publication's logo). */}
               <ClickableCard href="#press" aria-label="Read the article (placeholder)" className="pl-clip">
                 <CardBody className="pl-clip-body">
-                  <div className="pl-clip-masthead">
-                    <Heading as="p" size="3" className="pl-clip-paper">
-                      The Publication
-                    </Heading>
-                    <ArrowUpRight weight="bold" aria-hidden className="pl-clip-out" />
-                  </div>
-                  <Divider />
+                  {/* (the masthead, "The Publication" with ↗ over a Divider, hidden 2026-10-12: put it back,
+                      as the publication's logo, once the real coverage is in) */}
                   <div className="pl-clip-dateline">
                     <Heading as="p" size="eyebrow">
                       Education
