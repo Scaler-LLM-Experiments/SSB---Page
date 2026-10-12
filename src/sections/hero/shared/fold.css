@@ -396,7 +396,8 @@
   /* a step under the billboard, so the two lines sit in two on desktop and the logos and CTAs
      stay in the first screen on a phone */
   font-size: clamp(1.75rem, 1.1rem + 2.7vw, 3rem);
-  line-height: 1.1;
+  /* 1.25 (2026-10-13, the team's ask: more room between the two lines; was 1.1) */
+  line-height: 1.25;
   text-wrap: balance;
 }
 .fold-copy:has(.fold-title-leaders) {

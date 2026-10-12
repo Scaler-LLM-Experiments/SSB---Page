@@ -133,3 +133,9 @@
     justify-content: end;
   }
 }
+
+/* m-web (2026-10-13, the team's ask): the line flows like a sentence, wrapping wherever it runs
+   out of room at its own size, not held in whole phrases (which broke it after the "·") */
+@media (width < 672px) {
+  .hero-v2-copy .fold-phrase { white-space: normal; }
+}

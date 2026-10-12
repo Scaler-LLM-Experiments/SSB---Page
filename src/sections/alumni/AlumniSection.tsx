@@ -19,15 +19,8 @@ export function AlumniSection({ peers }: { peers?: React.ReactNode }) {
   const rowRef = React.useRef<HTMLUListElement>(null);
   // Same entrance as Faculty: the header, then the cards on screen wiped open.
   useSectionEntrance(sectionRef, { decks: ['.alumni-row > li > article'] });
-  // From the tablet up the cards run in two rows (2026-10-09), so the dots count columns, not cards.
-  const [rows, setRows] = React.useState(1);
-  React.useEffect(() => {
-    const mq = window.matchMedia('(min-width: 672px)');
-    const set = () => setRows(mq.matches ? 2 : 1);
-    set();
-    mq.addEventListener('change', set);
-    return () => mq.removeEventListener('change', set);
-  }, []);
+  // The scrolling grid is the phone's (2026-10-13): two rows, card over card, so the dots count columns.
+  const rows = 2;
 
 
   return (
@@ -59,7 +52,10 @@ export function AlumniSection({ peers }: { peers?: React.ReactNode }) {
           </li>
         ))}
       </ul>
-      <ScrollDots scroller={rowRef} count={Math.ceil(alumni.length / rows)} itemName="alumni" fill="solid" interval={2800} loop />
+      {/* m-web (2026-10-13, the team's ask): swiped only, no autoplay */}
+      <div className="alumni-dots">
+        <ScrollDots scroller={rowRef} count={Math.ceil(alumni.length / rows)} itemName="alumni" fill="solid" autoplay={false} />
+      </div>
 
       {/* From the tablet up (2026-10-09, the team's ask, after Placements' drifting logos): the cards in
           two rows drifting sideways without stopping, the top row left and the bottom row right, each
