@@ -43,6 +43,9 @@ const ICONS: Record<ShowcaseIcon, ReactElement> = {
  * All motion is in ShowcaseMotion; without it only the first card shows and
  * the cells hold their first twelve logos.
  */
+/** Version C as two blocks, the figures' card and the report strip under the logos (true), or merged into one card (2026-10-12). */
+const SPLIT_C = false;
+
 export async function PlacementsShowcase({
   eyebrow,
   title,
@@ -66,6 +69,10 @@ export async function PlacementsShowcase({
     FLOAT_SIZING,
   );
   const byName = new Map(resolved.map((logo) => [logo.name, logo]));
+  // Version C's figures: the cohorts' in place of the last showcase's (2026-10-12)
+  const v3Stats = v3Cohorts?.length
+    ? [...showcases.slice(0, -1).map((sc) => ({ value: sc.statValue, label: sc.title.replace(/\.$/, '') })), ...v3Cohorts]
+    : showcases.map((sc) => ({ value: sc.statValue, label: sc.title.replace(/\.$/, '') }));
   // The recruiters' cells: every logo we have, smaller, at one visual weight, dealt into sets of
   // twelve; each cell holds its logo from every set, and the cells move on to the next set together.
   const row = await resolveLogos(
@@ -144,6 +151,54 @@ export async function PlacementsShowcase({
               logos drifting in two columns at its right, a line naming them where the chips were,
               and all three figures at its foot. */}
           <div className="pl-v3">
+            {/* The figures and the press card merged into one card (2026-10-12, the team's ask, "similar
+                to Mesa"): the photo behind, at the left a line, the four figures and the report's CTA, at
+                the right the article (PLACEHOLDER: its words, photo and link stand in for real coverage). */}
+            <article className="pl-merge" aria-label="Placement highlights">
+              <div className="pl-merge-bg" aria-hidden>
+                {/* eslint-disable-next-line @next/next/no-img-element -- fills its box */}
+                <img
+                  src={showcases[0].imageUrl}
+                  srcSet={showcases[0].imageSrcSet}
+                  sizes="(min-width: 1280px) 1232px, 100vw"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  style={showcases[0].imagePosition ? { objectPosition: showcases[0].imagePosition } : undefined}
+                />
+              </div>
+              <div className="pl-merge-main">
+                <p className="pl-merge-title">Where the founding cohort landed</p>
+                <dl className="pl-merge-stats">
+                  {v3Stats.map((st) => (
+                    <div key={st.label}>
+                      <dd>{st.value}</dd>
+                      <dt>{st.label}</dt>
+                    </div>
+                  ))}
+                </dl>
+                <Button asChild size="md" className="pl-merge-cta">
+                  <a href={reportHref}>
+                    {reportLabel}
+                    <CtaIcon icon="download" />
+                  </a>
+                </Button>
+              </div>
+              <a className="pl-merge-press" href="#press" aria-label="Read the article (placeholder)">
+                {/* eslint-disable-next-line @next/next/no-img-element -- a fixed-ratio box */}
+                <img src="/media/campus-students.webp" alt="" loading="lazy" decoding="async" />
+                <span className="pl-merge-press-copy">
+                  <span className="pl-merge-press-source">In the news · Publication name</span>
+                  <span className="pl-merge-press-headline">Headline of the article on SSB’s placements goes here</span>
+                  <span className="pl-merge-press-more">
+                    Read the article
+                    <CtaIcon icon="arrow" />
+                  </span>
+                </span>
+              </a>
+            </article>
+            {/* (the figures' card and the report strip, before they were merged, 2026-10-12: kept, off) */}
+            {SPLIT_C ? (
             <article className="pl-story pl-app" aria-label="Placement highlights">
               <div className="pl-app-inner">
                 <div className="pl-app-media" aria-hidden>
@@ -171,13 +226,7 @@ export async function PlacementsShowcase({
                 <div className="pl-app-copy">
                   <dl className="pl-v3-stats">
                     {/* the cohorts' figures in place of the last showcase's (2026-10-12) */}
-                    {(v3Cohorts?.length
-                      ? [
-                          ...showcases.slice(0, -1).map((sc) => ({ value: sc.statValue, label: sc.title.replace(/\.$/, '') })),
-                          ...v3Cohorts,
-                        ]
-                      : showcases.map((sc) => ({ value: sc.statValue, label: sc.title.replace(/\.$/, '') }))
-                    ).map((st) => (
+                    {v3Stats.map((st) => (
                       <div key={st.label}>
                         <dd>{st.value}</dd>
                         {/* two lines on desktop, each broken before its last two words, so the four
@@ -192,6 +241,7 @@ export async function PlacementsShowcase({
                 </div>
               </div>
             </article>
+            ) : null}
             {/* The alumni section's flip grid after the figures (2026-10-12, the team's ask), with the
                 companies that have visited: the card's title moved here, over them */}
             <div className="pl-v3-peers">
@@ -203,6 +253,7 @@ export async function PlacementsShowcase({
               />
             </div>
             {/* the report, a strip under the card (2026-10-09) */}
+            {SPLIT_C ? (
             <div className="pl-v3-report" data-press>
               {/* PLACEHOLDER press card (2026-10-12): a compact row, the article's photo, then where it ran
                   and its headline. Every word and the link are stand-ins until the real coverage is chosen. */}
@@ -231,6 +282,7 @@ export async function PlacementsShowcase({
                 </div>
               </div>
             </div>
+            ) : null}
           </div>
 
           {/* The cards, with the chips that name them laid over the cards' top left (after the team's
