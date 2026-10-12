@@ -226,7 +226,7 @@ export async function PlacementsShowcase({
                     </Heading>
                     <Timestamp date="2026-10-12T00:00:00+05:30" format="date" />
                   </div>
-                  <Heading as="h3" size="1" className="pl-clip-headline">
+                  <Heading as="h3" size="2" className="pl-clip-headline">
                     Headline of the article on SSB’s placements goes here
                   </Heading>
                   <Text size="xs" tone="secondary">
