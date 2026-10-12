@@ -166,3 +166,69 @@
 .ssx-card[data-align='start'] .meet-card__logo { --meet-logo-h: 1.75rem; }
 .ssx-card[data-align='center'] .meet-card__logo { --meet-logo-h: 1.5rem; }
 .meet-card__logo img { max-width: 11rem; }
+
+/* =========================================================
+   Stacked (2026-10-12, the team's layout): the photo on top, the text under it on the page.
+   The name, the role, the company logo in its own colours, then a line (placeholder for now).
+   ========================================================= */
+.ssx-card[data-layout='stacked'] {
+  aspect-ratio: auto;
+  height: 100%;
+  overflow: visible;
+  clip-path: none;
+  border-radius: 0;
+  background: none;
+  color: var(--content-primary);
+}
+.ssx-card[data-layout='stacked']::after { display: none; }
+.ssx-card[data-layout='stacked'] .ssx-card__media {
+  position: relative;
+  inset: auto;
+  z-index: auto;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--surface-sunken);
+}
+.ssx-card[data-layout='stacked'] .meet-card__content {
+  align-items: flex-start;
+  gap: var(--space-1-5, 6px);
+  margin-top: 0;
+  padding: var(--space-4) 0 0;
+  text-align: start;
+}
+.ssx-card[data-layout='stacked'] .meet-card__kicker { display: none; }
+.ssx-card[data-layout='stacked'] .meet-card__name { font-size: 1.125rem; line-height: 1.3; }
+.ssx-card[data-layout='stacked'] .meet-card__role { margin: 0; max-width: none; font-size: 0.75rem; color: var(--content-secondary); }
+.ssx-card[data-layout='stacked'] .meet-card__logo { margin-top: var(--space-2); --meet-logo-h: 1.5rem; }
+.ssx-card[data-layout='stacked'] .meet-card__logo img { filter: none; object-position: left center; }
+.meet-card__bio { margin: var(--space-2) 0 0; font-size: var(--type-body-sm-size); line-height: var(--type-body-sm-lh); color: var(--content-secondary); }
+
+/* phones: a row to swipe, two cards in view and the edges of the next (and, once moved, the last) */
+.pt-stack-row {
+  --pt-inset: var(--space-gutter);
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100vw - 2 * var(--pt-inset) - var(--space-3) * 2) / 2.3);
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0 var(--pt-inset) var(--space-2);
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--pt-inset);
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+.pt-stack-row::-webkit-scrollbar { display: none; }
+/* phones only (unlayered, so it beat the utility `sm:hidden`) */
+@media (width >= 672px) { .pt-stack-row { display: none; } }
+.pt-stack-row > li { scroll-snap-align: start; min-width: 0; }
+@media (width < 672px) {
+  .pt-stack-row .ssx-card[data-layout='stacked'] .meet-card__name { font-size: 0.9375rem; }
+  .pt-stack-row .ssx-card[data-layout='stacked'] .meet-card__role { font-size: 0.625rem; }
+  .pt-stack-row .ssx-card[data-layout='stacked'] .meet-card__logo { --meet-logo-h: 1.125rem; }
+  .pt-stack-row .ssx-card[data-layout='stacked'] .meet-card__logo img { max-width: 100%; }
+  .pt-stack-row .meet-card__bio { font-size: 0.8125rem; line-height: 1.4; }
+  .pt-stack-row .ssx-card[data-layout='stacked'] .meet-card__content { padding-top: var(--space-3); }
+}

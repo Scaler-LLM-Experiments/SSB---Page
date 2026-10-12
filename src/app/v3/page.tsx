@@ -69,7 +69,7 @@ export default function V3Page() {
             advice), a person to a slide */}
         <TestimonialSection />
         {/* faculty and mentors (the founding team and investors come after the innovation lab) */}
-        <PeopleTabsSection />
+        <PeopleTabsSection stacked />
         {/* the curriculum, together (the team's call, 2026-10-06): the terms, then learn by doing, career prep, the
             150-hour AI curriculum, the live projects, the internship and the immersions behind one side navigation */}
         {/* the terms as v3 of the /v2-stack experiment (the team's pick, 2026-10-09): stacking cards, each

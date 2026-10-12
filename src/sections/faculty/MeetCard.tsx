@@ -16,6 +16,8 @@ export function MeetCard({
   kicker = 'Meet',
   align = 'center',
   priority = false,
+  stacked = false,
+  bio,
 }: {
   image: string;
   name: string;
@@ -25,9 +27,13 @@ export function MeetCard({
   align?: 'center' | 'start';
   /** Load the photo straight away at high priority (cards visible on first paint). */
   priority?: boolean;
+  /** The photo on top and the text under it on the page (2026-10-12, the team's layout), not on the photo. */
+  stacked?: boolean;
+  /** A line or two under the logo (stacked only). */
+  bio?: string;
 }) {
   return (
-    <article className="ssx-card" data-align={align}>
+    <article className="ssx-card" data-align={align} data-layout={stacked ? 'stacked' : undefined}>
       <div className="ssx-card__media">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -61,6 +67,11 @@ export function MeetCard({
               style={logo.scale ? ({ height: `calc(var(--meet-logo-h) * ${logo.scale})` } as React.CSSProperties) : undefined}
             />
           </div>
+        ) : null}
+        {stacked && bio ? (
+          <p className="meet-card__bio" data-part="description">
+            {bio}
+          </p>
         ) : null}
       </div>
     </article>

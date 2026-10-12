@@ -51,15 +51,29 @@ const ALL_GROUPS: (Group & { id: PeopleGroupId })[] = [
   { id: 'investors', tab: 'Investors & Founders', ...investors, itemName: 'person', people: withPhoto(investors.people) },
 ];
 
+/** PLACEHOLDER (2026-10-12): the stacked cards' line under the logo, until each person's own is written. */
+const PLACEHOLDER_BIO = 'A line on what they teach at SSB and the work they have led.';
+
 /** One group's row: mounted afresh for each tab, so the carousel starts from its first card. */
-function Row({ group: g }: { group: Group }) {
+function Row({ group: g, stacked = false }: { group: Group; stacked?: boolean }) {
   const { ref, goTo } = useHScroller({ speed: 40 });
   // the ticker wraps by one set's width: a short list needs a third copy to fill a wide screen
   const copies = g.people.length < 8 ? 3 : 2;
   return (
     <div className="pt-panel" role="tabpanel" id={`people-panel-${g.id}`} aria-labelledby={`people-tab-${g.id}`}>
+      {/* Phones, stacked (2026-10-12, the team's layout): a row to swipe, two cards in view and the
+          edges of the next and the last. */}
+      {stacked ? (
+        <ul className="pt-stack-row" aria-label={g.eyebrow}>
+          {g.people.map((m, i) => (
+            <li key={m.name}>
+              <MeetCard image={m.image} name={m.name} role={m.role} logo={m.logo} align="start" stacked bio={PLACEHOLDER_BIO} priority={i < 3} />
+            </li>
+          ))}
+        </ul>
+      ) : null}
       {/* Phones: the card stack. */}
-      <Container className="sm:hidden">
+      <Container className={stacked ? 'hidden' : 'sm:hidden'}>
         <CardStack
           items={g.people}
           getKey={(m) => m.name}
@@ -81,7 +95,16 @@ function Row({ group: g }: { group: Group }) {
             const copy = c > 0;
             return (
               <li key={`${c}-${m.name}`} data-copy={copy || undefined} aria-hidden={copy || undefined} inert={copy || undefined}>
-                <MeetCard image={m.image} name={m.name} role={m.role} logo={m.logo} align="start" priority={!copy && i < 5} />
+                <MeetCard
+                  image={m.image}
+                  name={m.name}
+                  role={m.role}
+                  logo={m.logo}
+                  align="start"
+                  stacked={stacked}
+                  bio={PLACEHOLDER_BIO}
+                  priority={!copy && i < 5}
+                />
               </li>
             );
           }),
@@ -98,8 +121,11 @@ export function PeopleTabsSection({
   groups: ids = ['faculty', 'mentors'],
   id = 'people',
   label = 'The people at SSB',
+  stacked = false,
 }: {
   groups?: PeopleGroupId[];
+  /** The cards with the photo on top and the text under it (2026-10-12). */
+  stacked?: boolean;
   id?: string;
   label?: string;
 }) {
@@ -189,7 +215,7 @@ export function PeopleTabsSection({
         </div>
       </Container>
       {/* keyed: each tab mounts its own row, so its carousel starts from the first card */}
-      <Row key={GROUPS[active].id} group={GROUPS[active]} />
+      <Row key={GROUPS[active].id} group={GROUPS[active]} stacked={stacked} />
     </Section>
   );
 }
