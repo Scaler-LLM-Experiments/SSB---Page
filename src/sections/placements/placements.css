@@ -1074,3 +1074,19 @@ html[data-placements='v3'] .pl-recruiters { display: none; }
   .pl-merge-main { gap: var(--space-8); }
 }
 .pl-merge-cta { margin-top: var(--space-2); }
+/* the figures and their dividers equidistant (2026-10-12): each column as wide as its own figure,
+   the same space before a divider as after it */
+@media (width >= 672px) {
+  .pl-merge-stats, .pl-merge-stats:is(*) { --pl-gap: var(--space-8); display: flex; flex-wrap: nowrap; gap: var(--pl-gap); }
+  .pl-merge-stats > div { flex: none; }
+  .pl-merge-stats > div + div { padding-left: var(--pl-gap); }
+}
+@media (width >= 672px) and (width < 1056px) { .pl-merge-stats, .pl-merge-stats:is(*) { --pl-gap: var(--space-5); } }
+/* the space scales down with the screen so the row never runs past its column */
+@media (width >= 672px) { .pl-merge-stats, .pl-merge-stats:is(*) { --pl-gap: clamp(0.75rem, 1.8vw, 2rem); } }
+@media (width >= 1056px) and (width < 1280px) { .pl-merge-stats dd { font-size: clamp(1.5rem, 2.2vw, 2.25rem); } }
+/* a narrow tablet: 2 × 2 as on a phone (four across ran past the card) */
+@media (width >= 672px) and (width < 760px) {
+  .pl-merge-stats, .pl-merge-stats:is(*) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); }
+  .pl-merge-stats > div + div { padding-left: 0; border-left: 0; }
+}
