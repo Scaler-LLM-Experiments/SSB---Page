@@ -12,6 +12,10 @@ import type { HeroContent } from '@/sections/hero/types';
 export const hero: HeroContent = {
   eyebrow: 'PGP in Management & Technology (PGP-MT)',
   title: 'India’s first AI-native B‑school',
+  // V2's title (the team, 2026-10-12): the faculty's line moved up into it, their logos under it,
+  // above the CTAs. `title` stays for the split fold.
+  titleLead: 'Learn business hands-on',
+  leadersTitle: 'from 100+ industry leaders & faculty from',
   description:
     'Build startups & AI products · No tech background required',
   primaryCta: { label: 'Apply now', href: '#apply', icon: 'arrow' },

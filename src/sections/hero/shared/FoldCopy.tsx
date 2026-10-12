@@ -26,6 +26,7 @@ export function FoldCopy({
   tags = false,
   tagsFirst = false,
   actionsToTags = false,
+  leaders,
   ...props
 }: {
   hero: HeroContent;
@@ -35,8 +36,11 @@ export function FoldCopy({
   tagsFirst?: boolean;
   /** V7: the actions under-laid by the tags as one group, as wide as the tags' row. */
   actionsToTags?: boolean;
+  /** V2 (2026-10-12): the leaders' logos running past under the title (`titleLead` and
+   * `leadersTitle`), above the line and the actions. */
+  leaders?: ResolvedLogo[];
 } & Block) {
-  const { eyebrow, title, titleHighlight, description, primaryCta, secondaryCta, facts } = hero;
+  const { eyebrow, title, titleHighlight, titleLead, leadersTitle, description, primaryCta, secondaryCta, facts } = hero;
   const actions = (
     <div className="fold-actions">
       <Button asChild size="lg" className="fold-primary">
@@ -65,9 +69,18 @@ export function FoldCopy({
       <Heading as="p" size="eyebrow" className="fold-eyebrow">
         {eyebrow}
       </Heading>
-      <Heading as="h1" id={titleId} className="type-billboard-sm text-on-image-ink">
-        <HeroTitle title={title} highlight={titleHighlight} />
-      </Heading>
+      {leaders?.length && titleLead && leadersTitle ? (
+        <>
+          <Heading as="h1" id={titleId} className="fold-title-leaders type-billboard-sm text-on-image-ink">
+            <span className="fold-title-lead">{titleLead}</span> {leadersTitle}
+          </Heading>
+          <LogoTicker logos={leaders} label="Industry leaders behind the programme" className="fold-leaders" />
+        </>
+      ) : (
+        <Heading as="h1" id={titleId} className="type-billboard-sm text-on-image-ink">
+          <HeroTitle title={title} highlight={titleHighlight} />
+        </Heading>
+      )}
       {/* Each phrase kept whole; a line breaks only after a "·", never before one. */}
       <Text size="lg" className="fold-line">
         {description.split(' · ').map((part, i, all) => (

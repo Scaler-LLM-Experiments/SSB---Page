@@ -57,6 +57,10 @@ export type HeroContent = {
   title: string;
   /** A phrase inside `title` to set in the brand colour. Must appear in `title` verbatim. */
   titleHighlight?: string;
+  /** V2's title (2026-10-12): a lead line in green, then `leadersTitle`, the leaders' logos
+   * running past right under it. Both set: they replace `title` there. */
+  titleLead?: string;
+  leadersTitle?: string;
   description: string;
   primaryCta: HeroCta;
   secondaryCta?: HeroCta;

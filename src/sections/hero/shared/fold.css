@@ -384,3 +384,34 @@
     min-width: 0;
   }
 }
+
+/* V2's title (2026-10-12): "Learn business hands-on" in the logo's green, lifted for the black,
+   then "from 100+ industry leaders & faculty from" in white, the leaders' logos right under it,
+   above the line and the actions. */
+.fold-title-lead {
+  display: block;
+  color: color-mix(in srgb, var(--color-ssb-light-9) 62%, #fff);
+}
+.fold-title-leaders {
+  /* a step under the billboard, so the two lines sit in two on desktop and the logos and CTAs
+     stay in the first screen on a phone */
+  font-size: clamp(1.75rem, 1.1rem + 2.7vw, 3rem);
+  line-height: 1.1;
+  text-wrap: balance;
+}
+.fold-copy:has(.fold-title-leaders) {
+  max-width: 60rem;
+}
+.fold-copy .fold-leaders {
+  max-width: 36rem;
+  margin-top: calc(var(--space-1) * -1);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+.fold-copy .fold-leaders .hero-ticker-item {
+  padding-inline: 14px;
+}
+.fold-copy .fold-leaders .hero-ticker-logo {
+  zoom: 0.7;
+  opacity: 0.85;
+}

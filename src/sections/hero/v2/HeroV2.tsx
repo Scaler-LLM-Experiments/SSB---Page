@@ -99,6 +99,9 @@ export async function HeroV2({
                   hero={hero}
                   titleId="hero-title"
                   tags
+                  // the faculty's line and logos under the title, above the CTAs (2026-10-12; they were
+                  // at the right, over the schools)
+                  leaders={leaders}
                   className="hero-v2-copy relative z-lift"
                 />
                 <FoldFacts
@@ -107,9 +110,8 @@ export async function HeroV2({
                   hero={hero}
                   schools={schools}
                   schoolsOnly
-                  // the faculty's ticker at the right: the wordmark logos, full width (the team's call
-                  // over icon plus name; `marks: hero.leaderMarks` brings that version back)
-                  faculty={{ line: hero.leadersLine, logos: leaders }}
+                  // (the faculty's ticker was here, over the schools, until 2026-10-12: `faculty={{
+                  // line: hero.leadersLine, logos: leaders }}` brings it back)
                   className="relative z-lift"
                 />
               </div>

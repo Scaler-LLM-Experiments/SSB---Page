@@ -106,3 +106,14 @@
 .hero-v2:is([data-layout='v5'], [data-layout='v6'], [data-layout='v7']) .fold-tags b {
   font-size: 0.9375rem;
 }
+
+/* The title with the leaders' logos under it (2026-10-12) makes the copy taller: the video a step
+   shorter, so the copy still starts where the feather has darkened it. */
+.hero-v2:has(.fold-title-leaders) {
+  --hero-media-h: clamp(11rem, 100svh - var(--sn-h, 0px) - 27rem, 34rem);
+}
+@media (min-width: 1056px) {
+  .hero-v2:has(.fold-title-leaders) {
+    --hero-media-h: min(68%, (100% - var(--sn-h, 0px) - 26rem) / 0.65);
+  }
+}
