@@ -221,12 +221,7 @@ export async function PlacementsShowcase({
                     until 2026-10-12) */}
                 {/* the actions, at the right with the text (2026-10-12) */}
                 <div className="pl-press-actions">
-                  <Button asChild size="md" variant="secondary">
-                    <a href="#press">
-                      Read the article
-                      <CtaIcon icon="arrow" />
-                    </a>
-                  </Button>
+                  {/* ("Read the article" was here, 2026-10-12: the press card itself links to it) */}
                   <Button asChild size="md">
                     <a href={reportHref}>
                       {reportLabel}
