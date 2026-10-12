@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Container, Heading } from '@kishanscaler/ssx-ui';
+import { Container } from '@kishanscaler/ssx-ui';
 import { ease, motionTokens, prefersReducedMotion, useMotion } from '@kishanscaler/ssx-ui/motion';
 
 import type { WhyFigure, WhyQuote } from './types';
@@ -183,13 +183,15 @@ export function WhyBreaker({ quote, figures }: { quote: WhyQuote; figures: WhyFi
           <div className="why-breaker-top">
             {/* The words: a dark island, white over the clip (the team's call). */}
             <div className="why-breaker-lead" data-brand="ssb" data-theme="dark">
-              {/* White, like the words (the team's call), not the brand green other sections use. */}
-              <Heading as="p" size="eyebrow" className="text-on-image-ink" data-breaker-part>
-                {quote.eyebrow}
-              </Heading>
-              <h2 id="why-breaker-title" data-breaker-part className="why-breaker-words">
-                “{quote.caption}”
+              {/* The argument out front (the team, 2026-10-12: "pay more attention to the traditional
+                  MBA"): the line as the section's title, "traditional MBA" in the logo's green, then
+                  the quote under it a step quieter. Was a white eyebrow over the quote. */}
+              <h2 id="why-breaker-title" data-breaker-part className="why-breaker-kicker">
+                {emphasise(quote.eyebrow ?? '', 'traditional MBA')}
               </h2>
+              <p data-breaker-part className="why-breaker-words">
+                “{quote.caption}”
+              </p>
               {/* Who said it, a small footnote (the team's call). */}
               <p data-breaker-part className="why-breaker-credit type-body">
                 — {[quote.attribution, quote.role?.split(', ').pop()].filter(Boolean).join(', ')}
@@ -233,5 +235,18 @@ export function WhyBreaker({ quote, figures }: { quote: WhyQuote; figures: WhyFi
         </div>
       </Container>
     </section>
+  );
+}
+
+/** The phrase set apart in the title, if it is there. */
+function emphasise(text: string, phrase: string) {
+  const at = text.indexOf(phrase);
+  if (at < 0) return text;
+  return (
+    <>
+      {text.slice(0, at)}
+      <span className="why-breaker-kicker-em">{phrase}</span>
+      {text.slice(at + phrase.length)}
+    </>
   );
 }

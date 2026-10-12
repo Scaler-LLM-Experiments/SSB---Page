@@ -546,3 +546,26 @@
 
 /* the chapters' icons in the logo's green, as the term cards' and the rest of the page's (2026-10-07) */
 .why-chapter-icon { color: var(--color-ssb-light-9); }
+
+/* The argument out front (2026-10-12): "Why the traditional MBA doesn't work" as the title, at the
+   display size, bold; "traditional MBA" in the logo's green, lifted for the dark. The quote under
+   it a step quieter: smaller, and at 80% white. */
+.why-breaker-kicker {
+  margin: 0;
+  font-size: var(--type-display-size);
+  font-weight: var(--font-weight-bold, 700);
+  line-height: 1.1;
+  letter-spacing: var(--type-display-tracking);
+  color: var(--on-image-ink);
+  text-wrap: balance;
+}
+.why-breaker-kicker-em {
+  color: color-mix(in srgb, var(--color-ssb-light-9) 62%, #fff);
+}
+.why-breaker-kicker + .why-breaker-words {
+  margin-top: var(--space-6);
+  font-size: var(--type-h2-size, 1.5rem);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: color-mix(in srgb, var(--on-image-ink) 82%, transparent);
+}
