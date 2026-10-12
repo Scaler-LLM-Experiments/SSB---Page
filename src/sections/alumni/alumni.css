@@ -346,7 +346,8 @@
   .peers-flip-face { padding: 0 6px; border-radius: var(--radius-md); }
   .peers-flip-logo { max-width: 86%; max-height: 1.25rem; }
 }
-@media (width >= 1056px) { .peers-flip-cell:nth-child(n + 15) { display: none; } }
+/* desktop: 7 × 3 (2026-10-12, one more row; was 7 × 2) */
+@media (width >= 1056px) { .peers-flip-cell:nth-child(n + 15) { display: block; } .peers-flip-cell:nth-child(n + 22) { display: none; } }
 
 /* The logos at one visual weight (2026-10-12, "resize logo sizes"): each at its `resolveLogos`
    width (the same amount of ink each), scaled to the cell, so Jio and Apollo no longer read small
