@@ -1094,3 +1094,19 @@ html[data-placements='v3'] .pl-recruiters { display: none; }
 @media (width >= 1056px) { .pl-merge { min-height: 440px; padding-block: var(--space-10, 2.5rem); } }
 /* the article card keeps its own height, centred in the taller banner (stretched, it left a gap under the text) */
 @media (width >= 1056px) { .pl-merge > .pl-clip { align-self: center; } }
+/* spread across the column (2026-10-13): figures and dividers as items, spaced evenly, so every
+   figure is the same distance from the dividers either side of it */
+.pl-merge-rule { display: none; }
+@media (width >= 760px) {
+  .pl-merge-stats, .pl-merge-stats:is(*) { display: flex; justify-content: space-between; gap: var(--space-4); }
+  .pl-merge-stats > .pl-merge-stat { flex: none; padding-left: 0; border-left: 0; }
+  .pl-merge-rule { display: block; flex: none; width: 1px; align-self: stretch; background: rgb(255 255 255 / 0.28); }
+}
+@media (width >= 1056px) { .pl-merge-main > .pl-merge-stats { width: 100%; } }
+@media (width >= 760px) { .pl-merge-tail { display: block; } .pl-merge-stats dt { white-space: nowrap; } }
+@media (width >= 760px) and (width < 1280px) { .pl-merge-stats dd { font-size: clamp(1.5rem, 2.3vw, 2.125rem); } }
+@media (width >= 1056px) and (width < 1200px) { .pl-merge { gap: var(--space-8); grid-template-columns: minmax(0, 1fr) minmax(0, 22rem); } }
+/* (the older `> div + div` rules gave the dividers padding and a border of their own) */
+.pl-merge-stats > .pl-merge-rule, .pl-merge-stats > .pl-merge-rule + .pl-merge-stat { padding: 0; border: 0; }
+.pl-merge-stats > .pl-merge-rule { display: none; }
+@media (width >= 760px) { .pl-merge-stats > .pl-merge-rule { display: block; } }

@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { PeersTicker } from '@/sections/alumni/PeersTicker';
 import type { ReactElement } from 'react';
 import {
@@ -188,8 +189,12 @@ export async function PlacementsShowcase({
               <div className="pl-merge-main">
                 <p className="pl-merge-title">Where the founding cohort landed</p>
                 <dl className="pl-merge-stats">
-                  {v3Stats.map((st) => (
-                    <div key={st.label}>
+                  {v3Stats.map((st, i) => (
+                    <React.Fragment key={st.label}>
+                    {/* the dividers as items of their own, so the row spreads with the same space
+                        either side of each (2026-10-13) */}
+                    {i ? <div className="pl-merge-rule" aria-hidden /> : null}
+                    <div className="pl-merge-stat">
                       <dd>{st.value}</dd>
                       {/* broken before the last two words on desktop, so the four labels sit alike */}
                       <dt>
@@ -197,6 +202,7 @@ export async function PlacementsShowcase({
                         <span className="pl-merge-tail">{st.label.split(' ').slice(-2).join(' ')}</span>
                       </dt>
                     </div>
+                    </React.Fragment>
                   ))}
                 </dl>
                 <Button asChild size="md" className="pl-merge-cta">
