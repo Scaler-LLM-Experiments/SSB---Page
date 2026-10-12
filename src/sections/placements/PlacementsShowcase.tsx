@@ -1,3 +1,4 @@
+import { PeersTicker } from '@/sections/alumni/PeersTicker';
 import type { ReactElement } from 'react';
 import { Button, Container, Heading, Section, cn } from '@kishanscaler/ssx-ui';
 import { GlobeHemisphereWest, RocketLaunch, Sparkle } from '@phosphor-icons/react/ssr';
@@ -190,6 +191,11 @@ export async function PlacementsShowcase({
                 </div>
               </div>
             </article>
+            {/* "Your peers come from", the alumni section's flip grid, again here after the figures
+                (2026-10-12, the team's ask) */}
+            <div className="pl-v3-peers">
+              <PeersTicker />
+            </div>
             {/* the report, a strip under the card (2026-10-09) */}
             <div className="pl-v3-report">
               {/* the lead's second half, redistributed (2026-10-09): a short line, then where they went */}
