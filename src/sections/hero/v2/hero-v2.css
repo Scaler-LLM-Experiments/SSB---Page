@@ -43,6 +43,11 @@
 .hero-v2-copy .fold-actions {
   margin-top: var(--space-4);
 }
+/* The brochure's stroke a step quieter than its text (the team's ask, 2026-10-09): the package
+   draws it in the text's colour, near white on the black. */
+.hero-v2-copy .fold-secondary {
+  border-color: color-mix(in oklab, currentColor 50%, transparent);
+}
 
 /* md: the video fills the top of the hero, from the nav's foot, edge to edge,
    and fades down into the black where the copy sits. Its top and sides are

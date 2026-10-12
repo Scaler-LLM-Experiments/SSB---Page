@@ -257,10 +257,14 @@
 .fold-panel:has(.fold-panel-faculty) .fold-panel-alumni img:hover {
   opacity: 1;
 }
-/* V5's wordmark logos a touch smaller than the foot row's (they run wider than icons did);
-   `zoom` shrinks the layout box too, so the ticker's gaps stay even */
+/* V5's wordmark logos smaller than the foot row's and closer together (20px apart, was 48), so
+   at least three and a half are in view at once on a phone (the team's ask, 2026-10-09; at 0.9
+   and 48 apart it showed two); `zoom` shrinks the layout box too, so the gaps stay even */
+.fold-panel-faculty .hero-ticker-item {
+  padding-inline: 10px;
+}
 .fold-panel-faculty .hero-ticker-logo {
-  zoom: 0.9;
+  zoom: 0.55;
   /* brighter than the ticker's muted 60% (the team's ask) */
   opacity: 0.8;
 }

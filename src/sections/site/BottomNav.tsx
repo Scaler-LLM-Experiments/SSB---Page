@@ -2,9 +2,8 @@
 
 import * as React from 'react';
 import { Button } from '@kishanscaler/ssx-ui';
-import { ArrowRight, Phone } from '@phosphor-icons/react';
+import { ArrowRight, BookOpen, Briefcase, Buildings, GraduationCap, Phone, PhoneCall, type Icon } from '@phosphor-icons/react';
 
-import { feeRows } from '@/content/admissions';
 import { bottomNav } from '@/content/bottom-nav';
 import { SSB_FOOTER } from './data';
 import './bottom-nav.css';
@@ -15,11 +14,9 @@ const sectionOf = (target: string) => {
   return (el?.closest('section') as HTMLElement | null) ?? el;
 };
 
-/** The next intake's deadline still to come (the fee table's dates, "Dec 27, 2026"), or the last one. */
-const nextDeadline = (today = new Date()) => {
-  const start = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
-  return (feeRows.find((r) => new Date(r.deadline).getTime() >= start) ?? feeRows[feeRows.length - 1]).deadline;
-};
+/** The phone tabs' icons, in the order of `bottomNav.apply.tabs`. */
+const TAB_ICONS: Icon[] = [GraduationCap, BookOpen, Briefcase, Buildings];
+
 
 /**
  * The page's bottom navigation (the team's ask, 2026-10-08): a frosted bar at the foot of the window,
@@ -33,8 +30,10 @@ const nextDeadline = (today = new Date()) => {
  * bar is on screen there. The section being read is the last whose top has passed 40% of the window.
  *
  * Phones (below 672px) get two pieces in its place (bottom-nav.css): a thin strip of the same
- * sections pinned under the navbar, and a sticky apply bar at the foot (the next intake's last date
- * to register, and Apply now), both shown and hidden as the bar is.
+ * sections pinned under the navbar, and a sticky apply bar at the foot: Apply now
+ * at full width over a row of icon tabs (links to the school's other pages on the live site),
+ * with the call-back as a round button floating above it; shown and hidden as the
+ * bar is.
  */
 export function BottomNav() {
   const [shown, setShown] = React.useState(false);
@@ -43,7 +42,6 @@ export function BottomNav() {
   const [inRail, setInRail] = React.useState(false);
   const list = React.useRef<HTMLUListElement>(null);
   const strip = React.useRef<HTMLUListElement>(null);
-  const deadline = React.useMemo(() => nextDeadline(), []);
 
   React.useEffect(() => {
     let raf = 0;
@@ -70,6 +68,9 @@ export function BottomNav() {
       const combined = pastHero && !footer && !!strip && getComputedStyle(strip).display !== 'none';
       document.documentElement.toggleAttribute('data-bn-strip', combined);
       if (strip) document.documentElement.style.setProperty('--bn-strip-h', `${Math.round(strip.getBoundingClientRect().height)}px`);
+      // phones: the apply bar's height, for what stands above it (the call-back, the curriculum's bar)
+      const apply = document.querySelector('.bn-apply');
+      if (apply) document.documentElement.style.setProperty('--bn-apply-h', `${Math.round(apply.getBoundingClientRect().height)}px`);
       setInRail(inRail);
       let at = -1;
       bottomNav.items.forEach((item, i) => {
@@ -160,17 +161,42 @@ export function BottomNav() {
         </ul>
       </nav>
 
-      {/* phones: the sticky apply bar */}
+      {/* phones: the call-back, a rounded-square button floating above the apply bar */}
+      <a
+        className="bn-call"
+        href={bottomNav.callback.href}
+        aria-label={bottomNav.callback.label}
+        data-shown={shown || undefined}
+        data-brand="ssb"
+        data-theme="light"
+        tabIndex={shown ? undefined : -1}
+      >
+        <PhoneCall weight="regular" aria-hidden="true" />
+      </a>
+
+      {/* phones: the sticky apply bar, Apply now over the icon tabs */}
       <div className="bn-apply" data-shown={shown || undefined} data-brand="ssb" data-theme="light">
-        <p className="bn-apply-date">
-          {bottomNav.apply.deadlineLabel} · <strong>{deadline}</strong>
-        </p>
         <Button asChild variant="primary" size="md" className="bn-apply-btn">
           <a href={SSB_FOOTER.cta.primary.href} tabIndex={shown ? undefined : -1}>
             {bottomNav.apply.label}
             <ArrowRight weight="bold" aria-hidden="true" />
           </a>
         </Button>
+        <nav aria-label={bottomNav.label}>
+          <ul className="bn-tabs">
+            {bottomNav.apply.tabs.map((tab, i) => {
+              const TabIcon = TAB_ICONS[i];
+              return (
+                <li key={tab.href}>
+                  <a className="bn-tab" href={tab.href} tabIndex={shown ? undefined : -1}>
+                    <TabIcon weight="regular" aria-hidden="true" />
+                    <span>{tab.label}</span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
       </div>
     </>
   );

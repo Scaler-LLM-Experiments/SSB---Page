@@ -4,13 +4,15 @@
 // until a real destination is agreed.
 
 export type BottomNavItem = { label: string; target: string };
+export type BottomNavLink = { label: string; href: string };
 
 export const bottomNav: {
   label: string;
   items: BottomNavItem[];
   callback: { label: string; href: string };
-  /** Phones: the sticky apply bar (its date: the next intake's deadline, from the fee table). */
-  apply: { label: string; deadlineLabel: string };
+  /** Phones: the sticky apply bar, Apply now over a row of icon tabs (the team's ask, 2026-10-09);
+   *  the tabs open the school's other pages on the live site, not sections of this one. */
+  apply: { label: string; tabs: BottomNavLink[] };
 } = {
   label: 'Sections of the page',
   items: [
@@ -23,5 +25,13 @@ export const bottomNav: {
     { label: 'Admissions', target: 'admissions' },
   ],
   callback: { label: 'Request a callback', href: '#advisor' },
-  apply: { label: 'Apply now', deadlineLabel: 'Last date to register' },
+  apply: {
+    label: 'Apply now',
+    tabs: [
+      { label: 'Admission & Fees', href: 'https://www.scaler.com/school-of-business/admission/' },
+      { label: 'Program', href: 'https://www.scaler.com/school-of-business/program/' },
+      { label: 'Internship', href: 'https://www.scaler.com/school-of-business/internship/' },
+      { label: 'Campus Life', href: 'https://www.scaler.com/school-of-business/campus-life/' },
+    ],
+  },
 };

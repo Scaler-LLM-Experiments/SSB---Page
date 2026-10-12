@@ -93,66 +93,105 @@
   width: 18px;
   height: 18px;
 }
-/* ── Phones (below 672px): the bar and call-back give way to a thin strip of the sections under
-   the navbar and a sticky apply bar at the foot. Both frosted as the bar is; both come and go
-   with it (from above and from below). ── */
-.bn-strip, .bn-apply { display: none; }
+/* ── Phones (below 672px): the bar gives way to a thin strip of the sections under the navbar and a sticky apply bar at the foot (Apply now at full
+   width over a row of icon tabs, frosted as the bar is) and the call-back as a round button
+   floating above it at the right; both come and go with the bar, from below. ── */
+.bn-strip, .bn-apply, .bn-call { display: none; }
 @media (max-width: 671px) {
   .bn { display: none; }
-  .bn-strip, .bn-apply {
+  /* the strip: under the navbar, thin, frosted; the section being read in green with a line under it */
+  .bn-strip {
     --bn-glass: blur(18px) saturate(1.6);
     position: fixed;
-    z-index: 40;
+    z-index: 51;
     left: 0;
     right: 0;
+    top: var(--bn-top, var(--sn-h, 61px));
     display: block;
+    border-bottom: 1px solid color-mix(in srgb, var(--border-subtle) 80%, transparent);
     background: color-mix(in srgb, var(--surface-page) 78%, transparent);
     -webkit-backdrop-filter: var(--bn-glass);
     backdrop-filter: var(--bn-glass);
+    transform: translateY(-100%);
     opacity: 0;
     pointer-events: none;
     transition: transform 460ms cubic-bezier(0.22, 1, 0.36, 1), opacity 260ms ease;
   }
-  .bn-strip[data-shown], .bn-apply[data-shown] { transform: none; opacity: 1; pointer-events: auto; }
-  /* the strip: under the navbar, thin; the section being read in green with a line under it */
-  .bn-strip { top: var(--bn-top, var(--sn-h, 61px)); border-bottom: 1px solid color-mix(in srgb, var(--border-subtle) 80%, transparent); transform: translateY(-100%); }
+  .bn-strip[data-shown] { transform: none; opacity: 1; pointer-events: auto; }
   .bn-strip-list { display: flex; gap: var(--space-1); margin: 0; padding: 0 var(--space-3); list-style: none; overflow-x: auto; scrollbar-width: none; }
   .bn-strip-list::-webkit-scrollbar { display: none; }
   /* 12px, the system's caption size (its floor) */
   .bn-strip .bn-item { position: relative; padding: 9px 8px; border-radius: 0; font-size: var(--type-caption-size, 0.75rem); line-height: 1.35; background: none !important; }
   .bn-strip .bn-item[aria-current='true'] { color: var(--content-brand); }
   .bn-strip .bn-item[aria-current='true']::after { content: ''; position: absolute; left: 8px; right: 8px; bottom: 0; height: 2px; border-radius: 2px; background: var(--surface-brand-solid); }
-  /* the apply bar: at the foot, the last date on one small line (12px, the system's caption) over Apply now
-     at the bar's full width; a sheen sweeps across the button every few seconds */
-  .bn-apply { bottom: 0; display: flex; flex-direction: column; align-items: stretch; gap: var(--space-2);
-    padding: var(--space-2) var(--space-4) calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
-    border-top: 1px solid color-mix(in srgb, var(--border-subtle) 80%, transparent); transform: translateY(100%); }
-  .bn-apply-date { margin: 0; text-align: center; font-size: var(--type-caption-size, 0.75rem); line-height: 1.3; color: var(--content-secondary); }
-  .bn-apply-date strong { font-weight: var(--font-weight-semibold, 600); color: var(--content-primary); }
-  .bn-apply .bn-apply-btn { position: relative; overflow: hidden; isolation: isolate; width: 100%; justify-content: center; }
-  .bn-apply a svg { width: 16px; height: 16px; }
-  .bn-apply .bn-apply-btn::after { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-    background: linear-gradient(105deg, transparent 30%, color-mix(in srgb, var(--content-on-brand-solid) 38%, transparent) 50%, transparent 70%);
-    transform: translateX(-120%); animation: bn-sheen 3.2s ease-in-out 1s infinite; }
-  @keyframes bn-sheen { 0% { transform: translateX(-120%); } 45%, 100% { transform: translateX(120%); } }
   /* The navbar and the strip as one bar: while the strip is up (data-bn-strip on <html>), the
      navbar's frosted layer (.sn::before) runs down behind the strip and the strip has no surface of
-     its own; the navbar's edge goes, the strip's hairline is the pair's one edge. The strip stands
-     just above the navbar's layer, so its links read on the frost. With the navbar's menu open the
-     strip steps away. */
-  .bn-strip { z-index: 51; }
+     its own; the navbar's edge goes, the strip's hairline is the pair's one edge. With the navbar's
+     menu open the strip steps away. */
   html[data-bn-strip] .bn-strip { background: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; }
   html[data-bn-strip] .sn { border-bottom-color: transparent !important; box-shadow: none !important; }
   html[data-bn-strip] .sn::before { bottom: calc(var(--bn-strip-h, 40px) * -1); }
   html:has(.sn[data-open]) .bn-strip { opacity: 0 !important; pointer-events: none !important; }
   html:has(.sn[data-open]) .sn::before { bottom: 0; }
+  .bn-apply {
+    --bn-glass: blur(18px) saturate(1.6);
+    position: fixed;
+    z-index: 40;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: calc(var(--space-1) + 2px);
+    padding: var(--space-3) var(--space-4) calc(var(--space-1) + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid color-mix(in srgb, var(--border-subtle) 80%, transparent);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    background: color-mix(in srgb, var(--surface-page) 88%, transparent);
+    -webkit-backdrop-filter: var(--bn-glass);
+    backdrop-filter: var(--bn-glass);
+    box-shadow: 0 -10px 30px -18px rgb(0 0 0 / 0.25);
+    transform: translateY(100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 460ms cubic-bezier(0.22, 1, 0.36, 1), opacity 260ms ease;
+  }
+  .bn-apply[data-shown] { transform: none; opacity: 1; pointer-events: auto; }
+  /* Apply now: full width, 40px tall (the team's ask, 2026-10-09: a step smaller), a sheen sweeping
+     across it every few seconds */
+  .bn-apply .bn-apply-btn { position: relative; overflow: hidden; isolation: isolate; width: 100%; height: 40px; min-height: 40px;
+    justify-content: center; font-size: var(--type-body-sm-size, 0.875rem); }
+  .bn-apply .bn-apply-btn svg { width: 16px; height: 16px; }
+  .bn-apply .bn-apply-btn::after { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background: linear-gradient(105deg, transparent 30%, color-mix(in srgb, var(--content-on-brand-solid) 38%, transparent) 50%, transparent 70%);
+    transform: translateX(-120%); animation: bn-sheen 3.2s ease-in-out 1s infinite; }
+  @keyframes bn-sheen { 0% { transform: translateX(-120%); } 45%, 100% { transform: translateX(120%); } }
+  /* the tabs: links to the school's other pages, an icon over its label, evenly across the bar.
+     11px, a step under the system's 12px caption floor (the team's ask, 2026-10-09) */
+  .bn-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; }
+  .bn-tab { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: var(--space-2) 2px;
+    font-size: 0.6875rem; line-height: 1.2; text-align: center; white-space: nowrap;
+    color: var(--content-secondary); text-decoration: none; border-radius: var(--radius-md); transition: color 220ms ease; }
+  .bn-tab svg { width: 22px; height: 22px; flex: none; }
+  .bn-tab:active { color: var(--content-brand); }
+  .bn-tab:focus-visible { outline: 2px solid var(--border-focus); outline-offset: -2px; }
+  /* the call-back: a rounded-square brand button at the right, just above the apply bar */
+  .bn-call { position: fixed; z-index: 41; right: var(--space-3); bottom: calc(var(--bn-apply-h, 120px) + var(--space-3));
+    display: grid; place-items: center; width: 48px; height: 48px; border-radius: 16px;
+    background: var(--surface-brand-solid); color: var(--content-on-brand-solid);
+    box-shadow: 0 10px 24px -8px rgb(0 0 0 / 0.35);
+    transform: translateY(calc(var(--bn-apply-h, 120px) + 80px)); opacity: 0; pointer-events: none;
+    transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1), opacity 260ms ease; }
+  .bn-call[data-shown] { transform: none; opacity: 1; pointer-events: auto; }
+  .bn-call svg { width: 24px; height: 24px; }
+  .bn-call:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 3px; }
   /* the navbar's Apply now goes on a phone: the apply bar at the foot carries it */
   .sn .sn-primary-btn { display: none !important; }
   /* the curriculum's own section bar (sticky at the window's foot) stands above the apply bar */
-  .cr-nav { bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important; }
+  .cr-nav { bottom: calc(var(--bn-apply-h, 120px) + var(--space-2)) !important; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .bn, .bn-strip, .bn-apply {
+  .bn, .bn-strip, .bn-apply, .bn-call {
     transition: opacity 160ms linear;
   }
 }
