@@ -11,7 +11,16 @@ const EVERY = 1000;
 function Logo({ logo }: { logo: ResolvedLogo }) {
   return logo.src ? (
     // eslint-disable-next-line @next/next/no-img-element -- at its display size, no layout shift
-    <img src={logo.src} alt="" width={logo.width} height={logo.height} decoding="async" className="peers-flip-logo" />
+    <img
+      src={logo.src}
+      alt=""
+      width={logo.width}
+      height={logo.height}
+      decoding="async"
+      className="peers-flip-logo"
+      // its width at one visual weight (`resolveLogos`), scaled to the cell in CSS
+      style={logo.width ? ({ '--w': `${logo.width}px` } as React.CSSProperties) : undefined}
+    />
   ) : (
     <span className="type-h3 whitespace-nowrap text-content-secondary">{logo.wordmark}</span>
   );

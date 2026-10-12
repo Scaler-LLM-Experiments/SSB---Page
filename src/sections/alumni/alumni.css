@@ -347,3 +347,9 @@
   .peers-flip-logo { max-width: 86%; max-height: 1.25rem; }
 }
 @media (width >= 1056px) { .peers-flip-cell:nth-child(n + 15) { display: none; } }
+
+/* The logos at one visual weight (2026-10-12, "resize logo sizes"): each at its `resolveLogos`
+   width (the same amount of ink each), scaled to the cell, so Jio and Apollo no longer read small
+   beside Uber and Deloitte. Capped to the cell's width. */
+.peers-flip-logo[style] { --peers-s: 0.85; width: min(calc(var(--w) * var(--peers-s)), 86%); max-width: none; height: auto; max-height: 70%; }
+@media (width < 672px) { .peers-flip-logo[style] { --peers-s: 0.56; max-height: 65%; } }
