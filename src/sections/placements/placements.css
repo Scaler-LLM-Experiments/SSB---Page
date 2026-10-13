@@ -1110,11 +1110,6 @@ html[data-placements='v3'] .pl-recruiters { display: none; }
 .pl-merge-stats > .pl-merge-rule, .pl-merge-stats > .pl-merge-rule + .pl-merge-stat { padding: 0; border: 0; }
 .pl-merge-stats > .pl-merge-rule { display: none; }
 @media (width >= 760px) { .pl-merge-stats > .pl-merge-rule { display: block; } }
-/* 2026-10-13: the article card closer to the figures (space-8, not space-16), and as tall as the
-   left column, so its top meets the title's line and its foot the button's; the story at its foot */
-@media (width >= 1056px) {
-  .pl-merge { gap: var(--space-8); }
-  .pl-merge > .pl-clip { align-self: stretch; }
-  .pl-merge > .pl-clip .pl-clip-body { height: 100%; padding-block: var(--space-5); }
-  .pl-merge > .pl-clip .pl-clip-headline, .pl-merge > .pl-clip .pl-clip-body > [data-variant='rule'] { margin-top: auto; }
-}
+/* 2026-10-13: the figures closer together: from the left, the same space either side of each
+   divider (32px at 1440), not spread to the column's edge */
+@media (width >= 760px) { .pl-merge-stats, .pl-merge-stats:is(*) { justify-content: flex-start; gap: clamp(1rem, 2.2vw, 2rem); } }
