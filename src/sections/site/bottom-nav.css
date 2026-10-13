@@ -354,17 +354,12 @@
 }
 
 /* Phones, while the curriculum is on screen (html[data-bn-rail], BottomNav; 2026-10-13, the team's
-   ask, this section only): the apply bar steps down out of view, the curriculum's own bar drops to
-   the window's foot, and the call-back rises to stand above that bar instead of overlapping it. */
+   ask, this section only): the apply bar keeps Apply now but drops its row of icon tabs, the
+   curriculum's own bar stands just above it, and the call-back above that bar, so nothing overlaps.
+   (2026-10-13, first take: the whole apply bar stepped away; the team needs Apply now kept.) */
 @media (max-width: 671px) {
-  .bn-apply { transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1), opacity 260ms ease; }
-  html[data-bn-rail] .bn-apply[data-shown] {
-    animation: none;
-    transform: translateY(calc(100% + 8px));
-    opacity: 0;
-    pointer-events: none;
-  }
-  html[data-bn-rail] .cr-nav { bottom: var(--space-3) !important; }
+  html[data-bn-rail] .bn-apply nav { display: none; }
+  html[data-bn-rail] .bn-apply { padding-bottom: calc(var(--space-3) + env(safe-area-inset-bottom, 0px)); }
   .bn-call { transition: bottom 420ms cubic-bezier(0.22, 1, 0.36, 1), transform 520ms cubic-bezier(0.22, 1, 0.36, 1), opacity 260ms ease; }
-  html[data-bn-rail] .bn-call { bottom: calc(var(--space-3) + var(--cr-nav-h, 46px) + var(--space-3)); }
+  html[data-bn-rail] .bn-call { bottom: calc(var(--bn-apply-h, 72px) + var(--space-2) + var(--cr-nav-h, 46px) + var(--space-3)); }
 }

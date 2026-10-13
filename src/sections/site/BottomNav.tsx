@@ -69,14 +69,15 @@ export function BottomNav() {
       document.documentElement.toggleAttribute('data-bn-strip', combined);
       if (strip) document.documentElement.style.setProperty('--bn-strip-h', `${Math.round(strip.getBoundingClientRect().height)}px`);
       // phones: the apply bar's height, for what stands above it (the call-back, the curriculum's bar)
-      const apply = document.querySelector('.bn-apply');
-      if (apply) document.documentElement.style.setProperty('--bn-apply-h', `${Math.round(apply.getBoundingClientRect().height)}px`);
       setInRail(inRail);
-      // phones (2026-10-13, the team's ask): while the curriculum's own bar is up, the apply bar steps
-      // away, that bar drops to the window's foot and the call-back stands above it (bottom-nav.css)
+      // phones (2026-10-13, the team's ask): while the curriculum's own bar is up, the apply bar keeps
+      // Apply now only (its tabs go), and the call-back stands above the curriculum's bar (bottom-nav.css)
       document.documentElement.toggleAttribute('data-bn-rail', inRail && pastHero && !footer);
       const crList = document.querySelector('.cr-nav .cr-list');
       if (crList) document.documentElement.style.setProperty('--cr-nav-h', `${Math.round(crList.getBoundingClientRect().height)}px`);
+      // (measured after the rail attribute: in the curriculum the bar is shorter, its tabs gone)
+      const apply = document.querySelector('.bn-apply');
+      if (apply) document.documentElement.style.setProperty('--bn-apply-h', `${Math.round(apply.getBoundingClientRect().height)}px`);
       let at = -1;
       bottomNav.items.forEach((item, i) => {
         const s = sectionOf(item.target);
