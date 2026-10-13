@@ -139,3 +139,16 @@
 @media (width < 672px) {
   .hero-v2-copy .fold-phrase { white-space: normal; }
 }
+
+/* every tag alike (2026-10-13, the team's ask): one height (40px) and one size of type (15px) for
+   the value and its caption; the caption keeps its grey and regular weight */
+.hero-v2 .fold-tags li {
+  height: 2.5rem;
+  align-items: center;
+  box-sizing: border-box;
+}
+.hero-v2 .fold-tags b,
+.hero-v2 .fold-tags span {
+  font-size: 0.9375rem;
+  line-height: 1.2;
+}
