@@ -1507,7 +1507,8 @@ export function StackJourney({ j, cfg, width, portal, initialOpen = null }: { j:
         if (!inner) return;
         inner.style.transformOrigin = '50% 0';
         inner.style.transform = over ? `scale(${Math.max(0.88, 1 - over * 0.03)})` : '';
-        inner.style.filter = over ? `brightness(${Math.max(0.92, 1 - over * 0.02)})` : '';
+        // the grey a third as deep (2026-10-13, the team's ask): 0.7% a card, at most 3% (was 2%, at most 8%)
+        inner.style.filter = over ? `brightness(${Math.max(0.97, 1 - over * 0.007)})` : '';
       });
     };
     const onScroll = () => {
