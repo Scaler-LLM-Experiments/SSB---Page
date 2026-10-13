@@ -37,9 +37,11 @@ html body .cs-ss-term { color: var(--content-brand) !important; }
 
 /* ── over a photo or a dark ground ── */
 /* text: the two on-image inks (the 80–88% whites) */
-html body :is(.pl-merge-stats dt, .pl-merge-tail, .why-breaker-words, .sj-ps-stat dt, .in-reel-name, .imm-feature__text) {
+html body :is(.pl-merge-stats dt, .pl-merge-tail, .sj-ps-stat dt, .in-reel-name, .imm-feature__text) {
   color: var(--on-image-ink-secondary) !important;
 }
+/* the breakers' statements in full white (2026-10-13, the team's ask) */
+html body .why-breaker-words { color: var(--on-image-ink) !important; }
 /* brand text on black: the SSB palette's light step (the hero's lead line was a mix) */
 html body .fold-title-lead { color: var(--color-ssb-dark-11) !important; }
 
