@@ -15,7 +15,9 @@ export const hero: HeroContent = {
   // V2's title (the team, 2026-10-12): the faculty's line moved up into it, their logos under it,
   // above the CTAs. `title` stays for the split fold.
   titleLead: 'Learn business hands-on',
-  leadersTitle: 'from 100+ industry leaders & faculty from',
+  leadersTitle: 'from 100+ industry leaders & faculty',
+  // (2026-10-13) the title's last word, moved down to start the logos' row
+  leadersFrom: 'from',
   description:
     'Build startups & AI products · No tech background required',
   primaryCta: { label: 'Apply now', href: '#apply', icon: 'arrow' },

@@ -416,3 +416,23 @@
   zoom: 0.7;
   opacity: 0.85;
 }
+
+/* (2026-10-13) the title ends at "faculty"; its "from" starts the logos' row, at the title's size,
+   the logos running past beside it */
+.fold-leaders-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-width: 0;
+  max-width: 44rem;
+}
+.fold-leaders-from {
+  flex: none;
+  font-size: clamp(1.75rem, 1.1rem + 2.7vw, 3rem);
+  line-height: 1.25;
+}
+.fold-leaders-row .fold-leaders {
+  flex: 1;
+  min-width: 0;
+  margin-top: 0;
+}

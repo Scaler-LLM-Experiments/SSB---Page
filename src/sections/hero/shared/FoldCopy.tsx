@@ -40,7 +40,7 @@ export function FoldCopy({
    * `leadersTitle`), above the line and the actions. */
   leaders?: ResolvedLogo[];
 } & Block) {
-  const { eyebrow, title, titleHighlight, titleLead, leadersTitle, description, primaryCta, secondaryCta, facts } = hero;
+  const { eyebrow, title, titleHighlight, titleLead, leadersTitle, leadersFrom, description, primaryCta, secondaryCta, facts } = hero;
   const actions = (
     <div className="fold-actions">
       <Button asChild size="lg" className="fold-primary">
@@ -73,8 +73,18 @@ export function FoldCopy({
         <>
           <Heading as="h1" id={titleId} className="fold-title-leaders type-billboard-sm text-on-image-ink">
             <span className="fold-title-lead">{titleLead}</span> {leadersTitle}
+            {leadersFrom ? <span className="sr-only"> {leadersFrom}</span> : null}
           </Heading>
-          <LogoTicker logos={leaders} label="Industry leaders behind the programme" className="fold-leaders" />
+          {leadersFrom ? (
+            <div className="fold-leaders-row">
+              <span className="fold-leaders-from type-billboard-sm text-on-image-ink" aria-hidden>
+                {leadersFrom}
+              </span>
+              <LogoTicker logos={leaders} label="Industry leaders behind the programme" className="fold-leaders" />
+            </div>
+          ) : (
+            <LogoTicker logos={leaders} label="Industry leaders behind the programme" className="fold-leaders" />
+          )}
         </>
       ) : (
         <Heading as="h1" id={titleId} className="type-billboard-sm text-on-image-ink">

@@ -61,6 +61,8 @@ export type HeroContent = {
    * running past right under it. Both set: they replace `title` there. */
   titleLead?: string;
   leadersTitle?: string;
+  /** A word set at the title's size at the start of the logos' row ("from"), 2026-10-13. */
+  leadersFrom?: string;
   description: string;
   primaryCta: HeroCta;
   secondaryCta?: HeroCta;
