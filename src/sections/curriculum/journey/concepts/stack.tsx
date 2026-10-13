@@ -1469,9 +1469,17 @@ export function StackJourney({ j, cfg, width, portal, initialOpen = null }: { j:
       // reaches the foot of its margin box. Each card's foot margin is set so that happens for all of
       // them at once, the moment the last card lands (cards of different heights included)
       const landed = tops[last] + items[last].offsetHeight;
+      // Those foot margins differ card to card (the first's the largest), so before they stack the
+      // cards stood unevenly apart (88, 74, 60, 46px). Each card's top margin takes back the one
+      // before's foot margin, leaving one gap between them all (--mstack-gap, concepts.css).
+      const gap = parseFloat(getComputedStyle(ol).getPropertyValue('--mstack-gap')) || 24;
+      let before = 0;
       items.forEach((el, i) => {
+        const foot = Math.max(0, landed - tops[i] - el.offsetHeight);
         el.style.top = `${tops[i]}px`;
-        el.style.marginBottom = `${Math.max(0, landed - tops[i] - el.offsetHeight)}px`;
+        el.style.marginBottom = `${foot}px`;
+        el.style.marginTop = i ? `${gap - before}px` : '';
+        before = foot;
       });
     };
     place();

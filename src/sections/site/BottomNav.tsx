@@ -93,6 +93,26 @@ export function BottomNav() {
     };
   }, []);
 
+  // The entrance (bottom-nav.css, after the carousel controls'): the bar opens out of a square at
+  // its centre and the call-back slides out from behind it, so the call-back starts this far left
+  // of its place: from its centre to the bar's.
+  const wrap = React.useRef<HTMLDivElement>(null);
+  React.useLayoutEffect(() => {
+    const el = wrap.current;
+    const bar = el?.querySelector<HTMLElement>('.bn-bar');
+    const cta = el?.querySelector<HTMLElement>('.bn-cta');
+    if (!el || !bar || !cta) return;
+    const measure = () => {
+      const gap = parseFloat(getComputedStyle(el).columnGap || '0');
+      el.style.setProperty('--bn-shift', `${bar.offsetWidth / 2 + gap + cta.offsetWidth / 2}px`);
+      el.style.setProperty('--bn-h', `${bar.offsetHeight}px`);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   // keep the item being read in view in the bar (it scrolls sideways on a phone): the bar's own scroll only
   React.useEffect(() => {
     for (const ul of [list.current, strip.current]) {
@@ -116,7 +136,7 @@ export function BottomNav() {
   return (
     <>
       {/* desktop and tablet: the bar and the call-back */}
-      <div className="bn" data-shown={(shown && !inRail) || undefined} data-brand="ssb" data-theme="light">
+      <div ref={wrap} className="bn" data-shown={(shown && !inRail) || undefined} data-brand="ssb" data-theme="light">
         <nav className="bn-bar" aria-label={bottomNav.label}>
           <ul ref={list} className="bn-list">
           {bottomNav.items.map((item, i) => (
