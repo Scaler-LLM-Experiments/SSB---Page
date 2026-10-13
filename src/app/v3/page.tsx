@@ -71,8 +71,9 @@ export default function V3Page() {
         {/* faculty and mentors (the founding team and investors come after the innovation lab) */}
         {/* faculty and mentors as sections of their own (2026-10-12, the team's ask; were tabs of one):
             faculty with the stacked cards, mentors with the photo cards, smaller */}
-        <PeopleTabsSection groups={['faculty']} stacked />
-        <PeopleTabsSection groups={['mentors']} id="mentors" label="Mentors" compact />
+        {/* faculty as drifting rows of course cards, as Alumni's (2026-10-13, the team's mock) */}
+        <PeopleTabsSection groups={['faculty']} drift />
+        <PeopleTabsSection groups={['mentors']} id="mentors" label="Mentors" drift />
         {/* the curriculum, together (the team's call, 2026-10-06): the terms, then learn by doing, career prep, the
             150-hour AI curriculum, the live projects, the internship and the immersions behind one side navigation */}
         {/* the terms as v3 of the /v2-stack experiment (the team's pick, 2026-10-09): stacking cards, each

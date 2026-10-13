@@ -310,7 +310,7 @@
 @media (width >= 1056px) { .alumni-drift-row { --card-w: 21.5rem; --gap: var(--space-4); } }
 @keyframes alumni-drift { to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) { .alumni-drift-row { animation: none; } }
-@media (width >= 672px) { .alumni-drift { mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent); } }
+/* no edge fade on the rows (2026-10-13, the team's ask): the cards run sharp to the window's edges */
 
 /* m-web (2026-10-09): the drifting rows on phones too (smaller cards, 19rem), in place of the one-card
    row and its dots, so more of the alumni show in a fold */
@@ -354,3 +354,16 @@
    beside Uber and Deloitte. Capped to the cell's width. */
 .peers-flip-logo[style] { --peers-s: 0.85; width: min(calc(var(--w) * var(--peers-s)), 86%); max-width: none; height: auto; max-height: 70%; }
 @media (width < 672px) { .peers-flip-logo[style] { --peers-s: 0.56; max-height: 65%; } }
+
+/* m-web (2026-10-13, the team's ask): both rows the same way, card over card, as the faculty and
+   mentors' rows (each row's duration scales with its card count, so they move at one speed) */
+@media (width < 672px) { .alumni-drift-row[data-dir='back'] { animation-direction: normal; } }
+
+/* m-web (2026-10-13, the team's ask): no drifting; the cards in two rows, card over card, swiped a
+   column at a time, with the dots under them. Desktop and tablet keep the drift. */
+@media (width < 672px) {
+  .alumni-drift { display: none !important; }
+  .alumni-row { display: grid !important; grid-template-rows: repeat(2, auto); grid-auto-flow: column; grid-auto-columns: 19rem; gap: var(--space-3); }
+  .alumni-row > li { width: auto; }
+  .alumni-row + .alumni-dots { display: block !important; }
+}

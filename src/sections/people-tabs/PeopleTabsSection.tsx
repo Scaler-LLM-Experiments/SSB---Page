@@ -24,6 +24,7 @@ import { HScrollerTrack, useHScroller } from '@/sections/faculty/HScroller';
 import { MeetCard } from '@/sections/faculty/MeetCard';
 import type { ShowcasePerson } from '@/sections/faculty/PeopleShowcase';
 import { useSectionEntrance } from '@/sections/faculty/useSectionEntrance';
+import { FacultyCard } from './FacultyCard';
 import { CardStack } from '@/sections/shared/CardStack';
 import { ScrollDots } from '@/sections/shared/ScrollDots';
 import './people-tabs.css';
@@ -53,6 +54,99 @@ const ALL_GROUPS: (Group & { id: PeopleGroupId })[] = [
 
 /** PLACEHOLDER (2026-10-12): the stacked cards' line under the logo, until each person's own is written. */
 const PLACEHOLDER_BIO = 'A line on what they teach at SSB and the work they have led.';
+
+/** PLACEHOLDER (2026-10-13): the faculty cards' course titles, until each person's own is written. */
+const PLACEHOLDER_COURSES = [
+  'Operation Management',
+  'Brand Strategy',
+  'Growth Marketing',
+  'Corporate Finance',
+  'Product Management',
+  'Sales Leadership',
+  'Business Analytics',
+  'Strategy & Consulting',
+];
+
+/**
+ * Faculty as two rows of `FacultyCard`s drifting sideways (2026-10-13, the team's ask: the alumni
+ * section's layout): opposite ways from the tablet up, the same way on phones (faculty-card.css).
+ */
+function FacultyDrift({ group: g }: { group: Group }) {
+  const gridRef = React.useRef<HTMLUListElement>(null);
+  // mentors on the web: the looping scroller (not the CSS drift), so the dots can follow and step it
+  const { ref: tickerRef, goTo } = useHScroller({ speed: 40 });
+  // mentors: their earlier photo card (MeetCard), smaller, in this layout (2026-10-13, the team's ask)
+  const meet = g.id === 'mentors';
+  const card = (p: ShowcasePerson, i: number, priority: boolean) =>
+    meet ? (
+      <MeetCard image={p.image} name={p.name} role={p.role} logo={p.logo} align="start" priority={priority} />
+    ) : (
+      <FacultyCard person={p} course={PLACEHOLDER_COURSES[i % PLACEHOLDER_COURSES.length]} credentials={p.role} priority={priority} />
+    );
+  const kind = meet ? 'meet' : undefined;
+  const n = g.people.length;
+  const all = g.people.map((p, i) => ({ p, i }));
+  // A long list splits between the rows; a short one (mentors: five) runs whole in each row, the
+  // second started halfway along, and repeats until a set is wider than the screen (no gap in the loop).
+  const rowsOf = (r: number) => {
+    const mine = n >= 12 ? all.filter(({ i }) => i % 2 === r) : [...all.slice(r * Math.ceil(n / 2)), ...all.slice(0, r * Math.ceil(n / 2))];
+    return Array.from({ length: Math.ceil(6 / mine.length) }, () => mine).flat().map((x, k) => ({ ...x, k }));
+  };
+  return (
+    <div className="pt-panel" role="tabpanel" id={`people-panel-${g.id}`} aria-labelledby={`people-tab-${g.id}`}>
+      {meet ? (
+        <div className="fc-meet-web">
+          <HScrollerTrack trackRef={tickerRef} label={g.eyebrow}>
+            {[0, 1, 2].map((c) =>
+              g.people.map((p, i) => (
+                <li key={`${c}-${p.name}`} data-copy={c > 0 || undefined} aria-hidden={c > 0 || undefined} inert={c > 0 || undefined}>
+                  {card(p, i, c === 0 && i < 4)}
+                </li>
+              )),
+            )}
+          </HScrollerTrack>
+          <ScrollDots scroller={tickerRef} count={g.people.length} itemName={g.itemName} onSelect={goTo} />
+        </div>
+      ) : null}
+      <div
+        className="fc-drift"
+        hidden={meet}
+        data-kind={kind}
+        // mentors: one row of bigger cards on desktop (2026-10-13, the team's ask)
+        data-single={g.id === 'mentors' || undefined}
+      >
+      {[0, 1].map((r) => {
+        const mine = rowsOf(r);
+        return (
+          <div key={r} className="fc-drift-row" data-dir={r ? 'back' : undefined} style={{ '--n': mine.length } as React.CSSProperties}>
+            {[0, 1].map((copy) => (
+              <ul key={copy} className="fc-drift-set" aria-label={copy ? undefined : g.eyebrow} aria-hidden={copy ? true : undefined}>
+                {mine.map(({ p, i, k }) => (
+                  <li key={k}>
+                    {card(p, i, !copy && k < 3)}
+                  </li>
+                ))}
+              </ul>
+            ))}
+          </div>
+        );
+      })}
+      </div>
+      {/* m-web (2026-10-13, the team's ask): no drifting; two rows, card over card, swiped a column
+          at a time, with the dots under them */}
+      <ul ref={gridRef} className="fc-grid" data-kind={kind} aria-label={g.eyebrow}>
+        {g.people.map((p, i) => (
+          <li key={p.name}>
+            {card(p, i, i < 2)}
+          </li>
+        ))}
+      </ul>
+      <div className="fc-grid-dots">
+        <ScrollDots scroller={gridRef} count={Math.ceil(g.people.length / 2)} itemName={g.itemName} fill="solid" autoplay={false} />
+      </div>
+    </div>
+  );
+}
 
 /** One group's row: mounted afresh for each tab, so the carousel starts from its first card. */
 function Row({ group: g, stacked = false, compact = false }: { group: Group; stacked?: boolean; compact?: boolean }) {
@@ -133,8 +227,11 @@ export function PeopleTabsSection({
   label = 'The people at SSB',
   stacked = false,
   compact = false,
+  drift = false,
 }: {
   groups?: PeopleGroupId[];
+  /** Faculty cards in two drifting rows, as Alumni's (2026-10-13). */
+  drift?: boolean;
   /** The cards with the photo on top and the text under it (2026-10-12). */
   stacked?: boolean;
   /** Smaller cards, unchanged otherwise: four in view on desktop, two and a peek on a phone (2026-10-12, mentors). */
@@ -229,7 +326,11 @@ export function PeopleTabsSection({
         </div>
       </Container>
       {/* keyed: each tab mounts its own row, so its carousel starts from the first card */}
-      <Row key={GROUPS[active].id} group={GROUPS[active]} stacked={stacked} compact={compact} />
+      {drift ? (
+        <FacultyDrift key={GROUPS[active].id} group={GROUPS[active]} />
+      ) : (
+        <Row key={GROUPS[active].id} group={GROUPS[active]} stacked={stacked} compact={compact} />
+      )}
     </Section>
   );
 }
