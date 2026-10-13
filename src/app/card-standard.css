@@ -1,0 +1,58 @@
+/* ── One card standard down the page (2026-10-13, the team's asks: the same padding in every card;
+   every radius the ssx-ui Storybook's) ──────────────────────────────────────────────────────────
+   Padding: ssx-ui's CardBody, `p-5`, 20px, at every width, for every card's text; its CardFooter,
+   16px by 20px. Glass plates laid over a photo inside a card take the same 20px across, 16px down.
+   Radii, ssx-ui's tokens: a card, a panel, a plate or an image `radius-lg` (8px), as Card and
+   AspectRatio; a tag, a badge, a logo tile or a control `radius-md` (4px), as Badge, Button and
+   SegmentedControl; chips and round buttons `radius-full`.
+   Left alone: the alumni and faculty cards, one fixed 480px design scaled to their slot (their
+   insets are part of that drawing), and the term cards' 12px frame round their inset photo.
+   `html body` and !important: these run after each section's own sheet. */
+
+/* card text: 20px all round */
+html body :is(
+  .lp-content,
+  .meet-card__content,
+  .pl-clip-body,
+  .sc-body,
+  .vc-body,
+  .creator-card__head,
+  .adm-card > [data-slot=card-body]
+) {
+  padding: var(--space-5) !important;
+}
+/* the AI terms' text runs on into its tools row, which carries its own foot */
+html body .sj-ai-card .sj-ai-text {
+  padding: var(--space-5) var(--space-5) 0 !important;
+}
+/* card foots: ssx-ui's CardFooter, 16px by 20px */
+html body .pl-clip-foot {
+  padding: var(--space-4) var(--space-5) !important;
+}
+/* glass plates over a card's photo, and tiles inside a card: 16px by 20px */
+html body :is(
+  .imm-feature__body,
+  .creator-card__foot,
+  .sj-ps-copy,
+  .sj-tl-item,
+  .pl-merge-stats,
+  .adm-scholar__bar
+) {
+  padding: var(--space-4) var(--space-5) !important;
+}
+
+/* radii: plates and panels are cards (8px, was 4px) */
+html body :is(
+  .imm-feature__body,
+  .creator-card__foot,
+  .adm-scholar__bar,
+  .adm-process__panel,
+  .cm-glass,
+  .sj-ps-card
+) {
+  border-radius: var(--radius-lg) !important;
+}
+/* tags are badges (4px; the term cards' was 6px) */
+html body .cs-media-tag {
+  border-radius: var(--radius-md) !important;
+}
