@@ -451,3 +451,16 @@
 @media (max-width: 1055px) {
   .cr-main .sj-ps-nav { display: block; }
 }
+
+/* Career prep on phones, the phase tiles taller and airier (2026-10-13, the team's ask): each about
+   120px (was 96), 16px inside, 10px apart; the phase, the name and the line 6px apart; the band 380px
+   (was 304), so the card 76px taller (756) and the figure's bar raised to clear it */
+@media (max-width: 1055px) {
+  .cr-main .sj-ps-view { height: 756px !important; }
+  .cr-main .sj-ps-card .sj-ps-copy, .cr-main .sj-ps-card[data-k] .sj-ps-copy { bottom: 404px; }
+  .cr-main .sj-career-split > .sj-career-card { top: calc(756px - 12px - 380px); height: 380px; }
+  .cr-main .sj-career-card .sj-tl { gap: 10px; }
+  .cr-main .sj-career-card .sj-tl-item { padding: 16px 18px; }
+  .cr-main .sj-career-card .sj-tl-body { gap: 6px; }
+  .cr-main .sj-career-card .sj-tl-items { line-height: 1.5; }
+}
