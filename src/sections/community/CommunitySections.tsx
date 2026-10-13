@@ -278,6 +278,8 @@ export function CampusLifeSection() {
         }
         itemName="club"
         cardWidth="38rem"
+        // no arrows or dots (2026-10-13, the team's ask): the two clubs fit side by side on desktop
+        nav={false}
       >
         {c.clubs.map((club) => (
           <ClubCard key={club.name} club={club} />

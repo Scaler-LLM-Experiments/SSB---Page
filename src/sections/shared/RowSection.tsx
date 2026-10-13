@@ -25,6 +25,7 @@ export function RowSection({
   cardWidth = '20rem',
   after,
   heading,
+  nav = true,
   children,
 }: {
   id: string;
@@ -36,6 +37,8 @@ export function RowSection({
   cardWidth?: string;
   after?: React.ReactNode;
   heading?: React.ReactNode;
+  /** The arrows and dots under the row (off: a row that fits, or one swiped by hand). */
+  nav?: boolean;
   children: React.ReactNode;
 }) {
   const sectionRef = React.useRef<HTMLElement>(null);
@@ -81,7 +84,7 @@ export function RowSection({
           <li key={i}>{item}</li>
         ))}
       </ul>
-      <ScrollDots scroller={rowRef} count={items.length} itemName={itemName} fill="solid" />
+      {nav ? <ScrollDots scroller={rowRef} count={items.length} itemName={itemName} fill="solid" /> : null}
 
       {after}
     </Section>
