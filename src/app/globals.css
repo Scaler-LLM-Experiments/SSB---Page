@@ -104,3 +104,9 @@ main div:has(> :is(h2, h3).type-display + p.type-body-lg) { row-gap: var(--space
 .pv-home :is(.sj-ai-head, .sj-learn-head, .sj-career-header) { row-gap: var(--space-2) !important; }
 .pv-home :is(.sj-ai-head, .sj-learn-head, .sj-career-header) > :is(h2, h3) + p {
   font-size: var(--type-body-size) !important; line-height: 1.6 !important; max-width: 40rem; color: var(--content-secondary); text-wrap: pretty; }
+
+/* One gap between the cards of every sideways row (2026-10-13, the team's ask): 16px, the mentors
+   row's, at every width (some rows ran 12px, the shorts 8px on a phone) */
+html body :is(.rs-row, .h-scroller, .fs-row, .sj-ai-track, .in-reels-row, .fc-grid, .pt-stack-row, .creator-row, .fc-drift-set, .alumni-drift-set) {
+  column-gap: var(--space-4) !important;
+}
