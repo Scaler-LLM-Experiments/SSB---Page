@@ -259,3 +259,39 @@
     width: var(--cn-active);
   }
 }
+
+/* ---- Moving from one dot to the next (2026-10-13, the team's ask: the steps must not overlap):
+   the old track closes first, then the new one opens, then its fill shows. In turn, not at once. ---- */
+.cn-dot:not([aria-current='true'])::before {
+  transition:
+    width 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.2s linear;
+}
+.cn-dot[aria-current='true']::before {
+  transition:
+    width 0.35s cubic-bezier(0.4, 0, 0.2, 1) 0.28s,
+    background-color 0.25s linear 0.28s;
+}
+.cn-fill {
+  animation: cn-fill-in 0.2s ease-out 0.55s backwards;
+}
+.cn-fill[data-timed] {
+  animation:
+    cn-fill-in 0.2s ease-out 0.55s backwards,
+    cn-fill var(--cn-interval, 6000ms) linear 0.55s forwards;
+}
+@keyframes cn-fill-in {
+  from {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cn-dot::before,
+  .cn-dot[aria-current='true']::before {
+    transition: none;
+  }
+  .cn-fill,
+  .cn-fill[data-timed] {
+    animation: none;
+  }
+}
