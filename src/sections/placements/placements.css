@@ -1191,3 +1191,9 @@ html[data-placements='v3'] .pl-recruiters { display: none; }
   .pl-merge-main, .pl-merge-main:is(*) { justify-content: space-between; padding-block: 0; }
   .pl-merge-main > .pl-merge-stats { margin-top: 0; }
 }
+/* (2026-10-13, the team's ask) no blur on the photo, only the overlay: the two blurred copies of
+   the photo are hidden, and the stats plate is a tint with no frost of its own; the dark gradient
+   (::after) is the one thing over the photo */
+.pl-merge-bg img.pl-merge-blur, .pl-merge-bg img.pl-merge-blur:is(*) { display: none; }
+.pl-merge-bg img:not(.pl-merge-blur) { filter: none !important; transform: none !important; }
+html body .pl-merge-stats { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
