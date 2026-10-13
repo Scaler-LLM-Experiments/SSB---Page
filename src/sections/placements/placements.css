@@ -1174,3 +1174,11 @@ html[data-placements='v3'] .pl-recruiters { display: none; }
 @media (width < 760px) { .pl-merge-stats, .pl-merge-stats:is(*) { padding: var(--space-3); } }
 /* the article's opening lines: three at most (2026-10-13) */
 .pl-clip-story > :last-child { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden; }
+/* phones (2026-10-13, the team's ask): the plate roomier and taller: 20px inside, 28px between the
+   two rows, 16px between the columns, 8px between each figure and its label; the label broken where
+   it reads ("Top-quartile / average CTC", "Average hike / vs. pre-SSB") */
+@media (width < 760px) {
+  .pl-merge-stats, .pl-merge-stats:is(*) { padding: var(--space-5); row-gap: var(--space-7, 1.75rem); column-gap: var(--space-4); }
+  .pl-merge-stats > .pl-merge-stat, .pl-merge-stats > .pl-merge-stat:is(*) { row-gap: var(--space-2); }
+  .pl-merge-tail { display: block; }
+}
