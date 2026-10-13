@@ -436,3 +436,18 @@
   min-width: 0;
   margin-top: 0;
 }
+
+/* (2026-10-13) the tags at the right: "18 months" on its own line, the other two under it */
+.fold-panel[data-schools-only] .fold-tags {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: start;
+}
+.fold-panel[data-schools-only] .fold-tags li:first-child {
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+@media (min-width: 1056px) {
+  .fold-panel[data-schools-only] .fold-tags { justify-content: end; }
+  .fold-panel[data-schools-only] .fold-tags li:first-child { justify-self: end; }
+}

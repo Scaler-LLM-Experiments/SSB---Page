@@ -1139,3 +1139,11 @@ html[data-placements='v3'] .pl-recruiters { display: none; }
 .pl-merge-bg img.pl-merge-blur-soft { filter: blur(3px); }
 .pl-merge-bg img.pl-merge-blur-deep { filter: blur(8px); }
 .pl-merge-stats, .pl-merge-stats:is(*) { -webkit-backdrop-filter: blur(6px) saturate(1.2); backdrop-filter: blur(6px) saturate(1.2); }
+
+/* 2026-10-13: the report's button at the article card's foot, full width, on the footer's rule;
+   the headline is the card's link (underlined on hover) */
+.pl-clip-foot { padding: var(--space-3) var(--space-5) var(--space-4); }
+.pl-clip-cta, .pl-clip-cta:is(*) { width: 100%; }
+.pl-clip-headline a { color: inherit; text-decoration: none; }
+.pl-clip-headline a:hover { text-decoration: underline; text-underline-offset: 0.12em; text-decoration-thickness: 1px; }
+.pl-clip-headline a:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; border-radius: 2px; }

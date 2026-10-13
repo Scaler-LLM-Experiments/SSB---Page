@@ -4,8 +4,9 @@ import type { ReactElement } from 'react';
 import {
   AspectRatio,
   Button,
+  Card,
   CardBody,
-  ClickableCard,
+  CardFooter,
   Container,
   Divider,
   Heading,
@@ -205,19 +206,24 @@ export async function PlacementsShowcase({
                     </React.Fragment>
                   ))}
                 </dl>
-                <Button asChild size="md" className="pl-merge-cta">
-                  <a href={reportHref}>
-                    {reportLabel}
-                    <CtaIcon icon="download" />
-                  </a>
-                </Button>
+                {/* (the report's button, moved into the article card's footer 2026-10-13: kept, off) */}
+                {SPLIT_C ? (
+                  <Button asChild size="md" className="pl-merge-cta">
+                    <a href={reportHref}>
+                      {reportLabel}
+                      <CtaIcon icon="download" />
+                    </a>
+                  </Button>
+                ) : null}
               </div>
               {/* PLACEHOLDER press clipping (2026-10-12), built only from ssx-ui's own parts: a
                   ClickableCard; the masthead a Heading over a Divider; the section (eyebrow) and the
                   date (Timestamp); the headline a Heading 1; the byline Text; a Divider; then the photo
                   (AspectRatio) beside the opening lines (Text). Every word, the photo and the link stand
                   in until the real coverage is chosen (then the masthead is the publication's logo). */}
-              <ClickableCard href="#press" aria-label="Read the article (placeholder)" className="pl-clip">
+              {/* (2026-10-13) a Card with the report's button in its CardFooter, not a ClickableCard: the
+                  system allows nothing interactive inside one, so the headline is the article's link */}
+              <Card as="div" className="pl-clip">
                 <CardBody className="pl-clip-body">
                   {/* (the masthead, "The Publication" with ↗ over a Divider, hidden 2026-10-12: put it back,
                       as the publication's logo, once the real coverage is in) */}
@@ -228,7 +234,7 @@ export async function PlacementsShowcase({
                     <Timestamp date="2026-10-12T00:00:00+05:30" format="date" />
                   </div>
                   <Heading as="h3" size="2" className="pl-clip-headline">
-                    Headline of the article on SSB’s placements goes here
+                    <a href="#press">Headline of the article on SSB’s placements goes here</a>
                   </Heading>
                   <Text size="xs" tone="secondary">
                     By Staff Reporter · 4 min read
@@ -245,7 +251,15 @@ export async function PlacementsShowcase({
                     </Text>
                   </div>
                 </CardBody>
-              </ClickableCard>
+                <CardFooter className="pl-clip-foot">
+                  <Button asChild size="md" className="pl-clip-cta">
+                    <a href={reportHref}>
+                      {reportLabel}
+                      <CtaIcon icon="download" />
+                    </a>
+                  </Button>
+                </CardFooter>
+              </Card>
             </article>
             {/* (the figures' card and the report strip, before they were merged, 2026-10-12: kept, off) */}
             {SPLIT_C ? (
