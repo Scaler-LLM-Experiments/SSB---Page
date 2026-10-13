@@ -14,8 +14,10 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  /* the page's content column, edge to edge: the system's container (80rem) less its gutters */
-  width: min(calc(var(--size-container-max, 80rem) - 2 * var(--space-gutter, 1.5rem)), calc(100vw - 2 * var(--space-gutter, 1.5rem)));
+  /* as wide as its sections and the call-back need (the team, 2026-10-13: the content column's full
+     width was too much), never wider than that column: the system's container less its gutters */
+  width: fit-content;
+  max-width: min(calc(var(--size-container-max, 80rem) - 2 * var(--space-gutter, 1.5rem)), calc(100vw - 2 * var(--space-gutter, 1.5rem)));
   margin-inline: auto;
   transform: translateY(calc(100% + var(--space-6)));
   opacity: 0;
@@ -61,7 +63,8 @@
   text-align: center;
   padding: 8px 14px;
   border-radius: var(--radius-md);
-  font-size: var(--type-body-sm-size, 0.875rem);
+  /* the call-back Button's size (the system's md: text-base, 16px; the team's ask) */
+  font-size: var(--type-body-size, 1rem);
   line-height: 1.4;
   font-weight: var(--font-weight-medium, 500);
   white-space: nowrap;
@@ -198,11 +201,137 @@
 @media (prefers-reduced-motion: reduce) {
   .bn-apply .bn-apply-btn::after { animation: none; display: none; }
 }
-/* shorter (2026-10-13, the team's ask): the bar as long as its links, not the content column;
-   the bar and the call-back centred together */
-@media (min-width: 672px) {
-  .bn { width: fit-content; max-width: calc(100vw - 2 * var(--space-gutter, 1.5rem)); }
-  .bn-bar { flex: 0 1 auto; }
-  .bn-list { justify-content: flex-start; }
-  .bn-list > li { flex: none; }
+
+/* ── The entrance, after the carousel controls' (carousel-nav.css; the team's ask): each time the
+   bar comes up, one square the bar's height springs up from below (overshoot, dip, settle), then
+   it splits: the bar stretches open from that square at its centre, the call-back slides out from
+   behind it to its place at the right, and the sections fade in last. On a phone the apply bar
+   opens the same way out of a square at its centre, its contents fading in, then the call button
+   pops up. Animations on [data-shown], so each showing plays it; leaving is the plain slide and
+   fade above. Transforms, opacity and clips only. --bn-shift and --bn-h are measured
+   (BottomNav). ── */
+.bn,
+.bn-apply {
+  --bn-bounce: cubic-bezier(0.22, 1, 0.36, 1);
+  --bn-split: cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+.bn-bar {
+  position: relative;
+  z-index: 1; /* the square hides the call-back until it slides out */
+}
+/* `backwards`, not `both`: each animation holds its first frame through its delay, then lets go
+   when it ends. Held at its last frame, the wrapper's opacity animation made it a backdrop root
+   and the bar's frosted glass blurred nothing (the page showed through sharp); the bar's clip is
+   likewise gone once it has opened. */
+@media (prefers-reduced-motion: no-preference) {
+  /* 1. the square rises */
+  .bn[data-shown] {
+    animation: bn-rise 0.75s var(--bn-bounce) backwards;
+  }
+  /* 2. it splits: the bar opens, the call-back slides out; the sections last */
+  .bn[data-shown] .bn-bar {
+    animation: bn-open 0.65s var(--bn-split) 0.5s backwards;
+  }
+  .bn[data-shown] .bn-cta {
+    animation: bn-out 0.65s var(--bn-split) 0.5s backwards;
+  }
+  .bn[data-shown] .bn-list {
+    animation: bn-fade 0.3s ease-out 0.85s backwards;
+  }
+}
+@keyframes bn-rise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 72px, 0) scale(0.6);
+  }
+  45% {
+    opacity: 1;
+    transform: translate3d(0, -12px, 0) scale(1.08);
+  }
+  72% {
+    transform: translate3d(0, 4px, 0) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes bn-open {
+  from {
+    clip-path: inset(0 calc(50% - var(--bn-h, 46px) / 2) round var(--radius-lg));
+  }
+  to {
+    clip-path: inset(0 0 round var(--radius-lg));
+  }
+}
+@keyframes bn-out {
+  from {
+    opacity: 0;
+    transform: translate3d(calc(var(--bn-shift, 0px) * -1), 0, 0);
+  }
+  20% {
+    opacity: 1;
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes bn-fade {
+  from {
+    opacity: 0;
+  }
+}
+/* phones: the apply bar out of a square its height at its centre, then its contents, then the
+   call button */
+@media (max-width: 671px) and (prefers-reduced-motion: no-preference) {
+  .bn-apply[data-shown] {
+    animation:
+      bn-sheet-rise 0.6s var(--bn-bounce) backwards,
+      bn-sheet-open 0.65s var(--bn-split) 0.35s backwards;
+  }
+  .bn-apply[data-shown] > * {
+    animation: bn-fade 0.3s ease-out 0.7s backwards;
+  }
+  .bn-call[data-shown] {
+    animation: bn-pop 0.5s var(--bn-split) 0.85s backwards;
+  }
+}
+@keyframes bn-sheet-rise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+  55% {
+    opacity: 1;
+    transform: translate3d(0, -8px, 0);
+  }
+  80% {
+    transform: translate3d(0, 2px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes bn-sheet-open {
+  from {
+    clip-path: inset(0 calc(50% - var(--bn-apply-h, 110px) / 2) round var(--radius-lg) var(--radius-lg) 0 0);
+  }
+  to {
+    clip-path: inset(0 0 round var(--radius-lg) var(--radius-lg) 0 0);
+  }
+}
+@keyframes bn-pop {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0) scale(0.6);
+  }
+  60% {
+    opacity: 1;
+    transform: translate3d(0, -4px, 0) scale(1.06);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
 }
