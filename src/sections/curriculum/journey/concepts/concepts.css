@@ -1168,3 +1168,11 @@
   .cs-ss-foot { flex-wrap: wrap; }
   .cs-ss-btn { flex: 1 1 100%; width: 100%; margin-left: 0; justify-content: center; }
 }
+/* m-web (2026-10-13, the team): the stacked term cards short enough that "View more" shows while a
+   card is pinned (it sat under the next card): a lower picture band, 100px (240px before) and tighter rhythm */
+@media (max-width: 767px) {
+  .cs-ss { grid-template-rows: 100px auto; }
+  .cs-mcard .cs-sheet-head { padding-top: 16px !important; }
+  .cs-ss-short { gap: 16px; }
+  .cs-ss-foot { padding-top: 16px; row-gap: 12px; }
+}
