@@ -133,3 +133,4 @@
   .in-reel-sound svg { width: 13px; height: 13px; }
   .in-reels-nav { margin-top: var(--space-4); }
 }
+.in-reels-nav[hidden] { display: none; }

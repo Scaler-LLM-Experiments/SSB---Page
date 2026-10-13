@@ -2165,3 +2165,4 @@ button.sj-mcard:hover .sj-mcard-media img, a.sj-mcard:hover .sj-mcard-media img 
 .sj-career-header .sj-career-head { margin: 0; }
 @media (max-width: 767px) { .sj-career-header { margin-bottom: 24px; } .sj-career-header .sj-career-head { font-size: 24px; line-height: 1.25; } }
 @media (min-width: 960px) { .sj-career-card { padding-top: 6px; } }
+.sj-ai-nav[hidden] { display: none; }

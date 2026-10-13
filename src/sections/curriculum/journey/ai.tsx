@@ -17,6 +17,7 @@ import type { AiIcon, AiJourney } from './data';
 import { c, type JourneyConfig } from './config';
 import { CardStack, type StackItem } from './concepts/stack';
 import { TOOL_LOGOS } from './tool-logos';
+import { ScrollDots } from '@/sections/shared/ScrollDots';
 
 const ICON: Record<AiIcon, React.ComponentType<{ weight?: 'bold' | 'regular'; 'aria-hidden'?: boolean }>> = {
   wand: MagicWand,
@@ -173,7 +174,8 @@ export function AiJourneyBlock({ ai, cfg, width }: { ai: AiJourney; cfg: Journey
     <section className="sj-ai" aria-labelledby={id} {...c(cfg, 'ai')}>
       <div className="sj-ai-headrow">
         {head}
-        <div className="sj-ai-nav">
+        {/* (the outlined arrows, replaced 2026-10-13 by the page's dots-and-arrows control under the row: kept, off) */}
+        <div className="sj-ai-nav" hidden>
           <IconButton variant="secondary" size="md" aria-label="Previous term" disabled={!edge.back} onClick={() => step(-1)}>
             <CaretLeft weight="bold" />
           </IconButton>
@@ -212,6 +214,8 @@ export function AiJourneyBlock({ ai, cfg, width }: { ai: AiJourney; cfg: Journey
           );
         })}
       </ol>
+      {/* the page's carousel controls (2026-10-13, the team's ask: the same everywhere) */}
+      <ScrollDots scroller={track} count={ai.terms.length} itemName="term" fill="solid" />
     </section>
   );
 }

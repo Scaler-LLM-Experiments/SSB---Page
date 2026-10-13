@@ -3,6 +3,8 @@
 import * as React from 'react';
 import { CaretLeft, CaretRight, SpeakerHigh, SpeakerSlash } from '@phosphor-icons/react';
 
+import { ScrollDots } from '@/sections/shared/ScrollDots';
+
 export type Reel = {
   name: string;
   line: string;
@@ -94,7 +96,10 @@ export function StoryReels({ reels, label }: { reels: Reel[]; label: string }) {
           </li>
         ))}
       </ul>
-      <div className="in-reels-nav">
+      {/* the page's carousel controls (2026-10-13, the team's ask), a screenful at a time; no autoplay
+          (the shorts are playing). The plain arrows before them kept, off. */}
+      <ScrollDots scroller={rowRef} count={reels.length} itemName="story" fill="solid" autoplay={false} />
+      <div className="in-reels-nav" hidden>
         <button type="button" onClick={() => go(-1)} disabled={edges.start} aria-label="Previous stories">
           <CaretLeft weight="bold" />
         </button>
