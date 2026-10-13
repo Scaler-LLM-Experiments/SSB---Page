@@ -152,3 +152,10 @@
   font-size: 0.9375rem;
   line-height: 1.2;
 }
+
+/* (2026-10-13, the team's ask) the tags, the "Built by alumni from" line and the schools share one
+   left edge: the panel still sits at the right, its contents aligned to its left */
+@media (min-width: 1056px) {
+  .hero-v2 .fold-panel[data-schools-only]:has(.fold-tags) { align-items: flex-start; }
+  .hero-v2 .fold-panel[data-schools-only]:has(.fold-tags) .fold-panel-alumni { justify-content: start; }
+}
