@@ -287,12 +287,29 @@ export function PeopleTabsSection({
             <Heading as="p" size="eyebrow" className="text-content-brand">
               {GROUPS[active].eyebrow}
             </Heading>
-            <Heading as="h2" size="display" id={titleId}>
-              {GROUPS[active].title}
-            </Heading>
-            <Text size="lg" tone="secondary">
-              {GROUPS[active].sub}
-            </Text>
+            {/* the titles stacked the same way (the active one the h2), so a longer title doesn't jump it */}
+            <div className="pt-subs">
+              {GROUPS.map((g, i) =>
+                i === active ? (
+                  <Heading key={g.id} as="h2" size="display" id={titleId} data-on>
+                    {g.title}
+                  </Heading>
+                ) : (
+                  <Heading key={g.id} as="p" size="display" aria-hidden>
+                    {g.title}
+                  </Heading>
+                ),
+              )}
+            </div>
+            {/* every tab's sub-line laid in one cell, only the active one shown, so the cell is as tall
+                as the longest at any width and the header doesn't jump between tabs (2026-10-13) */}
+            <div className="pt-subs">
+              {GROUPS.map((g, i) => (
+                <Text key={g.id} size="lg" tone="secondary" aria-hidden={i !== active || undefined} data-on={i === active || undefined}>
+                  {g.sub}
+                </Text>
+              ))}
+            </div>
           </div>
           {/* the tabs: at the header's right; left-aligned above the cards on phones */}
           {/* one group (faculty and mentors as sections of their own, 2026-10-12): no tabs */}

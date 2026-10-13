@@ -25,3 +25,8 @@
 .pt-tabs .pt-tab[aria-selected='true'] { color: var(--content-on-brand-solid); }
 .pt-tabs .pt-pill { border-radius: var(--radius-md); background: var(--surface-brand-solid); }
 .pt-tabs[hidden] { display: none; }
+
+/* the tabs' sub-lines stacked in one cell: the tallest sets the height, only the active one shows */
+.pt-subs { display: grid; }
+.pt-subs > * { grid-area: 1 / 1; visibility: hidden; }
+.pt-subs > [data-on] { visibility: visible; }
