@@ -1150,3 +1150,13 @@ html[data-placements='v3'] .pl-recruiters { display: none; }
 /* a little more room between each figure and its label (2026-10-13): 4px to 10px (8px on a phone) */
 .pl-merge-stats > .pl-merge-stat, .pl-merge-stats > .pl-merge-stat:is(*) { row-gap: 10px; }
 @media (width < 760px) { .pl-merge-stats > .pl-merge-stat, .pl-merge-stats > .pl-merge-stat:is(*) { row-gap: 8px; } }
+/* each label on one line (2026-10-13, the team's ask), from 1280px where the column has the room:
+   the tail no longer breaks, labels 13px, the gaps either side of the dividers a step tighter, the
+   article card 22rem and the space between the two columns 40px. Below 1280 the labels keep two lines. */
+@media (width >= 1280px) {
+  .pl-merge-tail { display: inline; }
+  .pl-merge-stats dt { font-size: 0.8125rem; }
+  .pl-merge-stats, .pl-merge-stats:is(*) { gap: clamp(0.75rem, 1.1vw, 1rem); }
+  .pl-merge-main > .pl-merge-stats { padding-inline: var(--space-6); }
+  .pl-merge, .pl-merge:is(*) { grid-template-columns: minmax(0, 1fr) minmax(0, 22rem); column-gap: var(--space-10, 2.5rem); }
+}

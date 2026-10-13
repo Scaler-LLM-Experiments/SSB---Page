@@ -451,3 +451,12 @@
   .fold-panel[data-schools-only] .fold-tags { justify-content: end; }
   .fold-panel[data-schools-only] .fold-tags li:first-child { justify-self: end; }
 }
+/* (2026-10-13, the team's ask) "from" at the logos' size, not the title's: a line of text beside them */
+.fold-leaders-from, .fold-leaders-from:is(*) {
+  font-size: 1.25rem;
+  line-height: 1;
+  font-weight: var(--font-weight-medium, 500);
+  letter-spacing: 0;
+}
+.fold-leaders-row { gap: var(--space-3); }
+@media (max-width: 671px) { .fold-leaders-from, .fold-leaders-from:is(*) { font-size: 1.0625rem; } }
