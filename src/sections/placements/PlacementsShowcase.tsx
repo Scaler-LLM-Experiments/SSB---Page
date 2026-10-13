@@ -247,7 +247,7 @@ export async function PlacementsShowcase({
                       <img src="/media/campus-students.webp" alt="" loading="lazy" decoding="async" />
                     </AspectRatio>
                     <Text size="sm" tone="secondary">
-                      Its opening line goes here, in a sentence.
+                      The article’s opening lines go here, on the founding cohort’s placements.
                     </Text>
                   </div>
                 </CardBody>

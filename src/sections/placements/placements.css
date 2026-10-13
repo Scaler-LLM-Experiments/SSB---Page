@@ -1172,3 +1172,5 @@ html[data-placements='v3'] .pl-recruiters { display: none; }
   .pl-merge-main > .pl-merge-stats, .pl-merge-main > .pl-merge-stats:is(*) { padding: var(--space-5) var(--space-6); }
 }
 @media (width < 760px) { .pl-merge-stats, .pl-merge-stats:is(*) { padding: var(--space-3); } }
+/* the article's opening lines: three at most (2026-10-13) */
+.pl-clip-story > :last-child { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden; }
