@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 
+import { brandTile } from '@/content/brand-tiles';
 import type { ShowcasePerson } from '@/sections/faculty/PeopleShowcase';
 import './faculty-card.css';
 
@@ -54,9 +55,10 @@ export function FacultyCard({
         <p className="fc-card__by">by {p.name}</p>
         <hr className="fc-card__rule" />
         <p className="fc-card__credentials">{credentials}</p>
-        {p.logo ? (
-          <span className="fc-card__logo">
-            <img src={p.logo.src} alt={p.logo.name} loading="lazy" />
+        {p.logo?.src ? (
+          // on its brand's tile (2026-10-13): the brand's colour, the mark white or in its own colours
+          <span className="fc-card__logo" style={{ background: brandTile(p.logo.src!).bg }}>
+            <img src={brandTile(p.logo.src!).src} alt={p.logo.name} loading="lazy" data-white={brandTile(p.logo.src!).white || undefined} />
           </span>
         ) : null}
       </div>

@@ -1,3 +1,4 @@
+import { brandTile } from '@/content/brand-tiles';
 import './story-card.css';
 
 /** `scale`: a compact mark (a stacked badge) drawn larger than the wordmarks' height. */
@@ -69,31 +70,27 @@ export function MeetCard({
         <p className="meet-card__role" data-part="description">
           {role}
         </p>
-        {logos && logos.length > 1 ? (
-          // side by side, each on its brand's colour (2026-10-13; they flipped in one tile before)
-          <div className="meet-card__pair" data-part="logos" role="img" aria-label={logos.map((l) => l.name).join(', ')}>
-            {logos.slice(0, 2).map((l) => (
-              <span key={l.name} className="meet-card__flip-face" style={{ background: l.bg }}>
-                {l.src ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={l.src} alt="" loading="lazy" data-native={l.native || undefined} />
-                ) : (
-                  <span className="meet-card__flip-word">{l.name}</span>
-                )}
-              </span>
-            ))}
-          </div>
-        ) : logo?.src ? (
-          <div className="meet-card__logo" data-part="logos">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={logo.src}
-              alt={logo.name}
-              loading="lazy"
-              style={logo.scale ? ({ height: `calc(var(--meet-logo-h) * ${logo.scale})` } as React.CSSProperties) : undefined}
-            />
+        {/* every logo on its brand's tile (2026-10-13): two side by side, or one */}
+        {(logos && logos.length > 1 ? logos : logo?.src ? [logo] : null) ? (
+          <div className="meet-card__pair" data-part="logos" data-count={logos && logos.length > 1 ? 2 : 1} role="img" aria-label={(logos && logos.length > 1 ? logos : [logo!]).map((l) => l.name).join(', ')}>
+            {(logos && logos.length > 1 ? logos.slice(0, 2) : [logo!]).map((l) => {
+              const t = l.src ? brandTile(l.src) : null;
+              return (
+                <span key={l.name} className="meet-card__flip-face" style={{ background: t?.bg ?? l.bg }}>
+                  {t ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={t.src} alt="" loading="lazy" data-native={t.white ? undefined : ''} />
+                  ) : (
+                    <span className="meet-card__flip-word">{l.name}</span>
+                  )}
+                </span>
+              );
+            })}
           </div>
         ) : null}
+        {/* (the earlier markup, kept, off: the pair from `logos` on each `bg`; the single logo drawn
+            white with no tile, `<div className="meet-card__logo"><img src={logo.src} … /></div>`,
+            its height `--meet-logo-h` times `logo.scale`) */}
         {stacked && bio ? (
           <p className="meet-card__bio" data-part="description">
             {bio}

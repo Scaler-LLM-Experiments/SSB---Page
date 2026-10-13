@@ -295,3 +295,7 @@ li:nth-child(5n + 5) .meet-card__flip-inner { animation-delay: -5.6s; }
   .meet-card__pair .meet-card__flip-face { height: 1.75rem; }
   .meet-card__pair .meet-card__flip-face img { inset: 6px 9px; width: calc(100% - 18px); height: calc(100% - 12px); }
 }
+
+/* one logo: one tile, half the pair's width */
+.meet-card__pair[data-count='1'] { max-width: 7rem; }
+@media (width < 672px) { .meet-card__pair[data-count='1'] { max-width: 50%; } }

@@ -223,3 +223,6 @@
 @media (width < 672px) {
   .fc-grid[data-kind='meet'] .meet-card__logo { width: 7rem; height: 2.5rem; margin-top: 6px; padding: 6px 10px; }
 }
+
+/* the brand's tile (2026-10-13): a one-colour mark drawn white on its brand's colour */
+.fc-card__logo img[data-white] { filter: brightness(0) invert(1); }
