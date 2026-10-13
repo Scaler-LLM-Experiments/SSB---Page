@@ -1124,3 +1124,11 @@ html[data-placements='v3'] .pl-recruiters { display: none; }
 @media (width >= 760px) { .pl-merge-stats, .pl-merge-stats:is(*) { gap: clamp(1rem, 2.4vw, 2.25rem); } }
 @media (width >= 1056px) { .pl-merge-main > .pl-merge-stats { width: auto; padding: var(--space-6) var(--space-8); } }
 @media (width < 760px) { .pl-merge-stats, .pl-merge-stats:is(*) { padding: var(--space-4); } }
+/* the plate quieter (2026-10-13), as the testimonial's profile card: no shadows (none under it, no
+   rim, none on the type), a little more white tint, a hairline round it */
+.pl-merge-stats, .pl-merge-stats:is(*) {
+  border: var(--border-width-hair) solid color-mix(in oklab, var(--on-image-ink) 18%, transparent);
+  background: color-mix(in oklab, var(--on-image-ink) 14%, transparent);
+  box-shadow: none;
+  text-shadow: none;
+}
