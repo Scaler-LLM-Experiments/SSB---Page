@@ -352,3 +352,8 @@
    cards' 8px */
 .imm-feature, .imm-feature:is(*) { border: 0; background: none; border-radius: var(--radius-lg); overflow: hidden; }
 .imm-feature__media, .imm-feature__media:is(*) { border-radius: var(--radius-lg); }
+
+/* the creator cards' achievements bar, roomier (2026-10-13, the team's ask): 16px from
+   "Achievements" to the figures (was 8), 6px from each figure to its label (was 2) */
+.creator-card__rule, .creator-card__rule:is(*) { margin-bottom: var(--space-4); }
+.creator-card__stats > div, .creator-card__stats > div:is(*) { gap: 6px; }
