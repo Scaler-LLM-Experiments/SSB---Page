@@ -36,7 +36,8 @@ const WHITE: BrandTile = { bg: '#FFFFFF' };
 
 /** The tile for a logo file ('/logos/zomato.svg' → Zomato's red, the mark white). */
 export function brandTile(src: string): BrandTile & { src: string } {
-  const key = src.split('/').pop()!.replace(/\.(svg|png|jpg|webp)$/, '');
+  // a file already made for its ground ('flipkart-white.svg') is still that brand's
+  const key = src.split('/').pop()!.replace(/\.(svg|png|jpg|webp)$/, '').replace(/-white$/, '');
   const t = brandTiles[key] ?? WHITE;
   return { ...t, src: t.src ?? src };
 }

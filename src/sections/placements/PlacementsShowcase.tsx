@@ -234,7 +234,8 @@ export async function PlacementsShowcase({
                     <Timestamp date="2026-10-12T00:00:00+05:30" format="date" />
                   </div>
                   <Heading as="h3" size="2" className="pl-clip-headline">
-                    <a href="#press">Headline of the article on SSB’s placements goes here</a>
+                    {/* PLACEHOLDER, shorter (2026-10-13, the team's ask: less text in the card) */}
+                    <a href="#press">The article’s headline goes here</a>
                   </Heading>
                   <Text size="xs" tone="secondary">
                     By Staff Reporter · 4 min read
@@ -246,8 +247,7 @@ export async function PlacementsShowcase({
                       <img src="/media/campus-students.webp" alt="" loading="lazy" decoding="async" />
                     </AspectRatio>
                     <Text size="sm" tone="secondary">
-                      The opening lines of the article go here: what it reports on the founding cohort’s
-                      placements, in two or three short sentences.
+                      Its opening line goes here, in a sentence.
                     </Text>
                   </div>
                 </CardBody>
