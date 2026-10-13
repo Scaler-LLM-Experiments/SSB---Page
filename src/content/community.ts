@@ -236,30 +236,38 @@ export const mentorsSection = {
       role: 'Co-founder, Zomato',
       image: '/people/deepinder-goyal.webp',
       logo: { name: 'Zomato', src: '/logos/zomato.svg' },
+      logos: [{ name: 'Zomato', src: '/logos/zomato.svg', bg: '#E23744' }, { name: 'Blinkit', src: '/logos/blinkit.svg', bg: '#0C831F' }],
     },
     {
       name: 'Binny Bansal',
       role: 'Co-founder, Flipkart',
       image: '/people/binny-bansal.webp',
       logo: { name: 'Flipkart', src: '/logos/flipkart.svg' },
+      logos: [{ name: 'Flipkart', src: '/logos/flipkart.svg', bg: '#2874F0' }, { name: 'PhonePe', src: '/logos/phonepe.svg', bg: '#5F259F' }],
     },
     {
       name: 'Vijay Shekhar Sharma',
       role: 'MD, Paytm',
       image: '/people/vijay-shekhar-sharma.webp',
       logo: { name: 'Paytm', src: '/logos/paytm.svg' },
+      // TO CONFIRM (2026-10-13): the second company, a placeholder wordmark until it is chosen
+      logos: [{ name: 'Paytm', src: '/logos/paytm.svg', bg: '#002E6E' }, { name: 'One97', bg: '#00BAF2' }],
     },
     {
       name: 'Kunal Shah',
       role: 'Founder, CRED',
       image: '/people/kunal-shah.webp',
       logo: { name: 'CRED', src: '/logos/cred.svg', scale: 1.7 },
+      // Freecharge (he co-founded it): a wordmark until its logo file is added
+      logos: [{ name: 'CRED', src: '/logos/cred.svg', bg: '#1B1B1B' }, { name: 'Freecharge', bg: '#F15A24' }],
     },
     {
       name: 'Rajan Anandan',
       role: 'MD, Peak XV',
       image: '/people/rajan-anandan.webp',
       logo: { name: 'Peak XV Partners', src: '/logos/peakxv.svg' },
+      // Google: he was its India MD before Peak XV
+      logos: [{ name: 'Peak XV Partners', src: '/logos/peakxv.svg', bg: '#111111' }, { name: 'Google', src: '/logos/google.svg', bg: '#4285F4' }],
     },
   ] as (Omit<ShowcasePerson, 'image'> & { image?: string })[],
 };

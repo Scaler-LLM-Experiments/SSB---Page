@@ -79,7 +79,7 @@ function FacultyDrift({ group: g }: { group: Group }) {
   const meet = g.id === 'mentors';
   const card = (p: ShowcasePerson, i: number, priority: boolean) =>
     meet ? (
-      <MeetCard image={p.image} name={p.name} role={p.role} logo={p.logo} align="start" priority={priority} />
+      <MeetCard image={p.image} name={p.name} role={p.role} logo={p.logo} logos={p.logos} align="start" priority={priority} />
     ) : (
       <FacultyCard person={p} course={PLACEHOLDER_COURSES[i % PLACEHOLDER_COURSES.length]} credentials={p.role} priority={priority} />
     );

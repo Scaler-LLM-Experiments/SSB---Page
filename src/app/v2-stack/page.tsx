@@ -55,7 +55,9 @@ export default function V2StackPage() {
         {/* the framed film (scroll moment, caption, play button) hidden for now (2026-10-09); drop moment={false} to bring it back */}
         <HeroV2 {...hero} moment={false} />
         {/* 2 placements (main's showcase take) */}
-        <PlacementsShowcase {...placements} />
+        {/* (2026-10-13, the team's ask) the version made, C (the merged card), on every page: no switch
+            between the takes; the others stay in PlacementsShowcase, off */}
+        <PlacementsShowcase {...placements} fixed="v3" />
         {/* why SSB (deck slide 4) */}
         {/* The "He’s right about the old MBA" turn and its Build / Grow cards hidden for now (2026-10-09);
             drop answer={false} to bring them back. The breaker above them stays. */}

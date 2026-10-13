@@ -1,7 +1,14 @@
 import './story-card.css';
 
 /** `scale`: a compact mark (a stacked badge) drawn larger than the wordmarks' height. */
-export type CardLogo = { name: string; src: string; scale?: number };
+export type CardLogo = {
+  name: string;
+  /** The mark's file; without one the name is set as a white wordmark. */
+  src?: string;
+  scale?: number;
+  /** The brand's colour, the tile's ground when the logos flip (the mark drawn white on it). */
+  bg?: string;
+};
 
 /**
  * Faculty card: the photo, with text over its dark base — a small kicker with
@@ -13,6 +20,7 @@ export function MeetCard({
   name,
   role,
   logo,
+  logos,
   kicker = 'Meet',
   align = 'center',
   priority = false,
@@ -23,6 +31,8 @@ export function MeetCard({
   name: string;
   role: string;
   logo?: CardLogo;
+  /** Two or more: one tile that flips between them, each white on its brand colour. */
+  logos?: CardLogo[];
   kicker?: string;
   align?: 'center' | 'start';
   /** Load the photo straight away at high priority (cards visible on first paint). */
@@ -57,7 +67,22 @@ export function MeetCard({
         <p className="meet-card__role" data-part="description">
           {role}
         </p>
-        {logo ? (
+        {logos && logos.length > 1 ? (
+          <div className="meet-card__flip" data-part="logos" role="img" aria-label={logos.map((l) => l.name).join(', ')}>
+            <div className="meet-card__flip-inner">
+              {logos.slice(0, 2).map((l, i) => (
+                <span key={l.name} className="meet-card__flip-face" data-back={i ? '' : undefined} style={{ background: l.bg }}>
+                  {l.src ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={l.src} alt="" loading="lazy" />
+                  ) : (
+                    <span className="meet-card__flip-word">{l.name}</span>
+                  )}
+                </span>
+              ))}
+            </div>
+          </div>
+        ) : logo?.src ? (
           <div className="meet-card__logo" data-part="logos">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img

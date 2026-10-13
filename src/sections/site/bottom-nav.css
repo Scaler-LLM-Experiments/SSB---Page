@@ -198,3 +198,11 @@
 @media (prefers-reduced-motion: reduce) {
   .bn-apply .bn-apply-btn::after { animation: none; display: none; }
 }
+/* shorter (2026-10-13, the team's ask): the bar as long as its links, not the content column;
+   the bar and the call-back centred together */
+@media (min-width: 672px) {
+  .bn { width: fit-content; max-width: calc(100vw - 2 * var(--space-gutter, 1.5rem)); }
+  .bn-bar { flex: 0 1 auto; }
+  .bn-list { justify-content: flex-start; }
+  .bn-list > li { flex: none; }
+}

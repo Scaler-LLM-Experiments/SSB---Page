@@ -447,9 +447,9 @@ function StackSheet({ y, cfg, onMore }: { y: Year; cfg: JourneyConfig; onMore?: 
                   );
                 })()}
               </span>
-              {/* the design system's secondary button (2026-10-09) */}
+              {/* the design system's primary button (2026-10-13, the team's ask; secondary from 2026-10-09) */}
               <Button
-                variant="secondary"
+                variant="primary"
                 size="sm"
                 className="cs-ss-btn"
                 tabIndex={-1}

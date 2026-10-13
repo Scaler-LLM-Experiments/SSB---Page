@@ -15,6 +15,8 @@ export type ShowcasePerson = {
   /** Photo URL (640x800 WebP). */
   image: string;
   logo?: CardLogo;
+  /** Two or more: the logo tile flips between them, each white on its brand colour (mentors, 2026-10-13). */
+  logos?: CardLogo[];
 };
 
 /**
