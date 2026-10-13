@@ -234,3 +234,18 @@
   .fc-drift:not([data-kind='meet']) .fc-drift-row[data-dir='back'] { animation-direction: reverse; }
   .fc-grid:not([data-kind='meet']), .pt-panel:has(.fc-grid:not([data-kind='meet'])) .fc-grid-dots { display: none; }
 }
+
+/* Faculty (2026-10-13, the team's ask): both rows the same way at every width, the second half a card
+   behind the first (the rows run at one speed, so the step holds) */
+.fc-drift .fc-drift-row[data-dir='back'],
+.fc-drift:not([data-kind='meet']) .fc-drift-row[data-dir='back'] { animation-direction: normal !important; }
+.fc-drift-lane + .fc-drift-lane .fc-drift-row { margin-left: calc((var(--card-w) + var(--gap)) / -2); }
+/* phones: the swipe back (useSwipeDrift): each lane a sideways scroller whose scroll does the drifting */
+@media (width < 672px) {
+  .fc-drift-lane { overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .fc-drift-lane::-webkit-scrollbar { display: none; }
+  .fc-drift-row { animation: none !important; }
+  .fc-drift-lane + .fc-drift-lane .fc-drift-row { margin-left: 0; }
+}
+.fc-drift { grid-template-columns: minmax(0, 1fr); }
+.fc-drift-lane { min-width: 0; }

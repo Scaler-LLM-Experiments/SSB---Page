@@ -69,10 +69,12 @@ const PLACEHOLDER_COURSES = [
 
 /**
  * Faculty as two rows of `FacultyCard`s drifting sideways (2026-10-13, the team's ask: the alumni
- * section's layout): opposite ways from the tablet up, the same way on phones (faculty-card.css).
+ * section's layout): both rows the same way, the second half a card behind (faculty-card.css).
  */
 function FacultyDrift({ group: g }: { group: Group }) {
   const gridRef = React.useRef<HTMLUListElement>(null);
+  const driftRef = React.useRef<HTMLDivElement>(null);
+  useSwipeDrift(driftRef);
   // mentors on the web: the looping scroller (not the CSS drift), so the dots can follow and step it
   const { ref: tickerRef, goTo } = useHScroller({ speed: 40 });
   // mentors: their earlier photo card (MeetCard), smaller, in this layout (2026-10-13, the team's ask)
@@ -109,6 +111,7 @@ function FacultyDrift({ group: g }: { group: Group }) {
         </div>
       ) : null}
       <div
+        ref={driftRef}
         className="fc-drift"
         hidden={meet}
         data-kind={kind}
@@ -118,7 +121,9 @@ function FacultyDrift({ group: g }: { group: Group }) {
       {[0, 1].map((r) => {
         const mine = rowsOf(r);
         return (
-          <div key={r} className="fc-drift-row" data-dir={r ? 'back' : undefined} style={{ '--n': mine.length } as React.CSSProperties}>
+          // the lane: on phones a row the reader can swipe, the drift carried on by its scroll (useSwipeDrift)
+          <div key={r} className="fc-drift-lane">
+          <div className="fc-drift-row" data-dir={r ? 'back' : undefined} style={{ '--n': mine.length } as React.CSSProperties}>
             {[0, 1].map((copy) => (
               <ul key={copy} className="fc-drift-set" aria-label={copy ? undefined : g.eyebrow} aria-hidden={copy ? true : undefined}>
                 {mine.map(({ p, i, k }) => (
@@ -128,6 +133,7 @@ function FacultyDrift({ group: g }: { group: Group }) {
                 ))}
               </ul>
             ))}
+          </div>
           </div>
         );
       })}
@@ -146,6 +152,75 @@ function FacultyDrift({ group: g }: { group: Group }) {
       </div>
     </div>
   );
+}
+
+/**
+ * Phones (2026-10-13, the team's ask: the swipe back, the drift kept): each lane scrolls sideways, and
+ * its scroll moves on by itself at the desktop drift's pace (40px a second), wrapping by one set's
+ * width (the row is its cards twice over). A touch hands it to the reader; it carries on a moment
+ * after they let go. The second lane starts half a card along. Reduced motion: swipe only.
+ */
+function useSwipeDrift(root: React.RefObject<HTMLDivElement | null>) {
+  React.useEffect(() => {
+    const el = root.current;
+    if (!el) return;
+    const phone = window.matchMedia('(width < 672px)');
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let raf = 0;
+    let stop = () => {};
+    const start = () => {
+      stop();
+      if (!phone.matches) return;
+      const lanes = [...el.querySelectorAll<HTMLElement>('.fc-drift-lane')].map((lane, i) => {
+        const set = lane.querySelector<HTMLElement>('.fc-drift-set');
+        const card = set?.firstElementChild as HTMLElement | null;
+        const st = { lane, set, pos: i ? (card?.offsetWidth ?? 0) / 2 + 6 : 0, last: -1, held: false, idle: 0 };
+        lane.scrollLeft = st.pos;
+        st.last = lane.scrollLeft;
+        return st;
+      });
+      const offs: Array<() => void> = [];
+      lanes.forEach((st) => {
+        const hold = () => { st.held = true; };
+        const free = () => { st.held = false; st.idle = performance.now() + 1200; };
+        const onScroll = () => {
+          // a scroll we did not make (a swipe, its glide): take the reader's place, wait for it to settle
+          if (Math.abs(st.lane.scrollLeft - st.last) > 1.5) { st.pos = st.lane.scrollLeft; st.last = st.pos; st.idle = performance.now() + 900; }
+        };
+        st.lane.addEventListener('touchstart', hold, { passive: true });
+        st.lane.addEventListener('touchend', free, { passive: true });
+        st.lane.addEventListener('touchcancel', free, { passive: true });
+        st.lane.addEventListener('scroll', onScroll, { passive: true });
+        offs.push(() => {
+          st.lane.removeEventListener('touchstart', hold);
+          st.lane.removeEventListener('touchend', free);
+          st.lane.removeEventListener('touchcancel', free);
+          st.lane.removeEventListener('scroll', onScroll);
+        });
+      });
+      let t0 = performance.now();
+      const tick = (t: number) => {
+        const dt = Math.min(0.05, (t - t0) / 1000);
+        t0 = t;
+        if (!still.matches) {
+          for (const st of lanes) {
+            if (st.held || t < st.idle || !st.set) continue;
+            const w = st.set.offsetWidth;
+            st.pos += 40 * dt;
+            if (st.pos >= w) st.pos -= w;
+            st.lane.scrollLeft = st.pos;
+            st.last = st.lane.scrollLeft;
+          }
+        }
+        raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+      stop = () => { cancelAnimationFrame(raf); offs.forEach((f) => f()); };
+    };
+    start();
+    phone.addEventListener('change', start);
+    return () => { stop(); phone.removeEventListener('change', start); };
+  }, [root]);
 }
 
 /** One group's row: mounted afresh for each tab, so the carousel starts from its first card. */
