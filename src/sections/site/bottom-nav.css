@@ -335,3 +335,20 @@
     transform: none;
   }
 }
+
+/* (2026-10-13, the team: the entrance should read as the carousel controls' does) the bar is solid
+   while it rises and opens, as the controls' grey pill is (its frosted glass let the page through,
+   so the rising square was a faint ghost), then melts to the glass once the sections are in */
+@media (prefers-reduced-motion: no-preference) {
+  .bn[data-shown] .bn-bar {
+    animation:
+      bn-open 0.65s var(--bn-split) 0.5s backwards,
+      bn-solid 1.5s ease-in both;
+  }
+}
+@keyframes bn-solid {
+  0%, 75% {
+    background: var(--surface-page);
+    border-color: var(--border-subtle);
+  }
+}
