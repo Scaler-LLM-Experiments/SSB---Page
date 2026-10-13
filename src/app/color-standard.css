@@ -12,7 +12,7 @@
      tint        --surface-brand-subtle     divider     --glass-on-image-surface
      brand fill  --surface-brand-solid      dark card   --surface-inverse
      hairline    --border-decorative
-     frosted bar --glass-surface            plate on a photo  --surface-inverse at 55% (one value)
+     frosted bar --glass-surface            plate on a photo  #171717 at 55%, fixed in both themes
 
    One exception, by design: a company's logo tile takes that company's own brand colour
    (brand-tiles.ts). It is content, not interface: in Storyblok it is a field on the logo.
@@ -113,3 +113,17 @@ html body :is(
 html body .pl-merge-stats { background: var(--glass-on-image-surface) !important; }
 /* the breaker's stats: no plate, only their hairline on top, as before (2026-10-13, the team) */
 html body .why-breaker-stat { border-top-color: var(--glass-on-image-surface-hover) !important; }
+
+/* Overlays stay dark in both themes (2026-10-13, the team's ask): what sits on a photo is fixed, not
+   a theme token (the inverse surface flips to light grey in the dark theme, the glass tokens too).
+   One fixed dark ink, #171717 (the light theme's --surface-inverse), for every overlay. */
+html body {
+  --overlay-ink: 23 23 23;
+  --plate-on-photo: rgb(var(--overlay-ink) / 0.55);
+}
+html body .in-reel { background-color: rgb(var(--overlay-ink)) !important; }
+html body .pl-merge-stats { background: rgb(255 255 255 / 0.14) !important; border-color: rgb(255 255 255 / 0.2) !important; }
+html body .vc-tag { background: rgb(var(--overlay-ink) / 0.55) !important; border-color: rgb(255 255 255 / 0.2) !important; color: #fff !important; }
+html body :is(.imm-feature__body, .creator-card__foot, .sj-ps-copy, .adm-scholar__bar, .adm-process__panel, .cm-glass, .cs-media-tag, .sj-ai-tag) {
+  border-color: rgb(255 255 255 / 0.2) !important;
+}
