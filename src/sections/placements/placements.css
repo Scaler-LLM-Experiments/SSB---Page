@@ -1132,3 +1132,10 @@ html[data-placements='v3'] .pl-recruiters { display: none; }
   box-shadow: none;
   text-shadow: none;
 }
+/* 2026-10-13: no shadow anywhere on the left (the title's and the button's type), and the photo less
+   blurred: its two blur layers about half as strong, the plate's own frost lighter */
+.pl-merge-main, .pl-merge-main * { text-shadow: none; }
+.pl-merge-main .pl-merge-cta { box-shadow: none; }
+.pl-merge-bg img.pl-merge-blur-soft { filter: blur(3px); }
+.pl-merge-bg img.pl-merge-blur-deep { filter: blur(8px); }
+.pl-merge-stats, .pl-merge-stats:is(*) { -webkit-backdrop-filter: blur(6px) saturate(1.2); backdrop-filter: blur(6px) saturate(1.2); }
