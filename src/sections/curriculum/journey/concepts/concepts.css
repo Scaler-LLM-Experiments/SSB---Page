@@ -1176,3 +1176,8 @@
   .cs-ss-short { gap: 16px; }
   .cs-ss-foot { padding-top: 16px; row-gap: 12px; }
 }
+/* the AI cards' controls as close under them as every row's (2026-10-13, the team's ask): the track's
+   16px foot (room for a hover lift the cards no longer have) taken off */
+.sj-ai-track { padding-bottom: 0 !important; }
+/* …and the grid's 23px row gap less, so the dots sit as far under the cards as every row's (40 / 32) */
+.sj-ai > .cn-frame { margin-top: -15px; }

@@ -473,3 +473,9 @@
   .cr-main .sj-ps-card .sj-ps-copy, .cr-main .sj-ps-card[data-k] .sj-ps-copy { bottom: 440px; }
   .cr-main .sj-career-split > .sj-career-card { top: calc(792px - 12px - 416px); height: 416px; }
 }
+
+/* Career prep tabs (2026-10-13, the team's ask: "let the line move within the tags to complete"): the
+   timer line drawn inside the chip, 6px above its foot, and running the chip's whole inner width
+   (it was clipped 14-16px in at each side and sat on the chip's edge, so it seemed to stop short) */
+.cr-main .sj-ps-pill { top: auto !important; bottom: 6px !important; height: 2px !important; clip-path: none !important; border-radius: 0 !important; overflow: visible !important; }
+.cr-main .sj-ps-pill > i { inset: 0 14px !important; border-radius: 2px; }
