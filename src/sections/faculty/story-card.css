@@ -271,3 +271,15 @@ li:nth-child(5n + 5) .meet-card__flip-inner { animation-delay: -5.6s; }
 /* the marks a step inside the tile's edge, so a long wordmark (Zomato, Blinkit) doesn't fill it */
 .meet-card__flip-face { padding: 10px 18px; }
 @media (width < 672px) { .meet-card__flip-face { padding: 7px 12px; } }
+
+/* (2026-10-13, the team's ask) no flip: the two tiles side by side, each its brand's colour */
+.meet-card__pair { display: flex; gap: var(--space-2); width: 100%; max-width: 17.5rem; margin-top: var(--space-2); }
+.meet-card__pair .meet-card__flip-face { position: relative; inset: auto; flex: 1 1 0; min-width: 0; height: 3rem; transform: none; }
+@media (width < 672px) {
+  .meet-card__pair { gap: 6px; margin-top: 6px; }
+  .meet-card__pair .meet-card__flip-face { height: 2rem; padding: 6px 8px; }
+  .meet-card__pair .meet-card__flip-word { font-size: 0.6875rem; }
+}
+/* the mark held inside its tile's padding (a tall one, CRED's badge, ran out of the tile) */
+.meet-card__pair .meet-card__flip-face img { position: absolute; inset: 10px 14px; width: calc(100% - 28px); height: calc(100% - 20px); }
+@media (width < 672px) { .meet-card__pair .meet-card__flip-face img { inset: 6px 8px; width: calc(100% - 16px); height: calc(100% - 12px); } }

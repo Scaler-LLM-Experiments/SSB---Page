@@ -68,19 +68,18 @@ export function MeetCard({
           {role}
         </p>
         {logos && logos.length > 1 ? (
-          <div className="meet-card__flip" data-part="logos" role="img" aria-label={logos.map((l) => l.name).join(', ')}>
-            <div className="meet-card__flip-inner">
-              {logos.slice(0, 2).map((l, i) => (
-                <span key={l.name} className="meet-card__flip-face" data-back={i ? '' : undefined} style={{ background: l.bg }}>
-                  {l.src ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={l.src} alt="" loading="lazy" />
-                  ) : (
-                    <span className="meet-card__flip-word">{l.name}</span>
-                  )}
-                </span>
-              ))}
-            </div>
+          // side by side, each on its brand's colour (2026-10-13; they flipped in one tile before)
+          <div className="meet-card__pair" data-part="logos" role="img" aria-label={logos.map((l) => l.name).join(', ')}>
+            {logos.slice(0, 2).map((l) => (
+              <span key={l.name} className="meet-card__flip-face" style={{ background: l.bg }}>
+                {l.src ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={l.src} alt="" loading="lazy" />
+                ) : (
+                  <span className="meet-card__flip-word">{l.name}</span>
+                )}
+              </span>
+            ))}
           </div>
         ) : logo?.src ? (
           <div className="meet-card__logo" data-part="logos">
