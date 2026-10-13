@@ -8,6 +8,8 @@ export type CardLogo = {
   scale?: number;
   /** The brand's colour, the tile's ground when the logos flip (the mark drawn white on it). */
   bg?: string;
+  /** Draw the mark in its own colours, not white (a multi-colour mark, on a white ground). */
+  native?: boolean;
 };
 
 /**
@@ -74,7 +76,7 @@ export function MeetCard({
               <span key={l.name} className="meet-card__flip-face" style={{ background: l.bg }}>
                 {l.src ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={l.src} alt="" loading="lazy" />
+                  <img src={l.src} alt="" loading="lazy" data-native={l.native || undefined} />
                 ) : (
                   <span className="meet-card__flip-word">{l.name}</span>
                 )}

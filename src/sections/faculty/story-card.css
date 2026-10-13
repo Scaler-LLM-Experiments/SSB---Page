@@ -283,3 +283,4 @@ li:nth-child(5n + 5) .meet-card__flip-inner { animation-delay: -5.6s; }
 /* the mark held inside its tile's padding (a tall one, CRED's badge, ran out of the tile) */
 .meet-card__pair .meet-card__flip-face img { position: absolute; inset: 10px 14px; width: calc(100% - 28px); height: calc(100% - 20px); }
 @media (width < 672px) { .meet-card__pair .meet-card__flip-face img { inset: 6px 8px; width: calc(100% - 16px); height: calc(100% - 12px); } }
+.meet-card__flip-face img[data-native] { filter: none; }

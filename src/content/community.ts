@@ -250,16 +250,16 @@ export const mentorsSection = {
       role: 'MD, Paytm',
       image: '/people/vijay-shekhar-sharma.webp',
       logo: { name: 'Paytm', src: '/logos/paytm.svg' },
-      // TO CONFIRM (2026-10-13): the second company, a placeholder wordmark until it is chosen
-      logos: [{ name: 'Paytm', src: '/logos/paytm.svg', bg: '#002E6E' }, { name: 'One97', bg: '#00BAF2' }],
+      // One97 Communications: the company he founded in 2000, Paytm's parent (its mark in its own colours, on white)
+      logos: [{ name: 'Paytm', src: '/logos/paytm.svg', bg: '#002E6E' }, { name: 'One97 Communications', src: '/logos/one97.png', bg: '#FFFFFF', native: true }],
     },
     {
       name: 'Kunal Shah',
       role: 'Founder, CRED',
       image: '/people/kunal-shah.webp',
       logo: { name: 'CRED', src: '/logos/cred.svg', scale: 1.7 },
-      // Freecharge (he co-founded it): a wordmark until its logo file is added
-      logos: [{ name: 'CRED', src: '/logos/cred.svg', bg: '#1B1B1B' }, { name: 'Freecharge', bg: '#F15A24' }],
+      // Freecharge (he co-founded it): its logo (Wikimedia Commons) white on its orange
+      logos: [{ name: 'CRED', src: '/logos/cred.svg', bg: '#1B1B1B' }, { name: 'Freecharge', src: '/logos/freecharge.png', bg: '#E1714C' }],
     },
     {
       name: 'Rajan Anandan',
