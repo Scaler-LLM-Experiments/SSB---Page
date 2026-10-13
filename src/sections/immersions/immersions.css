@@ -347,3 +347,8 @@
 .creator-card__stats dd { font-size: var(--type-h4-size, 1.25rem); line-height: 1.2; }
 .creator-card__stats dt { font-size: var(--type-caption-size); line-height: 1.3; }
 .creator-card__stats > div { gap: 2px; }
+
+/* no grey frame round the scene (2026-10-13, the team's ask): the photo is the card, its corners the
+   cards' 8px */
+.imm-feature, .imm-feature:is(*) { border: 0; background: none; border-radius: var(--radius-lg); overflow: hidden; }
+.imm-feature__media, .imm-feature__media:is(*) { border-radius: var(--radius-lg); }
