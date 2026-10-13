@@ -345,7 +345,8 @@
 
 /* Career prep: every corner at the design language's 8px (2026-10-07, the team's ask), desktop and
    phone: the frame, the card inside it, the chips and the frosted bar */
-.cr-main .sj-ps-view { border-width: 4px !important; border-radius: 8px !important; }
+/* no grey frame round the card (the team, 2026-10-13; it was a 4px border, 8px before) */
+.cr-main .sj-ps-view { border-width: 0 !important; border-radius: 8px !important; }
 .cr-main .sj-ps-card { border-radius: 4px; }
 .cr-main .sj-ps-tab, .cr-main .sj-ps-tab[aria-current='true'] { border-radius: 8px !important; }
 .cr-main .sj-ps-pill { border-radius: 0 0 8px 8px; }
@@ -424,4 +425,29 @@
   .cr-main .sj-career-card .sj-tl-body::before { font-size: 10px; }
   .cr-main .sj-career-card .sj-tl-name { font-size: 15px; line-height: 1.2; }
   .cr-main .sj-career-card .sj-tl-items { font-size: 12px; line-height: 1.35; }
+}
+
+/* Career prep on phones, the phase tiles roomier (2026-10-13, the team: "cramped, give sufficient
+   space"): each tile 96px (was 62, 3px short of its own content, its line cut to one with an
+   ellipsis), padded 12px by 14px, 8px apart, the line up to two lines at 13px; the band of tiles
+   304px (was 200), so the card 100px taller (680) and the figure's bar a step higher to clear it. */
+@media (max-width: 1055px) {
+  .cr-main .sj-ps-view { height: 680px !important; }
+  .cr-main .sj-ps-card .sj-ps-copy, .cr-main .sj-ps-card[data-k] .sj-ps-copy { bottom: 328px; }
+  .cr-main .sj-career-split > .sj-career-card { top: calc(680px - 12px - 304px); height: 304px; }
+  .cr-main .sj-career-card .sj-tl { height: 100%; grid-template-rows: repeat(3, minmax(0, 1fr)); grid-auto-rows: auto; gap: 8px; }
+  /* a column, centred top to bottom (a grid here took on the timeline's columns, its node column
+     empty, and squeezed the text into a 28px column) */
+  .cr-main .sj-career-card .sj-tl-item { height: auto; display: flex; flex-direction: column; justify-content: center; padding: 12px 14px; }
+  .cr-main .sj-career-card .sj-tl-body { width: 100%; }
+  .cr-main .sj-career-card .sj-tl-body { gap: 2px; }
+  .cr-main .sj-career-card .sj-tl-body::before { font-size: 11px; }
+  .cr-main .sj-career-card .sj-tl-items { font-size: 13px; line-height: 1.4; -webkit-line-clamp: 2; }
+}
+
+/* Career prep's carousel controls (blocks.tsx, PrepShowcase): under the card on phones and tablets
+   only (the team's ask, 2026-10-13); desktop keeps its tab pill. */
+.sj-ps-nav { display: none; }
+@media (max-width: 1055px) {
+  .cr-main .sj-ps-nav { display: block; }
 }

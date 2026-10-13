@@ -36,6 +36,7 @@ import { YearDetail, YearRow } from './cards';
 import { ForkPaths } from './fork';
 import { SwipeDeck } from './learn';
 import { ScrollDots } from '@/sections/shared/ScrollDots';
+import { CarouselNav } from '@/sections/shared/CarouselNav';
 
 /** Width of an element, for the few decisions CSS container queries cannot make (sheet vs inline). */
 export function useWidth<T extends HTMLElement>(): [React.RefObject<T | null>, number] {
@@ -472,6 +473,21 @@ function PrepShowcase({ cards }: { cards: [CareerIcon, { value: string; label: s
             );
           })}
         </ul>
+      </div>
+      {/* Phones and tablets: the page's carousel controls under the card (the team's ask, 2026-10-13;
+          shown there only, curriculum-rail.css). The pill's timer above still moves the cards on, every
+          SHOW_DWELL; the active dot fills over the same time, running and pausing with it. */}
+      <div className="sj-ps-nav">
+        <CarouselNav
+          count={n}
+          active={active}
+          itemName="figure"
+          onSelect={setActive}
+          onPrev={() => setActive((a) => (a - 1 + n) % n)}
+          onNext={() => setActive((a) => (a + 1) % n)}
+          running={live}
+          interval={SHOW_DWELL}
+        />
       </div>
     </div>
   );
