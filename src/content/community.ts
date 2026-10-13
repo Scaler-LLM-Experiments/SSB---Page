@@ -230,20 +230,23 @@ export const mentorsSection = {
   eyebrow: 'Mentors',
   title: 'Mentored by the Builders of Zomato, Flipkart, Paytm and CRED',
   sub: 'Founders and investors behind some of India’s best-known companies mentor SSB students.',
+  // the logos (2026-10-13): each as its brand shows it, its own colours on its own ground (Zomato,
+  // Freecharge: the mark white on their red and orange; Blinkit on its yellow; Flipkart, PhonePe their
+  // white marks on blue and purple; CRED on black; the multi-colour marks on white)
   people: [
     {
       name: 'Deepinder Goyal',
       role: 'Co-founder, Zomato',
       image: '/people/deepinder-goyal.webp',
       logo: { name: 'Zomato', src: '/logos/zomato.svg' },
-      logos: [{ name: 'Zomato', src: '/logos/zomato.svg', bg: '#E23744' }, { name: 'Blinkit', src: '/logos/blinkit.svg', bg: '#0C831F' }],
+      logos: [{ name: 'Zomato', src: '/logos/zomato.svg', bg: '#E23744' }, { name: 'Blinkit', src: '/logos/blinkit.svg', bg: '#F8CB46', native: true }],
     },
     {
       name: 'Binny Bansal',
       role: 'Co-founder, Flipkart',
       image: '/people/binny-bansal.webp',
       logo: { name: 'Flipkart', src: '/logos/flipkart.svg' },
-      logos: [{ name: 'Flipkart', src: '/logos/flipkart.svg', bg: '#2874F0' }, { name: 'PhonePe', src: '/logos/phonepe.svg', bg: '#5F259F' }],
+      logos: [{ name: 'Flipkart', src: '/logos/flipkart-white.svg', bg: '#2874F0', native: true }, { name: 'PhonePe', src: '/logos/phonepe-white.svg', bg: '#5F259F', native: true }],
     },
     {
       name: 'Vijay Shekhar Sharma',
@@ -251,7 +254,7 @@ export const mentorsSection = {
       image: '/people/vijay-shekhar-sharma.webp',
       logo: { name: 'Paytm', src: '/logos/paytm.svg' },
       // One97 Communications: the company he founded in 2000, Paytm's parent (its mark in its own colours, on white)
-      logos: [{ name: 'Paytm', src: '/logos/paytm.svg', bg: '#002E6E' }, { name: 'One97 Communications', src: '/logos/one97.png', bg: '#FFFFFF', native: true }],
+      logos: [{ name: 'Paytm', src: '/logos/paytm.svg', bg: '#FFFFFF', native: true }, { name: 'One97 Communications', src: '/logos/one97.png', bg: '#FFFFFF', native: true }],
     },
     {
       name: 'Kunal Shah',
@@ -259,7 +262,7 @@ export const mentorsSection = {
       image: '/people/kunal-shah.webp',
       logo: { name: 'CRED', src: '/logos/cred.svg', scale: 1.7 },
       // Freecharge (he co-founded it): its logo (Wikimedia Commons) white on its orange
-      logos: [{ name: 'CRED', src: '/logos/cred.svg', bg: '#1B1B1B' }, { name: 'Freecharge', src: '/logos/freecharge.png', bg: '#E1714C' }],
+      logos: [{ name: 'CRED', src: '/logos/cred.svg', bg: '#000000', native: true }, { name: 'Freecharge', src: '/logos/freecharge.png', bg: '#E1714C' }],
     },
     {
       name: 'Rajan Anandan',
@@ -267,7 +270,7 @@ export const mentorsSection = {
       image: '/people/rajan-anandan.webp',
       logo: { name: 'Peak XV Partners', src: '/logos/peakxv.svg' },
       // Google: he was its India MD before Peak XV
-      logos: [{ name: 'Peak XV Partners', src: '/logos/peakxv.svg', bg: '#111111' }, { name: 'Google', src: '/logos/google.svg', bg: '#4285F4' }],
+      logos: [{ name: 'Peak XV Partners', src: '/logos/peakxv.svg', bg: '#FFFFFF', native: true }, { name: 'Google', src: '/logos/google.svg', bg: '#FFFFFF', native: true }],
     },
   ] as (Omit<ShowcasePerson, 'image'> & { image?: string })[],
 };
