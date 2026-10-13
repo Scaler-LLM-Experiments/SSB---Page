@@ -176,14 +176,15 @@ export async function PlacementsShowcase({
                   // eslint-disable-next-line @next/next/no-img-element -- fills its box
                   <img
                     key={layer}
-                    src={showcases[0].imageUrl}
-                    srcSet={showcases[0].imageSrcSet}
+                    // the founding cohort's group photo (2026-10-13, the team's ask; was showcases[0]'s campus photo)
+                    src="/media/cohort-group.webp"
+                    srcSet="/media/cohort-group-800.webp 800w, /media/cohort-group.webp 1600w"
                     sizes="(min-width: 1280px) 1232px, 100vw"
                     alt=""
                     loading="lazy"
                     decoding="async"
                     className={layer ? `pl-merge-blur pl-merge-blur-${layer}` : undefined}
-                    style={showcases[0].imagePosition ? { objectPosition: showcases[0].imagePosition } : undefined}
+                    style={{ objectPosition: '50% 38%' }}
                   />
                 ))}
               </div>
