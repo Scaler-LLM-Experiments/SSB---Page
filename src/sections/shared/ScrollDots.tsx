@@ -15,7 +15,7 @@ const INTERVAL = 6000;
  *
  * `fill="solid"` (a row of cards): while the row is on screen it moves one card
  * on every INTERVAL, the current dot filling as it waits, and stops at the last
- * card (no loop). Any arrow or dot, or a sideways swipe, drag or trackpad stroke, stops
+ * card (no loop). An arrow or a dot moves it and it plays on from there (2026-10-13); a sideways swipe, drag or trackpad stroke stops
  * it for good (the visitor has taken over). Scrolling the page past it does not.
  *
  * `fill="progress"` (a ticker row that moves on its own, useHScroller): the fill
@@ -198,7 +198,9 @@ export function ScrollDots({
   }, [running, state.active, state.atEnd, count, scroller, interval, loop]);
 
   const select = (i: number) => {
-    if (timed) setPlaying(false); // the visitor has taken over
+    // an arrow or a dot no longer stops the row (2026-10-13, the team's ask): it goes there and plays on
+    // from there, its timer starting afresh (and a row that had played to its end starts again)
+    if (timed) setPlaying(true);
     // the dot moves at once, and holds while the row travels (about the length of a smooth scroll)
     pending.current = { index: i, until: performance.now() + 1100 };
     setState((st) => ({ ...st, active: i, progress: fill === 'solid' ? 1 : 0 }));

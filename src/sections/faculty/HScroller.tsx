@@ -85,8 +85,9 @@ export function useHScroller({ speed = 32, auto = true }: { speed?: number; auto
       const w = setWidth(el);
       if (w && el.scrollLeft >= w) el.scrollLeft -= w;
     };
+    // no pause on hover (2026-10-13, the team's ask: a row with controls keeps moving under the pointer)
     const enter = (e: PointerEvent) => {
-      if (e.pointerType === 'mouse') hovered = true;
+      if (e.pointerType === 'mouse') hovered = false;
     };
     const leave = () => {
       hovered = false;
