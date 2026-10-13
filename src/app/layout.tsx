@@ -3,6 +3,7 @@ import { JetBrains_Mono, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import './type-standard.css';
 import './card-standard.css';
+import './color-standard.css';
 
 const sans = Plus_Jakarta_Sans({
   subsets: ['latin'],
