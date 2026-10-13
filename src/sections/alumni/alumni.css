@@ -385,3 +385,11 @@
   .peers-flip, .peers-flip:is(*) { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; }
   .peers-flip-cell { height: 4rem; }
 }
+
+/* m-web (2026-10-13, the team's ask: auto carousels): the alumni drift on phones again, as on
+   desktop, the two rows running opposite ways; the swipe grid and its dots kept, off */
+@media (width < 672px) {
+  .alumni-drift, .alumni-drift:is(*) { display: grid !important; }
+  .alumni-drift-row[data-dir='back'] { animation-direction: reverse; }
+  .alumni-row, .alumni-row + .alumni-dots, .alumni-row:is(*), .alumni-row + .alumni-dots:is(*) { display: none !important; }
+}
