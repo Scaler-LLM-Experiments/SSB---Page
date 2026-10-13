@@ -1208,3 +1208,9 @@ html body .pl-merge-stats { -webkit-backdrop-filter: none !important; backdrop-f
     -webkit-mask-image: linear-gradient(to bottom, transparent 15%, #000 40%); mask-image: linear-gradient(to bottom, transparent 15%, #000 40%);
   }
 }
+/* phones and tablets (2026-10-13, the team's ask): the stats sit over the faces, so the photo behind
+   the plate is blurred (the system's glass blur) for the figures to read; desktop keeps its one
+   blur at the foot */
+@media (width < 1056px) {
+  html body .pl-merge-stats { -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)) brightness(0.7) !important; backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)) brightness(0.7) !important; }
+}
