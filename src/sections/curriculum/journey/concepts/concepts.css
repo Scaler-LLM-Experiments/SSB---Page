@@ -1132,8 +1132,8 @@
 }
 /* the stacked terms: spacing in the flow as top margins (the foot margins are the stack's steps) */
 .cs-deck.cs-mstack { gap: 0 !important; }
-.cs-deck.cs-mstack > .cs-mcard + .cs-mcard { margin-top: 24px; }
-@media (min-width: 768px) { [data-terms-stack] .cs-deck.cs-mstack > .cs-mcard + .cs-mcard { margin-top: 32px; } }
+.cs-deck.cs-mstack { --mstack-gap: 24px; } /* the room between the term cards before they stack, the page's card gap (2026-10-13: one gap at every width) */
+.cs-deck.cs-mstack > .cs-mcard + .cs-mcard { margin-top: var(--mstack-gap); }
 /* the AI carousel on phones (2026-10-09): a card and a slice of the next, snapping; arrows hidden (swipe) */
 @media (max-width: 767px) {
   .sj-ai-track { gap: 12px !important; scroll-snap-type: x mandatory; padding-right: 16px; }
@@ -1162,7 +1162,7 @@
 .cs-ss[data-short][role='button']:hover .cs-ss-btn svg { transform: translate(2px, -2px); }
 @media (prefers-reduced-motion: reduce) { .cs-ss-btn svg { transition: none; } }
 /* the stacked term cards read as a deck: a soft shadow lifts each card off the one behind */
-.sj .cs-deck.cs-mstack .cs-mcard .cs-inner { box-shadow: 0 -2px 6px -2px rgb(0 0 0 / 0.06), 0 -14px 28px -18px rgb(0 0 0 / 0.22) !important; will-change: transform; }
+.sj .cs-deck.cs-mstack .cs-mcard .cs-inner { box-shadow: none !important; will-change: transform; } /* no shadow (the team, 2026-10-13): the hairline separates the cards */
 /* m-web (2026-10-09): the term card's "View more" the card's full width under its counts */
 @media (max-width: 671px) {
   .cs-ss-foot { flex-wrap: wrap; }

@@ -11,7 +11,7 @@ import './alumni.css';
 export async function PeersTicker({
   companies = peerCompanies,
   title = 'Your peers come from companies like these',
-  sub = 'Where the people in your cohort worked before SSB.',
+  sub = null, // "Where the people in your cohort worked before SSB." removed (the team, 2026-10-13)
   label = 'Companies our students come from',
 }: {
   /** Another list in the same flip grid (Placements C: the companies that have visited, 2026-10-12). */
