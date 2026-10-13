@@ -56,3 +56,9 @@ html body :is(
 html body .cs-media-tag {
   border-radius: var(--radius-md) !important;
 }
+
+/* ── CTAs (2026-10-13, the team's ask: every one the system's) ── buttons are ssx-ui Button
+   (primary / secondary / tertiary) at its own sizes: md 40px, 15px type; lg 48px, 16px. Links are
+   ssx-ui Link. Tab switches are segmented controls: 4px corners (radius-md), as the people tabs. */
+html body .bn-apply .bn-apply-btn { font-size: var(--font-size-base) !important; }
+html body .cr-main .sj-ps-tab, html body .cr-main .sj-ps-tab[aria-current='true'] { border-radius: var(--radius-md) !important; }
