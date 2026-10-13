@@ -1,0 +1,117 @@
+/* ── One type scale down the page (2026-10-13, the team's ask: every size the ssx-ui
+   Storybook's own, one standard per role, across components, desktop and phone) ─────────────
+   The roles, each a ssx-ui token (phone → 672px and up):
+     section title   display     28 → 36   (weight: the team's medium, globals.css)
+     sub-section     h1          24 → 28
+     card title      h3          18 → 20   600
+     body            body        16
+     card text       body-sm     13
+     label / tag     label       14        (and the package's own 15px, font-size-base, on its
+                                            buttons and tabs, left as the package sets it)
+     eyebrow         eyebrow     12 caps, 700, 0.08em
+     caption         caption     12
+     hero            hero        28 → 48
+   Below: only what had drifted off the scale or off its role. The cards drawn at one fixed size and
+   scaled to their slot (the alumni and faculty cards) keep their own design sizes.
+   `html body` and !important: these run after each section's own sheet. */
+
+/* eyebrows: 12px caps, bold, tracked (some were 10–11px, 400–600) */
+html body :is(
+  .sj-eyebrow,
+  .sj-ai-tag > span,
+  .creator-card__rule span,
+  .alumni-card__label,
+  .creator-card__badge,
+  .sc-kicker,
+  .meet-card__kicker
+) {
+  font-size: var(--type-eyebrow-size) !important;
+  line-height: var(--type-eyebrow-lh) !important;
+  letter-spacing: var(--type-eyebrow-tracking) !important;
+  font-weight: var(--type-eyebrow-weight) !important;
+}
+
+/* captions: 12px (the phone tab labels, the shorts' names and the people cards' roles were 10–11px) */
+html body :is(.bn-tab span, .in-reel-name, .meet-card__role) {
+  font-size: var(--type-caption-size) !important;
+}
+
+/* labels: 14px (the AI tools' chips and the navbar's Login were 14.5px) */
+html body :is(.sj-tools-set li > span, .sn-secondary) {
+  font-size: var(--type-label-size) !important;
+}
+
+/* card text: 13px (the term cards' lines were 14.5px) */
+html body .cm-lede {
+  font-size: var(--type-body-sm-size) !important;
+  line-height: var(--type-body-sm-lh) !important;
+}
+
+/* stat labels: 13px, as the placements figures' (career prep's were 15px) */
+html body .sj-ps-stat dt {
+  font-size: var(--type-body-sm-size) !important;
+}
+
+/* card titles: the h3 token, 18 → 20, semibold (they ran 16 to 24, 500 to 600) */
+html body :is(
+  .rs-row h3,
+  .lp-title,
+  .meet-card__name,
+  .pl-clip-headline,
+  .sc-title,
+  .sj-ai-card h3,
+  .in-reel-line,
+  .imm-feature__title
+) {
+  font-size: var(--type-h3-size) !important;
+  line-height: var(--type-h3-lh) !important;
+  font-weight: var(--type-h3-weight) !important;
+  letter-spacing: var(--type-h3-tracking) !important;
+}
+html body section:has(#alumni-title) h3:not([class*='alumni-card']) {
+  font-weight: var(--type-h3-weight) !important;
+}
+
+/* sub-section titles (a heading inside a section, over its own row: the peers' and visiting
+   companies' grids, the startups and the clubs): h2, 20 → 24, semibold (they were 20 / 20 and 28 / 24) */
+html body :is(.peers-title, .lab-sub) {
+  font-size: var(--type-h2-size) !important;
+  line-height: var(--type-h2-lh) !important;
+  font-weight: var(--type-h2-weight) !important;
+}
+
+/* sub-section titles in a sheet: h1, 24 → 28 (the term sheet's was 32) */
+html body .cs-sheet-head h3 {
+  font-size: var(--type-h1-size) !important;
+  line-height: var(--type-h1-lh) !important;
+}
+
+/* section titles: one weight (the breaker's was bold) */
+html body .why-breaker-kicker {
+  font-weight: var(--type-display-weight) !important;
+}
+
+/* big figures: display, 28 → 36 (the placements figures were 30 / 33px); h1's 28 where four
+   share a narrow column (1056–1279px), so they still fit on one row */
+html body .pl-merge-stats dd {
+  font-size: var(--type-display-size) !important;
+  line-height: 1 !important;
+}
+@media (width >= 1056px) and (width < 1280px) {
+  html body .pl-merge-stats dd { font-size: var(--type-h1-size) !important; }
+}
+
+/* the hero title: the hero token, 28 → 48 (it was 28.13px on a phone, a clamp) */
+html body .fold-title-leaders {
+  font-size: var(--type-hero-size) !important;
+}
+html body .fold-leaders-from {
+  font-size: var(--type-h3-size) !important;
+}
+
+/* the scholarship figure on a phone: billboard-sm's 32 (it was 40) */
+@media (max-width: 671px) {
+  html body .adm-scholar__figure {
+    font-size: var(--type-billboard-sm-size) !important;
+  }
+}
