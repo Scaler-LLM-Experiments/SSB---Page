@@ -27,6 +27,7 @@ import { useSectionEntrance } from '@/sections/faculty/useSectionEntrance';
 import { FacultyCard } from './FacultyCard';
 import { CardStack } from '@/sections/shared/CardStack';
 import { ScrollDots } from '@/sections/shared/ScrollDots';
+import { CarouselNav } from '@/sections/shared/CarouselNav';
 import './people-tabs.css';
 
 export type PeopleGroupId = 'faculty' | 'mentors' | 'founding' | 'investors';
@@ -138,6 +139,7 @@ function FacultyDrift({ group: g }: { group: Group }) {
         );
       })}
       </div>
+      {meet ? null : <DriftNav root={driftRef} itemName={g.itemName} count={rowsOf(0).length} />}
       {/* m-web (2026-10-13, the team's ask): no drifting; two rows, card over card, swiped a column
           at a time, with the dots under them */}
       <ul ref={gridRef} className="fc-grid" data-kind={kind} aria-label={g.eyebrow}>
@@ -174,7 +176,7 @@ function useSwipeDrift(root: React.RefObject<HTMLDivElement | null>) {
       const lanes = [...el.querySelectorAll<HTMLElement>('.fc-drift-lane')].map((lane, i) => {
         const set = lane.querySelector<HTMLElement>('.fc-drift-set');
         const card = set?.firstElementChild as HTMLElement | null;
-        const st = { lane, set, pos: i ? (card?.offsetWidth ?? 0) / 2 + 6 : 0, last: -1, held: false, idle: 0 };
+        const st = { lane, set, pos: i ? (card?.offsetWidth ?? 0) / 4 + 3 : 0, last: -1, held: false, idle: 0 };
         lane.scrollLeft = st.pos;
         st.last = lane.scrollLeft;
         return st;
@@ -191,7 +193,11 @@ function useSwipeDrift(root: React.RefObject<HTMLDivElement | null>) {
         st.lane.addEventListener('touchend', free, { passive: true });
         st.lane.addEventListener('touchcancel', free, { passive: true });
         st.lane.addEventListener('scroll', onScroll, { passive: true });
+        // the controls (DriftNav) moving the lane: stand back while it glides there, then drift on
+        const onNav = () => { st.idle = performance.now() + 1400; };
+        st.lane.addEventListener('fc-nav', onNav);
         offs.push(() => {
+          st.lane.removeEventListener('fc-nav', onNav);
           st.lane.removeEventListener('touchstart', hold);
           st.lane.removeEventListener('touchend', free);
           st.lane.removeEventListener('touchcancel', free);
@@ -221,6 +227,74 @@ function useSwipeDrift(root: React.RefObject<HTMLDivElement | null>) {
     phone.addEventListener('change', start);
     return () => { stop(); phone.removeEventListener('change', start); };
   }, [root]);
+}
+
+/**
+ * Phones (2026-10-13, the team's ask: "for people to navigate faster"): the gallery controls under the
+ * drifting rows, one dot a card (the first row's), the current one filling as the row drifts across
+ * it. An arrow or a dot moves both rows by the same distance, so their step holds; the drift carries
+ * on from there (useSwipeDrift waits a beat after any scroll it did not make).
+ */
+function DriftNav({ root, itemName, count }: { root: React.RefObject<HTMLDivElement | null>; itemName: string; count: number }) {
+  // the count from the start: CarouselNav sets up its entrance on its first render
+  const [st, setSt] = React.useState({ count, active: 0, progress: 0 });
+  const lanes = () => [...(root.current?.querySelectorAll<HTMLElement>('.fc-drift-lane') ?? [])];
+  const cardOf = (lane: HTMLElement) => {
+    const set = lane.querySelector<HTMLElement>('.fc-drift-set');
+    const li = set?.firstElementChild as HTMLElement | null;
+    return { set, step: li ? li.offsetWidth + parseFloat(getComputedStyle(set!).columnGap || '0') : 0, n: set?.children.length ?? 1 };
+  };
+  React.useEffect(() => {
+    let raf = 0;
+    const read = () => {
+      const lane = lanes()[0];
+      if (lane && lane.offsetParent) {
+        const { step, n } = cardOf(lane);
+        if (step) {
+          const at = lane.scrollLeft / step;
+          const i = Math.floor(at + 0.01);
+          const next = { count: n, active: ((i % n) + n) % n, progress: Math.min(1, Math.max(0, at - i)) };
+          setSt((o) => (o.count === next.count && o.active === next.active && Math.abs(o.progress - next.progress) < 0.02 ? o : next));
+        }
+      }
+      raf = requestAnimationFrame(read);
+    };
+    raf = requestAnimationFrame(read);
+    return () => cancelAnimationFrame(raf);
+  }, [root]);
+  // move every lane by the first lane's distance to card `i` (or a card on / back)
+  const moveBy = (cards: (at: number, n: number) => number) => {
+    const ls = lanes();
+    if (!ls[0]) return;
+    const { step, n, set } = cardOf(ls[0]);
+    if (!step || !set) return;
+    const at = ls[0].scrollLeft / step;
+    const target = cards(at, n);
+    let delta = target * step - ls[0].scrollLeft;
+    // past the first set's end: the copy is the same cards, so go there from a set's width back
+    if (ls[0].scrollLeft + delta < 0) delta += set.offsetWidth;
+    for (const l of ls) {
+      let left = l.scrollLeft + delta;
+      const w = l.querySelector<HTMLElement>('.fc-drift-set')?.offsetWidth ?? 0;
+      if (w && left >= w) { l.scrollLeft -= w; left -= w; }
+      if (w && left < 0) { l.scrollLeft += w; left += w; }
+      l.dispatchEvent(new Event('fc-nav'));
+      l.scrollTo({ left, behavior: 'smooth' });
+    }
+  };
+  return (
+    <div className="fc-drift-nav">
+      <CarouselNav
+        count={st.count}
+        active={st.active}
+        itemName={itemName}
+        progress={st.progress}
+        onSelect={(i) => moveBy((at, n) => Math.floor(at + 0.01) - (((Math.floor(at + 0.01)) % n) + n) % n + i)}
+        onPrev={() => moveBy((at) => Math.ceil(at - 0.01) - 1)}
+        onNext={() => moveBy((at) => Math.floor(at + 0.01) + 1)}
+      />
+    </div>
+  );
 }
 
 /** One group's row: mounted afresh for each tab, so the carousel starts from its first card. */

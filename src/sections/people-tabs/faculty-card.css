@@ -239,7 +239,7 @@
    behind the first (the rows run at one speed, so the step holds) */
 .fc-drift .fc-drift-row[data-dir='back'],
 .fc-drift:not([data-kind='meet']) .fc-drift-row[data-dir='back'] { animation-direction: normal !important; }
-.fc-drift-lane + .fc-drift-lane .fc-drift-row { margin-left: calc((var(--card-w) + var(--gap)) / -2); }
+.fc-drift-lane + .fc-drift-lane .fc-drift-row { margin-left: calc((var(--card-w) + var(--gap)) / -4); } /* a quarter card (half before, 2026-10-13) */
 /* phones: the swipe back (useSwipeDrift): each lane a sideways scroller whose scroll does the drifting */
 @media (width < 672px) {
   .fc-drift-lane { overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
@@ -249,3 +249,11 @@
 }
 .fc-drift { grid-template-columns: minmax(0, 1fr); }
 .fc-drift-lane { min-width: 0; }
+
+/* phones (2026-10-13, the team's ask): a smaller step between the rows (a quarter card, useSwipeDrift),
+   the cards a size down so more show, and the gallery controls under them (DriftNav) */
+.fc-drift-nav { display: none; }
+@media (width < 672px) {
+  .fc-drift-row { --card-w: 17rem; }
+  .fc-drift-nav { display: block; margin-top: var(--space-6); }
+}
