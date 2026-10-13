@@ -367,3 +367,21 @@
   .alumni-row > li { width: auto; }
   .alumni-row + .alumni-dots { display: block !important; }
 }
+/* (2026-10-13, the team's ask) the curriculum's logo wall: one framed panel, the cells joined by
+   hairlines (no gaps, no cell corners), square-cornered inside a rounded frame. All 24 cells: 6 x 4
+   from the tablet up, 4 x 6 on a phone, so every row is full and the hairlines run edge to edge. */
+.peers-flip, .peers-flip:is(*) {
+  gap: 1px; overflow: hidden;
+  border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);
+  background: var(--border-subtle);
+}
+.peers-flip-face, .peers-flip-face:is(*) { border-radius: 0; box-shadow: none; background: var(--surface-page); }
+.peers-flip-cell:nth-child(n), .peers-flip-cell:nth-child(n):is(*) { display: block; }
+@media (width >= 672px) {
+  .peers-flip, .peers-flip:is(*) { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1px; }
+  .peers-flip-cell { height: 6.5rem; }
+}
+@media (width < 672px) {
+  .peers-flip, .peers-flip:is(*) { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; }
+  .peers-flip-cell { height: 4rem; }
+}
