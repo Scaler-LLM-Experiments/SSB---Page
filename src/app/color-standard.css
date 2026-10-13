@@ -73,7 +73,7 @@ html body .why-breaker :is(.cn-arrow, .cn-dots) {
   background: var(--glass-on-image-surface) !important;
 }
 /* dividers and rules on a photo: one value */
-html body :is(.pl-merge-rule, .fc-card__rule, .why-breaker-stat) {
+html body :is(.pl-merge-rule, .fc-card__rule) {
   background-color: var(--glass-on-image-surface);
   border-color: var(--glass-on-image-surface) !important;
 }
@@ -111,3 +111,4 @@ html body :is(
 /* the placements stats sit on the photo's dark fade (a dark ground): the light on-image glass, as
    the team asked for there (a subtle tint) */
 html body .pl-merge-stats { background: var(--glass-on-image-surface) !important; }
+/* the breaker's stats: no plate, only their hairline on top, as before (2026-10-13, the team) */
