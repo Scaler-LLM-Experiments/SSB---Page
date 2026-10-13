@@ -464,3 +464,12 @@
   .cr-main .sj-career-card .sj-tl-body { gap: 6px; }
   .cr-main .sj-career-card .sj-tl-items { line-height: 1.5; }
 }
+/* the phase tiles' parts further apart (2026-10-13, the team's ask): 8px between the phase, the name
+   and the line (was 2–6); the tiles 132px to hold them (the band 416px, the card 792px) */
+@media (max-width: 1055px) {
+  .cr-main .sj-career-card .sj-tl-body, .cr-main .sj-career-card .sj-tl-body:is(*) { gap: 8px; }
+  .cr-main .sj-career-card .sj-tl-body::before { margin-bottom: 0; }
+  .cr-main .sj-ps-view { height: 792px !important; }
+  .cr-main .sj-ps-card .sj-ps-copy, .cr-main .sj-ps-card[data-k] .sj-ps-copy { bottom: 440px; }
+  .cr-main .sj-career-split > .sj-career-card { top: calc(792px - 12px - 416px); height: 416px; }
+}
