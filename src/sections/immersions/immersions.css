@@ -357,3 +357,5 @@
    "Achievements" to the figures (was 8), 6px from each figure to its label (was 2) */
 .creator-card__rule, .creator-card__rule:is(*) { margin-bottom: var(--space-4); }
 .creator-card__stats > div, .creator-card__stats > div:is(*) { gap: 6px; }
+/* the dividers between the creator cards' figures fainter (2026-10-13, the team's ask): white 14%, was 30% */
+.creator-card__stats > div + div, .creator-card__stats > div + div:is(*) { border-left-color: rgb(255 255 255 / 0.14); }
