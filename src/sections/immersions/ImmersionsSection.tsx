@@ -108,7 +108,9 @@ export function ImmersionsSection() {
           ))}
         </ul>
 
-        <Heading as="h3" size="3" className="mt-16 mb-6 text-center sm:mt-20" data-enter="block">
+        {/* an eyebrow over the creator cards, left-aligned and grey (the team's asks, 2026-10-13; it was
+            a size-3 heading) */}
+        <Heading as="h3" size="eyebrow" className="mt-16 mb-6 text-left text-content-secondary sm:mt-20" data-enter="block">
           Student success stories under our creator lab
         </Heading>
       </Container>
