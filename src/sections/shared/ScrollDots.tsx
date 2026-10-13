@@ -21,13 +21,17 @@ const INTERVAL = 6000;
  * `fill="progress"` (a ticker row that moves on its own, useHScroller): the fill
  * follows the row; the arrows and dots step it.
  *
- * Tapping a dot calls `onSelect` (or scrolls there). No autoplay under reduced motion.
+ * One dot per screenful, not per card (2026-10-13, the team's ask): the cards a viewport shows at once
+ * make a page, measured from the row (so a phone has more pages than a desktop), and the arrows,
+ * the dots and the autoplay move a page at a time.
+ *
+ * Tapping a dot calls `onSelect` with its page's first card (or scrolls there). No autoplay under reduced motion.
  * `cardStep`: one card's travel in px, for a row whose cards are not its direct children
  * (the curriculum's terms, placed absolutely in a deck); otherwise measured from the first child.
  */
 export function ScrollDots({
   scroller,
-  count,
+  count: cards,
   itemName,
   onSelect,
   fill = 'progress',
@@ -51,6 +55,9 @@ export function ScrollDots({
   /** true: at the end the row goes back to its start and keeps playing, instead of stopping. */
   loop?: boolean;
 }) {
+  // how many cards a viewport shows whole (measured below): one dot for each such page
+  const [perView, setPerView] = React.useState(1);
+  const count = Math.max(1, Math.ceil(cards / perView));
   const stepPx = React.useRef(cardStep);
   stepPx.current = cardStep;
   const [state, setState] = React.useState({ active: 0, progress: 0, atEnd: false });
@@ -68,12 +75,24 @@ export function ScrollDots({
   // a dot chosen that the row can only reach by scrolling to its end: kept lit while the row stays there
   const chosenAtEnd = React.useRef<number | null>(null);
 
-  const step = (el: HTMLElement) => {
+  const cardPx = (el: HTMLElement) => {
     if (stepPx.current) return stepPx.current;
     const first = el.firstElementChild as HTMLElement | null;
     if (!first) return 0;
     return first.offsetWidth + parseFloat(getComputedStyle(el).columnGap || '0');
   };
+  // the cards that fit whole between the row's content edge and the window's (the row's own
+  // padding is its inset to the content column; the cards after it bleed past the window)
+  const fits = (el: HTMLElement) => {
+    const c = cardPx(el);
+    if (!c) return 1;
+    const cs = getComputedStyle(el);
+    const view = Math.min(el.clientWidth, window.innerWidth) - parseFloat(cs.paddingLeft || '0');
+    return Math.max(1, Math.floor((view + parseFloat(cs.columnGap || '0')) / c + 0.02));
+  };
+  const perRef = React.useRef(1);
+  // one page's travel: a viewport's worth of cards
+  const step = (el: HTMLElement) => cardPx(el) * perRef.current;
 
   // Where the row is: the current card, how far into it, and whether it is at its end.
   React.useEffect(() => {
@@ -84,6 +103,12 @@ export function ScrollDots({
     let frame = 0;
     const measure = () => {
       frame = 0;
+      const per = Math.min(fits(el), cards);
+      if (per !== perRef.current) {
+        perRef.current = per;
+        setPerView(per);
+      }
+      const count = Math.max(1, Math.ceil(cards / per));
       const s = step(el);
       if (!s) return;
       const atEnd = el.scrollLeft >= el.scrollWidth - el.clientWidth - 1;
@@ -141,7 +166,7 @@ export function ScrollDots({
       window.removeEventListener('resize', onScroll);
       io.disconnect();
     };
-  }, [scroller, count, fill]);
+  }, [scroller, cards, fill]);
 
   const timed = fill === 'solid' && !ticker && autoplay;
 
@@ -177,7 +202,7 @@ export function ScrollDots({
     // the dot moves at once, and holds while the row travels (about the length of a smooth scroll)
     pending.current = { index: i, until: performance.now() + 1100 };
     setState((st) => ({ ...st, active: i, progress: fill === 'solid' ? 1 : 0 }));
-    if (onSelect) return onSelect(i);
+    if (onSelect) return onSelect(Math.min(cards - 1, i * perRef.current));
     const el = scroller.current;
     if (el) el.scrollTo({ left: i * step(el), behavior: 'smooth' });
   };
