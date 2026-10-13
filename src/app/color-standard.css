@@ -112,3 +112,4 @@ html body :is(
    the team asked for there (a subtle tint) */
 html body .pl-merge-stats { background: var(--glass-on-image-surface) !important; }
 /* the breaker's stats: no plate, only their hairline on top, as before (2026-10-13, the team) */
+html body .why-breaker-stat { border-top-color: var(--glass-on-image-surface-hover) !important; }
