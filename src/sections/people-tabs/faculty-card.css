@@ -226,3 +226,11 @@
 
 /* the brand's tile (2026-10-13): a one-colour mark drawn white on its brand's colour */
 .fc-card__logo img[data-white] { filter: brightness(0) invert(1); }
+
+/* Faculty on phones (2026-10-13, the team's ask: "auto carousel like desktop"): the two drifting rows,
+   as on desktop, running opposite ways; the swipe grid and its dots kept for the mentors only */
+@media (width < 672px) {
+  .fc-drift:not([data-kind='meet']):not([hidden]) { display: grid; }
+  .fc-drift:not([data-kind='meet']) .fc-drift-row[data-dir='back'] { animation-direction: reverse; }
+  .fc-grid:not([data-kind='meet']), .pt-panel:has(.fc-grid:not([data-kind='meet'])) .fc-grid-dots { display: none; }
+}
