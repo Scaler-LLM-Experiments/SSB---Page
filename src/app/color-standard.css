@@ -80,8 +80,9 @@ html body :is(.pl-merge-rule, .fc-card__rule, .why-breaker-stat) {
 html body .pl-merge-stats > .pl-merge-rule { background: var(--glass-on-image-surface) !important; }
 html body .creator-card__stats > div + div { border-left-color: var(--glass-on-image-surface) !important; }
 html body .adm-scholar li, html body .adm-process li { border-color: var(--glass-on-image-surface) !important; }
-/* dark grounds: the inverse surface (#171717; they were #111, #232323) */
-html body :is(.fc-card, .in-reel) { background-color: var(--surface-inverse) !important; }
+/* the faculty card keeps its own dark ground, #232323 (2026-10-13, the team: to be added to the system;
+   inside the card data-theme="dark" flips --surface-inverse to a light grey) */
+html body .in-reel { background-color: var(--surface-inverse) !important; }
 /* (more specific than their own sheets) */
 html body .cs-sheet-head .cs-ss-term, html body .cs-ss .cs-ss-term { color: var(--color-ssb-light-9) !important; } /* the SSB brand green itself: each term card re-points --content-brand to its own colour */
 html body .sj-ai-track > .sj-ai-card { border-color: var(--border-decorative) !important; }
