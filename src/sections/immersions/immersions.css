@@ -359,3 +359,5 @@
 .creator-card__stats > div, .creator-card__stats > div:is(*) { gap: 6px; }
 /* the dividers between the creator cards' figures fainter (2026-10-13, the team's ask): white 14%, was 30% */
 .creator-card__stats > div + div, .creator-card__stats > div + div:is(*) { border-left-color: rgb(255 255 255 / 0.14); }
+/* phones (2026-10-13, the team's ask): the immersion cards shorter, 4:3 not 4:5 */
+@media (width < 672px) { .imm-feature, .imm-feature:is(*) { aspect-ratio: 4 / 3; } }
