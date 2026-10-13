@@ -450,7 +450,7 @@ function StackSheet({ y, cfg, onMore }: { y: Year; cfg: JourneyConfig; onMore?: 
               {/* the design system's primary button (2026-10-13, the team's ask; secondary from 2026-10-09) */}
               <Button
                 variant="primary"
-                size="sm"
+                size="md"
                 className="cs-ss-btn"
                 tabIndex={-1}
                 onClick={(e: React.MouseEvent) => {
