@@ -90,3 +90,17 @@
 .sn-theme-track[data-on] .sn-theme-knob { transform: translateX(20px); color: var(--content-brand); background: #fff; }
 .sn-theme-knob svg { width: 12px; height: 12px; }
 @media (prefers-reduced-motion: reduce) { .sn-theme-track, .sn-theme-knob { transition: none; } }
+
+/* ── Type (2026-10-22, the team's ask): no semibold anywhere in the navbar. The nav links 13px at the
+   regular weight; the CTAs (Apply Now, Login, the phone menu's CTA) medium; the dropdowns' titles
+   and labels medium too. ── */
+/* (later that day) back to 14px, in the secondary ink (#616161) rather than near-black, the primary
+   ink on hover and while a dropdown is open */
+.sn-trigger, .sn-link { font-size: 14px; font-weight: var(--font-weight-regular, 400); color: var(--content-secondary); }
+.sn-trigger:hover, .sn-link:hover, .sn-trigger[aria-expanded='true'], .sn-trigger:focus-visible, .sn-link:focus-visible { color: var(--content-primary); }
+.sn-secondary { font-weight: var(--font-weight-medium, 500); }
+.sn .sn-primary-btn, .sn .sn-secondary-btn, .sn .sn-mcta { font-weight: var(--font-weight-medium, 500); }
+/* the navbar's Apply Now a step smaller: 14px (the button's own md size is 15) */
+.sn .sn-actions > .sn-primary-btn { font-size: 14px; }
+.sn-group-title, .sn-item-text b, .sn-panel-foot b, .sn-foot-cta { font-weight: var(--font-weight-medium, 500); }
+.sn-mlinks a { font-weight: var(--font-weight-regular, 400); }

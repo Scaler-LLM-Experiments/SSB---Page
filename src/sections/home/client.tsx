@@ -50,7 +50,8 @@ export function ScrollRefresh() {
   return null;
 }
 
-/** The SSB navbar as the home page's nav: dark over the hero, turned light by the hero's motion. */
-export function HomeNav() {
-  return <SsbNavbar heroNav themeToggle={false} />;
+/** The SSB navbar as the home page's nav: dark over the hero, turned light by the hero's motion.
+ *  `light`: a light navbar from the start, over a light first fold (the framed fold's light tone). */
+export function HomeNav({ light = false }: { light?: boolean }) {
+  return light ? <SsbNavbar theme="light" themeToggle={false} /> : <SsbNavbar heroNav themeToggle={false} />;
 }

@@ -86,3 +86,67 @@ export const hero: HeroContent = {
     { name: 'Meta', logoUrl: '/logos/meta.svg', wordmark: 'Meta', ink: 0.39 },
   ],
 };
+
+/** The framed first fold (the team's mocks, 2026-10-22): one film in a rounded frame, in a dark and a
+ *  light version (`HeroFrame`, /v3?hero=dark | ?hero=light). Flat props, as the other folds'. */
+export type HeroFrameContent = {
+  /** The bar over the navbar: a deadline counting down. */
+  /** `shortMessage`: the phones' line, so it fits on one line with the countdown. */
+  deadline: { message: string; shortMessage: string; to: string; label: string };
+  eyebrow: string;
+  title: string;
+  /** Phrases, set on one line with a dot between them (broken between phrases if it must wrap). */
+  line: string[];
+  primaryCta: { label: string; href: string };
+  secondaryCta: { label: string; href: string };
+  /** "Learn from", over the organisations' logos on white tiles. */
+  logosLabel: string;
+  logos: { name: string; src: string }[];
+  /** Phones: the logos that turn over on the four tiles in turn (the team's files, 2026-10-22, one height). */
+  flipLogos: { name: string; src: string }[];
+  facts: { value: string; caption: string }[];
+  video: { src: string; poster?: string };
+};
+
+export const heroFrame: HeroFrameContent = {
+  // PLACEHOLDER date: the mock's countdown (1 day 2 hours out); the real Phase 1 deadline to come
+  deadline: {
+    message: 'Final Intake Phase 1 - Application Deadline',
+    shortMessage: 'Phase 1 Application Deadline',
+    to: '2026-10-24T23:59:00+05:30',
+    label: '24 Oct, 11:59 PM IST',
+  },
+  eyebrow: 'Full-Time PGP in Management & Tech',
+  title: 'Learn Business hands-on from 100+ Industry Leaders & Faculty',
+  line: ['Build startups & AI products', 'No tech background required'],
+  // placeholder hrefs, as the other folds'
+  primaryCta: { label: 'Apply Now', href: '#apply' },
+  secondaryCta: { label: 'Download Brochure', href: '#brochure' },
+  // (the team, 2026-10-22: "Learn from Uber" read oddly) the title's own words, leading into the logos
+  logosLabel: 'Faculty & leaders from',
+  logos: [
+    { name: 'Uber', src: '/logos/uber.svg' },
+    { name: 'Colgate', src: '/logos/colgate.svg' },
+    { name: 'McKinsey & Company', src: '/logos/mckinsey.svg' },
+    { name: 'IIM Ahmedabad', src: '/logos/iima.svg' },
+  ],
+  flipLogos: [
+    { name: 'BCG', src: '/logos/fold/bcg.png' },
+    { name: 'ISB', src: '/logos/fold/isb.png' },
+    { name: 'IIM Ahmedabad', src: '/logos/fold/iima.png' },
+    { name: 'McKinsey & Company', src: '/logos/fold/mckinsey.png' },
+    { name: 'Bain & Company', src: '/logos/fold/bain.png' },
+    { name: 'Google', src: '/logos/fold/google.png' },
+    { name: 'Colgate', src: '/logos/fold/colgate.png' },
+    { name: 'Airtel', src: '/logos/fold/airtel.png' },
+    { name: 'OpenAI', src: '/logos/fold/openai.png' },
+    { name: 'Meta', src: '/logos/fold/meta.png' },
+  ],
+  facts: [
+    { value: '18 months', caption: 'incl. internship' },
+    { value: 'Bangalore', caption: 'On-campus' },
+    { value: '150', caption: 'Seats' },
+  ],
+  // the team's film (Webite Vid v3, 2026-10-22): 1920 × 1080, 20s, H.264
+  video: { src: '/media/hero-film.mp4' },
+};

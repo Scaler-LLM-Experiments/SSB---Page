@@ -65,15 +65,16 @@
   .sf[data-lift] .sf-lift, .sf[data-lift] .sf-foot > * { transform: none; opacity: 1; box-shadow: 0 8px 20px -12px rgb(0 0 0 / 0.1); }
 }
 
-/* links: neutral ink at rest, green only on hover (with a small bounce), so
-   green marks interaction rather than every word */
+/* the footer's nav links are the design system's quiet Link as it comes (2026-10-13, the team's ask):
+   no bounce, no colour change of our own, underlined on hover. Back to top keeps the old treatment
+   (neutral ink, green on hover, a small bounce). */
 .sf { --sf-link: var(--content-primary); --sf-link-hover: var(--content-brand); }
-.sf-links a, .sf-top-link { display: inline-flex; align-items: center; gap: 6px; color: var(--sf-link) !important; transition: color 180ms ease; }
-.sf-links a, .sf-top-link { text-decoration: none !important; } /* never underlined: hover says it in green */
-.sf-links a:hover, .sf-links a:focus-visible, .sf-top-link:hover, .sf-top-link:focus-visible { color: var(--sf-link-hover) !important; text-decoration: none !important; }
-.sf-links a:hover, .sf-top-link:hover { animation: sf-bounce 420ms cubic-bezier(0.3, 1.6, 0.5, 1); }
+.sf-links a { display: inline-flex; align-items: center; gap: 6px; }
+.sf-top-link { display: inline-flex; align-items: center; gap: 6px; color: var(--sf-link) !important; transition: color 180ms ease; text-decoration: none !important; }
+.sf-top-link:hover, .sf-top-link:focus-visible { color: var(--sf-link-hover) !important; text-decoration: none !important; }
+.sf-top-link:hover { animation: sf-bounce 420ms cubic-bezier(0.3, 1.6, 0.5, 1); }
 @keyframes sf-bounce { 0% { transform: translateY(0); } 35% { transform: translateY(-3px); } 65% { transform: translateY(1px); } 100% { transform: translateY(0); } }
-@media (prefers-reduced-motion: reduce) { .sf-links a:hover, .sf-top-link:hover { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .sf-top-link:hover { animation: none; } }
 
 /* a larger logo, and a light SSB green rising from the bottom edge that fades
    into the page's own background by the top, so the top meets the page with no seam */
@@ -373,7 +374,6 @@
 .sf-foot[data-green] .sfb-top .text-content-brand { color: var(--content-on-image) !important; opacity: 0.85; }
 .sf-foot[data-green] .sf-links { gap: 8px; }
 .sf-foot[data-green] .sf-links a { color: var(--content-on-image) !important; font-size: var(--type-body-sm-size, 0.875rem); }
-.sf-foot[data-green] .sf-links a:hover { opacity: 0.8; }
 .sf-foot[data-green] .sfb-col { gap: 12px; }
 /* the stage: the card's inner width; the building out to the card's edges, its railings cropped */
 /* the stage in the top's column (1232px at most), so the name's ends line up with the logo and the links */

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { hero } from '@/content/home';
+import { heroFrame } from '@/content/home';
 import { placements } from '@/content/placements';
 import { why } from '@/content/why';
 import { AdmissionsSection } from '@/sections/admissions/AdmissionsSection';
@@ -7,7 +7,7 @@ import { AlumniSection } from '@/sections/alumni/AlumniSection';
 import { PeersTicker } from '@/sections/alumni/PeersTicker';
 import { CurriculumRail } from '@/sections/curriculum/CurriculumRail';
 import { FaqSection } from '@/sections/faq/FaqSection';
-import { HeroV2 } from '@/sections/hero/v2/HeroV2';
+import { HeroFrame, HeroFrameDeadline } from '@/sections/hero/frame/HeroFrame';
 import { Curriculum, FooterShell, HomeNav, ScrollRefresh } from '@/sections/home/client';
 import { BottomNav } from '@/sections/site/BottomNav';
 import { ImmersionsSection } from '@/sections/immersions/ImmersionsSection';
@@ -40,20 +40,19 @@ export const metadata: Metadata = { title: 'V3 · SSB home page lab' };
  * curriculum rail's last item (the team's ask, the same day). Of the three Placements takes, the showcase is the one used.
  */
 export default function V3Page() {
-  // The first fold is the cinematic hero only (the split variant and its toggle were dropped, 2026-10-06).
+  // The first fold: the framed fold, light (the team's pick, 2026-10-22). The cinematic HeroV2 it
+  // replaced is kept in the code (the archived pages render it); the framed fold's dark tone was dropped.
   return (
     <FooterShell>
-      {/* The site is light; only the hero is dark (HeroV2 is its own dark island). */}
+      {/* The site is light, the first fold too (only its film frame is a dark island). */}
       <main data-brand="ssb" data-theme="light" className="bg-page text-content">
         {/* re-measures the sections' scroll entrances when the curriculum arrives and moves them */}
         <ScrollRefresh />
-        {/* 1 first fold, in the chosen variant. Cinematic: the site navbar in the hero's nav slot, dark
-            over the black hero (HeroV2's motion turns it light with the page). Split: a light navbar
-            over a light page, the film in a rounded card, the leaders at the right. */}
-        <HomeNav />
+        {/* 1 first fold: the deadline bar (sticky), the light navbar under it (sticky), then the framed film */}
+        <HeroFrameDeadline deadline={heroFrame.deadline} />
+        <HomeNav light />
         <BottomNav />
-        {/* the framed film (scroll moment, caption, play button) hidden for now (2026-10-09); drop moment={false} to bring it back */}
-        <HeroV2 {...hero} moment={false} />
+        <HeroFrame content={heroFrame} />
         {/* 2 placements (main's showcase take) */}
         {/* /v3 (2026-10-09): /v2 with Placements pinned to version C (stats + logos), no switch */}
         <PlacementsShowcase {...placements} fixed="v3" />

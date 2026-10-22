@@ -1,0 +1,430 @@
+/* =========================================================
+   The framed first fold (HeroFrame): the film in one rounded frame inset from the window, the copy
+   over its foot. One layout, two tones (data-tone): `dark` (a black page round it, the film fading
+   into black) and `light` (the light page round it, the film fading into a pale frost).
+   Sizes from the team's mock at 1440 × 851. Tokens where the system has one.
+   ========================================================= */
+
+.hf { padding: 0 var(--space-4) var(--space-4); background: var(--surface-page); }
+
+.hf-frame {
+  position: relative; isolation: isolate; overflow: hidden; display: flex; align-items: flex-end;
+  /* the rest of the first screen under the deadline bar and the navbar, 16px clear at its foot */
+  min-height: max(36rem, calc(100svh - var(--sn-h, 69px) - var(--hf-bar, 3.0625rem) - var(--space-4)));
+  border-radius: var(--radius-xl); background: #000;
+}
+.hf-film { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+
+/* the fade under the copy: into black (dark), into a pale blurred frost (light) */
+.hf-fade { position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(to bottom, transparent 38%, rgb(0 0 0 / 0.5) 62%, rgb(0 0 0 / 0.88) 84%, #000 100%); }
+.hf[data-tone='light'] .hf-fade {
+  background: linear-gradient(to bottom, transparent 42%, rgb(196 206 210 / 0.45) 66%, rgb(205 214 217 / 0.9) 100%);
+  -webkit-backdrop-filter: blur(22px); backdrop-filter: blur(22px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 40%, #000 72%); mask-image: linear-gradient(to bottom, transparent 40%, #000 72%);
+}
+
+/* the copy | the logos and facts, their feet level */
+.hf-body { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 29.5rem); align-items: end; gap: var(--space-12);
+  width: 100%; padding: 0 var(--space-16) var(--space-16); color: var(--on-image-ink); }
+.hf-copy { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
+.hf-eyebrow { margin: 0 0 var(--space-6); font-size: 1.125rem; line-height: 1.4; font-weight: var(--font-weight-medium); }
+.hf-title { max-width: 48rem; margin: 0; color: var(--on-image-ink); font-size: var(--type-hero-size); line-height: 1.2; letter-spacing: -0.01em; font-weight: var(--font-weight-semibold); }
+/* desktop: 40px (the team's call, 2026-10-22; was 44), two lines beside the logos */
+@media (width >= 1056px) { .hf-title { font-size: 2.5rem; } }
+.hf-line { margin: var(--space-6) 0 0; color: var(--on-image-ink); }
+/* the phrases kept whole; the dot travels with the phrase after it */
+.hf-line > span { display: inline-block; }
+.hf-dot { margin: 0 var(--space-3); }
+.hf-actions { display: flex; flex-wrap: wrap; gap: var(--space-4); margin-top: var(--space-8); }
+.hf-actions svg { width: 1.125rem; height: 1.125rem; }
+/* secondary: a white outline on the dark film; a pale filled button on the light frost */
+.hf .hf-secondary { background: transparent; color: #fff; border-color: rgb(255 255 255 / 0.85); }
+.hf .hf-secondary:hover { background: rgb(255 255 255 / 0.12); }
+.hf[data-tone='light'] .hf-secondary { background: rgb(255 255 255 / 0.85); color: var(--content-primary); border-color: rgb(255 255 255 / 0.9); }
+.hf[data-tone='light'] .hf-secondary:hover { background: #fff; }
+
+/* "Learn from" with a hairline running to the edge, the logos on white tiles, then the facts */
+.hf-side { display: flex; flex-direction: column; min-width: 0; }
+.hf-label { display: flex; align-items: center; gap: var(--space-4); margin: 0 0 var(--space-4); font-size: 1.125rem; line-height: 1.4; font-weight: var(--font-weight-medium); }
+.hf-label::after { content: ''; flex: 1; height: 1px; background: rgb(255 255 255 / 0.7); }
+.hf-logos { display: flex; gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
+/* four tiles sharing the column's width in proportion to their logos (a long wordmark gets the wider
+   tile), each logo fitted inside its tile */
+.hf-logos > li { display: grid; flex: 1 1 auto; min-width: 0; place-items: center; height: 3.75rem; padding: 0 var(--space-3); border-radius: var(--radius-md); background: #fff; }
+.hf-logos img { display: block; width: auto; max-width: 100%; height: 1.875rem; object-fit: contain; }
+.hf-facts { display: grid; grid-template-columns: repeat(3, auto); justify-content: space-between; margin: var(--space-10) 0 0; padding: var(--space-5) var(--space-6);
+  border: 1px solid rgb(255 255 255 / 0.22); border-radius: var(--radius-lg); background: rgb(255 255 255 / 0.04); }
+.hf[data-tone='light'] .hf-facts { background: rgb(70 80 86 / 0.42); border-color: rgb(255 255 255 / 0.28);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+.hf-facts > div { padding: 0 var(--space-6); }
+.hf-facts > div:first-child { padding-left: 0; }
+.hf-facts > div:last-child { padding-right: 0; }
+.hf-facts > div + div { border-left: 1px solid rgb(255 255 255 / 0.3); }
+.hf-facts dt { font-size: 1.25rem; line-height: 1.4; font-weight: var(--font-weight-medium); }
+.hf-facts dd { margin: var(--space-1) 0 0; font-size: 1rem; line-height: 1.4; opacity: 0.88; }
+
+/* the deadline bar over the navbar: the design system's solid brand Banner, its message and countdown
+   centred as one line, the countdown a step apart */
+.hf-deadline [data-slot='banner'] { justify-content: center; align-items: center; border-radius: 0; }
+.hf-deadline [data-slot='banner-content'], .hf-deadline [data-slot='banner-message'] { flex: none; min-width: 0; text-align: center; }
+.hf-deadline [data-slot='banner-countdown'] { margin-left: var(--space-3); }
+
+
+/* tablets and phones: one column, the film showing above the copy */
+@media (width < 1056px) {
+  .hf-frame { min-height: 0; padding-top: min(52svh, 26rem); }
+  .hf-film { height: 100%; }
+  .hf-body { grid-template-columns: minmax(0, 1fr); gap: var(--space-8); padding: 0 var(--space-6) var(--space-8); }
+  .hf-fade { background: linear-gradient(to bottom, transparent 18%, rgb(0 0 0 / 0.6) 40%, rgb(0 0 0 / 0.92) 60%, #000 100%); }
+  .hf[data-tone='light'] .hf-fade { background: linear-gradient(to bottom, transparent 18%, rgb(196 206 210 / 0.5) 40%, rgb(205 214 217 / 0.92) 62%); -webkit-mask-image: linear-gradient(to bottom, transparent 16%, #000 42%); mask-image: linear-gradient(to bottom, transparent 16%, #000 42%); }
+}
+@media (width < 672px) {
+  /* the deadline bar wraps on a phone (message, then the countdown), still centred */
+  .hf-deadline [data-slot='banner-content'], .hf-deadline [data-slot='banner-message'] { flex: 1 1 auto; }
+  .hf-deadline [data-slot='banner-message'] { font-size: var(--type-body-sm-size); }
+  /* the line flows as one sentence, wrapping wherever it runs out of room (the team's ask for the hero line on phones) */
+  .hf-line > span { display: inline; }
+  .hf { padding: 0 var(--space-2) var(--space-2); }
+  .hf-body { padding: 0 var(--space-4) var(--space-6); }
+  .hf-eyebrow { margin-bottom: var(--space-3); font-size: 1rem; }
+  .hf-line { margin-top: var(--space-4); }
+  .hf-actions { display: grid; width: 100%; gap: var(--space-3); margin-top: var(--space-6); }
+  .hf-actions > * { width: 100%; justify-content: center; }
+  .hf-logos > li { height: 3rem; padding: 0 var(--space-2); }
+  .hf-logos img { height: 1.375rem; }
+  .hf-facts { margin-top: var(--space-6); padding: var(--space-4); }
+  .hf-facts > div { padding: 0 var(--space-3); }
+  .hf-facts dt { font-size: 1rem; }
+  .hf-facts dd { font-size: 0.8125rem; }
+}
+
+/* entrance: the frame settles, then the copy and the side fade up; nothing under reduced motion */
+@keyframes hf-settle { from { transform: scale(0.985); opacity: 0; } }
+@keyframes hf-rise { from { transform: translateY(var(--motion-offset-enter, 0.75rem)); opacity: 0; } }
+.hf-frame { animation: hf-settle 900ms var(--motion-easing-expressive-entrance, cubic-bezier(0.2, 0.7, 0.2, 1)) both; }
+.hf-copy, .hf-side { animation: hf-rise 700ms var(--motion-easing-expressive-entrance, cubic-bezier(0.2, 0.7, 0.2, 1)) both; }
+.hf-copy { animation-delay: 250ms; }
+.hf-side { animation-delay: 400ms; }
+@media (prefers-reduced-motion: reduce) { .hf-frame, .hf-copy, .hf-side { animation: none; } }
+
+/* ── 2026-10-22, the team's asks ──────────────────────────────────────────────────────────── */
+/* 1. the deadline bar thinner: 36px on desktop (was 49), the icon no taller than the text */
+/* (the bar's height is measured live: --hf-bar on <html>, HeroFrameBarHeight) */
+.hf-deadline [data-slot='banner'] { min-height: 0; padding-block: var(--space-1-5); }
+.hf-deadline [data-slot='banner-icon'] { height: auto; }
+.hf-deadline [data-slot='banner-message'] { padding-block: 0; font-size: var(--type-body-sm-size); line-height: 1.5; }
+.hf-deadline [data-slot='banner-icon'] svg { width: 1rem; height: 1rem; }
+
+/* 2. the film moved up in its frame: drawn 18% taller than the frame and hung from above its top, so
+   the people sit higher, clear of the copy at the foot (still covering the frame edge to edge) */
+.hf-film { top: -18%; height: 118%; object-position: 50% 50%; }
+
+@media (width < 1056px) {
+  .hf-film { top: 0; height: 100%; }
+}
+
+/* 4. the light tone's foot a few steps darker (the team's ask, 2026-10-22: the white copy read faintly
+   on the pale frost): still a light, blue-grey frost, deep enough under the copy for white text */
+.hf[data-tone='light'] .hf-fade {
+  background: linear-gradient(to bottom, transparent 30%, rgb(150 160 166 / 0.45) 50%, rgb(112 122 128 / 0.72) 72%, rgb(96 106 112 / 0.85) 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 28%, #000 58%); mask-image: linear-gradient(to bottom, transparent 28%, #000 58%);
+}
+@media (width < 1056px) {
+  .hf[data-tone='light'] .hf-fade {
+    background: linear-gradient(to bottom, transparent 18%, rgb(150 160 166 / 0.5) 38%, rgb(108 118 124 / 0.8) 58%, rgb(96 106 112 / 0.88) 100%);
+  }
+}
+
+/* 5. the light tone's bottom-left corner darker still (the team's ask, 2026-10-22): a soft dark pool
+   behind the copy and the actions, so Apply Now's green stands clear of the grey frost */
+.hf[data-tone='light'] .hf-frame::after { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(75% 65% at 0% 100%, rgb(32 37 40 / 0.8) 0%, rgb(32 37 40 / 0.5) 45%, transparent 78%); }
+@media (width < 1056px) {
+  .hf[data-tone='light'] .hf-frame::after { background: linear-gradient(to bottom, transparent 55%, rgb(40 46 50 / 0.35) 80%, rgb(40 46 50 / 0.5) 100%); }
+}
+
+/* 6. the foot's two blocks aligned top to bottom (the team's ask, 2026-10-22): the eyebrow on its own
+   row, then the copy beside the side, the side's top level with the title's and its foot level with
+   the buttons' ("Learn from" over the logos at the top, the facts at the foot). Tighter inside:
+   20px from the title to the line and from the line to the buttons (was 24 and 32); "Learn from" at
+   the label size, 8px over the logos; the facts smaller, less padded. */
+.hf-body { grid-template-columns: minmax(0, 1fr) minmax(0, 29.5rem); grid-template-areas: 'eyebrow .' 'copy side'; row-gap: 0; align-items: stretch; }
+.hf-eyebrow { grid-area: eyebrow; }
+.hf-copy { grid-area: copy; }
+.hf-side { grid-area: side; justify-content: flex-start; }
+/* the facts pushed to the foot (level with the buttons), "Learn from" kept tight over the logos */
+.hf-side > .hf-facts { margin-top: auto; }
+.hf-side > .hf-logos { margin-bottom: var(--space-5); }
+.hf-line { margin-top: var(--space-5); }
+.hf-actions { margin-top: var(--space-5); }
+.hf-label { margin-bottom: var(--space-2); font-size: var(--type-label-size); }
+.hf-facts { margin-top: var(--space-5); padding: var(--space-3) var(--space-5); }
+.hf-facts > div { padding: 0 var(--space-5); }
+.hf-facts dt { font-size: 1rem; line-height: 1.4; }
+.hf-facts dd { margin-top: 0.125rem; font-size: var(--type-body-sm-size); }
+@media (width < 1056px) {
+  .hf-body { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'eyebrow' 'copy' 'side'; row-gap: 0; }
+  .hf-side { margin-top: var(--space-8); justify-content: flex-start; }
+  .hf-side > .hf-facts { margin-top: 0; }
+}
+@media (width < 672px) {
+  .hf-line, .hf-actions { margin-top: var(--space-4); }
+  .hf-facts { padding: var(--space-3) var(--space-4); }
+  .hf-facts > div { padding: 0 var(--space-3); }
+  .hf-facts dd { font-size: var(--type-caption-size); }
+}
+
+/* 7. (the team's ask, 2026-10-22) the line closer under the title (12px, was 20), the actions further
+   from it (32px, was 20); phones 12 and 24 */
+.hf-line { margin-top: var(--space-3); }
+.hf-actions { margin-top: var(--space-8); }
+@media (width < 672px) {
+  .hf-line { margin-top: var(--space-3); }
+  .hf-actions { margin-top: var(--space-6); }
+}
+
+/* 8. (the team's ask, 2026-10-22) the eyebrow and the line at 16px everywhere (were 18 on desktop), the
+   eyebrow closer over the title (12px, was 24) */
+.hf-eyebrow { margin-bottom: var(--space-3); font-size: 1rem; line-height: 1.4; }
+.hf-line { font-size: 1rem; line-height: 1.5; }
+/* the line with the eyebrow's leading (1.4), so the eyebrow→title and title→line gaps read the same (both 12px) */
+.hf-line { line-height: 1.4; }
+
+/* 9. (the team's ask, 2026-10-22) the two actions alike: both 24px at the sides (the Button tightens a
+   button with an icon to 16, which made Apply Now look smaller than Download Brochure), both medium */
+.hf .hf-actions > .hf-primary, .hf .hf-actions > .hf-secondary { padding-inline: var(--space-6); font-weight: var(--font-weight-medium); }
+
+/* 10. One hierarchy for the copy (the team's ask, 2026-10-22: the line sat too close under the title).
+   Spacing follows how closely each part belongs to the next, growing down the block:
+     eyebrow → title   12px  (the eyebrow labels the title: one unit)
+     title   → line    20px  (the line supports the title: a step apart)
+     line    → actions 32px  (the actions close the block: the largest step)
+   and the line a shade quieter than the title (the on-image secondary ink), so the title leads. */
+.hf-eyebrow { margin-bottom: var(--space-3); }
+.hf-line { margin-top: var(--space-5); color: var(--on-image-ink-secondary); }
+.hf-actions { margin-top: var(--space-8); }
+@media (width < 672px) {
+  .hf-line { margin-top: var(--space-4); }
+  .hf-actions { margin-top: var(--space-6); }
+}
+/* the light tone keeps the line in full white: on its paler frost the quieter ink lost too much contrast */
+.hf[data-tone='light'] .hf-line { color: var(--on-image-ink); }
+
+/* 11. (the team's ask, 2026-10-22) no empty band over the facts: the facts sit 20px under the logos and
+   grow to the column's foot (level with the buttons), the room going inside them as padding, their
+   values centred in it; three equal columns, each value and caption at its column's left edge after
+   the divider. */
+.hf-side > .hf-logos { margin-bottom: 0; }
+.hf-side > .hf-facts { flex: 1 0 auto; margin-top: var(--space-5); align-content: center; grid-template-columns: repeat(3, minmax(0, 1fr)); justify-content: stretch; }
+.hf-facts > div { padding: 0 var(--space-5); }
+@media (width < 1056px) {
+  .hf-side > .hf-facts { flex: none; margin-top: var(--space-5); }
+}
+
+/* 12. (the team's ask, 2026-10-22) the facts closer under the logos and less padded inside. The side is
+   as tall as the copy, so the room the facts gave up goes to the logos and the facts' own type:
+   logos → facts 12px (was 20); the logo tiles 72px tall (was 60), their marks 34px; the facts'
+   values 18px and captions 14px (were 16 / 13), so they fill their panel. Desktop only. */
+@media (width >= 1056px) {
+  .hf-side > .hf-facts { margin-top: var(--space-3); }
+  .hf-logos > li { height: 4.5rem; }
+  .hf-logos img { height: 2.125rem; }
+  .hf-facts dt { font-size: 1.125rem; }
+  .hf-facts dd { font-size: var(--type-label-size); }
+}
+/* (the team, later) the facts further from the logos again: 24px */
+@media (width >= 1056px) { .hf-side > .hf-facts { margin-top: var(--space-6); } }
+
+/* 13. (the team's ask, 2026-10-22) the facts aligned: three equal columns, each fact centred in its
+   own, so the two dividers sit at exactly a third and two thirds and every fact has the same room on
+   both sides of them; the dividers drawn the same height in each column. */
+.hf-side > .hf-facts { padding-inline: 0; }
+.hf-facts > div, .hf-facts > div:first-child, .hf-facts > div:last-child { padding: 0 var(--space-3); text-align: center; }
+.hf-facts > div + div { border-left: 1px solid rgb(255 255 255 / 0.28); }
+
+/* 14. the deadline bar made to be seen: the Banner's shine, a bell that rings every few seconds, and the
+   countdown on glass tiles (HeroFrameCountdown) */
+.hf-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.hf-count { display: inline-flex; margin-left: var(--space-3); vertical-align: middle; }
+.hf-count-units { display: inline-flex; align-items: center; gap: var(--space-2); }
+.hf-count-unit { display: inline-flex; align-items: center; gap: var(--space-1); }
+.hf-count-n { min-width: 1.625rem; padding: 0.0625rem var(--space-1); border-radius: var(--radius-md); background: rgb(255 255 255 / 0.2);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.18); font-weight: var(--font-weight-semibold); font-variant-numeric: tabular-nums; text-align: center; }
+.hf-count-name { font-size: var(--type-caption-size); font-weight: var(--font-weight-medium); letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.9; }
+@keyframes hf-ring { 0%, 76%, 100% { transform: rotate(0); } 80% { transform: rotate(14deg); } 84% { transform: rotate(-12deg); } 88% { transform: rotate(8deg); } 92% { transform: rotate(-5deg); } 96% { transform: rotate(2deg); } }
+.hf-bell { transform-origin: 50% 0; animation: hf-ring 4s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .hf-bell { animation: none; } }
+@media (width < 672px) {
+  .hf-count { margin: var(--space-1) 0 0; }
+  .hf-count-n { min-width: 1.5rem; }
+}
+
+/* 15. the bell inline with the message (its own icon column hidden), centred on the text's x-height */
+.hf-deadline [data-slot='banner-icon'] { display: none; }
+.hf-bell { display: inline-block; width: 1em; height: 1em; margin-right: var(--space-2); vertical-align: -0.14em; }
+.hf-deadline [data-slot='banner-message'] { display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: center; column-gap: 0; }
+
+/* 16. (the team, later) no tile round the figures: the figures bold and plain, each unit's name after it
+   quieter, a soft dot between units, so it reads as one ticking line */
+.hf-count-n { min-width: 0; padding: 0; border-radius: 0; background: none; box-shadow: none; font-weight: var(--font-weight-bold, 700); }
+.hf-count-units { gap: 0; }
+.hf-count-unit + .hf-count-unit::before { content: '·'; margin: 0 var(--space-2); opacity: 0.6; }
+.hf-count-name { opacity: 0.8; }
+
+/* 17. (the team's ask, 2026-10-22) the deadline bar sticky: it stays at the window's top, the navbar
+   sticking just under it (--hf-bar, its measured height, set by HeroFrameBarHeight) */
+.hf-deadline { position: sticky; top: 0; z-index: 51; }
+body:has(.hf-deadline) header.sn { top: var(--hf-bar, 0px); }
+
+/* ── 18. m-web (the team's mock, 2026-10-22): the film full width at the top, fading into the page's
+   ground, and the copy under it on that ground, never over the film. One column, in order of
+   importance, its spacing growing with the distance between ideas:
+     eyebrow (14px) →8→ title (28px) →12→ line (16px, quieter) →24→ actions (full width, stacked)
+     →32→ "Faculty & leaders from" →8→ logos →16→ facts
+   Dark tone: black ground, white type. Light tone: the page's white ground, dark type (the frame is a
+   dark island for the desktop's film, so the light inks are set here outright). ── */
+@media (width < 672px) {
+  .hf { padding: 0; }
+  .hf-frame { display: block; min-height: 0; padding: 0; border-radius: 0; animation: none; }
+  /* white outright: inside the dark-island frame the page token would resolve to the dark theme's */
+  .hf[data-tone='light'] .hf-frame { background: #fff; }
+  /* no shade over the film: the copy isn't on it */
+  .hf-frame .hf-fade, .hf-frame::after { display: none; }
+  .hf-film { position: relative; inset: auto; top: auto; display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-position: 50% 40%;
+    -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent); mask-image: linear-gradient(to bottom, #000 72%, transparent); }
+
+  /* the copy starts below the film, 16px clear of it */
+  .hf-body { position: relative; z-index: 1; margin-top: 0; padding: var(--space-4) var(--space-4) var(--space-10); gap: 0; }
+  .hf-eyebrow { margin: 0 0 var(--space-2); font-size: var(--type-label-size); line-height: 1.4; opacity: 0.85; }
+  .hf-title { font-size: var(--type-hero-size); line-height: 1.2; }
+  .hf-line { margin-top: var(--space-3); font-size: 1rem; line-height: 1.5; color: var(--on-image-ink-secondary); }
+  .hf-actions { display: grid; width: 100%; gap: var(--space-3); margin-top: var(--space-6); }
+  .hf-actions > * { width: 100%; justify-content: center; }
+  .hf-side { margin-top: var(--space-8); }
+  .hf-label { margin-bottom: var(--space-2); font-size: var(--type-label-size); }
+  .hf-logos { gap: var(--space-2); }
+  .hf-logos > li { height: 3.25rem; padding: 0 var(--space-2); }
+  .hf-logos img { height: 1.375rem; }
+  .hf-side > .hf-facts { margin-top: var(--space-4); padding: var(--space-4) 0; }
+  .hf-facts dt { font-size: 1rem; }
+  .hf-facts dd { font-size: var(--type-caption-size); }
+
+  /* light tone: dark type on the white ground */
+  .hf[data-tone='light'] .hf-body { color: #171717; }
+  .hf[data-tone='light'] :is(.hf-eyebrow, .hf-title, .hf-label, .hf-facts dt) { color: #171717; }
+  .hf[data-tone='light'] :is(.hf-line, .hf-facts dd) { color: #616161; }
+  .hf[data-tone='light'] .hf-label::after { background: #e5e5e5; }
+  .hf[data-tone='light'] .hf-logos > li { box-shadow: inset 0 0 0 1px #e5e5e5; }
+  .hf[data-tone='light'] .hf-facts { background: #f5f5f5; border-color: #e5e5e5; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .hf[data-tone='light'] .hf-facts > div + div { border-left-color: #d4d4d4; }
+  .hf[data-tone='light'] .hf-secondary { background: transparent; color: #171717; border-color: #171717; }
+}
+
+/* 19. (the team's ask, 2026-10-22) the Download Brochure outline lighter: white at 40% on dark grounds
+   (was 85%), a light grey on the phone's white ground (was near-black) */
+@media (width < 672px) {
+  .hf[data-tone='light'] .hf-secondary { border-color: #d4d4d4; }
+  .hf[data-tone='light'] .hf-secondary:hover { border-color: #a3a3a3; background: #fafafa; }
+}
+
+/* 20. phones: the flipping logos (HeroFrameFlipLogos) in place of the still four. The team's files are
+   all one height with the mark centred, so each fills its tile's height alike. */
+.hf-flip { display: none; }
+@media (width < 672px) {
+  .hf-side > .hf-logos { display: none; }
+  .hf-flip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-2); margin: 0; padding: 0; list-style: none; perspective: 600px; }
+  .hf-flip > li { display: grid; place-items: center; height: 3.5rem; overflow: hidden; border-radius: var(--radius-md); background: #fff; }
+  .hf[data-tone='light'] .hf-flip > li { box-shadow: inset 0 0 0 1px #e5e5e5; }
+  .hf-flip-logo { display: block; width: auto; max-width: 100%; height: 100%; object-fit: contain; animation: hf-flip-in 520ms cubic-bezier(0.2, 0.7, 0.2, 1) both; transform-origin: 50% 50%; }
+  .hf-flip > li:first-child .hf-flip-logo { animation-delay: 0ms; }
+}
+@keyframes hf-flip-in { from { transform: rotateX(-90deg); opacity: 0.3; } to { transform: rotateX(0); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .hf-flip-logo { animation: none; } }
+/* the files are cropped to their marks: fitted inside the tile's padding, never past its edges */
+@media (width < 672px) {
+  .hf-flip > li { padding: var(--space-3) var(--space-2); }
+  .hf-flip-logo { width: 100%; height: 100%; max-width: none; object-fit: contain; }
+}
+
+/* 21. (the team's ask, 2026-10-22) the team's ten logos, turning over, at every width: the still four
+   (Uber, Colgate, McKinsey, IIMA) retired; tablet and desktop tiles 72px tall, the marks fitted in
+   their padding */
+.hf-side > .hf-logos { display: none; }
+.hf-flip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); margin: 0; padding: 0; list-style: none; perspective: 600px; }
+.hf-flip > li { display: grid; place-items: center; height: 4.5rem; padding: var(--space-4) var(--space-3); overflow: hidden; border-radius: var(--radius-md); background: #fff; }
+.hf-flip-logo { display: block; width: 100%; height: 100%; object-fit: contain; animation: hf-flip-in 520ms cubic-bezier(0.2, 0.7, 0.2, 1) both; transform-origin: 50% 50%; }
+.hf-side > .hf-facts { margin-top: var(--space-6); }
+@media (width < 672px) {
+  .hf-flip { gap: var(--space-2); }
+  .hf-flip > li { height: 3.5rem; padding: var(--space-3) var(--space-2); }
+  .hf-side > .hf-facts { margin-top: var(--space-4); }
+}
+@media (prefers-reduced-motion: reduce) { .hf-flip-logo { animation: none; } }
+
+/* 22. (the team's ask, 2026-10-22) five tiles, shorter, every logo centred at one height. The team's
+   files share one height with their own margins (one visual weight), so each is drawn at the tile's
+   full height, centred, never wider than the tile; not stretched to the tile's width, which made the
+   wordmarks look large and the crest small. Tiles 56px on desktop (were 72), 48px on a phone. The
+   facts stay at the column's foot, so the room this frees sits between the logos and the facts. */
+.hf-flip { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--space-2); }
+.hf-flip > li { height: 3.5rem; padding: 0 var(--space-2); }
+.hf-flip-logo { width: auto; height: 100%; max-width: 100%; margin: 0 auto; object-fit: contain; object-position: 50% 50%; }
+.hf-side > .hf-facts { margin-top: auto; }
+.hf-side > .hf-flip { margin-bottom: var(--space-6); }
+@media (width < 1056px) { .hf-side > .hf-facts { margin-top: 0; } }
+@media (width < 672px) {
+  .hf-flip { gap: var(--space-1-5); }
+  .hf-flip > li { height: 3rem; padding: 0 var(--space-1); }
+  .hf-side > .hf-flip { margin-bottom: var(--space-4); }
+}
+/* room round each mark: 10px at the tile's sides, the mark at 80% of its height (wide wordmarks stop
+   short of the edges; all still share one height where they fit) */
+.hf-flip > li { padding: 0 var(--space-2-5); }
+.hf-flip-logo { height: 80%; }
+@media (width < 672px) { .hf-flip > li { padding: 0 var(--space-2); } }
+
+/* 23. (the team's ask, 2026-10-22) the facts box only as tall as its facts: no longer stretched to fill
+   the column; 14px above and below them; still at the column's foot, level with the buttons */
+.hf-side > .hf-facts { flex: none; padding-block: var(--space-3-5, 0.875rem); }
+/* (later) halfway between: 22px above and below the facts (the box ~94px; was 111 stretched, then 77) */
+.hf-side > .hf-facts { padding-block: 1.375rem; }
+/* the marks at a fixed height (a % height went unresolved in the grid tile: the tall IIMA crest drew
+   85px tall in a 56px tile and was clipped). 44px of the 56 on desktop, 38 of the 48 on a phone */
+.hf-flip > li { display: flex; align-items: center; justify-content: center; }
+.hf-flip-logo { height: 2.75rem; max-height: 2.75rem; width: auto; max-width: 100%; }
+@media (width < 672px) { .hf-flip-logo { height: 2.375rem; max-height: 2.375rem; } }
+
+/* 24. (the team's ask, 2026-10-22) a thinner strip on phones: the message and countdown at 12px (the
+   type floor), tighter leading and padding */
+@media (width < 672px) {
+  .hf-deadline [data-slot='banner'] { padding-block: var(--space-1); }
+  .hf-deadline [data-slot='banner-message'], .hf-count-n, .hf-count-name { font-size: var(--type-caption-size); line-height: 1.35; }
+  .hf-count { margin-top: 0.125rem; }
+  .hf-count-unit + .hf-count-unit::before { margin: 0 var(--space-1-5); }
+}
+
+/* 25. (the team's ask, 2026-10-22) phones: each unit as its first letter, set tight to its figure
+   (02D 11H 04M 51S), no dots between, so the countdown takes far less room */
+@media (width < 672px) {
+  .hf-count-long { display: none; }
+  .hf-count-name::after { content: attr(data-short); }
+  .hf-count-unit { gap: 0.0625rem; }
+  .hf-count-unit + .hf-count-unit::before { content: none; }
+  .hf-count-units { gap: var(--space-1-5); }
+}
+/* phones: the short message, so message and countdown share one line */
+.hf-msg-short { display: none; }
+@media (width < 672px) {
+  .hf-msg-long { display: none; }
+  .hf-msg-short { display: inline; }
+  .hf-deadline [data-slot='banner-message'] { flex-wrap: nowrap; white-space: nowrap; }
+  .hf-count { margin: 0 0 0 var(--space-2); }
+}
+/* the narrowest phones (under 380px): the countdown wraps under the message rather than overflowing */
+@media (width < 380px) { .hf-deadline [data-slot='banner-message'] { flex-wrap: wrap; white-space: normal; } .hf-count { margin: 0.125rem 0 0; } }
+
+/* 26. (the team's ask, 2026-10-22) the strip a little thicker: 10px above and below on desktop (~40px,
+   was 33), 8px on a phone (~32px, was 25) */
+.hf-deadline [data-slot='banner'] { padding-block: var(--space-2-5); }
+@media (width < 672px) { .hf-deadline [data-slot='banner'] { padding-block: var(--space-2); } }
