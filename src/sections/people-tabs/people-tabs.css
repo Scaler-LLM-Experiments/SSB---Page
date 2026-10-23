@@ -51,3 +51,7 @@
 
 /* the tabs under the header, on its left edge (2026-10-23, the team's ask; as Campus life's) */
 .pt-section .mb-8:has(> .pt-tabs:not([hidden])) { flex-direction: column !important; align-items: flex-start !important; gap: var(--space-6); }
+
+/* phones (2026-10-23, the team's ask: "so much gap"): only the active tab's title and sub-line take room;
+   stacked, the other tab's longer title left a blank line under the heading */
+@media (width < 672px) { .pt-subs > :not([data-on]) { display: none; } }
