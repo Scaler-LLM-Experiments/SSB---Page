@@ -6,6 +6,7 @@ import { Container, Heading, Section, Text } from '@kishanscaler/ssx-ui';
 import { alumni as allAlumni, pivotAlumni } from '@/content/alumni';
 import { useSectionEntrance } from '@/sections/faculty/useSectionEntrance';
 import { ScrollDots } from '@/sections/shared/ScrollDots';
+import { useRows } from '@/sections/shared/useRows';
 import { AlumniCard } from './AlumniCard';
 import './alumni.css';
 
@@ -20,7 +21,7 @@ export function AlumniSection({ peers }: { peers?: React.ReactNode }) {
   // Same entrance as Faculty: the header, then the cards on screen wiped open.
   useSectionEntrance(sectionRef, { decks: ['.alumni-row > li > article'] });
   // The scrolling grid is the phone's (2026-10-13): two rows, card over card, so the dots count columns.
-  const rows = 2;
+  const rows = useRows(2);
 
 
   return (
@@ -36,7 +37,7 @@ export function AlumniSection({ peers }: { peers?: React.ReactNode }) {
             </Heading>
             {/* Picks up Why SSB's "roles like…" (2026-10-07): our earlier cohorts, already there. */}
             <Heading as="h2" size="display" id="alumni-title" data-enter="headline">
-              Our earlier cohorts are already in roles like these.
+              Our earlier cohorts are already in roles like these. <span className="h-tail">At Blinkit, Emergent and more.</span>
             </Heading>
             <Text size="lg" tone="secondary" data-enter="sub">
               Now in growth, strategy and brand roles at Blinkit, Emergent and more.

@@ -7,8 +7,10 @@ import { ease, motionTokens, useMotion } from '@kishanscaler/ssx-ui/motion';
 import { centredFrame, clearCard, drawCard, navHeight, tokenPx, type CardView } from '../shared/frame';
 import { hooksIn, runIntro, type Get } from '../shared/intro';
 import { MOMENT, PHONE_MOMENT } from './moment';
+import { offsetPx } from '@/lib/motion-offset';
 
-const { duration, offset } = motionTokens;
+const { duration } = motionTokens;
+const offset = offsetPx; // px, not the tokens' rem: see motion-offset.ts
 
 /** The system's `md` breakpoint: the desktop moment above it, the phone's below. */
 const DESKTOP_WITH_MOTION = '(min-width: 1056px) and (prefers-reduced-motion: no-preference)';
@@ -207,7 +209,7 @@ function videoMoment(get: Get, closeFilm: () => void) {
       gsap.utils.toArray<HTMLElement>('[data-hero-fade]', section),
       {
         autoAlpha: 0,
-        y: `-${offset.reveal}`,
+        y: -offset.reveal,
         duration: MOMENT.fade,
         ease: ease('productiveInOut'),
       },

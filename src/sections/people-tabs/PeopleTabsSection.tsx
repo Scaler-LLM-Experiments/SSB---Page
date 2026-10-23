@@ -27,8 +27,10 @@ import { useSectionEntrance } from '@/sections/faculty/useSectionEntrance';
 import { FacultyCard } from './FacultyCard';
 import { CardStack } from '@/sections/shared/CardStack';
 import { ScrollDots } from '@/sections/shared/ScrollDots';
+import { useRows } from '@/sections/shared/useRows';
 import { CarouselNav } from '@/sections/shared/CarouselNav';
 import './people-tabs.css';
+import { Title } from '@/sections/shared/Title';
 
 export type PeopleGroupId = 'faculty' | 'mentors' | 'founding' | 'investors';
 
@@ -41,7 +43,7 @@ const ALL_GROUPS: (Group & { id: PeopleGroupId })[] = [
     id: 'faculty',
     tab: 'Faculty',
     eyebrow: 'Faculty',
-    title: 'Learn From Your Future Recruiters, Not Just Faculty.',
+    title: 'Learn from your future recruiters.|Not just faculty.',
     sub: 'Operators and leaders from BCG, McKinsey, Razorpay, Zomato, PayPal, Flipkart and more teach at SSB.',
     itemName: 'faculty',
     people: faculty
@@ -74,6 +76,7 @@ const PLACEHOLDER_COURSES = [
  */
 function FacultyDrift({ group: g }: { group: Group }) {
   const gridRef = React.useRef<HTMLUListElement>(null);
+  const rows = useRows(2);
   const driftRef = React.useRef<HTMLDivElement>(null);
   useSwipeDrift(driftRef);
   // mentors on the web: the looping scroller (not the CSS drift), so the dots can follow and step it
@@ -82,7 +85,9 @@ function FacultyDrift({ group: g }: { group: Group }) {
   const meet = g.id === 'mentors';
   const card = (p: ShowcasePerson, i: number, priority: boolean) =>
     meet ? (
-      <MeetCard image={p.image} name={p.name} role={p.role} logo={p.logo} logos={p.logos} align="start" priority={priority} />
+      // mentors as the faculty cards (2026-10-23, the team's ask): no "Meet", their name leading, their
+      // role under it, their company as its mark and name (the company in the role; the second logo off)
+      <FacultyCard person={p} credentials={p.role} priority={priority} />
     ) : (
       <FacultyCard person={p} course={PLACEHOLDER_COURSES[i % PLACEHOLDER_COURSES.length]} credentials={p.role} priority={priority} />
     );
@@ -150,7 +155,7 @@ function FacultyDrift({ group: g }: { group: Group }) {
         ))}
       </ul>
       <div className="fc-grid-dots">
-        <ScrollDots scroller={gridRef} count={Math.ceil(g.people.length / 2)} itemName={g.itemName} fill="solid" autoplay={false} />
+        <ScrollDots scroller={gridRef} count={Math.ceil(g.people.length / rows)} itemName={g.itemName} fill="solid" autoplay={false} />
       </div>
     </div>
   );
@@ -298,13 +303,14 @@ function DriftNav({ root, itemName, count }: { root: React.RefObject<HTMLDivElem
 }
 
 /** One group's row: mounted afresh for each tab, so the carousel starts from its first card. */
-function Row({ group: g, stacked = false, compact = false }: { group: Group; stacked?: boolean; compact?: boolean }) {
+function Row({ group: g, stacked = false, compact = false, still = false }: { group: Group; stacked?: boolean; compact?: boolean; still?: boolean }) {
   const row = stacked || compact;
-  const { ref, goTo } = useHScroller({ speed: 40 });
+  // still (2026-10-23, the team's ask): one plain row, scrolled by hand, at every width (no ticker)
+  const { ref, goTo } = useHScroller({ speed: 40, auto: !still });
   // the ticker wraps by one set's width: a short list needs a third copy to fill a wide screen
-  const copies = g.people.length < 8 ? 3 : 2;
+  const copies = still ? 1 : g.people.length < 8 ? 3 : 2;
   return (
-    <div className="pt-panel" role="tabpanel" data-compact={compact || undefined} id={`people-panel-${g.id}`} aria-labelledby={`people-tab-${g.id}`}>
+    <div className="pt-panel" role="tabpanel" data-compact={compact || undefined} data-still={still || undefined} id={`people-panel-${g.id}`} aria-labelledby={`people-tab-${g.id}`}>
       {/* Phones, stacked (2026-10-12, the team's layout): a row to swipe, two cards in view and the
           edges of the next and the last. */}
       {row ? (
@@ -326,7 +332,7 @@ function Row({ group: g, stacked = false, compact = false }: { group: Group; sta
         </ul>
       ) : null}
       {/* Phones: the card stack. */}
-      <Container className={row ? 'hidden' : 'sm:hidden'}>
+      <Container className={row || still ? 'hidden' : 'sm:hidden'}>
         <CardStack
           items={g.people}
           getKey={(m) => m.name}
@@ -357,14 +363,15 @@ function Row({ group: g, stacked = false, compact = false }: { group: Group; sta
                   stacked={stacked}
                   bio={PLACEHOLDER_BIO}
                   priority={!copy && i < 5}
+                  company={still}
                 />
               </li>
             );
           }),
         )}
       </HScrollerTrack>
-      <div className="hidden sm:block">
-        <ScrollDots scroller={ref} count={g.people.length} itemName={g.itemName} onSelect={goTo} />
+      <div className={still ? 'block' : 'hidden sm:block'}>
+        <ScrollDots scroller={ref} count={g.people.length} itemName={g.itemName} onSelect={goTo} autoplay={!still} />
       </div>
     </div>
   );
@@ -377,8 +384,11 @@ export function PeopleTabsSection({
   stacked = false,
   compact = false,
   drift = false,
+  still = false,
 }: {
   groups?: PeopleGroupId[];
+  /** One still row of the photo cards, with the company's mark and name (2026-10-23, the team's ask). */
+  still?: boolean;
   /** Faculty cards in two drifting rows, as Alumni's (2026-10-13). */
   drift?: boolean;
   /** The cards with the photo on top and the text under it (2026-10-12). */
@@ -441,11 +451,11 @@ export function PeopleTabsSection({
               {GROUPS.map((g, i) =>
                 i === active ? (
                   <Heading key={g.id} as="h2" size="display" id={titleId} data-on>
-                    {g.title}
+                    <Title text={g.title} />
                   </Heading>
                 ) : (
                   <Heading key={g.id} as="p" size="display" aria-hidden>
-                    {g.title}
+                    <Title text={g.title} />
                   </Heading>
                 ),
               )}
@@ -495,7 +505,7 @@ export function PeopleTabsSection({
       {drift ? (
         <FacultyDrift key={GROUPS[active].id} group={GROUPS[active]} />
       ) : (
-        <Row key={GROUPS[active].id} group={GROUPS[active]} stacked={stacked} compact={compact} />
+        <Row key={GROUPS[active].id} group={GROUPS[active]} stacked={stacked} compact={compact} still={still} />
       )}
     </Section>
   );

@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 
+import { brandMark } from '@/content/brand-marks';
 import { brandTile } from '@/content/brand-tiles';
 import type { ShowcasePerson } from '@/sections/faculty/PeopleShowcase';
 import './faculty-card.css';
@@ -22,7 +23,8 @@ export function FacultyCard({
   priority = false,
 }: {
   person: ShowcasePerson;
-  course: string;
+  /** The course they teach (faculty). Unset (mentors, 2026-10-23): their name leads the card instead. */
+  course?: string;
   credentials: string;
   priority?: boolean;
 }) {
@@ -51,12 +53,22 @@ export function FacultyCard({
         fetchPriority={priority ? 'high' : undefined}
       />
       <div className="fc-card__body">
-        <h3 className="fc-card__course">{course}</h3>
-        <p className="fc-card__by">by {p.name}</p>
+        <h3 className="fc-card__course">{course ?? p.name}</h3>
+        {course ? <p className="fc-card__by">by {p.name}</p> : null}
         <hr className="fc-card__rule" />
         <p className="fc-card__credentials">{credentials}</p>
-        {p.logo?.src ? (
-          // on its brand's tile (2026-10-13): the brand's colour, the mark white or in its own colours
+        {p.logo?.src && brandMark(p.logo.src) ? (
+          // the company as its mark in a box and its name beside it (2026-10-23, the team's ask)
+          <span className="fc-card__co">
+            {/* data-inset: a mark on a ground (not its own full square) sits a little in from the edge */}
+            <span className="fc-card__mark" data-inset={brandMark(p.logo.src)!.bg ? '' : undefined} style={{ background: brandMark(p.logo.src)!.bg }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={brandMark(p.logo.src)!.src} alt="" loading="lazy" decoding="async" />
+            </span>
+            <span className="fc-card__co-name">{p.logo.name}</span>
+          </span>
+        ) : p.logo?.src ? (
+          // no mark yet: the wordmark on its brand's tile (2026-10-13)
           <span className="fc-card__logo" style={{ background: brandTile(p.logo.src!).bg }}>
             <img src={brandTile(p.logo.src!).src} alt={p.logo.name} loading="lazy" data-white={brandTile(p.logo.src!).white || undefined} />
           </span>

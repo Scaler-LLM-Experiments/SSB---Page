@@ -92,7 +92,7 @@ export function ImmersionsSection() {
             Immersions
           </Heading>
           <Heading as="h2" size="display" id="immersions-title" data-enter="headline">
-            Immersions Beyond the Classroom
+            Learning beyond the classroom. <span className="h-tail">Trips, tracks and immersions.</span>
           </Heading>
           <Text size="lg" tone="secondary" data-enter="sub">
             Learn where the work happens: on factory floors, inside quick-commerce operations, and at

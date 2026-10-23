@@ -479,3 +479,18 @@
    (it was clipped 14-16px in at each side and sat on the chip's edge, so it seemed to stop short) */
 .cr-main .sj-ps-pill { top: auto !important; bottom: 6px !important; height: 2px !important; clip-path: none !important; border-radius: 0 !important; overflow: visible !important; }
 .cr-main .sj-ps-pill > i { inset: 0 14px !important; border-radius: 2px; }
+
+/* Career prep below desktop, shorter (2026-10-23, the team's ask: "too big, make it a carousel"): the
+   three phase tiles one swipeable row (a tile and a peek of the next on a phone, two and a peek on a
+   tablet), 132px tall, in place of three stacked (416px), so the card is 508px (was 792) */
+@media (max-width: 1055px) {
+  .cr-main .sj-ps-view { height: 508px !important; }
+  .cr-main .sj-ps-card .sj-ps-copy, .cr-main .sj-ps-card[data-k] .sj-ps-copy { bottom: 156px; }
+  .cr-main .sj-career-split > .sj-career-card { top: calc(508px - 12px - 132px); left: 0; right: 0; height: 132px; overflow: visible; }
+  .cr-main .sj-career-card .sj-tl, .cr-main .sj-career-card .sj-tl:is(*) { display: flex; flex-direction: row; height: 100%; gap: 8px; padding: 0 16px; margin: 0;
+    overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: 16px; scrollbar-width: none; }
+  .cr-main .sj-career-card .sj-tl::-webkit-scrollbar { display: none; }
+  .cr-main .sj-career-card .sj-tl-item { flex: 0 0 80%; height: 100%; scroll-snap-align: start; }
+  .cr-main .sj-career-card .sj-tl-item::before { display: none; }
+}
+@media (min-width: 672px) and (max-width: 1055px) { .cr-main .sj-career-card .sj-tl-item { flex-basis: 42%; } }

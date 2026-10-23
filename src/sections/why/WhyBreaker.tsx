@@ -8,8 +8,10 @@ import { ease, motionTokens, prefersReducedMotion, useMotion } from '@kishanscal
 
 import type { WhyFigure, WhyQuote } from './types';
 import './why.css';
+import { offsetPx } from '@/lib/motion-offset';
 
-const { duration: d, stagger: st, offset } = motionTokens;
+const { duration: d, stagger: st } = motionTokens;
+const offset = offsetPx; // px, not the tokens' rem: see motion-offset.ts
 
 /**
  * A breaker's motion, from its markup hooks: the `data-breaker-part`s fade up one after another

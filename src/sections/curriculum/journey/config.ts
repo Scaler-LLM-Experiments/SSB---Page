@@ -60,6 +60,8 @@ export interface JourneyConfig {
   stackFan: number; // degrees between fanned cards
   /** the terms as the phones' stacking cards at every width (an experiment, /v2-stack) */
   termsStack?: boolean;
+  /** The terms as the concept site's /v4 stage (StageJourney, 2026-10-23). */
+  termsStage?: boolean;
   /** In class as an accordion instead of columns (the /v2-stack experiment's second version) */
   inClassAccordion?: boolean;
   /** v3: a short stacked card; In class and Out of class in a no-scroll sheet */

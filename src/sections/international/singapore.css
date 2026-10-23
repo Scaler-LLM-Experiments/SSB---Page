@@ -1,0 +1,116 @@
+/* =========================================================
+   International Immersion, Singapore (SingaporeSection). A light section around one dark photo
+   stage, Built at SSB's kind: the day's photo full-bleed, the copy white over a shade at the left
+   and the foot, the week as a glass rail. 8px card corners, 4px controls, the page's type.
+   ========================================================= */
+.sg-head { display: flex; flex-direction: column; gap: var(--space-2); max-width: 46rem; margin-bottom: var(--space-8); }
+.sg-title span { color: var(--content-secondary); }
+
+/* the stage */
+.sg-stage { --sg-ease: cubic-bezier(0.16, 1, 0.3, 1); position: relative; isolation: isolate; overflow: hidden; height: clamp(34rem, calc(100svh - 14rem), 44rem);
+  border-radius: var(--radius-lg); background: #0b1210; color: #fff; touch-action: pan-y; user-select: none; }
+.sg-img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.08);
+  transition: opacity 0.9s var(--sg-ease), transform 6s cubic-bezier(0.2, 0.6, 0.2, 1); pointer-events: none; }
+.sg-img[data-on] { opacity: 1; transform: scale(1); }
+/* the shade: deep at the left under the copy and at the foot under the rail, clear across the photo */
+.sg-shade { position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(90deg, rgb(6 10 9 / 0.78) 0%, rgb(6 10 9 / 0.5) 34%, rgb(6 10 9 / 0) 62%), linear-gradient(0deg, rgb(6 10 9 / 0.7) 0%, rgb(6 10 9 / 0) 30%); }
+
+/* the day */
+.sg-day { position: absolute; left: clamp(1.5rem, 4vw, 3.5rem); top: clamp(1.75rem, 4vw, 3.25rem); width: min(30rem, calc(100% - 3rem)); }
+.sg-day > * { animation: sg-rise 0.7s var(--sg-ease) both; }
+.sg-day > *:nth-child(2) { animation-delay: 60ms; }
+.sg-day > *:nth-child(3) { animation-delay: 120ms; }
+.sg-day > *:nth-child(4) { animation-delay: 180ms; }
+@keyframes sg-rise { from { opacity: 0; transform: translateY(14px); } }
+/* the day's number, large and quiet, the kicker over it */
+.sg-num { display: flex; flex-direction: column; margin: 0; font-size: clamp(4.5rem, 9vw, 7.5rem); line-height: 0.85; letter-spacing: -0.05em; font-weight: var(--font-weight-medium);
+  color: rgb(255 255 255 / 0.92); font-variant-numeric: tabular-nums; }
+.sg-num span { margin-bottom: var(--space-2); font-size: var(--type-eyebrow-size); line-height: 1; letter-spacing: var(--type-eyebrow-tracking); text-transform: uppercase; color: #7ee2a8; }
+.sg-day-title { margin: var(--space-5) 0 0; font-size: clamp(1.5rem, 2.4vw, 2rem); line-height: 1.15; letter-spacing: -0.02em; font-weight: var(--font-weight-medium); text-wrap: balance; text-shadow: 0 1px 24px rgb(0 0 0 / 0.3); }
+.sg-place { display: flex; align-items: center; gap: var(--space-1-5); margin: var(--space-3) 0 0; font-size: var(--type-label-size); color: rgb(255 255 255 / 0.78); }
+.sg-place svg { width: 0.875rem; height: 0.875rem; color: #7ee2a8; }
+/* morning and afternoon on one glass panel, a hairline between */
+.sg-slots { margin: var(--space-6) 0 0; padding: var(--space-1) var(--space-4); list-style: none; border: 1px solid rgb(255 255 255 / 0.16); border-radius: var(--radius-lg);
+  background: rgb(10 16 14 / 0.42); -webkit-backdrop-filter: blur(16px) saturate(1.3); backdrop-filter: blur(16px) saturate(1.3); }
+.sg-slots li { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); align-items: baseline; gap: var(--space-3); padding: var(--space-3) 0; }
+.sg-slots li + li { border-top: 1px solid rgb(255 255 255 / 0.14); }
+.sg-when { font-size: var(--type-caption-size); font-weight: var(--font-weight-medium); letter-spacing: 0.06em; text-transform: uppercase; color: rgb(255 255 255 / 0.62); }
+.sg-what { display: flex; align-items: baseline; gap: var(--space-2); font-size: var(--type-body-size); line-height: 1.4; }
+.sg-what svg { flex: none; width: 1rem; height: 1rem; transform: translateY(2px); color: #7ee2a8; }
+
+.sg-credit { position: absolute; right: var(--space-4); top: var(--space-4); margin: 0; padding: 0.25rem 0.5rem; border-radius: var(--radius-md); background: rgb(0 0 0 / 0.35);
+  font-size: 0.6875rem; line-height: 1.3; color: rgb(255 255 255 / 0.75); }
+
+/* the week: a glass bar at the foot, a tab to each day */
+.sg-bar { position: absolute; left: 50%; bottom: clamp(1rem, 2vw, 1.5rem); display: flex; align-items: center; gap: var(--space-1); max-width: calc(100% - 2rem); padding: var(--space-1);
+  transform: translateX(-50%); border: 1px solid rgb(255 255 255 / 0.16); border-radius: var(--radius-lg); background: rgb(8 14 12 / 0.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4); backdrop-filter: blur(20px) saturate(1.4); }
+.sg-rail { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+.sg-rail::-webkit-scrollbar { display: none; }
+.sg-tab, .sg-arrow { all: unset; box-sizing: border-box; cursor: pointer; border-radius: var(--radius-md); }
+.sg-tab { display: flex; flex: none; flex-direction: column; align-items: flex-start; gap: 0.125rem; min-width: 5.25rem; padding: var(--space-2) var(--space-3); color: rgb(255 255 255 / 0.72); transition: background 0.3s, color 0.3s; }
+.sg-tab:hover { background: rgb(255 255 255 / 0.08); color: #fff; }
+.sg-tab[aria-selected='true'] { background: #fff; color: #0b1210; }
+.sg-tab-n { font-size: var(--type-caption-size); line-height: 1; font-weight: var(--font-weight-medium); letter-spacing: 0.06em; opacity: 0.7; font-variant-numeric: tabular-nums; }
+.sg-tab-l { font-size: var(--type-label-size); line-height: 1.2; font-weight: var(--font-weight-medium); white-space: nowrap; }
+.sg-arrow { display: grid; flex: none; place-items: center; width: 2.25rem; height: 2.25rem; color: #fff; }
+.sg-arrow:hover:not(:disabled) { background: rgb(255 255 255 / 0.1); }
+.sg-arrow:disabled { opacity: 0.35; cursor: default; }
+.sg-arrow svg { width: 0.875rem; height: 0.875rem; }
+.sg-tab:focus-visible, .sg-arrow:focus-visible { outline: 2px solid #7ee2a8; outline-offset: -2px; }
+
+/* the four points, quiet, under the stage */
+.sg-pillars { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); margin: var(--space-4) 0 0; padding: 0; list-style: none; }
+.sg-pillar { display: flex; align-items: flex-start; gap: var(--space-3); padding: var(--space-4) var(--space-5); border: 1px solid var(--border-decorative); border-radius: var(--radius-lg); background: var(--surface-raised, #fff); }
+.sg-pillar > svg { flex: none; width: 1.25rem; height: 1.25rem; margin-top: 0.125rem; color: var(--content-brand); }
+.sg-pillar-t { margin: 0; font-size: var(--type-body-size); line-height: 1.3; font-weight: var(--font-weight-medium); }
+.sg-pillar-x { margin: var(--space-1) 0 0; font-size: var(--type-body-sm-size); line-height: 1.4; color: var(--content-secondary); }
+.sg-note { margin-top: var(--space-4); }
+.sg-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+@media (width < 1056px) { .sg-pillars { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* phones: the copy at the stage's foot over a deeper shade, the rail edge to edge under it */
+@media (width < 672px) {
+  .sg-stage { height: 38rem; }
+  .sg-shade { background: linear-gradient(0deg, rgb(6 10 9 / 0.92) 0%, rgb(6 10 9 / 0.75) 48%, rgb(6 10 9 / 0.1) 75%, rgb(6 10 9 / 0.35) 100%); }
+  .sg-day { left: var(--space-4); right: var(--space-4); top: auto; bottom: 5.25rem; width: auto; }
+  .sg-num { flex-direction: row; align-items: baseline; gap: var(--space-2); font-size: 3rem; }
+  .sg-num span { margin: 0; }
+  .sg-day-title { margin-top: var(--space-2); font-size: 1.375rem; }
+  .sg-slots { margin-top: var(--space-4); padding: 0 var(--space-3); }
+  .sg-slots li { grid-template-columns: 1fr; gap: var(--space-1); padding: var(--space-2-5) 0; }
+  .sg-what { font-size: var(--type-body-sm-size); }
+  .sg-bar { left: var(--space-2); right: var(--space-2); bottom: var(--space-2); max-width: none; transform: none; }
+  .sg-tab { min-width: 4.5rem; padding: var(--space-1-5) var(--space-2-5); }
+  .sg-pillars { gap: var(--space-2); }
+  .sg-pillar { padding: var(--space-3) var(--space-4); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sg-img { transition: none; transform: none; }
+  .sg-day > * { animation: none; }
+}
+
+/* the day tabs on one line, the number before the label (2026-10-23, the team's ask) */
+.sg-tab { flex-direction: row; align-items: baseline; gap: var(--space-1-5); min-width: 0; padding: var(--space-2) var(--space-3); }
+
+/* phones, shorter (2026-10-23, the team's ask: "too long"): the stage 30rem (was 38), the day's copy
+   tighter; the four points one swipeable row of compact chips (icon and title), not a 2 × 2 grid */
+@media (width < 672px) {
+  .sg-stage { height: 30rem; }
+  .sg-day { bottom: 4.25rem; }
+  .sg-num { font-size: 2.25rem; }
+  .sg-day-title { margin-top: var(--space-1-5); font-size: 1.25rem; }
+  .sg-place { margin-top: var(--space-2); }
+  .sg-slots { margin-top: var(--space-3); }
+  .sg-slots li { padding: var(--space-2) 0; }
+  .sg-tab { padding: var(--space-1-5) var(--space-2-5); }
+  .sg-pillars { display: flex; gap: var(--space-2); margin-left: calc(var(--space-gutter) * -1); margin-right: calc(var(--space-gutter) * -1); padding: 0 var(--space-gutter) var(--space-1);
+    overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .sg-pillars::-webkit-scrollbar { display: none; }
+  .sg-pillar { flex: none; align-items: center; gap: var(--space-2); padding: var(--space-2-5) var(--space-3); scroll-snap-align: start; }
+  .sg-pillar > svg { margin-top: 0; }
+  .sg-pillar-t { font-size: var(--type-label-size); white-space: nowrap; }
+  .sg-pillar-x { display: none; }
+  .sg-note { margin-top: var(--space-3); }
+}

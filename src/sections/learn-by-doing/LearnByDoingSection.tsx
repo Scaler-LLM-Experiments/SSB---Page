@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Heading, Logo, Text } from '@kishanscaler/ssx-ui';
-import { CheckCircle, Play, X } from '@phosphor-icons/react';
+import { Heading, Text } from '@kishanscaler/ssx-ui';
+import { Play, X } from '@phosphor-icons/react';
 
 import { SSB_JOURNEY } from '@/sections/curriculum/journey/ssb';
 import { RowSection } from '@/sections/shared/RowSection';
@@ -27,15 +27,6 @@ const STATS: Record<string, { value: string; label: string }> = {
 
 const LAYERS = ['', 'soft', 'deep'] as const;
 
-/** "761 views", "1.6K views": YouTube's short counts. */
-const views = (n: number) =>
-  (n < 1000 ? `${n}` : `${(n / 1000).toFixed(n < 10000 ? 1 : 0).replace(/\.0$/, '')}K`) + ' views';
-/** "10 months ago", "1 year ago". */
-const ago = (iso: string) => {
-  const days = Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 864e5));
-  const [n, u] = days >= 365 ? [Math.floor(days / 365), 'year'] : [Math.max(1, Math.floor(days / 30)), 'month'];
-  return `${n} ${u}${n === 1 ? '' : 's'} ago`;
-};
 const duration = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 
 type Item = (typeof SSB_JOURNEY)['learn'] extends infer L ? (L extends { items: (infer I)[] } ? I : never) : never;
@@ -82,22 +73,7 @@ function ChallengeCard({ item, onPlay }: { item: Item; onPlay: () => void }) {
           <Heading as="h3" size="2" data-part="title">
             {item.title}
           </Heading>
-          {v ? (
-            <div className="vc-founders" data-part="description">
-              <span className="lb-avatar" aria-hidden>
-                <Logo brand="ssb" variant="monogram" size="sm" surface="light" decorative />
-              </span>
-              <span className="vc-who">
-                <span className="vc-names lb-channel">
-                  {v.channel}
-                  <CheckCircle weight="fill" aria-label="Verified" />
-                </span>
-                <span className="vc-role">
-                  {views(v.views)} · {ago(v.published)} · {duration(v.seconds)}
-                </span>
-              </span>
-            </div>
-          ) : null}
+          {/* the YouTube channel line (logo, name, views, age, length) off (2026-10-23, the team's ask) */}
         </div>
         <Text size="sm" tone="secondary" className="vc-text" data-part="description">
           {item.desc}
@@ -138,7 +114,7 @@ export function LearnByDoingSection() {
     <>
       <RowSection
         id="learn"
-        title={`${l.title} ${l.titleAccent}`}
+        title={`${l.title}|${l.titleAccent}`}
         // the curriculum sections' header (2026-10-07): eyebrow, title, subtext (the two-line turn
         // with its green words, Beyond Placements' form, was here first)
         eyebrow={l.eyebrow}

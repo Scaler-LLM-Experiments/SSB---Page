@@ -2166,3 +2166,11 @@ button.sj-mcard:hover .sj-mcard-media img, a.sj-mcard:hover .sj-mcard-media img 
 @media (max-width: 767px) { .sj-career-header { margin-bottom: 24px; } .sj-career-header .sj-career-head { font-size: 24px; line-height: 1.25; } }
 @media (min-width: 960px) { .sj-career-card { padding-top: 6px; } }
 .sj-ai-nav[hidden] { display: none; }
+
+/* the AI curriculum's tools run as their ticker again (2026-10-23, the team's ask: "same ticker like
+   before"; the one exception to no tickers). They were still and wrapped for a day. */
+
+/* the curriculum brochure CTA under the lede (review call, 21 Oct 2026) */
+.sj-frame-cta { margin-top: var(--space-4); }
+.sj-frame-cta svg { width: 1rem; height: 1rem; }
+

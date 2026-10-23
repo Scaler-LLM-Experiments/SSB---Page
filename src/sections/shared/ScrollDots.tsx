@@ -37,7 +37,8 @@ export function ScrollDots({
   fill = 'progress',
   tone = 'light',
   cardStep,
-  autoplay = true,
+  // no autoplay by default (2026-10-23, the team's ask: nothing moves on its own)
+  autoplay = false,
   interval = INTERVAL,
   loop = false,
 }: {

@@ -46,7 +46,7 @@ const labels: Labels = {
 
 export const SSB_JOURNEY: Journey = {
   eyebrow: 'Future-proof curriculum', // [SSB]
-  title: 'Curriculum: Learn by Building, Not Theory', // [DOC]
+  title: 'A curriculum built on building.|Not theory.', // [DOC] (2026-10-23: the page's one title pattern)
   lede: 'Build industry-preferred skills through practical learning', // [SSB]
   facts: [
     // [SSB] programme overview
@@ -173,8 +173,8 @@ export const SSB_JOURNEY: Journey = {
   // (views and upload dates captured from YouTube, 2026-09-30)
   learn: {
     eyebrow: 'Learn by doing',
-    title: 'Build 2 Real Businesses. Pitch to VCs.',
-    titleAccent: 'Graduate with Founder experience.',
+    title: 'Build two real businesses. Pitch to VCs.',
+    titleAccent: 'Graduate with founder experience.',
     lede: 'Real markets and real feedback turn business concepts into hard-earned experience.',
     items: [
       {
@@ -197,8 +197,8 @@ export const SSB_JOURNEY: Journey = {
   },
   ai: {
     eyebrow: 'The AI journey',
-    title: '150-Hour AI Curriculum:',
-    titleAccent: 'From No-Code to AI Agents',
+    title: 'A 150-hour AI curriculum.',
+    titleAccent: 'From no-code to AI agents.',
     lede: '25+ AI tools · 5 AI products · 3 hackathons · No coding background required', // the team's curriculum doc (2026-10-07); before, the main landing page's line
     terms: [
       // Titles, descriptions and outcomes from the team's curriculum doc (2026-10-07); the outcomes'
@@ -219,7 +219,7 @@ export const SSB_JOURNEY: Journey = {
   },
   careerPrep: {
     // [DOC]
-    title: 'Career prep that starts in Month 1',
+    title: 'Career prep from month one.|Not the final term.',
     // ours (2026-10-07), from the phases below, for the team to confirm: every curriculum section has a subtext
     lede: 'From 1:1 counselling in Month 1 to mock interviews and salary negotiation, in three phases: clarity, building and executing.',
     start: 'Month 1',

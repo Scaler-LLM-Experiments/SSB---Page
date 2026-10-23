@@ -165,6 +165,40 @@ export function SsbNavbar({
   const hoverOK = typeof window !== 'undefined' && !!window.matchMedia?.('(hover: hover) and (pointer: fine)').matches;
   const closeTimer = React.useRef(0);
 
+  // Hide on the way down, back on the way up (2026-10-23, the team's ask): past the first screen, a
+  // scroll down slides the bar up behind the deadline bar (the section nav stays); any scroll up, or
+  // the top of the page, brings it back. Never while a menu is open. Marked on <html> as
+  // data-nav-hidden, so the phones' section strip can move up with it.
+  const hideRef = React.useRef({ y: 0, hidden: false });
+  React.useEffect(() => {
+    const el = document.documentElement;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const y = window.scrollY;
+      const st = hideRef.current;
+      const dy = y - st.y;
+      if (Math.abs(dy) < 6) return;
+      const menuOpen = !!root.current?.hasAttribute('data-open');
+      const hide = !menuOpen && dy > 0 && y > window.innerHeight * 0.6;
+      if (hide !== st.hidden) {
+        st.hidden = hide;
+        el.toggleAttribute('data-nav-hidden', hide);
+      }
+      st.y = y;
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    hideRef.current.y = window.scrollY;
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('scroll', onScroll);
+      el.removeAttribute('data-nav-hidden');
+    };
+  }, []);
+
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 4);
     onScroll();

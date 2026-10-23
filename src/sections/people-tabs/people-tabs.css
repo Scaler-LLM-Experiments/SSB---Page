@@ -30,3 +30,24 @@
 .pt-subs { display: grid; }
 .pt-subs > * { grid-area: 1 / 1; visibility: hidden; }
 .pt-subs > [data-on] { visibility: visible; }
+
+/* ── Still rows (2026-10-23, the team's ask: mentors and the founding team as photo cards, one row, no
+   ticker): the plain row at every width, phones too (in place of the card stack), cards about four
+   across the content on desktop, a card and a peek on a phone. ── */
+.pt-panel[data-still] .h-scroller { display: flex; scroll-snap-type: x mandatory; }
+.pt-panel[data-still] .h-scroller > li { width: calc((min(100vw, var(--size-container-max)) - 2 * var(--space-gutter) - 3 * var(--space-4)) / 4); scroll-snap-align: start; }
+@media (width < 1056px) { .pt-panel[data-still] .h-scroller > li { width: 18rem; } }
+@media (width < 672px) { .pt-panel[data-still] .h-scroller > li { width: 72vw; } }
+.pt-panel[data-still] .meet-card__content { gap: var(--space-1-5); padding: var(--space-5); }
+
+/* the company line, as the faculty cards': its mark in a box, its name beside it in white */
+.mc-co { display: flex; align-items: center; gap: var(--space-3); margin-top: var(--space-3); min-width: 0; }
+.mc-co__mark { display: grid; flex: none; place-items: center; width: 2.5rem; height: 2.5rem; overflow: hidden; border-radius: var(--radius-md); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.12); }
+.mc-co__mark img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.mc-co__mark[data-inset] img { width: 78%; height: 78%; }
+.mc-co__name { min-width: 0; font-size: 1rem; line-height: 1.25; font-weight: var(--font-weight-medium); color: var(--on-image-ink, #fff); }
+/* the company line on the other photo-card rows too (PeopleShowcase: the Impact Foundation) */
+.ssx-card .mc-co { margin-top: var(--space-3); }
+
+/* the tabs under the header, on its left edge (2026-10-23, the team's ask; as Campus life's) */
+.pt-section .mb-8:has(> .pt-tabs:not([hidden])) { flex-direction: column !important; align-items: flex-start !important; gap: var(--space-6); }

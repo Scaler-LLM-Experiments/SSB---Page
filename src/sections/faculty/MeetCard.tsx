@@ -1,3 +1,4 @@
+import { brandMark } from '@/content/brand-marks';
 import { brandTile } from '@/content/brand-tiles';
 import './story-card.css';
 
@@ -29,6 +30,7 @@ export function MeetCard({
   priority = false,
   stacked = false,
   bio,
+  company = false,
 }: {
   image: string;
   name: string;
@@ -44,7 +46,11 @@ export function MeetCard({
   stacked?: boolean;
   /** A line or two under the logo (stacked only). */
   bio?: string;
+  /** The faculty cards' company line (2026-10-23, the team's ask): no kicker, and the company as its
+   *  mark in a box with its name beside it (the logo tiles where there is no mark yet). */
+  company?: boolean;
 }) {
+  const mark = company && logo?.src ? brandMark(logo.src) : null;
   return (
     <article className="ssx-card" data-align={align} data-layout={stacked ? 'stacked' : undefined}>
       <div className="ssx-card__media">
@@ -61,17 +67,28 @@ export function MeetCard({
         />
       </div>
       <div className="meet-card__content">
-        <p className="meet-card__kicker" data-part="title">
-          {kicker}
-        </p>
+        {company ? null : (
+          <p className="meet-card__kicker" data-part="title">
+            {kicker}
+          </p>
+        )}
         <h3 className="meet-card__name" data-part="title">
           {name}
         </h3>
         <p className="meet-card__role" data-part="description">
           {role}
         </p>
+        {mark ? (
+          <span className="mc-co" data-part="logos">
+            <span className="mc-co__mark" data-inset={mark.bg ? '' : undefined} style={{ background: mark.bg }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={mark.src} alt="" loading="lazy" decoding="async" />
+            </span>
+            <span className="mc-co__name">{logo!.name}</span>
+          </span>
+        ) : null}
         {/* every logo on its brand's tile (2026-10-13): two side by side, or one */}
-        {(logos && logos.length > 1 ? logos : logo?.src ? [logo] : null) ? (
+        {mark ? null : (logos && logos.length > 1 ? logos : logo?.src ? [logo] : null) ? (
           <div className="meet-card__pair" data-part="logos" data-count={logos && logos.length > 1 ? 2 : 1} role="img" aria-label={(logos && logos.length > 1 ? logos : [logo!]).map((l) => l.name).join(', ')}>
             {(logos && logos.length > 1 ? logos.slice(0, 2) : [logo!]).map((l) => {
               const t = l.src ? brandTile(l.src) : null;

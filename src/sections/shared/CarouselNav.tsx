@@ -41,7 +41,7 @@ export function CarouselNav({
   atStart = false,
   atEnd = false,
   running = false,
-  interval,
+  interval: _interval,
   progress,
   tone = 'light',
   className,
@@ -66,6 +66,9 @@ export function CarouselNav({
   tone?: 'light' | 'dark';
   className?: string;
 }) {
+  // no timed fill and so no autoplay anywhere (2026-10-23, the team's ask: nothing moves on its own)
+  const interval = undefined as number | undefined;
+  void _interval;
   const ref = React.useRef<HTMLDivElement>(null);
   // What is watched: a still wrapper. The controls themselves wait 72px low before they enter,
   // and inside a clipping card (the Innovation Lab's panel) that part is cut off, so they would

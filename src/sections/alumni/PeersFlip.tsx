@@ -16,6 +16,7 @@ function Logo({ logo }: { logo: ResolvedLogo }) {
       alt=""
       width={logo.width}
       height={logo.height}
+      loading="lazy"
       decoding="async"
       className="peers-flip-logo"
       // its width at one visual weight (`resolveLogos`), scaled to the cell in CSS

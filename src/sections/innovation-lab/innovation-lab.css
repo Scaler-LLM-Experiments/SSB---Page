@@ -216,3 +216,12 @@ main section.lab + section [data-enter='header'] {
     will-change: transform;
   }
 }
+
+/* phones and tablets, shorter (2026-10-23, the team's ask: "make the section smaller, the bottom four
+   smaller, in a single line"): the drone build 16:9 across the top, the four under it as one row of
+   small squares (was two rows of large ones) */
+@media (width < 1056px) {
+  .lab-mosaic { grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-areas: 'hero hero hero hero' 'a b d e'; gap: var(--space-2); }
+  .lab-hero { aspect-ratio: 16 / 9; }
+  .lab-tile:not(.lab-hero) { aspect-ratio: 1; }
+}

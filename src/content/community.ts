@@ -132,7 +132,7 @@ export const beyondPlacements = {
 /** Deck p6: "Investors & Founders on Campus" (its quote is the testimonial banner). */
 export const investors = {
   eyebrow: 'On campus',
-  title: 'Investors & Founders on Campus',
+  title: 'Investors and founders, on campus.|From Sequoia, Peak XV and more.',
   sub: 'Investors and founders from Sequoia, Peak XV, McKinsey, Cashfree and Lightrock meet SSB students on campus.',
   // Photos in public/people (640x800); logos in public/logos, shown white on the card.
   people: [
@@ -228,7 +228,7 @@ export const sharkTank = {
  *  People without a photo yet are listed but not shown (`image` unset); add it to show them. */
 export const mentorsSection = {
   eyebrow: 'Mentors',
-  title: 'Mentored by the Builders of Zomato, Flipkart, Paytm and CRED',
+  title: 'Mentored by the people who built India’s startups.|Zomato, Flipkart, Paytm and CRED.',
   sub: 'Founders and investors behind some of India’s best-known companies mentor SSB students.',
   // the logos (2026-10-13): each as its brand shows it, its own colours on its own ground (Zomato,
   // Freecharge: the mark white on their red and orange; Blinkit on its yellow; Flipkart, PhonePe their
@@ -276,7 +276,7 @@ export const mentorsSection = {
 };
 export const foundingTeamSection = {
   eyebrow: 'Leadership',
-  title: 'SSB’s Founding Team',
+  title: 'The team that built SSB.|From Meta, Uber, McKinsey and BCG.',
   sub: 'Leaders from Meta, McKinsey, BCG, Uber, Google and Bain who built SSB.',
   people: [
     {
@@ -330,7 +330,7 @@ export const foundingTeamSection = {
 /** Deck p15: Super Mentor Sessions. */
 export const superMentors = {
   eyebrow: 'Sessions',
-  title: 'Super Mentor Sessions',
+  title: 'Super Mentor Sessions.|Leaders from Google, Blinkit, PhonePe and OpenAI.',
   sub: 'Supported & Mentored by India’s Top Business Leaders.',
   // The deck's copy (name, role, line); the thumbnails and logos of Scaler School of Technology's
   // "Access To Industry Leaders" (scaler.com/school-of-technology); videos on YouTube.
@@ -370,10 +370,13 @@ export const superMentors = {
   ] satisfies Session[],
 };
 
+/** A photo in Life Beyond the Classroom's mosaic; no `media`: a placeholder naming the photo (`alt`). */
+export type CampusPhoto = { media?: string; alt: string; caption?: string; position?: string };
+
 /** Deck p24: Life Beyond the Classroom. Photos: the team's campus shoot (2026-10-07), public/campus. */
 export const campusLife = {
   eyebrow: 'Campus life',
-  title: 'Life Beyond the Classroom.',
+  title: 'Life beyond the classroom.|A fully residential campus in Bengaluru.',
   sub: 'Fully residential campus in Bengaluru · Shared Innovation Lab and campus with SST · Backed by Peak XV, Lightrock, Tiger Global.',
   /** The mosaic's middle photo: on desktop it arrives full-bleed and pulls back into its tile. */
   feature: { media: '/campus/cohort.webp', alt: 'An SSB cohort together on campus', position: '50% 62%' },
@@ -406,6 +409,68 @@ export const campusLife = {
     { media: '/campus/building.webp', alt: 'The SSB building in Bengaluru', position: '50% 55%' },
     { media: '/campus/classroom.webp', alt: 'Students in an SSB lecture hall', position: '50% 40%' },
   ],
+  /** The mosaic's other tabs (2026-10-23, the team's ask): the same five tiles, each tab its own photos
+   *  and a caption on each. A tile with no `media` is a marked placeholder naming the photo to come. */
+  galleries: [
+    // (review call, 21 Oct 2026) the tabs the team named: classrooms, sports and gym, clubs, fests,
+    // cultural. Our photos where we have them; each placeholder names the shot to come
+    {
+      id: 'classrooms',
+      label: 'Classrooms',
+      feature: { media: '/campus/classroom.webp', alt: 'Students in an SSB lecture hall', caption: 'A lecture hall at SSB', position: '50% 40%' },
+      photos: [
+        { alt: 'Photo: a case discussion in class' },
+        { alt: 'Photo: a workshop in the Innovation Lab' },
+        { alt: 'Photo: a guest lecture' },
+        { alt: 'Photo: students presenting to a panel' },
+      ],
+    },
+    {
+      id: 'sports',
+      label: 'Sports & gym',
+      feature: { media: '/campus/gym.webp', alt: 'The campus gym', caption: 'The campus gym', position: '45% 60%' },
+      photos: [
+        { alt: 'Photo: cricket or football on campus' },
+        { alt: 'Photo: sports day' },
+        { alt: 'Photo: a morning run or yoga' },
+        { alt: 'Photo: the indoor games room' },
+      ],
+    },
+    {
+      id: 'clubs',
+      label: 'Clubs',
+      feature: { media: '/campus/flags.webp', alt: 'SSB banners in the campus grounds', caption: 'The student clubs', position: '50% 70%' },
+      photos: [
+        { alt: 'Photo: the Marketing Club at work' },
+        { alt: 'Photo: the Consulting Club’s case session' },
+        { alt: 'Photo: a club meet-up' },
+        { alt: 'Photo: a club’s guest session' },
+      ],
+    },
+    {
+      id: 'fests',
+      label: 'Fests & events',
+      feature: { media: '/on-campus/anupam-mittal.webp', alt: 'Anupam Mittal on campus with SSB students', caption: 'Anupam Mittal on campus', position: '50% 40%' },
+      photos: [
+        { media: '/on-campus/ankur-warikoo.webp', alt: 'Ankur Warikoo at the SSB convocation', caption: 'Ankur Warikoo at convocation', position: '50% 40%' },
+        { media: '/campus/arch.webp', alt: 'The SSB arch on Commencement Day', caption: 'Commencement Day', position: '50% 50%' },
+        { alt: 'Photo: the annual fest, on stage' },
+        { alt: 'Photo: a hackathon or case competition' },
+      ],
+    },
+    {
+      id: 'cultural',
+      label: 'Cultural',
+      // PLACEHOLDER: no cultural photos yet; each tile names the shot to come
+      feature: { alt: 'Photo: a cultural night, on stage' },
+      photos: [
+        { alt: 'Photo: Diwali or Holi on campus' },
+        { alt: 'Photo: a music or open-mic night' },
+        { alt: 'Photo: a dance performance' },
+        { alt: 'Photo: a festival dinner' },
+      ],
+    },
+  ] as { id: string; label: string; feature: CampusPhoto; photos: CampusPhoto[] }[],
   follow: [
     {
       handle: '@scalerschool_of_business',
@@ -426,4 +491,56 @@ export const inTheNews = {
     title: 'Headline to come',
     mediaLabel: 'Publication logo / article image',
   })) satisfies Story[],
+};
+
+/** One company in "Built at SSB" (BuiltSection, from the concept site's /v4, 2026-10-23). */
+export type BuiltCompany = {
+  company: string;
+  sector: string;
+  /** Founders as shown ("Mayank & Sanskriti"), their initials on the chip, and an optional photo. */
+  by: string;
+  initials: string;
+  avatar?: string;
+  role: string;
+  story: string;
+  stat: { value: string; label: string };
+  image: { src: string; alt: string; width: number; height: number };
+  /** The photo's focal point (0–1), for object-position and the hotspots' placement. */
+  focus: [number, number];
+  /** How dark the top gradient runs (0–1): lighter photos need more under the white type. */
+  topShade: number;
+  /** A note on the photo, opened from a dot at (x, y), as fractions of the photo. */
+  hotspot: { x: number; y: number; label: string; text: string };
+};
+
+/** "Built at SSB": the concept site's /v4 section (the team's pick, 2026-10-23), in place of
+ *  Beyond Placements' card rows. Copy, photos and figures as there; story links to come. */
+export const builtAtSsb = {
+  eyebrow: 'Built at SSB',
+  title: 'Students didn’t just build careers.',
+  titleTail: 'They built companies.',
+  label: 'Companies built by Cohort 1 students',
+  companies: [
+    { company: 'Hummusapiens', sector: 'Healthy snacking', by: 'Dr. Charles Chacko Porathoor', initials: 'CP', role: 'Founder · Cohort 1', story: '#', stat: { value: '₹50L', label: 'Offered by Anupam Mittal' }, image: { src: '/media/built/hummus.webp', alt: 'A bowl of hummus with chickpeas and olive oil on dark slate', width: 1600, height: 1090 }, focus: [0.5, 0.5], topShade: 0.55, hotspot: { x: 0.44, y: 0.42, label: 'On campus', text: 'Pitched to Shark Tank India judge Anupam Mittal at SSB.' } },
+    { company: 'Gredo', sector: 'Food-tech', by: 'Mayank & Sanskriti', initials: 'MS', role: 'Founders · Cohort 1', story: '#', stat: { value: '₹1Cr+', label: 'ARR' }, image: { src: '/media/built/gredo.webp', alt: 'Three glass meal-prep boxes of grains, vegetables and lentils', width: 1600, height: 1280 }, focus: [0.5, 0.45], topShade: 0.66, hotspot: { x: 0.25, y: 0.48, label: 'Where to find it', text: 'Live on Zomato and Swiggy.' } },
+    { company: 'Dream Kit', sector: 'STEAM toys', by: 'Aashish US', initials: 'AU', avatar: '/alumni/aashish-us.webp', role: 'Founder · Cohort 1', story: '#', stat: { value: '12,000+', label: 'Students across schools' }, image: { src: '/media/built/dreamkit.webp', alt: 'A child building a robot from colourful snap-together blocks', width: 1600, height: 1066 }, focus: [0.58, 0.5], topShade: 0.6, hotspot: { x: 0.535, y: 0.36, label: 'The product', text: 'A homegrown STEAM toy brand that teaches science through play.' } },
+    { company: 'GradeSense', sector: 'AI · EdTech', by: 'Ayush Poojary', initials: 'AP', role: 'Founder · Cohort 1', story: '#', stat: { value: '50,000+', label: 'Answer sheets graded' }, image: { src: '/media/built/gradesense.webp', alt: 'A fountain pen writing by hand on lined paper', width: 1600, height: 1202 }, focus: [0.45, 0.55], topShade: 0.6, hotspot: { x: 0.37, y: 0.62, label: 'The product', text: 'AI that evaluates descriptive and handwritten answer sheets at scale.' } },
+    { company: 'Creator business', sector: 'Creator economy', by: 'Paritosh Sinha', initials: 'PS', role: 'Founder · Cohort 1', story: '#', stat: { value: '200K', label: 'Followers, up from 8K' }, image: { src: '/media/built/creator.webp', alt: 'A studio microphone with a pop filter in a dark recording room', width: 1600, height: 1066 }, focus: [0.62, 0.5], topShade: 0.5, hotspot: { x: 0.66, y: 0.44, label: 'The bet', text: 'Skipped placements to build his creator business full-time.' } },
+    { company: 'Tally Konnect', sector: 'B2B SaaS', by: 'Moh Agarwal', initials: 'MA', avatar: '/alumni/moh-agarwal.webp', role: 'Founder · Cohort 1', story: '#', stat: { value: '₹5Cr', label: 'Valuation' }, image: { src: '/media/built/tally.webp', alt: 'Tall warehouse racks stacked with cartons under strip lights', width: 1600, height: 1065 }, focus: [0.6, 0.5], topShade: 0.55, hotspot: { x: 0.72, y: 0.5, label: 'The product', text: 'An ERP automation platform that took the family business digital.' } },
+    { company: 'ParkEase', sector: 'Mobility', by: 'Yash Ramchandani', initials: 'YR', role: 'Founder · Cohort 1', story: '#', stat: { value: '10,000+', label: 'Cars handed over' }, image: { src: '/media/built/parkease.webp', alt: 'A long, dimly lit parking garage lined with cars', width: 1600, height: 1200 }, focus: [0.5, 0.6], topShade: 0.5, hotspot: { x: 0.5, y: 0.6, label: 'The product', text: 'A smart valet platform for malls, hotels and high-footfall venues.' } },
+    { company: 'Zari & Co.', sector: 'Fashion', by: 'Impanna Reddy', initials: 'IR', role: 'Founder · Cohort 1', story: '#', stat: { value: '₹50L', label: 'Raised' }, image: { src: '/media/built/zari.webp', alt: 'Red silk saree with gold zari motifs and a string of pearls', width: 1600, height: 1200 }, focus: [0.45, 0.5], topShade: 0.55, hotspot: { x: 0.3, y: 0.52, label: 'The line', text: 'A premium Kanjivaram bridal line.' } },
+  ] as BuiltCompany[],
+};
+
+/** "In the press": the concept site's /v4 section (2026-10-23, the team's pick, in place of In the
+ *  News), copy and links as there; the publications' logos in public/media/press. */
+export const press = {
+  eyebrow: 'In the press',
+  title: 'In the press.|What has been written about SSB.',
+  articles: [
+    { outlet: 'The Hindu BusinessLine', short: 'BusinessLine', logo: { src: '/media/press/businessline.svg', h: 20 }, date: '2026-04-22', dateLabel: '22 Apr 2026', title: 'Scaler School of Business adopts practice-led MBA model', text: 'Student teams generated over ₹15 lakh in six weeks through D2C businesses.', href: 'https://www.thehindubusinessline.com/news/education/scaler-school-of-business-adopts-practice-led-mba-model/article70893572.ece' },
+    { outlet: 'The Tribune', short: 'The Tribune', logo: { src: '/media/press/tribune.png', h: 24 }, date: '2026-07-29', dateLabel: '29 Jul 2026', title: 'Anupam Mittal asks “50 lakh mein kitna equity dega?” after meeting SSB student startups', text: 'He reviewed Hummusapiens, Gredo, GradeSense and Dream Kit on campus.', href: 'https://www.tribuneindia.com/news/business/anupam-mittal-says-50-lakh-mein-kitna-equity-dega-after-meeting-startups-built-by-scaler-school-of-business-students' },
+    { outlet: 'Inshorts', short: 'Inshorts', logo: { src: '/media/press/inshorts.png', h: 22 }, date: '2026-05-11', dateLabel: '11 May 2026', title: 'Scaler School of Business founding cohort achieves ₹18 LPA average CTC', text: 'A 3.2x average hike, with hiring partners including Blinkit, Urban Company and Scapia.', href: 'https://inshorts.com/en/news/scaler-school-of-business-founding-cohort-achieves--18-lpa-average-ctc-1778474412054' },
+    { outlet: 'Outlook Business', short: 'Outlook Business', logo: { src: '/media/press/outlookbusiness.png', h: 30 }, date: '2024-05-01', dateLabel: '1 May 2024', title: 'Scaler diversifies its educational offering, launches Scaler School of Business', text: 'The launch of the full-time PGP in Management and Technology in Bengaluru.', href: 'https://www.outlookbusiness.com/corporate/scaler-diversifies-its-educational-offering-launches-scaler-school-of-business' },
+  ],
 };

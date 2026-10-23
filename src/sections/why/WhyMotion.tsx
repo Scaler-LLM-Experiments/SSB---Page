@@ -6,8 +6,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ease, motionTokens, prefersReducedMotion, useMotion } from '@kishanscaler/ssx-ui/motion';
 
 import { useSectionEntrance } from '@/sections/faculty/useSectionEntrance';
+import { offsetPx } from '@/lib/motion-offset';
 
-const { duration: d, stagger: st, offset } = motionTokens;
+const { duration: d, stagger: st } = motionTokens;
+const offset = offsetPx; // px, not the tokens' rem: see motion-offset.ts
 
 /** Seconds each role holds before the next turns over it. */
 const ROLE_HOLD = 2.2;

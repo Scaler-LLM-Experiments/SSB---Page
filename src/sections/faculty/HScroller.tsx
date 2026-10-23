@@ -27,7 +27,7 @@ const ArrowRight = () => (
  *
  * Mark the second (visual) copy of each item with `data-copy`.
  */
-export function useHScroller({ speed = 32, auto = true }: { speed?: number; auto?: boolean } = {}) {
+export function useHScroller({ speed = 32, auto = false }: { speed?: number; auto?: boolean } = {}) {
   const ref = React.useRef<HTMLUListElement>(null);
   const holdUntil = React.useRef(0);
 

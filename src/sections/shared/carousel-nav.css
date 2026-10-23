@@ -295,3 +295,23 @@
     animation: none;
   }
 }
+
+/* ── Smaller everywhere (2026-10-23, the team's ask: "too big"): the track and arrows 32px (were 40),
+   the dots 6px (were 8), the active dot 28px (was 40; 22 on a phone), the arrow glyph 14px. One
+   rule for every carousel on the page. ── */
+.cn { --cn-h: 32px; --cn-active: 28px; --cn-d: 6px; gap: var(--space-1-5); }
+.cn-dot::before { width: var(--cn-d); height: var(--cn-d); }
+.cn-dot[aria-current='true']::before { width: var(--cn-active); }
+.cn-fill, .cn-dot .cn-fill { width: calc(var(--cn-d) + (var(--cn-active) - var(--cn-d)) * var(--cn-p, 0)); height: var(--cn-d); }
+.cn-arrow { width: var(--cn-h); }
+.cn-arrow svg { width: 14px; height: 14px; }
+@media (max-width: 671px) { .cn { --cn-active: 22px; } }
+.cn-fill[data-timed] { width: var(--cn-d); }
+@keyframes cn-fill { to { width: var(--cn-active); } }
+
+/* ── The active dot a dot, not a bar (2026-10-23, the team's ask: no autoplay left to show as a
+   filling bar): every dot the same 6px, the one on show in the brand green, at every width ── */
+.cn, .cn:is(*) { --cn-active: var(--cn-d); }
+@media (max-width: 671px) { .cn, .cn:is(*) { --cn-active: var(--cn-d); } }
+.cn-dot[aria-current='true']::before { width: var(--cn-d); background: var(--cn-fill); }
+.cn-fill, .cn-fill[data-timed] { width: var(--cn-d) !important; animation: none !important; background: var(--cn-fill); }

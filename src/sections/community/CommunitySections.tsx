@@ -20,7 +20,9 @@ import { RowSection } from '@/sections/shared/RowSection';
 import { SessionCard } from './SessionCard';
 import { Accent } from '@/sections/shared/Accent';
 import { VentureCard } from './VentureCard';
+import '@/sections/people-tabs/people-tabs.css';
 import './community.css';
+import { Title } from '@/sections/shared/Title';
 
 /*
  * The deck's remaining sections, laid out with placeholders for their photos and
@@ -185,13 +187,93 @@ function ClubCard({ club }: { club: (typeof campusLife.clubs)[number] }) {
   );
 }
 
+/** One mosaic tile: the photo with its caption on a glass chip, or a marked placeholder naming it. */
+function CampusTile({ photo, eager }: { photo: { media?: string; alt: string; caption?: string; position?: string }; eager?: boolean }) {
+  if (!photo.media) {
+    return (
+      <div className="cm-ph" role="img" aria-label={photo.alt}>
+        <span>[{photo.alt}]</span>
+      </div>
+    );
+  }
+  return (
+    <>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={photo.media} alt={photo.alt} width={1600} height={1067} loading={eager ? 'eager' : 'lazy'} decoding="async" style={{ objectPosition: photo.position }} />
+      {photo.caption ? <figcaption className="cm-cap">{photo.caption}</figcaption> : null}
+    </>
+  );
+}
+
+/**
+ * The mosaic's tabs (2026-10-23, the team's ask): Campus, then Super Mentor Sessions, Events, Cultural;
+ * a segmented control (the people tabs' pill) under the heading, each tab its own five photos in the
+ * same mosaic. The scroll moment plays on Campus, the first; the other tabs' photos fade in as chosen.
+ */
+function CampusTabs({ labels, active, onSelect }: { labels: string[]; active: number; onSelect: (i: number) => void }) {
+  const tabs = React.useRef<(HTMLButtonElement | null)[]>([]);
+  const [pill, setPill] = React.useState<{ x: number; w: number } | null>(null);
+  React.useLayoutEffect(() => {
+    const measure = () => {
+      const t = tabs.current[active];
+      if (t) setPill({ x: t.offsetLeft, w: t.offsetWidth });
+    };
+    measure();
+    const row = tabs.current[0]?.parentElement;
+    const t = tabs.current[active];
+    if (row && t) row.scrollTo({ left: t.offsetLeft - (row.clientWidth - t.offsetWidth) / 2, behavior: 'smooth' });
+    if (!row) return undefined;
+    const ro = new ResizeObserver(measure);
+    ro.observe(row);
+    return () => ro.disconnect();
+  }, [active]);
+  const onKey = (e: React.KeyboardEvent) => {
+    const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+    if (!d) return;
+    e.preventDefault();
+    const next = (active + d + labels.length) % labels.length;
+    onSelect(next);
+    tabs.current[next]?.focus();
+  };
+  return (
+    <div className="pt-tabs cm-tabs">
+      <div className="pt-switch-wrap">
+        <div className="pt-switch" role="tablist" aria-label="Life at SSB" onKeyDown={onKey}>
+          {pill ? <span className="pt-pill" style={{ transform: `translateX(${pill.x}px)`, width: pill.w }} aria-hidden="true" /> : null}
+          {labels.map((l, i) => (
+            <button
+              key={l}
+              ref={(el) => {
+                tabs.current[i] = el;
+              }}
+              type="button"
+              role="tab"
+              id={`cm-tab-${i}`}
+              aria-controls="cm-panel"
+              aria-selected={i === active}
+              tabIndex={i === active ? 0 : -1}
+              className="pt-tab"
+              onClick={() => onSelect(i)}
+            >
+              {l}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function CampusLifeSection() {
   const ref = React.useRef<HTMLElement>(null);
+  const [tab, setTab] = React.useState(0);
   // The Innovation Lab's moment (the team's ask, 2026-10-07): on desktop the cohort arrives
   // full-bleed and pulls back into the middle of a mosaic of the campus; elsewhere the tiles wipe
   // open. The follow buttons float on the cohort in glass, coming up with the heading.
   useLabMotion(ref);
   const c = campusLife;
+  const labels = ['Campus', ...c.galleries.map((g) => g.label)];
+  const gallery = tab === 0 ? null : c.galleries[tab - 1];
   return (
     <>
       <Section ref={ref} density="roomy" aria-labelledby="campus-title" className="lab cm">
@@ -204,30 +286,24 @@ export function CampusLifeSection() {
                     {c.eyebrow}
                   </Heading>
                   <Heading as="h2" size="display" id="campus-title">
-                    {c.title}
+                    <Title text={c.title} />
                   </Heading>
                   <Text size="lg" tone="secondary">
                     {c.sub}
                   </Text>
                 </div>
+                <CampusTabs labels={labels} active={tab} onSelect={setTab} />
               </div>
 
-              <div data-lab-mosaic className="lab-mosaic">
+              {/* the tiles stay put (the scroll moment holds them); only their photos change, keyed so a
+                  new tab's fade in */}
+              <div data-lab-mosaic className="lab-mosaic" id="cm-panel" role="tabpanel" aria-labelledby={`cm-tab-${tab}`} data-gallery={gallery ? '' : undefined}>
                 <div data-lab-slot className="lab-slot cm-slot">
                   <figure data-lab-hero className="lab-tile lab-hero">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={c.feature.media}
-                      alt={c.feature.alt}
-                      width={1600}
-                      height={1067}
-                      loading="lazy"
-                      decoding="async"
-                      style={{ objectPosition: c.feature.position }}
-                    />
+                    <CampusTile key={tab} photo={gallery ? gallery.feature : c.feature} eager={!!gallery} />
                   </figure>
-                  {/* follow campus life: the two accounts as glass buttons on the photo */}
-                  <div data-lab-overlay className="cm-social" role="group" aria-labelledby="campus-follow">
+                  {/* follow campus life: the two accounts as glass buttons on the photo (Campus only) */}
+                  <div data-lab-overlay className="cm-social" role="group" aria-labelledby="campus-follow" hidden={!!gallery}>
                     <p id="campus-follow" className="cm-social__label">
                       Follow us on
                     </p>
@@ -240,18 +316,9 @@ export function CampusLifeSection() {
                     ))}
                   </div>
                 </div>
-                {c.photos.map((photo, i) => (
-                  <figure key={photo.media} data-lab-tile data-area={AREAS[i]} className="lab-tile">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={photo.media}
-                      alt={photo.alt}
-                      width={1600}
-                      height={1067}
-                      loading="lazy"
-                      decoding="async"
-                      style={{ objectPosition: photo.position }}
-                    />
+                {(gallery ? gallery.photos : c.photos).map((photo, i) => (
+                  <figure key={i} data-lab-tile data-area={AREAS[i]} className="lab-tile">
+                    <CampusTile key={tab} photo={photo} eager={!!gallery} />
                   </figure>
                 ))}
               </div>

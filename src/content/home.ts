@@ -111,17 +111,20 @@ export type HeroFrameContent = {
 export const heroFrame: HeroFrameContent = {
   // PLACEHOLDER date: the mock's countdown (1 day 2 hours out); the real Phase 1 deadline to come
   deadline: {
-    message: 'Final Intake Phase 1 - Application Deadline',
-    shortMessage: 'Phase 1 Application Deadline',
-    to: '2026-10-24T23:59:00+05:30',
-    label: '24 Oct, 11:59 PM IST',
+    // (review call, 21 Oct 2026) Intake 2 closes 27 Dec, as the fee table
+    message: 'Intake 2 applications close 27 Dec',
+    shortMessage: 'Intake 2 closes 27 Dec',
+    to: '2026-12-27T23:59:00+05:30',
+    label: '27 Dec, 11:59 PM IST',
   },
-  eyebrow: 'Full-Time PGP in Management & Tech',
+  // (review call, 21 Oct 2026) the programme's name; one subline, the "build startups" line dropped
+  eyebrow: 'Full-Time PGP in Management & Technology',
   title: 'Learn Business hands-on from 100+ Industry Leaders & Faculty',
-  line: ['Build startups & AI products', 'No tech background required'],
+  line: ['18 months, full-time, on campus in Bengaluru', 'No tech background required'],
   // placeholder hrefs, as the other folds'
   primaryCta: { label: 'Apply Now', href: '#apply' },
-  secondaryCta: { label: 'Download Brochure', href: '#brochure' },
+  // (review call) the placement report in place of the brochure; PLACEHOLDER href until the report's link
+  secondaryCta: { label: 'Download Placement Report', href: '#placement-report' },
   // (the team, 2026-10-22: "Learn from Uber" read oddly) the title's own words, leading into the logos
   logosLabel: 'Faculty & leaders from',
   logos: [

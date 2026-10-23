@@ -18,6 +18,7 @@ import { LearnByDoingBlock } from './learn';
 import { CareerPrepBlock, ForkBlock, PortfolioGrid, SectionFrame, ThreadsTable, YearSpine, useWidth } from './blocks';
 import { BuildJourney } from './concepts/build';
 import { StackJourney } from './concepts/stack';
+import { StageJourney } from './concepts/stage';
 import './journey.css';
 import './concepts/concepts.css';
 
@@ -116,6 +117,7 @@ export function CurriculumJourney({ config, journey: given, portal, initialOpen 
               if (view === 'by-year') {
                 const props = { j, cfg, width, portal: host, initialOpen };
                 if (cfg.concept === 'build') return <BuildJourney key={id} {...props} />;
+                if (cfg.termsStage) return <StageJourney key={id} j={j} cfg={cfg} width={width} portal={host} />;
                 if (cfg.concept === 'stack') return <StackJourney key={id} {...props} />;
               }
               return view === 'by-year' ? (

@@ -5,7 +5,9 @@ import { Container, Heading, Section, Text } from '@kishanscaler/ssx-ui';
 
 import { useSectionEntrance } from '@/sections/faculty/useSectionEntrance';
 import { ScrollDots } from './ScrollDots';
+import { useRows } from './useRows';
 import './row-section.css';
+import { Title } from '@/sections/shared/Title';
 
 /**
  * A section with the site's header (eyebrow, title, line, arrows at the right)
@@ -27,6 +29,7 @@ export function RowSection({
   heading,
   nav = true,
   drift = false,
+  stacked = false,
   children,
 }: {
   id: string;
@@ -42,10 +45,13 @@ export function RowSection({
   nav?: boolean;
   /** The cards in two rows drifting sideways, as Alumni's and Faculty's (in place of the row and its dots). */
   drift?: boolean;
+  /** Two still rows, each card over another, scrolled by hand with the dots (2026-10-23, as Alumni's). */
+  stacked?: boolean;
   children: React.ReactNode;
 }) {
   const sectionRef = React.useRef<HTMLElement>(null);
   const rowRef = React.useRef<HTMLUListElement>(null);
+  const rows = useRows(2);
   useSectionEntrance(sectionRef, { decks: ['.rs-row > li > article', '.rs-drift-set > li > article'] });
 
   const items = React.Children.toArray(children);
@@ -65,7 +71,7 @@ export function RowSection({
                 </Heading>
               ) : null}
               <Heading as="h2" size="display" id={`${id}-title`} data-enter="headline">
-                {title}
+                <Title text={title} />
               </Heading>
               {sub ? (
                 <Text size="lg" tone="secondary" data-enter="sub">
@@ -110,6 +116,7 @@ export function RowSection({
         <ul
           ref={rowRef}
           className="rs-row"
+          data-stacked={stacked || undefined}
           aria-label={title}
           style={{ '--rs-card': cardWidth } as React.CSSProperties}
         >
@@ -119,7 +126,7 @@ export function RowSection({
         </ul>
       )}
       {nav && !drift ? (
-        <ScrollDots scroller={rowRef} count={items.length} itemName={itemName} fill="solid" />
+        <ScrollDots scroller={rowRef} count={stacked ? Math.ceil(items.length / rows) : items.length} itemName={itemName} fill="solid" autoplay={!stacked} />
       ) : null}
 
       {after}

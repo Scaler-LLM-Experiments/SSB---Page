@@ -393,3 +393,20 @@
   .alumni-drift-row[data-dir='back'] { animation-direction: reverse; }
   .alumni-row, .alumni-row + .alumni-dots, .alumni-row:is(*), .alumni-row + .alumni-dots:is(*) { display: none !important; }
 }
+
+/* ── Alumni as Faculty (2026-10-23, the team's ask): two straight rows, each card over another,
+   nothing moving by itself; scrolled by hand (the dots and arrows), three and a half columns on
+   desktop, 400px on a tablet, 85% of a phone. The drift is off at every width. ── */
+html body .alumni-drift { display: none !important; }
+html body .alumni-row {
+  --scroller-inset: calc(max(0px, (100% - var(--size-container-max)) / 2) + var(--space-gutter));
+  display: grid !important; grid-template-rows: repeat(2, auto); grid-auto-flow: column; gap: var(--space-4);
+  grid-auto-columns: calc((100vw - (max(0px, (100vw - var(--size-container-max)) / 2) + var(--space-gutter)) - 3 * var(--space-4)) / 3.5);
+}
+html body .alumni-row > li { width: auto; }
+html body .alumni-row + .alumni-dots { display: block !important; margin-top: var(--space-6); }
+@media (width < 1056px) { html body .alumni-row { grid-auto-columns: 25rem; } }
+@media (width < 672px) { html body .alumni-row { grid-auto-columns: 85vw; } }
+
+/* phones: two rows again, card over card, as on desktop (2026-10-23, the team's ask: "every such card
+   stacked top and bottom as set earlier"; one row tried that day) */

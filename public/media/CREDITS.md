@@ -14,3 +14,15 @@
 | `lab-*-<width>.webp` (build, hand, space, drone, mentor) | photos from Scaler's own Innovation Lab page ([scaler.com/innovation-lab](https://www.scaler.com/innovation-lab), served from framerusercontent.com), 2026-10-07; resized to 1890/960 (build) and 1400/800 wide | Scaler | ours |
 
 Resized for the page (1400 and 800px wide, or 1600px for the Commons photos), WebP. CC0 asks for no attribution; it is recorded here anyway.
+
+## Singapore (International Immersion, 2026-10-23)
+
+From Wikimedia Commons, resized to 1920px WebP in `public/media/singapore`.
+
+- `singapore/marina-dusk.webp`: Benh LIEU SONG (Flickr), CC BY-SA 4.0, https://commons.wikimedia.org/wiki/File:Singapore_Marina_Bay_Dusk_2018-02-27.jpg
+- `singapore/chinatown.webp`: kallerna, CC BY-SA 4.0, https://commons.wikimedia.org/wiki/File:Pagoda_Street_Chinatown_Singapore.jpg
+- `singapore/cbd-bridge.webp`: Basile Morin, CC BY-SA 4.0, https://commons.wikimedia.org/wiki/File:Skyline_of_the_Central_Business_District_of_Singapore_with_Esplanade_Bridge.jpg
+- `singapore/supertrees.webp`: Mustang Joe, CC0, https://commons.wikimedia.org/wiki/File:Supertree_Grove,_Gardens_by_the_Bay,_Singapore1.jpg
+- `singapore/cbd-sunset.webp`: Basile Morin, CC BY-SA 4.0, https://commons.wikimedia.org/wiki/File:Skylines_of_the_Central_Business_District,_Singapore_at_sunset.jpg
+- `singapore/gardens-dusk.webp`: Nicolas Lannuzel., CC BY-SA 2.0, https://commons.wikimedia.org/wiki/File:Gardens_by_the_Bay_and_Marina_Bay_Sands,_Singapore,_at_dusk_-_20120928.jpg
+- `singapore/dragon-boat.webp`: Walk around the RED DOT from Singapore, CC0, https://commons.wikimedia.org/wiki/File:Dragonboat_Festival_-_the_race_-_Flickr_-_GeorgeTan%5E1.jpg

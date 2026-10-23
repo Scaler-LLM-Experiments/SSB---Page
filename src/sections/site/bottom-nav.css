@@ -363,3 +363,23 @@
   .bn-call { transition: bottom 420ms cubic-bezier(0.22, 1, 0.36, 1), transform 520ms cubic-bezier(0.22, 1, 0.36, 1), opacity 260ms ease; }
   html[data-bn-rail] .bn-call { bottom: calc(var(--bn-apply-h, 72px) + var(--space-2) + var(--cr-nav-h, 46px) + var(--space-3)); }
 }
+
+/* phones' tab labels a step smaller (2026-10-23, the team's ask): 11px, under the system's 12px floor
+   by request; tighter tracking so the longest ("Admission & Fees") keeps clear of its neighbours */
+html body .bn-tab span { font-size: 0.6875rem !important; letter-spacing: -0.005em; }
+
+/* phones: with the navbar hidden (data-nav-hidden), the section strip moves up under the deadline bar
+   and takes a surface of its own (it shared the navbar's frosted layer) */
+@media (width < 672px) {
+  .bn-strip { transition: transform 320ms cubic-bezier(0.32, 0.72, 0, 1), opacity 200ms ease, top 320ms cubic-bezier(0.32, 0.72, 0, 1); }
+  html[data-nav-hidden] .bn-strip { top: var(--hf-bar, 0px) !important; background: var(--glass-surface, rgb(255 255 255 / 0.85)) !important;
+    -webkit-backdrop-filter: blur(16px) !important; backdrop-filter: blur(16px) !important; border-bottom: 1px solid var(--border-subtle); }
+}
+
+/* desktop section nav a step smaller (2026-10-23, the team's ask): the sections and the call-back at
+   14px (were 16) */
+@media (width >= 672px) {
+  .bn-bar .bn-item { font-size: var(--type-label-size, 0.875rem); }
+  .bn-bar .bn-cta-label, .bn-bar a:has(.bn-cta-label) { font-size: var(--type-label-size, 0.875rem); }
+}
+@media (width >= 672px) { html body .bn-bar .bn-cta, html body .bn-cta .bn-cta-label { font-size: var(--type-label-size, 0.875rem); } }

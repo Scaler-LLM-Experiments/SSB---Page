@@ -322,7 +322,7 @@ export function InternshipSection() {
             The internship
           </Heading>
           <Heading as="h2" size="display" id="internship-title" data-enter="headline">
-            Every Learner Interns. Many Change Lanes.
+            Every learner interns. <span className="h-tail">Many change lanes.</span>
           </Heading>
           <Text size="lg" tone="secondary" data-enter="sub">
             The PGP includes a three-to-six-month internship across business functions.

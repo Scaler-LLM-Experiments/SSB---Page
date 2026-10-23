@@ -78,7 +78,7 @@ export function LiveProjectsSection() {
               Live projects
             </Heading>
             <Heading as="h2" size="display" id="live-projects-title" data-enter="headline">
-              Live Consulting Projects With Actual Companies.
+              Live consulting projects. <span className="h-tail">With real companies, for real briefs.</span>
             </Heading>
             <Text size="lg" tone="secondary" data-enter="sub">
               Work through briefs with founders and operators, then defend your recommendations.

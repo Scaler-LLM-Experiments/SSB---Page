@@ -9,12 +9,14 @@ import { ease, motionTokens, prefersReducedMotion, useMotion } from '@kishanscal
 import { labBand, labTurn, labVentures } from '@/content/innovation-lab';
 import { VentureCard } from '@/sections/community/VentureCard';
 import '@/sections/community/community.css';
-import { HeroTitle } from '@/sections/hero/HeroTitle';
 import { Accent } from '@/sections/shared/Accent';
 import { RowSection } from '@/sections/shared/RowSection';
+import { Title } from '@/sections/shared/Title';
 import './innovation-lab.css';
+import { offsetPx } from '@/lib/motion-offset';
 
-const { duration: d, stagger: st, offset } = motionTokens;
+const { duration: d, stagger: st } = motionTokens;
+const offset = offsetPx; // px, not the tokens' rem: see motion-offset.ts
 
 /** Where the scroll moment plays (innovation-lab.css gives the track its length under the same query). */
 const LIVE = '(min-width: 1056px) and (min-height: 640px)';
@@ -75,7 +77,8 @@ export function InnovationLabSection() {
         }
         itemName="startup"
         cardWidth="38rem"
-        drift
+        // two still rows, as Alumni (2026-10-23, the team's ask; was drifting)
+        stacked
       >
         {labVentures.map((v) => (
           <VentureCard key={v.company} {...v} />
@@ -103,7 +106,7 @@ function LabBand() {
                 </Heading>
                 <Heading as="h2" size="display" id="sil-band-title">
                   {/* keeps "non-technical" whole: it broke after "non-" */}
-                  <HeroTitle title={labBand.title} />
+                  <Title text={labBand.title} />
                 </Heading>
                 <Text size="lg" tone="secondary">
                   {labBand.line}
@@ -261,9 +264,8 @@ export function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
           const tall = [r.height / 2 / geo.cy, r.height / 2 / (s.height - geo.cy)];
           geo.scale = Math.min(1, Math.max(...half, ...tall) * 1.02);
           geo.radius = parseFloat(getComputedStyle(tiles[0] ?? slot).borderTopLeftRadius) || 0;
-          // the head rises the system's entrance offset (a rem length), in px
-          geo.rise =
-            parseFloat(offset.enter) * parseFloat(getComputedStyle(document.documentElement).fontSize);
+          // the head rises the system's entrance offset, in px
+          geo.rise = offset.enter;
           offsets = tiles.map((tile) => {
             const b = tile.getBoundingClientRect();
             return { x: b.left - s.left + b.width / 2 - geo.cx, y: b.top - s.top + b.height / 2 - geo.cy };

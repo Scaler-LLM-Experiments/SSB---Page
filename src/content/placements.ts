@@ -6,7 +6,7 @@ import type { PlacementsContent } from '@/sections/placements/types';
 
 export const placements: PlacementsContent = {
   eyebrow: 'Outcomes',
-  title: 'Placement Highlights.',
+  title: 'Placement highlights.|Where our first cohorts went.',
   description: 'Reported outcomes for SSB’s founding PGP cohort.',
   // Ours (2026-10-01), from the deck's figures (87% switched, a 3.2× average hike), for the team to replace.
   lead: 'Reported outcomes for SSB’s founding PGP cohort. They joined Indian startups, global MNCs and digital-first companies, most of them in a new industry or role, earning on average 3.2 times what they did before SSB.',

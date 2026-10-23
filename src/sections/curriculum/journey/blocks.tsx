@@ -24,7 +24,7 @@ import {
   SideDrawerTitle,
   Text,
 } from '@kishanscaler/ssx-ui';
-import { CaretDown, Compass, Hammer, Pause, Play, RocketLaunch } from '@phosphor-icons/react';
+import { CaretDown, Compass, DownloadSimple, Hammer, Pause, Play, RocketLaunch } from '@phosphor-icons/react';
 import type { CareerIcon, CareerPrep, Fork, Journey, Project, Year } from './data';
 import { fmt } from './data';
 import { c, type JourneyConfig } from './config';
@@ -37,6 +37,7 @@ import { ForkPaths } from './fork';
 import { SwipeDeck } from './learn';
 import { ScrollDots } from '@/sections/shared/ScrollDots';
 import { CarouselNav } from '@/sections/shared/CarouselNav';
+import { Title } from '@/sections/shared/Title';
 
 /** Width of an element, for the few decisions CSS container queries cannot make (sheet vs inline). */
 export function useWidth<T extends HTMLElement>(): [React.RefObject<T | null>, number] {
@@ -66,11 +67,21 @@ export function SectionFrame({ j, cfg, view, onView, headingId }: { j: Journey; 
             {j.eyebrow}
           </Heading>
           <Heading as="h2" size="display" id={headingId}>
-            {j.title}
+            <Title text={j.title} />
           </Heading>
           <Text size="lg" className="sj-lede">
             {j.lede}
           </Text>
+          {/* (review call, 21 Oct 2026) a lead-gen CTA: the full curriculum as a brochure. PLACEHOLDER
+              href until the PDF's link; the page's secondary button, unmistakably a button */}
+          <div className="sj-frame-cta">
+            <Button asChild variant="secondary" size="md">
+              <a href="#curriculum-brochure">
+                Download full curriculum
+                <DownloadSimple weight="bold" aria-hidden="true" />
+              </a>
+            </Button>
+          </div>
         </div>
         {/* the carousel's arrows land here (the stack concept portals them in), beside the lede as on the faculty section */}
         <div className="sj-frame-controls" data-frame-controls="" />
@@ -430,7 +441,8 @@ function PrepShowcase({ cards }: { cards: [CareerIcon, { value: string; label: s
         {pill ? (
           <span className="sj-ps-pill" style={{ transform: `translateX(${pill.x}px)`, width: pill.w }} aria-hidden="true">
             {/* the fill: it runs for the card's time, then the next card comes on (restarts with the card) */}
-            <i key={active} onAnimationEnd={() => setActive((a) => (a + 1) % n)} />
+            {/* no auto-advance (2026-10-23, the team's ask): the tabs move only when chosen */}
+            <i key={active} />
           </span>
         ) : null}
         {cards.map(([k], i) => (
@@ -579,7 +591,7 @@ export function CareerPrepBlock({ prep, cfg }: { prep: CareerPrep; cfg: JourneyC
       <header className="sj-career-header">
         <p className="sj-career-eyebrow">Career prep</p>
         <Heading as="h2" size="display" id={id} className="sj-career-head">
-          {prep.title}
+          <Title text={prep.title} />
         </Heading>
         {prep.lede ? (
           <Text size="lg" tone="secondary" className="sj-lede">

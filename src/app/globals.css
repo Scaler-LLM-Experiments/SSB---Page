@@ -110,3 +110,7 @@ main div:has(> :is(h2, h3).type-display + p.type-body-lg) { row-gap: var(--space
 html body :is(.rs-row, .h-scroller, .fs-row, .sj-ai-track, .in-reels-row, .fc-grid, .pt-stack-row, .creator-row, .fc-drift-set, .alumni-drift-set, .rs-drift-set) {
   column-gap: var(--space-4) !important;
 }
+
+/* ── One header (2026-10-23, the team's ask: every section's as the Singapore immersion's): the green
+   eyebrow, a sentence-case statement, its second half in the secondary ink, a quiet sub-line ── */
+main .h-tail, main .sj-ai-accent { color: var(--content-secondary) !important; }

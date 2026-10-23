@@ -8,6 +8,7 @@ import { CardStack } from '@/sections/shared/CardStack';
 import { ScrollDots } from '@/sections/shared/ScrollDots';
 import { MeetCard, type CardLogo } from './MeetCard';
 import { useSectionEntrance } from './useSectionEntrance';
+import { Title } from '@/sections/shared/Title';
 
 export type ShowcasePerson = {
   name: string;
@@ -34,6 +35,7 @@ export function PeopleShowcase({
   people,
   itemName,
   after,
+  company = false,
 }: {
   /** Prefix for the headline's id (`<id>-title`), which labels the section. */
   id: string;
@@ -45,6 +47,8 @@ export function PeopleShowcase({
   itemName: string;
   /** Rendered under the row, inside the section (the investors' VC events). */
   after?: React.ReactNode;
+  /** No "Meet" kicker, and each company as its mark and name (2026-10-23, as the faculty cards). */
+  company?: boolean;
 }) {
   // A plain carousel: no ticker, no loop (the team's call, 2026-10-06).
   const { ref, goTo } = useHScroller({ auto: false });
@@ -66,7 +70,7 @@ export function PeopleShowcase({
               </Heading>
             ) : null}
             <Heading as="h2" size="display" id={`${id}-title`} data-enter="headline">
-              {title}
+              <Title text={title} />
             </Heading>
             {sub ? (
               <Text size="lg" tone="secondary" data-enter="sub">
@@ -94,6 +98,7 @@ export function PeopleShowcase({
               name={m.name}
               role={m.role}
               logo={m.logo}
+              company={company}
             />
           )}
         />
@@ -108,6 +113,7 @@ export function PeopleShowcase({
               name={m.name}
               role={m.role}
               logo={m.logo}
+              company={company}
               align="start"
               priority={i < 5}
             />

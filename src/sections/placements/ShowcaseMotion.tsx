@@ -7,8 +7,10 @@ import { ease, motionTokens, prefersReducedMotion, useMotion } from '@kishanscal
 
 import { useSectionEntrance } from '@/sections/faculty/useSectionEntrance';
 import { fadeControls, stripEntrance } from './carousel';
+import { offsetPx } from '@/lib/motion-offset';
 
-const { duration: d, stagger: st, offset } = motionTokens;
+const { duration: d, stagger: st } = motionTokens;
+const offset = offsetPx; // px, not the tokens' rem: see motion-offset.ts
 
 /** Seconds the recruiters' boxes hold a set of logos before moving on to the next. */
 const CYCLE = 4;

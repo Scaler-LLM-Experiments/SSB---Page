@@ -114,7 +114,7 @@ export const labBand = {
   // SSB's own heading and line for the lab (the live site's section, the team's ask): before,
   // "Scaler Innovation Lab" / "Network with founders, land internships, and work on real startup
   // projects, 10 steps from your classroom."
-  title: 'Scaler’s Innovation Lab for non-technical leaders',
+  title: 'Scaler’s Innovation Lab.|Built for non-technical leaders.',
   line: 'Enter without code. Exit with the capability to build real world products as a Mini CEO.',
   stats: [
     { value: '$1B+', label: 'Combined valuations' },

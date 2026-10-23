@@ -3,6 +3,7 @@ import { Heading, Text, cn } from '@kishanscaler/ssx-ui';
 
 import type { LogoSizing, ResolvedLogo } from '@/lib/logos';
 import type { PlacementRole, PlacementStat } from './types';
+import { Title } from '@/sections/shared/Title';
 
 /** Logos in a grid cell or a wall tile: one visual weight (equal ink), at most 128 × 36. */
 export const TILE_SIZING: LogoSizing = { height: 24, maxWidth: 128, maxHeight: 36 };
@@ -41,7 +42,7 @@ export function PlacementsHeader({
         data-enter="headline"
         className="max-w-(--size-measure-max)"
       >
-        {title}
+        <Title text={title} />
       </Heading>
       <Text size="lg" tone="secondary" data-enter="sub" className="max-w-(--size-measure-max)">
         {description}
@@ -162,6 +163,7 @@ export function LogoImage({ logo }: { logo: ResolvedLogo }) {
       alt=""
       width={logo.width}
       height={logo.height}
+      loading="lazy"
       decoding="async"
       className={cn(!logo.width && 'h-8 w-auto max-w-40')}
     />

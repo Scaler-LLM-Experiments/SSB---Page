@@ -11,7 +11,7 @@ export const bottomNav: {
   items: BottomNavItem[];
   callback: { label: string; href: string };
   /** Phones: the sticky apply bar, Apply now over a row of icon tabs (the team's ask, 2026-10-09);
-   *  the tabs open the school's other pages on the live site, not sections of this one. */
+   *  (review call, 21 Oct 2026) the tabs go to this page's sections until the other pages are refreshed. */
   apply: { label: string; tabs: BottomNavLink[] };
 } = {
   label: 'Sections of the page',
@@ -28,10 +28,10 @@ export const bottomNav: {
   apply: {
     label: 'Apply now',
     tabs: [
-      { label: 'Admission & Fees', href: 'https://www.scaler.com/school-of-business/admission/' },
-      { label: 'Program', href: 'https://www.scaler.com/school-of-business/program/' },
-      { label: 'Internship', href: 'https://www.scaler.com/school-of-business/internship/' },
-      { label: 'Campus Life', href: 'https://www.scaler.com/school-of-business/campus-life/' },
+      { label: 'Admission & Fees', href: '#admissions' },
+      { label: 'Program', href: '#curriculum' },
+      { label: 'Internship', href: '#internship' },
+      { label: 'Campus Life', href: '#campus-title' },
     ],
   },
 };

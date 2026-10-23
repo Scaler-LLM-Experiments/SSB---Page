@@ -6,8 +6,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ease, motionTokens, prefersReducedMotion, useMotion } from '@kishanscaler/ssx-ui/motion';
 
 import { useSectionEntrance } from '@/sections/faculty/useSectionEntrance';
+import { offsetPx } from '@/lib/motion-offset';
 
-const { duration: d, stagger: st, offset } = motionTokens;
+const { duration: d, stagger: st } = motionTokens;
+const offset = offsetPx; // px, not the tokens' rem: see motion-offset.ts
 
 /** Stat cells that arrive together (the desktop row) come up this far apart, in seconds. */
 const CARD_GAP = st.base * 2;
@@ -182,7 +184,7 @@ function logoGrid(root: HTMLElement, reduced: boolean) {
         flip(c, false);
         tl.to(
           c.fronts[from],
-          { autoAlpha: 0, y: `-${offset.enter}`, duration: d.slow, ease: ease('productiveExit') },
+          { autoAlpha: 0, y: -offset.enter, duration: d.slow, ease: ease('productiveExit') },
           0,
         )
           .set(c.fronts[from], { y: 0 }, d.slow)

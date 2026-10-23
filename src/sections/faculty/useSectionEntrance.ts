@@ -5,8 +5,10 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { ease, motionTokens, prefersReducedMotion, useMotion } from '@kishanscaler/ssx-ui/motion';
+import { offsetPx } from '@/lib/motion-offset';
 
-const { duration: d, stagger: st, offset } = motionTokens;
+const { duration: d, stagger: st } = motionTokens;
+const offset = offsetPx; // px, not the tokens' rem: see motion-offset.ts
 
 /**
  * The premium entrance for a section with a header and a row of story cards,
@@ -58,14 +60,17 @@ export function useSectionEntrance(
         : null;
 
       const enter = ease('expressiveEntrance');
-      const long = d.slower; // 0.5s
+      // quicker and smoother (2026-10-23, the team's ask: "a bit fast and smooth"): 0.4s, not 0.5; the
+      // cards' wipe on the entrance curve (it eased in slowly on expressiveInOut), a gentler zoom, tighter
+      // staggers, and each part starting a little sooner as it comes on screen
+      const long = d.slower * 0.8; // 0.4s
 
       // clamp() keeps each start reachable when the section ends the page.
       const tl = gsap.timeline({
         defaults: { ease: enter },
         scrollTrigger: {
           trigger: q('[data-enter="header"]')[0] ?? root,
-          start: 'clamp(top 85%)',
+          start: 'clamp(top 90%)',
           once: true,
         },
       });
@@ -86,7 +91,7 @@ export function useSectionEntrance(
         tl.fromTo(
           split.lines,
           { yPercent: 110 },
-          { yPercent: 0, duration: long, stagger: st.base * 2, onComplete: () => split.revert() },
+          { yPercent: 0, duration: long, stagger: st.base, onComplete: () => split.revert() },
           '<0.05',
         );
       }
@@ -94,7 +99,7 @@ export function useSectionEntrance(
         q('[data-enter="sub"], [data-enter="controls"]'),
         { autoAlpha: 0, y: offset.reveal },
         { ...shown, duration: long, stagger: st.base },
-        '<0.15',
+        '<0.1',
       );
 
       // Blocks below the cards: each fades up as it comes on screen.
@@ -106,7 +111,7 @@ export function useSectionEntrance(
             ...shown,
             duration: long,
             ease: enter,
-            scrollTrigger: { trigger: block, start: 'clamp(top 85%)', once: true },
+            scrollTrigger: { trigger: block, start: 'clamp(top 90%)', once: true },
           },
         );
       });
@@ -114,7 +119,7 @@ export function useSectionEntrance(
       // The decks: each card wipes open bottom to top, one stagger apart, its
       // photo settling from a slight zoom while its text rises in.
       const held: Element[] = [];
-      const gap = st.base * 1.5;
+      const gap = st.base;
       // A deck card can sit inside another (the Innovation Lab's startup cards
       // inside its panel). Tag every deck card so each one animates only the
       // parts whose nearest deck card is itself.
@@ -136,7 +141,7 @@ export function useSectionEntrance(
         }
         const deck = gsap.timeline({
           defaults: { ease: enter },
-          scrollTrigger: { trigger: row ?? cards[0], start: 'clamp(top 75%)', once: true },
+          scrollTrigger: { trigger: row ?? cards[0], start: 'clamp(top 85%)', once: true },
           onComplete: () => row?.removeAttribute('data-hold'),
         });
         onScreen.forEach((card, i) => {
@@ -150,22 +155,22 @@ export function useSectionEntrance(
             {
               clipPath: `inset(0% 0% 0% 0% round ${radius})`,
               duration: long * 1.25,
-              ease: ease('expressiveInOut'),
+              ease: enter,
               clearProps: 'clipPath',
             },
             t,
           );
           deck.fromTo(
             part('[data-part="photo"], [data-slot="card-media"] img'),
-            { scale: 1.18 },
+            { scale: 1.08 },
             { scale: 1, duration: long * 1.5, clearProps: 'transform' },
             t,
           );
           deck.fromTo(
             part('[data-part="title"], [data-part="description"], [data-part="logos"], [data-part="action"]'),
             { autoAlpha: 0, y: offset.reveal },
-            { ...shown, duration: long, stagger: st.base * 1.5 },
-            t + long * 0.45,
+            { ...shown, duration: long, stagger: st.base },
+            t + long * 0.3,
           );
         });
       });

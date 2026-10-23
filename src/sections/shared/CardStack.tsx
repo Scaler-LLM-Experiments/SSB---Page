@@ -138,7 +138,8 @@ export function CardStack<T>({
   // move to the next card stay in step.
   const playing = on && visible && !reduced && n > 1;
   React.useEffect(() => {
-    if (!playing) return;
+    // no autoplay (2026-10-23, the team's ask: nothing moves on its own)
+    if (!playing || true) return;
     const id = window.setTimeout(() => {
       if (!loop && active >= n - 1) setOn(false);
       else go(active + 1);

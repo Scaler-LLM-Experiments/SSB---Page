@@ -1,0 +1,165 @@
+/* =========================================================
+   Built at SSB (BuiltSection): the concept site's /v4 section, on the light page. The header is
+   the page's (eyebrow, display title, its tail in the secondary ink); the stage is the concept's,
+   its values carried over (radii, curves, timings, the glass bar), its type on the page's font.
+   Everything over a photo is white on dark scrims, as there; the page round it is light.
+   ========================================================= */
+
+.bs-sec { --bs-ink: 5 14 9; --bs-mint: #6bee9f; --bs-ease-out: cubic-bezier(0.16, 1, 0.3, 1); --bs-ease-spring: cubic-bezier(0.32, 0.72, 0, 1); }
+
+/* header: eyebrow, then the turn, its second half quieter */
+.bs-head { display: flex; flex-direction: column; gap: var(--space-2); margin-bottom: var(--space-8); }
+.bs-eyebrow { color: var(--content-brand); }
+.bs-title { max-width: 22ch; }
+.bs-title span { color: var(--content-secondary); }
+
+/* the stage: one photo at a time, sliding */
+.bs-stage { position: relative; height: clamp(520px, calc(100svh - 250px), 700px); overflow: hidden; isolation: isolate; border-radius: var(--radius-2xl);
+  background: rgb(var(--bs-ink)); touch-action: pan-y; user-select: none; -webkit-tap-highlight-color: transparent; }
+.bs-track { display: flex; height: 100%; will-change: transform; transition: transform 0.8s cubic-bezier(0.65, 0.05, 0, 1); }
+.bs-slide { position: relative; flex: 0 0 100%; height: 100%; overflow: hidden; }
+/* scrims: from the top under the copy (as dark as the photo needs), and a little at the foot under the bar */
+.bs-slide::after { content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgb(var(--bs-ink) / var(--bs-top, 0.5)) 0%, rgb(var(--bs-ink) / 0) 38%), linear-gradient(0deg, rgb(var(--bs-ink) / 0.5) 0%, rgb(var(--bs-ink) / 0) 26%); }
+/* the photo settles from a slight zoom while it is on show */
+.bs-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.06); transition: transform 7s cubic-bezier(0.2, 0.6, 0.2, 1); pointer-events: none; -webkit-user-drag: none; }
+.bs-slide[data-active] .bs-img { transform: scale(1); }
+
+/* over the photo: the company at the left, its figure at the right */
+.bs-top { position: absolute; z-index: 2; inset: 0 0 auto; display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-6);
+  padding: clamp(20px, 2.2vw, 30px) clamp(20px, 2.4vw, 34px); color: #fff; pointer-events: none; }
+.bs-top > div { opacity: 0; transform: translateY(10px); transition: opacity 0.6s var(--bs-ease-out), transform 0.8s var(--bs-ease-out); }
+.bs-slide[data-active] .bs-top > div { opacity: 1; transform: none; transition-delay: 0.35s; }
+.bs-slide[data-active] .bs-met { transition-delay: 0.45s; }
+.bs-cap-k { display: flex; align-items: center; gap: 10px; margin: 0; font-size: var(--type-eyebrow-size); line-height: 1; font-weight: var(--font-weight-medium); letter-spacing: var(--type-eyebrow-tracking); text-transform: uppercase; color: rgb(255 255 255 / 0.74); }
+.bs-cap-k b { font-weight: var(--font-weight-medium); color: var(--bs-mint); }
+.bs-cap-n { margin: 12px 0 0; font-size: clamp(24px, 2.3vw, 34px); line-height: 1; letter-spacing: -0.03em; font-weight: var(--font-weight-medium); text-shadow: 0 1px 24px rgb(0 0 0 / 0.25); }
+.bs-met { flex: none; text-align: right; }
+.bs-met-v { margin: 0; font-size: clamp(40px, 4.4vw, 64px); line-height: 0.92; letter-spacing: -0.045em; font-weight: var(--font-weight-medium); text-shadow: 0 2px 30px rgb(0 0 0 / 0.3); font-variant-numeric: tabular-nums; }
+.bs-met-l { margin: 10px 0 0; font-size: 14px; line-height: 1.3; color: rgb(255 255 255 / 0.8); }
+
+/* the founders on a glass chip, "Read story" in white */
+.bs-by { display: flex; align-items: center; gap: 10px; width: max-content; max-width: 100%; margin-top: 16px; padding: 6px; border-radius: 12px;
+  background: rgb(var(--bs-ink) / 0.38); -webkit-backdrop-filter: blur(14px) saturate(1.3); backdrop-filter: blur(14px) saturate(1.3); pointer-events: auto; }
+.bs-av { position: relative; display: grid; flex: none; place-items: center; width: 34px; height: 34px; overflow: hidden; border-radius: 9px; background: rgb(255 255 255 / 0.14); font-size: 12px; font-weight: var(--font-weight-medium); letter-spacing: 0.02em; }
+.bs-av img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.bs-by-t { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding-right: 4px; }
+.bs-by-t b { overflow: hidden; font-size: 14px; font-weight: var(--font-weight-medium); letter-spacing: -0.01em; white-space: nowrap; text-overflow: ellipsis; }
+.bs-by-t small { font-size: var(--type-caption-size); color: rgb(255 255 255 / 0.62); }
+.bs-by-a { display: inline-flex; align-items: center; gap: 6px; margin-left: 8px; padding: 8px 11px; border-radius: var(--radius-lg); background: #fff; color: rgb(var(--bs-ink));
+  font-size: 13px; font-weight: var(--font-weight-medium); white-space: nowrap; text-decoration: none; transition: background 0.3s; }
+.bs-by-a svg { width: 11px; height: 11px; }
+.bs-by-a:hover { background: var(--bs-mint); }
+
+/* the hotspot: a white dot with a ring pulsing out, a note beside it */
+.bs-hs { all: unset; position: absolute; z-index: 3; display: grid; place-items: center; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; cursor: pointer;
+  opacity: 0; transform: scale(0.6); transition: opacity 0.5s var(--bs-ease-out), transform 0.6s var(--bs-ease-spring); }
+.bs-slide[data-active] .bs-hs { opacity: 1; transform: none; transition-delay: 0.6s; }
+.bs-hs-dot { position: relative; width: 16px; height: 16px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 5px rgb(255 255 255 / 0.26), 0 4px 18px rgb(0 0 0 / 0.35);
+  transition: transform 0.4s var(--bs-ease-spring); }
+.bs-hs-dot::after { content: ''; position: absolute; inset: -5px; border: 1.5px solid rgb(255 255 255 / 0.7); border-radius: 50%; animation: bs-ping 2.4s var(--bs-ease-out) infinite; }
+@keyframes bs-ping { 0% { transform: scale(1); opacity: 0.9; } 70%, 100% { transform: scale(2.1); opacity: 0; } }
+.bs-hs:hover .bs-hs-dot, .bs-hs:focus-visible .bs-hs-dot { transform: scale(1.12); }
+.bs-hs[aria-expanded='true'] .bs-hs-dot::after { animation: none; opacity: 0; }
+.bs-hs:focus-visible { outline: 2px solid var(--bs-mint); outline-offset: 2px; }
+.bs-card { position: absolute; z-index: 5; padding: 16px 18px; border: 1px solid rgb(255 255 255 / 0.14); border-radius: 16px; color: #fff;
+  background: rgb(8 20 14 / 0.7); -webkit-backdrop-filter: blur(24px) saturate(150%); backdrop-filter: blur(24px) saturate(150%);
+  box-shadow: 0 24px 60px -12px rgb(0 0 0 / 0.55), inset 0 1px 0 rgb(255 255 255 / 0.08);
+  opacity: 0; visibility: hidden; transform: translateY(8px) scale(0.97); transition: opacity 0.28s var(--bs-ease-out), transform 0.45s var(--bs-ease-spring), visibility 0s linear 0.45s; }
+.bs-card[data-open] { opacity: 1; visibility: visible; transform: none; transition: opacity 0.28s var(--bs-ease-out), transform 0.45s var(--bs-ease-spring), visibility 0s; }
+.bs-card-k { margin: 0; font-size: var(--type-eyebrow-size); line-height: 1; font-weight: var(--font-weight-medium); letter-spacing: var(--type-eyebrow-tracking); text-transform: uppercase; color: var(--bs-mint); }
+.bs-card-t { margin: 9px 0 0; padding-right: 20px; font-size: 15px; line-height: 1.42; color: rgb(255 255 255 / 0.88); }
+.bs-card-x { all: unset; position: absolute; top: 8px; right: 8px; display: grid; place-items: center; width: 28px; height: 28px; border-radius: var(--radius-md); color: rgb(255 255 255 / 0.7); cursor: pointer; }
+.bs-card-x svg { width: 12px; height: 12px; }
+.bs-card-x:hover { background: rgb(255 255 255 / 0.1); color: #fff; }
+
+/* the glass tab bar at the stage's foot; the white pill under the company on show, filling in mint */
+.bs-bar { position: absolute; z-index: 6; left: 50%; bottom: clamp(14px, 1.6vw, 20px); max-width: calc(100% - 28px); padding: 5px; transform: translateX(-50%); border: 1px solid rgb(255 255 255 / 0.14); border-radius: 999px;
+  background: rgb(5 14 9 / 0.45); -webkit-backdrop-filter: blur(22px) saturate(150%); backdrop-filter: blur(22px) saturate(150%); box-shadow: 0 18px 40px -16px rgb(0 0 0 / 0.6), inset 0 1px 0 rgb(255 255 255 / 0.07); }
+.bs-tabs { position: relative; display: flex; overflow-x: auto; border-radius: 999px; scrollbar-width: none; }
+.bs-tabs::-webkit-scrollbar { display: none; }
+.bs-ind { position: absolute; z-index: 0; top: 0; left: 0; height: 100%; overflow: hidden; border-radius: 999px; background: #fff; pointer-events: none; transition: transform 0.5s var(--bs-ease-spring), width 0.5s var(--bs-ease-spring); }
+.bs-fill { position: absolute; inset: 0; background: var(--bs-mint); opacity: 0.55; transform: scaleX(0); transform-origin: 0 50%; }
+.bs-stage[data-auto] .bs-fill { animation: bs-fill var(--bs-dur, 6.5s) linear forwards; }
+/* held (pointed at, focused, a note open, off screen): the fill waits where it is */
+.bs-stage:not([data-auto]) .bs-fill { animation: bs-fill var(--bs-dur, 6.5s) linear forwards paused; }
+@keyframes bs-fill { to { transform: scaleX(1); } }
+.bs-tab { all: unset; position: relative; z-index: 1; flex: none; height: 40px; padding: 0 15px; border-radius: 999px; font-size: 13.5px; font-weight: var(--font-weight-medium); letter-spacing: -0.005em; white-space: nowrap;
+  color: rgb(255 255 255 / 0.8); cursor: pointer; transition: color 0.35s var(--bs-ease-out), background 0.3s var(--bs-ease-out); }
+.bs-tab:hover { color: #fff; background: rgb(255 255 255 / 0.08); }
+.bs-tab[aria-selected='true'] { color: rgb(var(--bs-ink)); background: transparent; }
+.bs-tab:focus-visible { outline: 2px solid var(--bs-mint); outline-offset: -2px; }
+
+/* tablets and phones: the bar edge to edge at the stage's foot */
+@media (width < 900px) {
+  .bs-stage { height: clamp(480px, 70svh, 600px); border-radius: var(--radius-xl); }
+  .bs-bar { left: 8px; right: 8px; bottom: 10px; max-width: none; transform: none; }
+  .bs-tab { height: 38px; padding: 0 14px; font-size: 13px; }
+  .bs-by { gap: 8px; margin-top: 12px; padding: 5px; }
+  .bs-av { width: 28px; height: 28px; border-radius: 7px; font-size: 10.5px; }
+  .bs-by-t b { font-size: 13px; }
+  .bs-by-t small { font-size: var(--type-caption-size); }
+  .bs-by-a { margin-left: 2px; padding: 7px 9px; font-size: 12px; }
+}
+/* phones: the figure under the company, a deeper scrim at the top for both */
+@media (width < 672px) {
+  .bs-head { margin-bottom: var(--space-6); }
+  .bs-title { max-width: 15ch; }
+  .bs-title span { display: block; }
+  .bs-top { flex-direction: column; gap: 14px; }
+  .bs-met { text-align: left; }
+  .bs-met-v { font-size: 44px; }
+  .bs-met-l { margin-top: 6px; font-size: 13px; text-shadow: 0 1px 12px rgb(0 0 0 / 0.5); }
+  .bs-slide::after { background: linear-gradient(180deg, rgb(var(--bs-ink) / 0.74) 0%, rgb(var(--bs-ink) / 0.55) 32%, rgb(var(--bs-ink) / 0) 58%), linear-gradient(0deg, rgb(var(--bs-ink) / 0.5) 0%, rgb(var(--bs-ink) / 0) 24%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bs-track { transition: none; }
+  .bs-img, .bs-slide[data-active] .bs-img { transform: none; transition: none; }
+  .bs-top > div, .bs-hs, .bs-card { transition-duration: 0.01s !important; transition-delay: 0s !important; }
+  .bs-hs-dot::after { animation: none; opacity: 0; }
+}
+
+/* ── One roundness (2026-10-23, the team's ask): every card and panel 8px (radius-lg), every CTA and
+   control 4px (radius-md), as the rest of the page. The tabs are a segmented control: the bar a
+   panel (8px), the tabs and their sliding pill 4px. ── */
+.bs-stage,
+.bs-card,
+.bs-by,
+.bs-bar { border-radius: var(--radius-lg); }
+.bs-by-a,
+.bs-card-x,
+.bs-tab,
+.bs-ind,
+.bs-tabs,
+.bs-av { border-radius: var(--radius-md); }
+@media (width < 900px) { .bs-stage { border-radius: var(--radius-lg); } }
+
+/* ── The founders' chip (2026-10-23, the team's ask: aligned, and "Read story" clear on dark photos).
+   One centre line and one inset: 8px all round; the initials tile and the button both 36px tall;
+   12px between the tile, the names and the button. The chip a step darker with a faint white edge,
+   so it holds its shape on dark photos too. "Read story" in the page's primary green (the system's
+   primary action), clear on light and dark photos alike, white on hover. ── */
+.bs-by { align-items: center; gap: var(--space-3); padding: var(--space-2); background: rgb(var(--bs-ink) / 0.55); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.14); }
+.bs-av { width: 2.25rem; height: 2.25rem; }
+.bs-by-t { justify-content: center; gap: 0.125rem; padding-right: 0; }
+.bs-by-t b, .bs-by-t small { line-height: 1.25; }
+.bs-by-a { height: 2.25rem; margin-left: var(--space-1); padding: 0 var(--space-3); gap: var(--space-1-5); box-sizing: border-box;
+  background: var(--action-primary-bg); color: var(--action-primary-fg); }
+.bs-by-a:hover { background: var(--action-primary-bg-hover); }
+.bs-by-a svg { width: 0.75rem; height: 0.75rem; }
+@media (width < 900px) {
+  .bs-by { gap: var(--space-2); padding: var(--space-1-5); }
+  .bs-av { width: 2rem; height: 2rem; }
+  .bs-by-a { height: 2rem; margin-left: 0; padding: 0 var(--space-2-5); }
+}
+
+/* phones (2026-10-23, the team: "this section is breaking"): the founders' chip never wider than the
+   card. It fills the copy's width, the names taking what is left (cut with an ellipsis if they must),
+   "Read story" kept whole at its end */
+@media (width < 672px) {
+  .bs-cap { min-width: 0; width: 100%; }
+  .bs-by { width: 100%; max-width: 100%; box-sizing: border-box; }
+  .bs-by-t { flex: 1 1 auto; min-width: 0; }
+  .bs-by-a { flex: none; margin-left: auto; }
+}

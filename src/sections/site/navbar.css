@@ -104,3 +104,11 @@
 .sn .sn-actions > .sn-primary-btn { font-size: 14px; }
 .sn-group-title, .sn-item-text b, .sn-panel-foot b, .sn-foot-cta { font-weight: var(--font-weight-medium, 500); }
 .sn-mlinks a { font-weight: var(--font-weight-regular, 400); }
+
+/* Hide on scroll down, back on scroll up (2026-10-23, the team's ask; Navbar sets data-nav-hidden on
+   <html>): the bar slides up behind the deadline bar (which stays on top), leaving that bar and the
+   section nav; never while its menu is open. */
+.sn { transition: background 200ms ease, border-color 200ms ease, box-shadow 200ms ease, transform 320ms cubic-bezier(0.32, 0.72, 0, 1); }
+/* (later, the team's ask) phones only: on the web the bar stays put, sticky, on scroll down too */
+@media (width < 672px) { html[data-nav-hidden] .sn:not([data-open]) { transform: translateY(-100%); } }
+@media (prefers-reduced-motion: reduce) { .sn { transition: background 200ms ease, border-color 200ms ease, box-shadow 200ms ease; } }

@@ -1,0 +1,37 @@
+/* =========================================================
+   In the press (PressSection): the concept site's /v4 section on the light page. Its cards were
+   off-white on black; here they are the page's raised cards (white, a hairline) on its light ground,
+   8px corners as every card, the type on the page's scale.
+   ========================================================= */
+.pr-head { display: flex; flex-direction: column; gap: var(--space-2); margin-bottom: var(--space-8); }
+
+/* four across the content's width on desktop, two on a tablet, a sideways row on a phone */
+.pr-grid { --pr-inset: calc(max(0px, (100% - var(--size-container-max)) / 2) + var(--space-gutter));
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); margin: 0 auto; padding: 0 var(--pr-inset); list-style: none; max-width: 100%; box-sizing: border-box; }
+.pr-grid > li { min-width: 0; }
+
+.pr-card { display: flex; flex-direction: column; height: 100%; padding: var(--space-5) var(--space-5) var(--space-4); border: 1px solid var(--border-decorative); border-radius: var(--radius-lg);
+  background: var(--surface-raised, #fff); color: var(--content-primary); text-decoration: none; box-sizing: border-box;
+  transition: transform 0.6s cubic-bezier(0.32, 0.72, 0, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s; }
+.pr-card:hover { transform: translateY(-3px); border-color: var(--border-subtle); box-shadow: 0 24px 48px -28px rgb(0 0 0 / 0.28); }
+.pr-card:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 3px; }
+/* the publication's logo, one height per its file (as on /v4), in its own colours */
+.pr-lg { display: flex; align-items: center; height: 2rem; }
+.pr-lg img { display: block; width: auto; max-width: 10.5rem; object-fit: contain; }
+.pr-card time { margin-top: var(--space-4); font-size: var(--type-caption-size); line-height: 1; font-weight: var(--font-weight-medium); letter-spacing: 0.08em; text-transform: uppercase; color: var(--content-secondary); }
+.pr-card h3 { margin: var(--space-2-5) 0 0; font-size: var(--type-h3-size); line-height: 1.3; letter-spacing: -0.015em; font-weight: var(--font-weight-medium); }
+.pr-card p { margin: var(--space-2) 0 0; font-size: var(--type-body-sm-size); line-height: 1.45; color: var(--content-secondary); }
+.pr-go { display: flex; align-items: center; gap: var(--space-1-5); margin-top: auto; padding-top: var(--space-4); font-size: var(--type-label-size); font-weight: var(--font-weight-medium); color: var(--content-brand); }
+.pr-go svg { width: 0.75rem; height: 0.75rem; transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1); }
+.pr-card:hover .pr-go svg { transform: translate(2px, -2px); }
+
+@media (width < 1056px) { .pr-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (width < 672px) {
+  .pr-grid { display: flex; gap: var(--space-2); overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 var(--space-gutter); padding: 0 var(--space-gutter) var(--space-2); scrollbar-width: none; }
+  .pr-grid::-webkit-scrollbar { display: none; }
+  .pr-grid > li { flex: none; width: 78vw; max-width: 20rem; scroll-snap-align: start; }
+}
+@media (prefers-reduced-motion: reduce) { .pr-card, .pr-go svg { transition: none; } }
+
+/* no shadow on hover (2026-10-23, the team's ask): the lift and the border's step only */
+.pr-card:hover { box-shadow: none; }

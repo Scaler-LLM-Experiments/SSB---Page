@@ -6,8 +6,10 @@
  */
 import { gsap } from 'gsap';
 import { ease, motionTokens } from '@kishanscaler/ssx-ui/motion';
+import { offsetPx } from '@/lib/motion-offset';
 
-const { duration: d, stagger: st, offset } = motionTokens;
+const { duration: d, stagger: st } = motionTokens;
+const offset = offsetPx; // px, not the tokens' rem: see motion-offset.ts
 
 /** Seconds a card stays before the carousel moves on by itself. */
 const DWELL = 5;
