@@ -6,9 +6,9 @@ import { ArrowRight } from '@phosphor-icons/react';
 import { CarouselNav } from '@/sections/shared/CarouselNav';
 
 import type { Journey } from '../data';
-import { countSkills } from '../data';
 import type { JourneyConfig } from '../config';
-import { YearOverlay, useOpenYear } from './shared';
+import { useOpenYear } from './shared';
+import { StageSheet, TermCounts } from './stage-sheet';
 import './stage.css';
 
 /** The terms' photos (the concept site's /v4), and their focal points. */
@@ -33,7 +33,7 @@ const MONTHS: Record<number, [string, string]> = {
  * on show a wide white card (its photo at the left, then the term, its title, its line, its flagship
  * project, its counts and "See every course"); the other terms tall photo cards beside it, each opening
  * on a click. Arrows and a rail of segments under it; a swipe on touch; arrow keys. Nothing moves on
- * its own. "See every course" opens the curriculum's own sheet (YearOverlay). Phones: one card in
+ * its own. "See every course" opens the term sheet (StageSheet: a side drawer, a bottom sheet on phones). Phones: one card in
  * view, the others peeking at the side.
  */
 export function StageJourney({ j, cfg, width, portal }: { j: Journey; cfg: JourneyConfig; width: number; portal?: HTMLElement | null }) {
@@ -41,7 +41,6 @@ export function StageJourney({ j, cfg, width, portal }: { j: Journey; cfg: Journ
   const n = years.length;
   const [active, setActive] = React.useState(0);
   const { open, setOpen, close } = useOpenYear(null);
-  const openYear = years.find((y) => y.year === open) ?? null;
   const stageRef = React.useRef<HTMLDivElement>(null);
   const [stageW, setStageW] = React.useState(0);
   React.useEffect(() => {
@@ -58,7 +57,8 @@ export function StageJourney({ j, cfg, width, portal }: { j: Journey; cfg: Journ
   const onW = phone ? Math.min(w - 40, 350) : Math.min(922, Math.round(w * 0.66));
   // phones: as tall as the tallest term needs (the photo's band plus its copy), so no term's button is cut
   const [fitH, setFitH] = React.useState(0);
-  const onH = phone ? Math.max(560, fitH) : 470;
+  // (2026-10-23) floor lowered from 560: the copy is shorter now, and the card hugs the tallest term's
+  const onH = phone ? Math.max(400, fitH) : 470;
   const offW = phone ? Math.round(onW * 0.78) : 300;
   const offH = phone ? Math.round(onH * 0.8) : 357;
   const gap = phone ? 12 : 16;
@@ -75,7 +75,17 @@ export function StageJourney({ j, cfg, width, portal }: { j: Journey; cfg: Journ
     const measure = () => {
       const photo = el.querySelector<HTMLElement>('.st-photo');
       const band = photo ? photo.offsetHeight + parseFloat(getComputedStyle(photo).marginTop) * 2 : 0;
-      const need = Math.max(0, ...Array.from(el.querySelectorAll<HTMLElement>('.st-info')).map((info) => info.scrollHeight));
+      // the copy's own height (its last child's foot), not the box's: the box fills the card, so its
+      // scrollHeight would hold the card at whatever height it already had
+      const need = Math.max(
+        0,
+        ...Array.from(el.querySelectorAll<HTMLElement>('.st-info')).map((info) => {
+          const last = info.lastElementChild as HTMLElement | null;
+          if (!last) return 0;
+          const pad = parseFloat(getComputedStyle(info).paddingBottom);
+          return last.getBoundingClientRect().bottom - info.getBoundingClientRect().top + pad;
+        }),
+      );
       setFitH(Math.ceil(band + need));
     };
     measure();
@@ -107,7 +117,8 @@ export function StageJourney({ j, cfg, width, portal }: { j: Journey; cfg: Journ
       <div
         ref={stageRef}
         className="st-stage"
-        style={{ height: onH }}
+        // the open card's final size, so its content is laid out once and revealed as the card grows (stage.css)
+        style={{ height: onH, '--st-a': `${onW}px`, '--st-h': `${onH}px` } as React.CSSProperties}
         tabIndex={0}
         aria-roledescription="carousel"
         aria-label="Programme terms"
@@ -118,9 +129,6 @@ export function StageJourney({ j, cfg, width, portal }: { j: Journey; cfg: Journ
         {years.map((y, i) => {
           const on = i === active;
           const flagship = y.projects.find((p) => p.flagship);
-          const courses = countSkills(y);
-          const projects = y.projects.length;
-          const classes = y.workshops?.length ?? 0;
           const photo = PHOTO[y.year];
           const [long, short] = MONTHS[y.year] ?? ['', ''];
           return (
@@ -151,18 +159,18 @@ export function StageJourney({ j, cfg, width, portal }: { j: Journey; cfg: Journ
                 <div className="st-info">
                   <p className="st-k">Term {String(y.year).padStart(2, '0')}</p>
                   <h3 className="st-title">{y.name}</h3>
-                  <p className="st-sum">{y.description}</p>
+                  <p className="st-sum">{y.summary ?? y.description}</p>
                   {flagship ? (
                     <div className="st-flag">
                       <small>Flagship project</small>
-                      <p>{flagship.video ?? flagship.title}</p>
+                      <p>
+                        <span className="st-flag-long">{flagship.video ?? flagship.title}</span>
+                        {/* phones: the short line (the full one is in the sheet) */}
+                        {flagship.short ? <span className="st-flag-short">{flagship.short}</span> : null}
+                      </p>
                     </div>
                   ) : null}
-                  <div className="st-stats">
-                    {courses ? <span><b>{courses}</b>{courses === 1 ? 'course' : 'courses'}</span> : null}
-                    {projects ? <span><b>{projects}</b>{projects === 1 ? 'live project' : 'live projects'}</span> : null}
-                    {classes ? <span><b>{classes}</b>{classes === 1 ? 'masterclass' : 'masterclasses'}</span> : null}
-                  </div>
+                  <TermCounts y={y} className="st-counts" />
                   <button type="button" className="st-more" tabIndex={on ? 0 : -1} onClick={() => setOpen(y.year)}>
                     See every course
                     <ArrowRight weight="bold" aria-hidden="true" />
@@ -187,7 +195,18 @@ export function StageJourney({ j, cfg, width, portal }: { j: Journey; cfg: Journ
         atEnd={active === n - 1}
       />
 
-      <YearOverlay y={openYear} mode={width > 0 && width < 768 ? 'sheet' : 'drawer'} cfg={cfg} portal={portal} id="st-sheet" onClose={close} />
+      {/* the term sheet (stage-sheet.tsx): its pager moves the stage to the term it opens */}
+      <StageSheet
+        years={years}
+        open={open}
+        mode={width > 0 && width < 768 ? 'sheet' : 'drawer'}
+        portal={portal}
+        onSelect={(n) => {
+          setOpen(n);
+          go(years.findIndex((y) => y.year === n));
+        }}
+        onClose={close}
+      />
     </div>
   );
 }

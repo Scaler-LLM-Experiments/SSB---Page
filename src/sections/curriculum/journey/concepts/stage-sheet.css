@@ -1,0 +1,67 @@
+/* =========================================================
+   A term's counts (TermCounts) and the term sheet (StageSheet): the concept site's term sheet in the
+   page's tokens, type, brand green and corners. Lists, not boxes: a hairline over each group.
+   ========================================================= */
+
+/* the counts: three even columns split by hairlines, a quiet icon beside each name */
+.tc { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; }
+.tc-item { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: var(--space-1-5); min-width: 0; padding-inline: var(--space-4); border-left: var(--border-hair, 1px) solid var(--border-decorative); }
+.tc-item:first-child { padding-left: 0; border-left: 0; }
+.tc-n { margin: 0; font-size: 2rem; line-height: 1; letter-spacing: -0.04em; font-weight: var(--font-weight-medium); color: var(--content-brand); }
+.tc-name { display: flex; align-items: center; gap: var(--space-1-5); font-size: var(--type-caption-size); line-height: 1.3; color: var(--content-secondary); white-space: nowrap; }
+.tc-icon { flex: none; width: 0.9375rem; height: 0.9375rem; color: var(--content-tertiary, var(--content-secondary)); opacity: 0.8; }
+/* phones: each column as wide as its name, the spare room between them, so all three fit */
+@media (width < 700px) {
+  .tc { grid-template-columns: repeat(3, auto); justify-content: space-between; }
+  .tc-item { padding-inline: var(--space-2-5); }
+  .tc-item:last-child { padding-right: 0; }
+  .tc-n { font-size: 1.5rem; }
+  .tc-name { gap: var(--space-1); }
+  .tc-icon { width: 0.875rem; height: 0.875rem; }
+}
+
+/* the sheet */
+.ss { display: grid; gap: var(--space-6); align-content: start; container-type: inline-size; }
+
+/* a section's heading: small, quiet, uppercase */
+.ss .ss-h { margin: 0 0 var(--space-4); font-size: var(--type-eyebrow-size); font-weight: var(--font-weight-medium); letter-spacing: var(--type-eyebrow-tracking); text-transform: uppercase; color: var(--content-secondary); }
+
+/* In class: the groups side by side where they fit, one under another where they don't */
+.ss-cols { display: grid; gap: var(--space-6) var(--space-6); grid-template-columns: 1fr; }
+@container (width >= 560px) { .ss-cols { grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr)); } }
+.ss-col { padding-top: var(--space-3-5, 0.875rem); border-top: var(--border-hair, 1px) solid var(--border-subtle); }
+.ss .ss-col-name { margin: 0 0 var(--space-3-5, 0.875rem); font-size: var(--type-caption-size); font-weight: var(--font-weight-medium); letter-spacing: 0.06em; text-transform: uppercase; color: var(--content-brand); }
+.ss-col-name span { margin-left: var(--space-1); color: var(--content-secondary); }
+.ss-col ol { counter-reset: ss; display: grid; gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
+.ss-col li { counter-increment: ss; display: grid; grid-template-columns: 1.5rem 1fr; align-items: baseline; font-size: var(--type-body-sm-size); line-height: 1.4; color: var(--content-primary); }
+.ss-col li::before { content: counter(ss, decimal-leading-zero); font-size: 0.6875rem; font-variant-numeric: tabular-nums; letter-spacing: 0.04em; color: var(--content-secondary); opacity: 0.7; }
+
+/* Out of class: rows, a thumbnail and the challenge, split by hairlines */
+.ss-outs { display: grid; margin: 0; padding: 0; list-style: none; }
+.ss-out { display: grid; grid-template-columns: 9rem 1fr; gap: var(--space-4); align-items: center; padding-block: var(--space-3-5, 0.875rem); border-top: var(--border-hair, 1px) solid var(--border-subtle); }
+.ss-out:last-child { border-bottom: var(--border-hair, 1px) solid var(--border-subtle); }
+.ss-thumb { position: relative; aspect-ratio: 16 / 10; overflow: hidden; border-radius: var(--radius-md); background: var(--surface-sunken); }
+.ss-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.ss-play { position: absolute; left: var(--space-2); bottom: var(--space-2); display: grid; place-items: center; width: 1.75rem; height: 1.75rem; border-radius: var(--radius-full); background: rgb(255 255 255 / 0.92); color: var(--content-primary); }
+.ss-play svg { width: 0.625rem; height: 0.625rem; margin-left: 1px; }
+.ss-flag { display: inline-block; margin-bottom: var(--space-1-5); padding: 2px var(--space-2); border-radius: var(--radius-md); background: color-mix(in srgb, var(--surface-brand-solid) 10%, transparent);
+  font-size: 0.6875rem; font-weight: var(--font-weight-medium); letter-spacing: 0.08em; text-transform: uppercase; color: var(--content-brand); }
+.ss .ss-out h5 { margin: 0; font-size: var(--type-body-size); line-height: 1.3; letter-spacing: -0.01em; font-weight: var(--font-weight-medium); color: var(--content-primary); }
+.ss .ss-out p { margin: var(--space-1) 0 0; font-size: var(--type-body-sm-size); line-height: 1.4; color: var(--content-secondary); }
+@media (width < 700px) { .ss-out { grid-template-columns: 7rem 1fr; gap: var(--space-3); } .ss .ss-out h5 { font-size: var(--type-body-sm-size); } }
+
+/* the other terms: quiet text links, no fill */
+.ss-pager { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); margin-top: calc(var(--space-2) * -1); padding: 0 0 var(--space-2); }
+.ss-pager button { all: unset; box-sizing: border-box; display: grid; align-content: start; gap: 3px; max-width: 48%; cursor: pointer; font-size: var(--type-body-sm-size); font-weight: var(--font-weight-medium); color: var(--content-secondary); transition: color 0.25s; }
+.ss-pager button:hover { color: var(--content-primary); }
+.ss-pager button:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 4px; border-radius: var(--radius-md); }
+.ss-pager .ss-next { text-align: right; justify-items: end; }
+.ss-pager small { display: inline-flex; align-items: center; gap: var(--space-1); font-size: 0.6875rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--content-secondary); opacity: 0.75; }
+.ss-pager small svg { width: 0.75rem; height: 0.75rem; }
+
+
+/* no rule under the sheet's header (2026-10-23, the team's ask): the title runs straight into the lists */
+.ss-panel [data-slot='side-drawer-header'], .ss-panel [data-slot='bottom-sheet-header'] { border-bottom: 0; }
+
+/* the smallest phones (under 360px): the counts' columns closer and their icons off, so all three fit */
+@media (width < 360px) { .tc-item { padding-inline: var(--space-2); } .tc-icon { display: none; } }

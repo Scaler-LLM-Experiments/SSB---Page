@@ -68,3 +68,43 @@
   .st-ft { font-size: 1.0625rem; }
 }
 @media (prefers-reduced-motion: reduce) { .st-card, .st-card *, .st-photo img { transition: none !important; } }
+
+/* (2026-10-23, as the concept site's refinement passes) the terms not on show keep their photo
+   bright: no dark base and no green wash, only a light neutral shade at the foot for the text */
+.st-card:not([data-on]) { background: transparent; }
+.st-face::before { background: linear-gradient(180deg, rgb(15 15 15 / 0) 38%, rgb(15 15 15 / 0.22) 62%, rgb(15 15 15 / 0.62) 100%); }
+.st-face:hover::before { background: linear-gradient(180deg, rgb(15 15 15 / 0) 42%, rgb(15 15 15 / 0.18) 64%, rgb(15 15 15 / 0.56) 100%); }
+.st-fk, .st-ft, .st-fd { text-shadow: 0 1px 12px rgb(15 15 15 / 0.35); }
+/* no buffer when the terms shift: the photo and the full card cross-fade at the same moment, so the
+   shift never shows an empty card; the full content keeps the open card's final size, centred, so the
+   growing card reveals it rather than reflowing it */
+.st-face, .st-card[data-on] .st-face { transition: opacity 0.14s linear; transition-delay: 0s; }
+.st-full, .st-card[data-on] .st-full { transition: opacity 0.14s linear; transition-delay: 0s; }
+.st-full { inset: auto; left: 50%; top: 50%; width: var(--st-a, 100%); height: var(--st-h, 100%); transform: translate(-50%, -50%); }
+
+/* the counts (TermCounts, stage-sheet.css) at the open card's foot, above "See every course" */
+.st .st-counts { margin-top: auto; padding-top: var(--space-5); }
+@media (width < 700px) { .st .st-counts { margin-top: var(--space-5); padding-top: 0; } }
+
+/* the flagship's line: the full headline, and on phones its short line (2026-10-23, the team's ask) */
+.st-flag-short { display: none; }
+@media (width < 700px) { .st-flag:has(.st-flag-short) .st-flag-long { display: none; } .st-flag-short { display: inline; } }
+/* phones: the flagship's line a step smaller (2026-10-23, the team's ask); `.st` for the desktop rule's weight */
+@media (width < 700px) { .st .st-flag p { font-size: var(--type-body-sm-size); line-height: 1.35; } }
+/* phones: the title and the line a step smaller too, so the card breathes (2026-10-23, the team's ask);
+   `.st` for the desktop rules' weight, which the phone rules above lost to */
+@media (width < 700px) {
+  .st .st-title { font-size: 1.25rem; line-height: 1.15; letter-spacing: -0.02em; }
+  .st .st-sum { font-size: 0.875rem; line-height: 1.45; }
+}
+/* phones: more room between the card's parts, so it breathes (2026-10-23, the team's ask) */
+@media (width < 700px) {
+  .st .st-info { padding: var(--space-5) var(--space-5) var(--space-5); }
+  .st .st-title { margin-top: var(--space-2-5); }
+  .st .st-sum { margin-top: var(--space-2-5); }
+  .st .st-flag { margin-top: var(--space-6); }
+  .st .st-flag p { margin-top: var(--space-2); }
+  .st .st-counts { margin-top: var(--space-6); }
+  .st .st-more { margin-top: var(--space-6); }
+}
+@media (width < 360px) { .st .st-info { padding-inline: var(--space-4); } }

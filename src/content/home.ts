@@ -123,8 +123,8 @@ export const heroFrame: HeroFrameContent = {
   line: ['18 months, full-time, on campus in Bengaluru', 'No tech background required'],
   // placeholder hrefs, as the other folds'
   primaryCta: { label: 'Apply Now', href: '#apply' },
-  // (review call) the placement report in place of the brochure; PLACEHOLDER href until the report's link
-  secondaryCta: { label: 'Download Placement Report', href: '#placement-report' },
+  // (review call) the placement report was here; the brochure again (2026-10-23, the team's ask). PLACEHOLDER href
+  secondaryCta: { label: 'Download Brochure', href: '#brochure' },
   // (the team, 2026-10-22: "Learn from Uber" read oddly) the title's own words, leading into the logos
   logosLabel: 'Faculty & leaders from',
   logos: [

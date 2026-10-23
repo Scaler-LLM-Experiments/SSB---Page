@@ -65,6 +65,7 @@ export const SSB_JOURNEY: Journey = {
       name: 'Foundations & First Build', // [DOC]
       description:
         'Learn core business principles like economics, accounting and marketing, and use them straight away by selling on the street and launching your first D2C brand.', // [DOC]
+      summary: 'Economics, accounting and marketing; sell on the street, launch a D2C brand.',
       ship: 'Your first revenue, pitch and P&L, from the D2C brand you launch', // [PROPOSED] from the outcome
       visual: 'ssbT1',
       outcome: 'First revenue, first pitch, first P&L.', // [DOC]
@@ -77,7 +78,7 @@ export const SSB_JOURNEY: Journey = {
       workshops: ['MS Excel Fundamentals', 'Structured Thinking', 'Build Your Own AI Chatbot'], // [DOC]
       projects: [
         // [DOC] out class (videos)
-        { title: 'D2C Startup Challenge', desc: 'Launch a live D2C brand with ₹25K funding and a ₹5L+ revenue target in 6 weeks.', flagship: true, image: 'y1Flagship', video: 'Year 1 cohort generated ₹15L+ revenue in 1 month' },
+        { title: 'D2C Startup Challenge', desc: 'Launch a live D2C brand with ₹25K funding and a ₹5L+ revenue target in 6 weeks.', flagship: true, image: 'y1Flagship', video: 'Year 1 cohort generated ₹15L+ revenue in 1 month', short: '₹15L+ revenue in 1 month' },
         { title: 'Street-Selling Challenge', desc: 'Sell a product to strangers in a day to learn persuasion and customer empathy.', image: 'pCreator', video: 'Caffeine Clash (C1), Go Zero Ice-cream Challenge (C3)' },
         { title: 'Idea Pitch Tank', desc: 'Pitch a startup idea to a panel in Week 1.', image: 'pGtm', video: 'Scaler Spark Tank' },
       ],
@@ -88,6 +89,7 @@ export const SSB_JOURNEY: Journey = {
       name: 'Strategy, Product & AI Fluency', // [DOC]
       description:
         'Master strategy, consumer behaviour and product basics, pitch real expansion plans to founders and ship your first AI product with zero code.', // [DOC]
+      summary: 'Strategy, consumer behaviour, product; pitch founders, ship a no-code AI app.',
       ship: 'Your first AI product with zero code, and a pitch to real founders', // [PROPOSED] from the summary
       visual: 'ssbT2',
       outcome: null, // [CONFIRM] not on the live page
@@ -100,7 +102,7 @@ export const SSB_JOURNEY: Journey = {
       workshops: ['The Art of Business Decks', 'Design Thinking'], // [SSB]
       projects: [
         // [SSB] term 2 videos
-        { title: 'Founder Expansion Pitch', desc: 'Pitch a ₹200cr expansion plan to the founders of Mokobara.', flagship: true, image: 'y2Flagship', video: 'MBA Students Pitch ₹200cr Expansion Plan to Mokobara Founders' },
+        { title: 'Founder Expansion Pitch', desc: 'Pitch a ₹200cr expansion plan to the founders of Mokobara.', flagship: true, image: 'y2Flagship', video: 'MBA Students Pitch ₹200cr Expansion Plan to Mokobara Founders', short: '₹200cr plan, pitched to Mokobara' },
         { title: 'No-Code AI Build', desc: 'Build an AI product with zero coding knowledge.', image: 'pAgents', video: 'n8n AI Workshop' },
       ],
       syllabus: null,
@@ -109,6 +111,7 @@ export const SSB_JOURNEY: Journey = {
       year: 3,
       name: 'Build & Get Career Ready', // [DOC]
       description: "Learn to sell, raise capital and research markets while building your startup's MVP and a placement-ready resume.", // [DOC]
+      summary: 'Sales, fundraising and market research while you build your MVP and resume.',
       ship: 'A working MVP for your startup and a placement-ready resume', // [DOC]
       visual: 'ssbT3',
       outcome: null, // [CONFIRM]
@@ -121,7 +124,7 @@ export const SSB_JOURNEY: Journey = {
       workshops: ['Resumes 101', 'Hiring Assignments 101'], // [SSB]
       projects: [
         // [SSB] term 3 videos
-        { title: 'Company-Sourced GTM Project', desc: 'Build a ₹50cr go-to-market plan for a prebiotic soda brand and present it to its founder.', flagship: true, image: 'y3Flagship', video: 'MBA students’ bold ₹50cr GTM plan shocks prebiotic soda founder' },
+        { title: 'Company-Sourced GTM Project', desc: 'Build a ₹50cr go-to-market plan for a prebiotic soda brand and present it to its founder.', flagship: true, image: 'y3Flagship', video: 'MBA students’ bold ₹50cr GTM plan shocks prebiotic soda founder', short: '₹50cr GTM plan for a soda brand' },
         { title: 'Hustle Ideation', desc: 'Work on the next billion-dollar idea and pitch it to VCs.', image: 'pBuilder', video: 'Hustle Ideation with Siddhant: students pitch to VCs' },
       ],
       syllabus: null,
@@ -131,6 +134,7 @@ export const SSB_JOURNEY: Journey = {
       name: 'Advanced Domain Specialisation', // [DOC]
       description:
         'Choose your electives across Strategy, Finance, Marketing, Product and Operations, take your startup to market and build business AI agents.', // [DOC]
+      summary: 'Electives across five domains; take your startup to market, build AI agents.',
       ship: 'Your startup live in the market, and business AI agents you built', // [PROPOSED] from the summary
       visual: 'ssbT4',
       outcome: null, // [CONFIRM]
@@ -143,7 +147,7 @@ export const SSB_JOURNEY: Journey = {
       workshops: ['Personal Interview', 'Case Solving & Guesstimates, Part 1'], // [SSB]
       projects: [
         // [SSB] term 4 shows the D2C challenge video again; its second video has no title of its own [CONFIRM]
-        { title: 'Take Your Startup to Market', desc: 'Launch and grow the startup you built in Term 3.', flagship: true, image: 'fFounder', video: 'D2C Startup Challenge: can these B-school students build a ₹50 lakh dropshipping business?' },
+        { title: 'Take Your Startup to Market', desc: 'Launch and grow the startup you built in Term 3.', flagship: true, image: 'fFounder', video: 'D2C Startup Challenge: can these B-school students build a ₹50 lakh dropshipping business?', short: 'A ₹50 lakh dropshipping business' },
       ],
       syllabus: null,
     },
@@ -151,6 +155,7 @@ export const SSB_JOURNEY: Journey = {
       year: 5,
       name: 'Pitch to VCs. Get Placed', // [DOC]
       description: 'Learn deal-making and investing, pitch your startup to VCs on Demo Day and walk into placements with founder-level proof of work.', // [DOC]
+      summary: 'Deal-making and investing; pitch VCs on Demo Day, then walk into placements.',
       ship: 'A Demo Day pitch to VCs, and founder-level proof of work', // [DOC]
       visual: 'ssbT5',
       outcome: null, // [CONFIRM]

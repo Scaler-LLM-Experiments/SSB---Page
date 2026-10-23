@@ -15,6 +15,8 @@ export interface Project {
   image?: string;
   /** The video this challenge links to, shown as its label on a play tile. */
   video?: string;
+  /** Phones: the flagship's line on the term stage's card, short enough for one line (2026-10-23). */
+  short?: string;
 }
 
 /** One year (SST) or term (SSB): `year` is its number, the word comes from `labels.yearLabel`. */
@@ -22,6 +24,8 @@ export interface Year {
   year: number;
   name: string;
   description: string;
+  /** The term stage's card: the description held to two lines, its key words kept (2026-10-23). */
+  summary?: string;
   /** [PROPOSED] what the student builds that year. */
   ship: string;
   /** Placeholder photo key for the 16:10 visual slot. [CONFIRM] §10.10 */
