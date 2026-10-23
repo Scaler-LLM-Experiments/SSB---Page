@@ -49,6 +49,7 @@ export function BeyondPlacementsSection() {
       }
       itemName="company"
       cardWidth="38rem"
+      drift
     >
       {c.ventures.map((v) => (
         <VentureCard key={v.company} {...v} />

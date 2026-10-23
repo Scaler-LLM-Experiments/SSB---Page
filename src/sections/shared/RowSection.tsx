@@ -26,6 +26,7 @@ export function RowSection({
   after,
   heading,
   nav = true,
+  drift = false,
   children,
 }: {
   id: string;
@@ -39,11 +40,13 @@ export function RowSection({
   heading?: React.ReactNode;
   /** The arrows and dots under the row (off: a row that fits, or one swiped by hand). */
   nav?: boolean;
+  /** The cards in two rows drifting sideways, as Alumni's and Faculty's (in place of the row and its dots). */
+  drift?: boolean;
   children: React.ReactNode;
 }) {
   const sectionRef = React.useRef<HTMLElement>(null);
   const rowRef = React.useRef<HTMLUListElement>(null);
-  useSectionEntrance(sectionRef, { decks: ['.rs-row > li > article'] });
+  useSectionEntrance(sectionRef, { decks: ['.rs-row > li > article', '.rs-drift-set > li > article'] });
 
   const items = React.Children.toArray(children);
 
@@ -74,17 +77,50 @@ export function RowSection({
         </div>
       </Container>
 
-      <ul
-        ref={rowRef}
-        className="rs-row"
-        aria-label={title}
-        style={{ '--rs-card': cardWidth } as React.CSSProperties}
-      >
-        {items.map((item, i) => (
-          <li key={i}>{item}</li>
-        ))}
-      </ul>
-      {nav ? <ScrollDots scroller={rowRef} count={items.length} itemName={itemName} fill="solid" /> : null}
+      {drift ? (
+        // two rows, the top one drifting left and the bottom one right, each its cards twice over so
+        // the loop has no seam; held on hover, still under reduced motion
+        <div className="rs-drift" style={{ '--rs-card': cardWidth } as React.CSSProperties}>
+          {[0, 1].map((r) => {
+            const mine = items.filter((_, i) => i % 2 === r);
+            return (
+              <div
+                key={r}
+                className="rs-drift-row"
+                data-dir={r ? 'back' : undefined}
+                style={{ '--n': mine.length } as React.CSSProperties}
+              >
+                {[0, 1].map((copy) => (
+                  <ul
+                    key={copy}
+                    className="rs-drift-set"
+                    aria-label={copy ? undefined : title}
+                    aria-hidden={copy ? true : undefined}
+                  >
+                    {mine.map((item, i) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                  </ul>
+                ))}
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <ul
+          ref={rowRef}
+          className="rs-row"
+          aria-label={title}
+          style={{ '--rs-card': cardWidth } as React.CSSProperties}
+        >
+          {items.map((item, i) => (
+            <li key={i}>{item}</li>
+          ))}
+        </ul>
+      )}
+      {nav && !drift ? (
+        <ScrollDots scroller={rowRef} count={items.length} itemName={itemName} fill="solid" />
+      ) : null}
 
       {after}
     </Section>

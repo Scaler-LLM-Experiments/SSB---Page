@@ -75,6 +75,7 @@ export function InnovationLabSection() {
         }
         itemName="startup"
         cardWidth="38rem"
+        drift
       >
         {labVentures.map((v) => (
           <VentureCard key={v.company} {...v} />

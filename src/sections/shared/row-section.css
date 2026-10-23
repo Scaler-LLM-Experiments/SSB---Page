@@ -167,3 +167,16 @@
   line-height: 1.3;
   letter-spacing: -0.01em;
 }
+
+/* The drifting rows (`drift`, 2026-10-22: the student companies, as Alumni's and Faculty's): two rows
+   at every width, the top drifting left and the bottom right; held on hover or a press, still under
+   reduced motion. Its own stacking context, so Safari keeps it under the sticky bars. */
+.rs-drift { position: relative; z-index: 0; isolation: isolate; display: grid; gap: var(--space-4); overflow: hidden; }
+.rs-drift-row { --card-w: min(82vw, var(--rs-card, 20rem)); --gap: var(--space-4); display: flex; width: max-content; animation: rs-drift calc(var(--n) * 16s) linear infinite; }
+.rs-drift-row[data-dir='back'] { animation-direction: reverse; }
+.rs-drift:is(:hover, :active) .rs-drift-row { animation-play-state: paused; }
+.rs-drift-set { display: flex; gap: var(--gap); margin: 0; padding: 0 var(--gap) 0 0; list-style: none; }
+.rs-drift-set > li { flex: none; width: var(--card-w); }
+.rs-drift-set > li > article { height: 100%; }
+@keyframes rs-drift { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .rs-drift-row { animation: none; } }
