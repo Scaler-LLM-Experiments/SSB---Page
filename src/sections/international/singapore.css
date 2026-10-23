@@ -114,33 +114,3 @@
   .sg-pillar-x { display: none; }
   .sg-note { margin-top: var(--space-3); }
 }
-
-/* Phones, a calmer card (2026-10-23, the team's ask: "don't like the layout, make it better"): the photo
-   a clear band at the top (no copy over it), the day tabs as a light pill row under it, then the day in
-   dark type on the light card: its number, title, place and schedule. Desktop keeps the photo stage. */
-@media (width < 672px) {
-  .sg-stage, .sg-stage:is(*) { display: flex; flex-direction: column; height: auto; padding-top: 14rem; background: var(--surface-sunken); color: var(--content-primary); touch-action: pan-y; }
-  .sg-img { inset: 0 0 auto 0; height: 14rem; }
-  .sg-shade { inset: 0 0 auto 0; height: 14rem; background: linear-gradient(0deg, rgb(6 10 9 / 0.25) 0%, rgb(6 10 9 / 0) 40%); }
-  .sg-credit { top: var(--space-3); right: var(--space-3); }
-
-  .sg-bar, .sg-bar:is(*) { position: static; order: 1; transform: none; max-width: none; margin: var(--space-3) var(--space-3) 0; padding: 4px; border: 1px solid var(--border-decorative); border-radius: var(--radius-lg);
-    background: var(--surface-raised, #fff); -webkit-backdrop-filter: none; backdrop-filter: none; }
-  .sg-tab { color: var(--content-secondary); }
-  .sg-tab:hover { background: var(--surface-sunken); color: var(--content-primary); }
-  .sg-tab[aria-selected='true'] { background: var(--action-primary-bg); color: var(--action-primary-fg); }
-  .sg-arrow { color: var(--content-primary); }
-  .sg-arrow:hover:not(:disabled) { background: var(--surface-sunken); }
-  .sg-tab:focus-visible, .sg-arrow:focus-visible { outline-color: var(--border-focus); }
-
-  .sg-day, .sg-day:is(*) { position: static; order: 2; width: auto; padding: var(--space-5) var(--space-4) var(--space-5); }
-  .sg-num { flex-direction: row; align-items: baseline; gap: var(--space-2); font-size: 1.5rem; line-height: 1; color: var(--content-primary); }
-  .sg-num span { margin: 0; color: var(--content-brand); }
-  .sg-day-title { margin-top: var(--space-2); font-size: 1.375rem; line-height: 1.2; text-shadow: none; }
-  .sg-place { margin-top: var(--space-1-5); color: var(--content-secondary); }
-  .sg-place svg { color: var(--content-brand); }
-  .sg-slots { margin-top: var(--space-4); padding: 0 var(--space-4); border-color: var(--border-decorative); background: var(--surface-raised, #fff); -webkit-backdrop-filter: none; backdrop-filter: none; }
-  .sg-slots li + li { border-top-color: var(--border-decorative); }
-  .sg-when { color: var(--content-secondary); }
-  .sg-what svg { color: var(--content-brand); }
-}
