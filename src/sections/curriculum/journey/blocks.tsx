@@ -583,6 +583,8 @@ export function CareerPrepBlock({ prep, cfg }: { prep: CareerPrep; cfg: JourneyC
   const card = React.useRef<HTMLDivElement>(null);
   // the bento's row on phones and tablets: a carousel with the page's dots under it (2026-10-07)
   const bento = React.useRef<HTMLDListElement>(null);
+  // phones: the phases' swipe row, for its dots
+  const phases = React.useRef<HTMLOListElement>(null);
   return (
     <section className="sj-career" aria-labelledby={id} {...c(cfg, 'career')}>
       {/* desktop: the bento on the left; the title and the phases down the right, as tall as the bento.
@@ -626,6 +628,15 @@ export function CareerPrepBlock({ prep, cfg }: { prep: CareerPrep; cfg: JourneyC
             <div className="sj-pbento-dots">
               <ScrollDots scroller={bento} count={sorted.length} itemName="stat" fill="solid" autoplay={false} />
             </div>
+            {/* phones (2026-10-23, the team's ask): every figure up front as a bento, no scenes */}
+            <dl className="sj-pstats">
+              {sorted.flatMap(([, stats]) => stats).map((st) => (
+                <div key={st.label} className="sj-pstat">
+                  <dt>{st.label}</dt>
+                  <dd>{st.value}</dd>
+                </div>
+              ))}
+            </dl>
           </>
         );
       })()}
@@ -634,7 +645,7 @@ export function CareerPrepBlock({ prep, cfg }: { prep: CareerPrep; cfg: JourneyC
       <div ref={card} className="sj-career-col sj-career-card">
       {/* the phases as a timeline: one after another down a thin line, each with its icon on the
           line, its step, its name and what happens in it */}
-      <ol className="sj-tl" aria-label="Career prep phases">
+      <ol ref={phases} className="sj-tl" aria-label="Career prep phases">
         {prep.phases.map((p, i) => (
           <li key={p.name} className="sj-tl-item">
             <span className="sj-tl-node" aria-hidden="true" />
@@ -646,6 +657,10 @@ export function CareerPrepBlock({ prep, cfg }: { prep: CareerPrep; cfg: JourneyC
           </li>
         ))}
       </ol>
+      {/* phones: the phases are a swipe row; the page's dots under it */}
+      <div className="sj-tl-dots">
+        <ScrollDots scroller={phases} count={prep.phases.length} itemName="phase" fill="solid" autoplay={false} />
+      </div>
       </div>
       </div>
     </section>

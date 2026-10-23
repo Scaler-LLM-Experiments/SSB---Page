@@ -64,7 +64,7 @@ export const admissionsV4 = {
   eyebrow: 'Admissions',
   title: 'Admissions, fees and',
   titleTail: 'eligibility.',
-  lede: 'Who can apply, how selection works, what the programme costs, and the scholarships on offer.',
+  lede: 'Eligibility, selection, fees and scholarships.', // shortened (2026-10-23)
   eligibility: "Class 12, then a bachelor's degree from an accredited institution. Ideal for professionals with work experience, and for freshers with a strong record of internships, projects, clubs or similar.",
   apply: { label: 'Start application', href: 'https://www.scaler.com/school-of-business/admission/' },
   advisor: { label: 'Talk to an advisor', href: '#advisor' },

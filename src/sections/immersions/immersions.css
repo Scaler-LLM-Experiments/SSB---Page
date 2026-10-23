@@ -361,3 +361,16 @@
 .creator-card__stats > div + div, .creator-card__stats > div + div:is(*) { border-left-color: rgb(255 255 255 / 0.14); }
 /* phones (2026-10-13, the team's ask): the immersion cards shorter, 4:3 not 4:5 */
 @media (width < 672px) { .imm-feature, .imm-feature:is(*) { aspect-ratio: 4 / 3; } }
+
+/* Phones (2026-10-23, the team's ask: "make it a carousel, the next card a bit visible"): the immersions
+   one swipe row, each card 84% of the screen so the next peeks in, with the page's dots under it */
+.imm-features-dots { display: none; }
+@media (width < 672px) {
+  .imm-features, .imm-features:is(*) { display: flex; flex-direction: row; gap: var(--space-3); margin-inline: calc(var(--space-gutter) * -1); padding: 0 var(--space-gutter) var(--space-1);
+    overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: var(--space-gutter); scrollbar-width: none; }
+  .imm-features::-webkit-scrollbar { display: none; }
+  .imm-features > li, .imm-features > li:is(*) { flex: 0 0 84%; min-width: 0; scroll-snap-align: start; }
+  .imm-features-dots { display: block; margin-top: var(--space-4); }
+}
+/* phones: the carousel's cards a step taller, square (was 4:3), so more of the photo shows over the panel (2026-10-23, the team's ask) */
+@media (width < 672px) { .imm-feature, .imm-feature:is(*) { aspect-ratio: 1 / 1; } }

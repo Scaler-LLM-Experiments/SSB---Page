@@ -9,7 +9,7 @@ export const placements: PlacementsContent = {
   title: 'Placement highlights.|Where our first cohorts went.',
   description: 'Reported outcomes for SSB’s founding PGP cohort.',
   // Ours (2026-10-01), from the deck's figures (87% switched, a 3.2× average hike), for the team to replace.
-  lead: 'Reported outcomes for SSB’s founding PGP cohort. They joined Indian startups, global MNCs and digital-first companies, most of them in a new industry or role, earning on average 3.2 times what they did before SSB.',
+  lead: 'Our founding cohort earned 3.2× their pre-SSB pay, most of them in a new industry or role.', // shortened (2026-10-23, the team's ask: less text); was the report's full paragraph
   // Labels are the deck's. Descriptions are ours (2026-10-01), restating the deck's figures; for the
   // team to replace.
   stats: [

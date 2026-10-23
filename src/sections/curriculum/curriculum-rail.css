@@ -494,3 +494,20 @@
   .cr-main .sj-career-card .sj-tl-item::before { display: none; }
 }
 @media (min-width: 672px) and (max-width: 1055px) { .cr-main .sj-career-card .sj-tl-item { flex-basis: 42%; } }
+
+/* Career prep on phones (2026-10-23, the team's ask: "all the stats upfront in a bento, no image; the
+   phases a carousel"): the scene showcase off; every figure in a two-column bento (the first across
+   both); under it the phases in the flow as a swipe row, a card and a peek, with the page's dots */
+.sj-pstats, .sj-tl-dots { display: none; }
+@media (max-width: 671px) {
+  .cr-main .sj-career .sj-ps { display: none !important; }
+  .cr-main .sj-career .sj-pstats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0; }
+  .sj-pstat { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 4px; min-width: 0; padding: 16px; border-radius: var(--radius-lg); background: var(--surface-sunken); } /* the grey of the page's other figure boxes (hero facts, internship) */
+  .sj-pstat:first-child { grid-column: 1 / -1; }
+  .sj-pstat dd { margin: 0; font-size: 2rem; line-height: 1.05; letter-spacing: -0.03em; font-weight: var(--font-weight-medium); color: var(--content-brand); }
+  .sj-pstat dt { font-size: var(--type-body-sm-size); line-height: 1.35; color: var(--content-secondary); }
+  .cr-main .sj-career-split > .sj-career-card { position: static; top: auto; left: auto; right: auto; height: auto; margin-top: 16px; overflow: visible; }
+  .cr-main .sj-career-card .sj-tl, .cr-main .sj-career-card .sj-tl:is(*) { height: auto; padding: 0 var(--space-gutter); margin: 0 calc(var(--space-gutter) * -1); scroll-padding-inline: var(--space-gutter); }
+  .cr-main .sj-career-card .sj-tl-item { flex-basis: 82%; height: auto; min-height: 132px; border: 1px solid var(--border-decorative); }
+  .cr-main .sj-career .sj-tl-dots { display: block; margin-top: 16px; }
+}

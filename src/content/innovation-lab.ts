@@ -115,7 +115,7 @@ export const labBand = {
   // "Scaler Innovation Lab" / "Network with founders, land internships, and work on real startup
   // projects, 10 steps from your classroom."
   title: 'Scaler’s Innovation Lab.|Built for non-technical leaders.',
-  line: 'Enter without code. Exit with the capability to build real world products as a Mini CEO.',
+  line: 'Enter without code. Exit building real products as a Mini CEO.', // shortened (2026-10-23)
   stats: [
     { value: '$1B+', label: 'Combined valuations' },
     // shortened from the deck's "Revenue in Live Businesses" (the team's call), to sit on one line

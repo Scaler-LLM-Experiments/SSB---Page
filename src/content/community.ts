@@ -331,7 +331,7 @@ export const foundingTeamSection = {
 export const superMentors = {
   eyebrow: 'Sessions',
   title: 'Super Mentor Sessions.|Leaders from Google, Blinkit, PhonePe and OpenAI.',
-  sub: 'Supported & Mentored by India’s Top Business Leaders.',
+  sub: 'Mentored by India’s top business leaders.',
   // The deck's copy (name, role, line); the thumbnails and logos of Scaler School of Technology's
   // "Access To Industry Leaders" (scaler.com/school-of-technology); videos on YouTube.
   sessions: [
@@ -377,7 +377,7 @@ export type CampusPhoto = { media?: string; alt: string; caption?: string; posit
 export const campusLife = {
   eyebrow: 'Campus life',
   title: 'Life beyond the classroom.|A fully residential campus in Bengaluru.',
-  sub: 'Fully residential campus in Bengaluru · Shared Innovation Lab and campus with SST · Backed by Peak XV, Lightrock, Tiger Global.',
+  sub: 'Shared with SST · Backed by Peak XV, Lightrock and Tiger Global.', // shortened (2026-10-23); the residential campus is in the title
   /** The mosaic's middle photo: on desktop it arrives full-bleed and pulls back into its tile. */
   feature: { media: '/campus/cohort.webp', alt: 'An SSB cohort together on campus', position: '50% 62%' },
   /** The student clubs, as the Innovation Lab's startups (a row of cards, each with a photo). The

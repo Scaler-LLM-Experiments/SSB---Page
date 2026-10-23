@@ -11,7 +11,7 @@
   position: relative; isolation: isolate; overflow: hidden; display: flex; align-items: flex-end;
   /* the rest of the first screen under the deadline bar and the navbar, 16px clear at its foot */
   min-height: max(36rem, calc(100svh - var(--sn-h, 69px) - var(--hf-bar, 3.0625rem) - var(--space-4)));
-  border-radius: var(--radius-xl); background: #000;
+  border-radius: var(--radius-lg); background: #000; /* 8px, as every card (2026-10-23; was 12) */
 }
 .hf-film { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
 

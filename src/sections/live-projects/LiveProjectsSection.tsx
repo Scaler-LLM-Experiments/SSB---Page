@@ -81,7 +81,7 @@ export function LiveProjectsSection() {
               Live consulting projects. <span className="h-tail">With real companies, for real briefs.</span>
             </Heading>
             <Text size="lg" tone="secondary" data-enter="sub">
-              Work through briefs with founders and operators, then defend your recommendations.
+              Solve founders’ briefs, then defend your recommendations.
             </Text>
           </div>
         </div>

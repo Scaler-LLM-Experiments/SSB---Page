@@ -175,7 +175,7 @@ export const SSB_JOURNEY: Journey = {
     eyebrow: 'Learn by doing',
     title: 'Build two real businesses. Pitch to VCs.',
     titleAccent: 'Graduate with founder experience.',
-    lede: 'Real markets and real feedback turn business concepts into hard-earned experience.',
+    lede: 'Real markets, real customers, real feedback.', // shortened (2026-10-23)
     items: [
       {
         n: '01',
@@ -199,7 +199,7 @@ export const SSB_JOURNEY: Journey = {
     eyebrow: 'The AI journey',
     title: 'A 150-hour AI curriculum.',
     titleAccent: 'From no-code to AI agents.',
-    lede: '25+ AI tools · 5 AI products · 3 hackathons · No coding background required', // the team's curriculum doc (2026-10-07); before, the main landing page's line
+    lede: '25+ AI tools · 5 AI products · 3 hackathons · No coding needed', // the team's curriculum doc (2026-10-07); before, the main landing page's line
     terms: [
       // Titles, descriptions and outcomes from the team's curriculum doc (2026-10-07); the outcomes'
       // leading "AI Product #n" taken off (the team's ask, 2026-10-08).
@@ -221,7 +221,7 @@ export const SSB_JOURNEY: Journey = {
     // [DOC]
     title: 'Career prep from month one.|Not the final term.',
     // ours (2026-10-07), from the phases below, for the team to confirm: every curriculum section has a subtext
-    lede: 'From 1:1 counselling in Month 1 to mock interviews and salary negotiation, in three phases: clarity, building and executing.',
+    lede: '1:1 counselling to salary negotiation, in three phases.', // shortened (2026-10-23)
     start: 'Month 1',
     stats: [
       { value: '1,100+', label: 'Mock Interviews', icon: 'interviews', feature: true },

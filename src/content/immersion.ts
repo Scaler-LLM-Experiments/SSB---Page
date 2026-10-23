@@ -16,7 +16,7 @@ export const immersion = {
   eyebrow: 'International immersion',
   title: 'A week in Singapore.',
   titleTail: 'Asia’s most developed economy, as your classroom.',
-  sub: 'Seven days of entrepreneurship, AI, industry and culture, with global faculty, ending in a live pitch to an industry jury.',
+  sub: 'Seven days of AI, industry and culture, ending in a live pitch to a jury.', // shortened (2026-10-23)
   note: 'Indicative plan, customised for each cohort. Classes with faculty from SP Jain’s Singapore campus.',
   pillars: [
     { icon: 'faculty', title: 'Global faculty', text: 'Entrepreneurship and AI, taught in Singapore.' },

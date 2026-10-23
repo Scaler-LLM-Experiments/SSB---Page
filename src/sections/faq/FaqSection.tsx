@@ -23,8 +23,7 @@ export function FaqSection() {
               Questions, answered. <span className="h-tail">For candidates and parents.</span>
             </Heading>
             <Text size="lg" tone="secondary" data-enter="sub">
-              Answers to what applicants ask most about the degree, eligibility, the programme and the
-              internship.
+              What applicants ask most, answered.
             </Text>
           </div>
 

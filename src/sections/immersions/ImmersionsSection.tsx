@@ -81,6 +81,8 @@ function CreatorCard({ creator: c }: { creator: Creator }) {
 export function ImmersionsSection() {
   const sectionRef = React.useRef<HTMLElement>(null);
   const rowRef = React.useRef<HTMLUListElement>(null);
+  // phones: the immersions as a swipe row, the next card peeking in (2026-10-23, the team's ask)
+  const featRef = React.useRef<HTMLUListElement>(null);
   // Same entrance as Faculty: the header, then the two features, then the creators.
   useSectionEntrance(sectionRef, { decks: ['.imm-feature', '.creator-row > li > article'] });
 
@@ -95,18 +97,20 @@ export function ImmersionsSection() {
             Learning beyond the classroom. <span className="h-tail">Trips, tracks and immersions.</span>
           </Heading>
           <Text size="lg" tone="secondary" data-enter="sub">
-            Learn where the work happens: on factory floors, inside quick-commerce operations, and at
-            Reliance&apos;s creative agency.
+            On factory floors, in quick commerce and at Reliance&apos;s creative agency.
           </Text>
         </div>
 
-        <ul className="imm-features">
+        <ul ref={featRef} className="imm-features">
           {immersions.map((item) => (
             <li key={item.title}>
               <Feature item={item} />
             </li>
           ))}
         </ul>
+        <div className="imm-features-dots">
+          <ScrollDots scroller={featRef} count={immersions.length} itemName="immersion" fill="solid" autoplay={false} />
+        </div>
 
         {/* an eyebrow over the creator cards, left-aligned and grey (the team's asks, 2026-10-13; it was
             a size-3 heading) */}

@@ -114,3 +114,12 @@ html body :is(.rs-row, .h-scroller, .fs-row, .sj-ai-track, .in-reels-row, .fc-gr
 /* ── One header (2026-10-23, the team's ask: every section's as the Singapore immersion's): the green
    eyebrow, a sentence-case statement, its second half in the secondary ink, a quiet sub-line ── */
 main .h-tail, main .sj-ai-accent { color: var(--content-secondary) !important; }
+
+/* Phones, lighter headers (2026-10-23, the team's ask: "too text heavy on m-web, shorten the header and
+   subtext so it looks premium"): each section's eyebrow, the black statement and a short sub-line;
+   the grey second half is desktop's. Kept: Built at SSB's whole title (its second half is the
+   punchline) and Admissions' (its grey part ends the sentence), Kamath's quote, the curriculum's
+   download button. */
+@media (width < 672px) {
+  main :is(h2, p.type-display) .h-tail, main h2 .sj-ai-accent, main h2.sg-title span { display: none !important; } /* p.type-display: a tab's heading stacked under another (the founders') */ /* Admissions' title kept whole: its grey part ends the sentence */
+}
