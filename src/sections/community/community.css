@@ -426,3 +426,21 @@ main section.lab.cm[data-density='roomy'] {
   line-clamp: 3;
   overflow: hidden;
 }
+
+/* Phones, in the drifting rows (2026-10-23, the team's ask): a compact card, so the two rows don't
+   fill the screen. A wide, short picture (3:1) with a smaller figure, the line two lines at most
+   (the card text keeps card-standard's 20px). */
+@media (width < 672px) {
+  .rs-drift .vc-media { aspect-ratio: 3 / 1; }
+  .rs-drift .vc-tag { top: var(--space-3); left: var(--space-3); }
+  .rs-drift .vc-stat { gap: 0; padding: var(--space-3); }
+  .rs-drift .vc-stat-value { font-size: var(--type-h2-size, 1.75rem); }
+  .rs-drift .vc-stat-label { font-size: var(--type-caption-size); }
+  .rs-drift .vc-body { gap: var(--space-3); }
+  .rs-drift .vc-text { -webkit-line-clamp: 2; line-clamp: 2; }
+  .rs-drift .vc-head { gap: var(--space-2); }
+  .rs-drift .vc-title h3 { font-size: var(--type-h3-size); line-height: var(--type-h3-lh); }
+  .rs-drift .vc-avatar { width: 28px; height: 28px; }
+  /* a startup's logo smaller and a little low, clear of the chip */
+  .rs-drift .vc-banner { left: 15%; width: 70%; top: 62%; }
+}
