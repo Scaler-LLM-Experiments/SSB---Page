@@ -1,0 +1,395 @@
+/* Slide 3 on /v7 (DeckOutcomes.tsx): left aligned, the header and the bento in one screen (desktop
+   about 520px of it; a phone about 640). No shadows, no dark grounds. Desktop: the figures 3 × 2 at
+   the left (7 of 12), the press tile at the right (5); a phone: the figures 3 × 2 compact, the press
+   tile under them with the clipping's photo at its side. */
+.dko-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: var(--size-measure-max);
+}
+
+.dko-bento {
+  display: grid;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+}
+@media (width >= 1056px) {
+  .dko-bento { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+}
+
+/* ── the figures: hairline cells (the gap over the line colour) ───────────────────────────────── */
+.dko-figs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  gap: 1px;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--border-decorative);
+  border-radius: var(--radius-lg);
+  background: var(--border-decorative);
+}
+.dko-fig {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-6);
+  background: var(--surface-default, #fff);
+}
+.dko-fig dd {
+  margin: 0;
+  font-size: clamp(2.25rem, 3.4vw, 3rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-weight: var(--font-weight-medium);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ssb-light-9);
+}
+.dko-fig dt {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: var(--type-label-size);
+  line-height: 1.35;
+  font-weight: var(--font-weight-medium);
+  color: var(--content-primary);
+}
+.dko-fig dt small {
+  font-size: var(--type-caption-size);
+  line-height: 1.35;
+  font-weight: var(--font-weight-regular, 400);
+  color: var(--content-secondary);
+}
+.dko-fig[data-lead] { background: var(--color-ssb-light-2); }
+.dko-fig[data-lead] dd { color: var(--color-ssb-light-11); }
+
+/* ── the press tile: grey, a white clipping set in it, the CTA under ──────────────────────────── */
+.dko-press {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--surface-sunken);
+}
+.dko-clip {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border-decorative);
+  border-radius: var(--radius-md);
+  background: var(--surface-default, #fff);
+}
+.dko-clip-photo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2.6 / 1;
+  object-fit: cover;
+  object-position: 50% 40%;
+}
+.dko-clip-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-5) var(--space-5);
+}
+.dko-clip-logo { display: block; align-self: flex-start; width: auto; height: 1.25rem; margin-bottom: var(--space-1); }
+.dko-clip-title {
+  margin: 0;
+  font-size: var(--type-h3-size, 1.25rem);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  font-weight: var(--font-weight-semibold);
+  color: var(--content-primary);
+}
+.dko-clip-sub {
+  margin: 0;
+  font-size: var(--type-label-size);
+  line-height: 1.5;
+  color: var(--content-secondary);
+}
+.dko-cta { align-self: stretch; justify-content: center; }
+
+.dko-recruiters { margin-top: var(--space-16); }
+
+/* ── phones: everything compact enough for one screen ─────────────────────────────────────────── */
+@media (width < 672px) {
+  .dko-bento { gap: var(--space-3); margin-top: var(--space-6); }
+  .dko-fig { gap: var(--space-2); padding: var(--space-3); }
+  .dko-fig dd { font-size: 1.5rem; letter-spacing: -0.03em; }
+  .dko-fig dt { font-size: var(--type-caption-size); }
+  .dko-fig dt small { display: none; }
+  .dko-press { gap: var(--space-3); padding: var(--space-3); }
+  /* the clipping's photo at its side, a square, so the tile stays short */
+  .dko-clip { flex-direction: row; }
+  .dko-clip-photo { width: 6.5rem; aspect-ratio: auto; height: auto; flex: none; }
+  .dko-clip-body { padding: var(--space-3); gap: var(--space-1); }
+  .dko-clip-logo { height: 1rem; }
+  .dko-clip-title { font-size: 1rem; line-height: 1.3; }
+  .dko-clip-sub { font-size: var(--type-caption-size); line-height: 1.45; }
+  .dko-recruiters { margin-top: var(--space-12); }
+}
+/* a phone names each figure in short, cohort included ("Avg CTC · C2"), in place of label and note */
+.dko-short { display: none; }
+@media (width < 672px) {
+  .dko-long { display: none; }
+  .dko-short { display: inline; }
+}
+/* The Times of India's wordmark (14:1): a little lower than the made-up one, so it isn't too wide */
+.dko-clip-logo { height: 1rem; margin-bottom: var(--space-1-5, 6px); }
+@media (width < 672px) { .dko-clip-logo { height: 0.75rem; } }
+
+/* ── (later, 2026-10-28, the user's ask: the phone "too cluttered", room and size over height) phones:
+   the figures two across in three rows, larger, with their full label and note again; the clipping's
+   photo back on top, wider and more padded ───────────────────────────────────────────────────────── */
+@media (width < 672px) {
+  .dko-bento { gap: var(--space-4); }
+  .dko-figs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dko-fig { gap: var(--space-4); padding: var(--space-5) var(--space-4); }
+  .dko-fig dd { font-size: 2.125rem; }
+  .dko-fig dt { font-size: var(--type-label-size); }
+  .dko-fig dt small { display: block; }
+  .dko-long { display: inline; }
+  .dko-short { display: none; }
+  .dko-press { gap: var(--space-4); padding: var(--space-4); }
+  .dko-clip { flex-direction: column; }
+  .dko-clip-photo { width: 100%; aspect-ratio: 2 / 1; height: auto; }
+  .dko-clip-body { gap: var(--space-2); padding: var(--space-5); }
+  .dko-clip-logo { height: 0.875rem; margin-bottom: var(--space-2); }
+  .dko-clip-title { font-size: 1.25rem; }
+  .dko-clip-sub { font-size: var(--type-label-size); line-height: 1.5; }
+}
+/* (the same day: "taller, but not that much; balance it") phones: the same layout, tighter: the cells
+   less padded, the figures a step smaller, the clipping's photo wider and shorter beside a shorter body */
+@media (width < 672px) {
+  .dko-bento { gap: var(--space-3); }
+  .dko-fig { gap: var(--space-3); padding: var(--space-4); }
+  .dko-fig dd { font-size: 1.875rem; }
+  .dko-fig dt { gap: 0; }
+  .dko-press { gap: var(--space-3); padding: var(--space-3); }
+  .dko-clip-photo { aspect-ratio: 2.8 / 1; }
+  .dko-clip-body { gap: var(--space-1-5, 6px); padding: var(--space-4); }
+  .dko-clip-logo { margin-bottom: var(--space-1); }
+  .dko-clip-title { font-size: 1.125rem; }
+  .dko-clip-sub { font-size: var(--type-caption-size); }
+}
+
+/* (later, 2026-10-28, the user's ask: the figures smaller with more room; 3.2x no longer singled out)
+   every cell alike, white with its figure in the brand green; the figures a step smaller, the cells
+   more padded */
+.dko-fig[data-lead] { background: var(--surface-default, #fff); }
+.dko-fig[data-lead] dd { color: var(--color-ssb-light-9); }
+.dko-fig dd { font-weight: var(--font-weight-medium); }
+@media (width >= 672px) {
+  .dko-fig { padding: var(--space-6) var(--space-8); }
+  .dko-fig dd { font-size: clamp(1.875rem, 2.6vw, 2.375rem); }
+}
+@media (width < 672px) {
+  .dko-fig { gap: var(--space-4); padding: var(--space-5); }
+  .dko-fig dd { font-size: 1.5rem; letter-spacing: -0.02em; }
+  .dko-fig dt span { font-size: var(--type-caption-size); }
+  .dko-fig dt { font-size: var(--type-caption-size); }
+}
+
+/* ── (later, 2026-10-28, the user's reference: vFinal's article card, the photo larger) the press card:
+   white with a hairline, no tile behind; the paper's wordmark and the date on one line, the headline,
+   the byline, a rule, the photo (about half the card, 4:3) beside the opening lines, a rule, the CTA ── */
+.dko-press {
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--border-decorative);
+  background: var(--surface-default, #fff);
+}
+.dko-press-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-6) 0;
+}
+.dko-press-top .dko-clip-logo { margin: 0; }
+.dko-press-date {
+  font-size: var(--type-label-size);
+  line-height: 1.2;
+  color: var(--content-secondary);
+  white-space: nowrap;
+}
+.dko-press .dko-clip-title {
+  margin: var(--space-4) var(--space-6) 0;
+  font-size: 1.375rem;
+  line-height: 1.25;
+}
+.dko-press-by {
+  margin: var(--space-2) var(--space-6) 0;
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--border-decorative);
+  font-size: var(--type-label-size);
+  line-height: 1.3;
+  color: var(--content-secondary);
+}
+.dko-press-story {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-5);
+  flex: 1;
+  padding: var(--space-5) var(--space-6);
+}
+.dko-press-story .dko-clip-photo {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-md);
+}
+.dko-press .dko-clip-sub {
+  font-size: var(--type-body-size, 1rem);
+  line-height: 1.55;
+}
+.dko-press-foot {
+  padding: var(--space-4) var(--space-6) var(--space-5);
+  border-top: 1px solid var(--border-decorative);
+}
+.dko-press-foot .dko-cta { width: 100%; }
+/* phones: the photo full width over the opening lines */
+@media (width < 672px) {
+  .dko-press { padding: 0; gap: 0; }
+  .dko-press-top { padding: var(--space-5) var(--space-5) 0; }
+  .dko-press-top .dko-clip-logo { height: 0.8125rem; }
+  .dko-press-date { font-size: var(--type-caption-size); }
+  .dko-press .dko-clip-title { margin: var(--space-3) var(--space-5) 0; font-size: 1.25rem; }
+  .dko-press-by { margin: var(--space-1-5, 6px) var(--space-5) 0; padding-bottom: var(--space-4); font-size: var(--type-caption-size); }
+  .dko-press-story { grid-template-columns: 1fr; gap: var(--space-3); padding: var(--space-4) var(--space-5); }
+  .dko-press-story .dko-clip-photo { aspect-ratio: 16 / 9; }
+  .dko-press .dko-clip-sub { font-size: var(--type-label-size); }
+  .dko-press-foot { padding: var(--space-4) var(--space-5); }
+}
+/* (the same day: "a bit thinner; space is left beside the photo") desktop: the photo wider than tall
+   (16:10) at half the card, the rows tighter, so the card and the figures beside it are shorter */
+@media (width >= 672px) {
+  .dko-press-top { padding-top: var(--space-5); }
+  .dko-press .dko-clip-title { margin-top: var(--space-3); }
+  .dko-press-by { padding-bottom: var(--space-4); }
+  .dko-press-story { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-5); padding: var(--space-4) var(--space-6); }
+  .dko-press-story .dko-clip-photo { aspect-ratio: 16 / 10; }
+  .dko-press .dko-clip-sub { font-size: var(--type-label-size); line-height: 1.55; }
+  .dko-press-foot { padding: var(--space-4) var(--space-6); }
+}
+
+/* ── The recruiters on /v7 (2026-10-28, the user's ask): from the tablet up, the phone's tiles (each
+   cell its own rounded tile, a hairline edge, 8px apart) in place of the joined panel; 8 × 3 on
+   desktop (was 6 × 4), lower cells, so the grid is about half as tall. Every logo fitted to one box,
+   about Swiggy's and Zomato's size (92 × 30): wide wordmarks (CK Birla, Landmark) no longer run
+   long, square marks (EY, Zendesk) no longer stand tall. ─────────────────────────────────────────── */
+main[data-page='v7'] .peers-flip {
+  gap: var(--space-2);
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+main[data-page='v7'] .peers-flip-face {
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-lg);
+  box-shadow: inset 0 0 0 1px var(--border-subtle);
+}
+main[data-page='v7'] .peers-flip-logo[style] {
+  width: min(calc(var(--w) * 0.85), 5.75rem);
+  max-width: 86%;
+  height: auto;
+  max-height: 1.875rem;
+}
+@media (width >= 672px) {
+  main[data-page='v7'] .peers-flip { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  main[data-page='v7'] .peers-flip-cell { height: 4.5rem; }
+}
+@media (width >= 1056px) {
+  main[data-page='v7'] .peers-flip { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+  main[data-page='v7'] .peers-flip-cell { height: 4.25rem; }
+}
+/* phones keep their 3 × 8 tiles, the logos in the same box, smaller */
+@media (width < 672px) {
+  main[data-page='v7'] .peers-flip-logo[style] { width: min(calc(var(--w) * 0.6), 4.5rem); max-height: 1.5rem; }
+}
+/* (first look) the 92px box shrank the wide wordmarks under Swiggy's size: each logo back at its full
+   weight (its `resolveLogos` width), only the widest held to the tile (7.5rem) and the tallest to 34px */
+@media (width >= 672px) {
+  main[data-page='v7'] .peers-flip-logo[style] { width: min(var(--w), 7.5rem); max-width: 92%; max-height: 2.125rem; }
+  main[data-page='v7'] .peers-flip-face { padding: 0 var(--space-2); }
+}
+/* the few that still read off beside Swiggy and Zomato, nudged by eye (scale, so the tile's layout
+   doesn't move): bold wordmarks down a step, thin or boxed ones up */
+@media (width >= 672px) {
+  main[data-page='v7'] .peers-flip-logo:is([src*='uber'], [src*='zepto']) { scale: 0.8; }
+  main[data-page='v7'] .peers-flip-logo:is([src*='goldman'], [src*='oyo'], [src*='flipkart']) { scale: 0.9; }
+  main[data-page='v7'] .peers-flip-logo:is([src*='zendesk'], [src*='times-group'], [src*='ck-birla'], [src*='samsung'], [src*='nomura']) { scale: 1.12; }
+}
+/* (later: "a bit smaller, it looks cluttered") every logo about 80% of that, more air in each tile */
+@media (width >= 672px) {
+  main[data-page='v7'] .peers-flip-logo[style] { width: min(calc(var(--w) * 0.8), 6rem); max-width: 80%; max-height: 1.75rem; }
+  main[data-page='v7'] .peers-flip-face { padding: 0 var(--space-4); }
+}
+@media (width < 672px) {
+  main[data-page='v7'] .peers-flip-logo[style] { width: min(calc(var(--w) * 0.5), 3.75rem); max-width: 78%; max-height: 1.25rem; }
+}
+/* the same by-eye nudges on a phone */
+@media (width < 672px) {
+  main[data-page='v7'] .peers-flip-logo:is([src*='uber'], [src*='zepto']) { scale: 0.8; }
+  main[data-page='v7'] .peers-flip-logo:is([src*='goldman'], [src*='oyo'], [src*='flipkart']) { scale: 0.9; }
+  main[data-page='v7'] .peers-flip-logo:is([src*='zendesk'], [src*='times-group'], [src*='ck-birla'], [src*='samsung'], [src*='nomura']) { scale: 1.12; }
+}
+/* (later: "a very little taller, to balance") the tiles a step taller around the smaller logos */
+@media (width >= 672px) { main[data-page='v7'] .peers-flip-cell { height: 5rem; } }
+@media (width >= 1056px) { main[data-page='v7'] .peers-flip-cell { height: 4.75rem; } }
+@media (width < 672px) { main[data-page='v7'] .peers-flip-cell { height: 4.125rem; } }
+
+/* ── The internship companies on /v7 (2026-10-28, the user's ask: "the same style as the placement
+   logos"): the recruiters' tiles (each its own rounded tile, a hairline edge, 8px apart), 8 × 3 on
+   desktop, 6 × 4 on a tablet, 3 × 8 on a phone; every logo held to one box of the recruiters' size,
+   the heaviest and the lightest nudged by eye. Plain CSS beats the grid's Tailwind utilities. ────── */
+[data-page='v7'] .in-logos {
+  gap: var(--space-2);
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+[data-page='v7'] .in-logos > li {
+  height: 4.75rem;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--surface-page);
+  box-shadow: inset 0 0 0 1px var(--border-subtle);
+}
+[data-page='v7'] .in-logos img { max-width: min(6rem, 80%); max-height: 1.75rem; }
+[data-page='v7'] .in-logos img:is([alt='MPL'], [alt='Slikk'], [alt='Vaani']) { scale: 0.8; }
+[data-page='v7'] .in-logos img:is([alt='apna'], [alt='The Whole Truth'], [alt='Reckitt'], [alt='Chai Point']) { scale: 1.15; }
+@media (width >= 672px) { [data-page='v7'] .in-logos { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+@media (width >= 1056px) { [data-page='v7'] .in-logos { grid-template-columns: repeat(8, minmax(0, 1fr)); } }
+@media (width < 672px) {
+  [data-page='v7'] .in-logos { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  [data-page='v7'] .in-logos > li { height: 4.125rem; padding: 0 var(--space-3); }
+  [data-page='v7'] .in-logos img { max-width: min(3.75rem, 78%); max-height: 1.25rem; }
+}
+/* (later the same day, the user's ask: "the same style for this as well, so everything is consistent")
+   the recruiters' tile rules above now reach every flip grid on /v7 (main[data-page='v7']), so
+   Alumni's "Your peers come from" takes them too; its square marks nudged as the recruiters' were */
+@media (width >= 672px) {
+  main[data-page='v7'] .peers-flip-logo:is([src*='apollo'], [src*='tcs'], [src*='zs']) { scale: 1.1; }
+  main[data-page='v7'] .peers-flip-logo:is([src*='deloitte'], [src*='accenture']) { scale: 0.9; }
+}
+@media (width >= 672px) {
+  main[data-page='v7'] .peers-flip-logo:is([src*='mckinsey']) { scale: 1.35; }
+  main[data-page='v7'] .peers-flip-logo:is([src*='deutsche'], [src*='apollo'], [src*='tcs']) { scale: 1.2; }
+}
+[data-page='v7'] .in-logos img:is([alt='BCCI'], [alt='FirstClub'], [alt='The Whole Truth'], [alt='apna']) { scale: 1.25; }
+@media (width < 672px) { [data-page='v7'] .in-logos img[alt='FirstClub'] { scale: 1; } }
+/* (later, 2026-10-28, the user's ask: phones, "the boxes a very little lower") every logo grid's tiles
+   58px tall on a phone (was 66) */
+@media (width < 672px) {
+  main[data-page='v7'] .peers-flip-cell { height: 3.625rem !important; }
+  [data-page='v7'] .in-logos > li { height: 3.625rem !important; }
+}

@@ -19,6 +19,7 @@ import { Container, Heading, Section, Text } from '@kishanscaler/ssx-ui';
 
 import { companyLogos } from '@/content/company-logos';
 import { foundingTeamSection, investors, mentorsSection } from '@/content/community';
+import { impactPeople } from '@/content/impact';
 import { faculty } from '@/content/people';
 import { HScrollerTrack, useHScroller } from '@/sections/faculty/HScroller';
 import { MeetCard } from '@/sections/faculty/MeetCard';
@@ -32,7 +33,7 @@ import { CarouselNav } from '@/sections/shared/CarouselNav';
 import './people-tabs.css';
 import { Title } from '@/sections/shared/Title';
 
-export type PeopleGroupId = 'faculty' | 'mentors' | 'founding' | 'investors';
+export type PeopleGroupId = 'faculty' | 'mentors' | 'founding' | 'investors' | 'impact';
 
 type Group = { id: string; tab: string; eyebrow: string; title: string; sub: string; itemName: string; people: ShowcasePerson[] };
 
@@ -53,6 +54,17 @@ const ALL_GROUPS: (Group & { id: PeopleGroupId })[] = [
   { id: 'mentors', tab: 'Mentors', ...mentorsSection, itemName: 'mentor', people: withPhoto(mentorsSection.people) },
   { id: 'founding', tab: 'Founding Team', ...foundingTeamSection, itemName: 'person', people: withPhoto(foundingTeamSection.people) },
   { id: 'investors', tab: 'Investors & Founders', ...investors, itemName: 'person', people: withPhoto(investors.people) },
+  // the Scaler Impact Foundation as a tab (the deck variant, /v7, 2026-10-28: with the founding team), in
+  // ImpactSection's words
+  {
+    id: 'impact',
+    tab: 'Scaler Impact Foundation',
+    eyebrow: 'Scaler Impact Foundation',
+    title: 'The people behind the Scaler Impact Foundation.|Founders, operators and creators.',
+    sub: 'Founders, operators and creators from Paytm, Rippling, Zeta, WebVeda and Soch by Mohak.',
+    itemName: 'member',
+    people: impactPeople,
+  },
 ];
 
 /** PLACEHOLDER (2026-10-12): the stacked cards' line under the logo, until each person's own is written. */

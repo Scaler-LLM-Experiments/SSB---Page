@@ -52,7 +52,7 @@ function TripCard({ item }: { item: DomesticImmersion }) {
 }
 
 /** A creator: badge, name and niche over the top; achievements across the foot. */
-function CreatorCard({ creator: c }: { creator: Creator }) {
+export function CreatorCard({ creator: c }: { creator: Creator }) {
   return (
     <article className="creator-card">
       <img

@@ -24,6 +24,7 @@ import { BottomNav } from '@/sections/site/BottomNav';
 import { PeopleTabsSection } from '@/sections/people-tabs/PeopleTabsSection';
 import { PlacementsShowcase } from '@/sections/placements/PlacementsShowcase';
 import { TestimonialSection } from '@/sections/testimonial/TestimonialSection';
+import { VariantToggle } from '@/sections/site/VariantToggle';
 import './v6.css';
 
 export const metadata: Metadata = { title: 'V6 · SSB home page lab' };
@@ -118,6 +119,8 @@ export default function V6Page() {
       {/* 15 campus life, then 16 in the press */}
       <CampusLifeSection />
       <PressSection />
+      {/* the switch to the deck variant (/v7, 2026-10-28) */}
+      <VariantToggle current="vfinal" />
     </main>
     </FooterShell>
   );

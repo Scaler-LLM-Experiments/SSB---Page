@@ -28,7 +28,8 @@ import './admissions-v4.css';
  * four cards, each opening its criteria in the design system's Dialog; and the Impact Foundation's
  * backers' faces. Cards 8px, controls 4px, the page's type.
  */
-export function AdmissionsV4() {
+/** `backers={false}`: no Impact Foundation faces under the scholarships (the deck variant, /v7, gives the foundation its own section). */
+export function AdmissionsV4({ backers = true }: { backers?: boolean } = {}) {
   const ref = React.useRef<HTMLElement>(null);
   const [open, setOpen] = React.useState<number | null>(null);
   useSectionEntrance(ref, { decks: ['.ad4-card', '.ad4-sc'] });
@@ -145,6 +146,7 @@ export function AdmissionsV4() {
               </button>
             ))}
           </div>
+          {backers ? (
           <div className="ad4-backers">
             <p className="ad4-backers-k">{c.backersLabel}</p>
             <ul className="ad4-faces">
@@ -160,6 +162,7 @@ export function AdmissionsV4() {
               ))}
             </ul>
           </div>
+          ) : null}
         </div>
       </Container>
 

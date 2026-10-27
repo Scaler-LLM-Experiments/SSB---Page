@@ -3,10 +3,12 @@
 import * as React from 'react';
 import { Accordion, Container, Heading, Link, Section, Text } from '@kishanscaler/ssx-ui';
 
-import { faqs } from '@/content/admissions';
+import { faqs as defaultFaqs, type Faq } from '@/content/admissions';
 import { useSectionEntrance } from '@/sections/faculty/useSectionEntrance';
 
-export function FaqSection() {
+/** `faqs` replaces the questions (the deck variant, /v7, adds the Outcomes Report). A link is set inside
+ *  its answer where the answer names it, otherwise as "See the … section above." */
+export function FaqSection({ faqs = defaultFaqs }: { faqs?: Faq[] } = {}) {
   const sectionRef = React.useRef<HTMLElement>(null);
   // Same header entrance as Faculty; the questions fade up as a block.
   useSectionEntrance(sectionRef, { decks: [] });
@@ -37,7 +39,13 @@ export function FaqSection() {
                 title: f.question,
                 content: (
                   <Text tone="secondary">
-                    {f.link ? (
+                    {f.link && f.answer.includes(f.link.label) ? (
+                      <>
+                        {f.answer.slice(0, f.answer.indexOf(f.link.label))}
+                        <Link href={f.link.href}>{f.link.label}</Link>
+                        {f.answer.slice(f.answer.indexOf(f.link.label) + f.link.label.length)}
+                      </>
+                    ) : f.link ? (
                       <>
                         See the <Link href={f.link.href}>{f.link.label}</Link> section above.
                       </>

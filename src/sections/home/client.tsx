@@ -11,10 +11,10 @@ import { SsbNavbar } from '@/sections/site/Navbar';
 
 export const Curriculum = dynamic(() => import('@/sections/curriculum/SsbCurriculum'), { ssr: false });
 
-export function FooterShell({ children }: { children: React.ReactNode }) {
+export function FooterShell({ children, lift = true }: { children: React.ReactNode; /** false: the footer static, no lift reveal (/v7) */ lift?: boolean }) {
   // no "Your next step" banner above the footer: the footer has the same two actions
   return (
-    <SsbFooter showCta={false} variant="green">
+    <SsbFooter showCta={false} variant="green" lift={lift}>
       {children}
     </SsbFooter>
   );

@@ -115,3 +115,76 @@
 
 /* (later) phones: one row of the portrait cards, a carousel (the user's ask: single row) */
 @media (width < 672px) { .bc-row { grid-template-rows: auto; } }
+
+/* (2026-10-28, the deck variant /v7, the user's ask) light cards: a white card with a hairline, the
+   photo inset at the left (12px in, 8px corners), its figure in white over a shade at the photo's foot;
+   beside it the sector (12px caps, brand green), the company (22px), the founders (13px), a hairline,
+   the line on what was built (14px / 1.5, three lines at most). Each card as tall as its copy, about
+   two and a third across on desktop, 30rem on a tablet; phones stack the photo over the copy. The
+   title's tail a line of its own. */
+[data-variant='deck'] .bc-title { max-width: none; }
+[data-variant='deck'] .bc-title span { display: block; }
+[data-variant='deck'] .bc-card {
+  display: grid; grid-template-columns: minmax(0, 40%) minmax(0, 1fr); gap: var(--space-5);
+  height: auto; min-height: 100%; padding: var(--space-3);
+  border: 1px solid var(--border-subtle); background: var(--surface-default); color: var(--content-primary);
+}
+[data-variant='deck'] .bc-card::after { content: none; }
+[data-variant='deck'] .bc-media {
+  position: absolute; top: var(--space-3); left: var(--space-3);
+  width: calc(40% - var(--space-3)); height: calc(100% - 2 * var(--space-3));
+  overflow: hidden; border-radius: var(--radius-lg); background: var(--surface-sunken);
+}
+[data-variant='deck'] .bc-media .bc-photo {
+  position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 0;
+  -webkit-mask-image: none; mask-image: none;
+}
+/* a progressive blur at the photo's foot (2026-10-28, the user's ask), under a dark shade: the
+   figure reads on any photo. The blur is masked to fade out upward, so the photo stays sharp above it. */
+[data-variant='deck'] .bc-media-shade {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to top, rgb(0 0 0 / 0.66) 0%, rgb(0 0 0 / 0.34) 34%, transparent 60%);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  -webkit-mask-image: linear-gradient(to top, #000 0%, #000 30%, transparent 62%);
+  mask-image: linear-gradient(to top, #000 0%, #000 30%, transparent 62%);
+}
+[data-variant='deck'] .bc-media .bc-met {
+  position: absolute; left: var(--space-3); right: var(--space-3); bottom: var(--space-3); margin: 0;
+  color: #fff;
+}
+[data-variant='deck'] .bc-met-v { font-size: 26px; line-height: 1.05; }
+[data-variant='deck'] .bc-met-l { margin-top: 4px; font-size: 12px; line-height: 1.35; color: rgb(255 255 255 / 0.82); }
+[data-variant='deck'] .bc-body {
+  grid-column: 2; gap: 10px; margin: 0; padding: var(--space-2) var(--space-2) var(--space-2) 0;
+  color: var(--content-primary); text-shadow: none;
+}
+[data-variant='deck'] .bc-top { gap: 6px; }
+[data-variant='deck'] .bc-k { color: var(--color-ssb-light-9); }
+[data-variant='deck'] .bc-name { margin: 0; font-size: 22px; line-height: 1.2; letter-spacing: -0.015em; font-weight: var(--font-weight-semibold); color: var(--content-primary); }
+[data-variant='deck'] .bc-by { font-size: 13px; line-height: 1.4; white-space: normal; color: var(--content-secondary); }
+[data-variant='deck'] .bc-rule { background: var(--border-subtle); }
+[data-variant='deck'] .bc-blurb { font-size: 14px; line-height: 1.5; color: var(--content-secondary); -webkit-line-clamp: 3; }
+@media (width >= 672px) {
+  [data-variant='deck'] .bc-row {
+    grid-auto-columns: calc((100vw - (max(0px, (100vw - var(--size-container-max)) / 2) + var(--space-gutter)) - 2 * var(--space-4)) / 2.5);
+  }
+  /* a little taller than the copy needs (2026-10-28, the user's ask), so the photo shows more */
+  [data-variant='deck'] .bc-row > li { aspect-ratio: auto; min-height: 15.5rem; }
+}
+@media (width >= 672px) and (width < 1056px) {
+  [data-variant='deck'] .bc-row { grid-auto-columns: 30rem; }
+}
+/* phones: the photo a band across the card's top (inset, its figure over the shade), the copy under it */
+@media (width < 672px) {
+  [data-variant='deck'] .bc-card { display: flex; flex-direction: column; gap: var(--space-4); background: var(--surface-default); }
+  [data-variant='deck'] .bc-media { position: relative; top: auto; left: auto; flex: none; width: 100%; height: 13rem; }
+  [data-variant='deck'] .bc-body { flex: none; margin: 0; padding: 0 var(--space-2) var(--space-2); }
+  [data-variant='deck'] .bc-name { font-size: 20px; }
+  [data-variant='deck'] .bc-blurb { display: block; -webkit-line-clamp: unset; }
+}
+
+/* the company's link (the lab's startups on these cards, /v7): the name with a small arrow after it */
+.bc-link { display: inline-flex; align-items: center; gap: 6px; color: inherit; text-decoration: none; }
+.bc-link svg { width: 0.8em; height: 0.8em; color: var(--content-secondary); transition: transform 0.2s ease, color 0.2s ease; }
+.bc-link:hover svg { transform: translate(2px, -2px); color: var(--color-ssb-light-9); }
+.bc-link:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; border-radius: 2px; }

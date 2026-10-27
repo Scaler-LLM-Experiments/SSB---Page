@@ -23,6 +23,18 @@ export type WhyQuote = {
   poster?: string;
 };
 
+/**
+ * The breaker's copy as the stakeholders rewrote it (the deck variant, /v7, 2026-10-28): a prominent
+ * title and a line under it, his remark retold as a small note (not a quote), the roles as pills.
+ */
+export type WhyBreakerCopy = {
+  title: string;
+  sub: string;
+  note: string;
+  rolesLead: string;
+  roles: string[];
+};
+
 /** The deck's turn from the evidence to SSB: a line ending in a role that keeps changing. */
 export type WhyRoles = {
   /** A line on its own before the lead, e.g. "He’s right about the old MBA." */

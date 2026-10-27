@@ -83,3 +83,6 @@
     #0c2417;
 }
 .lp-card:not([data-photo]).ssx-card::after { background: none; }
+
+/* a company's logo in place of its name (LiveProjectsSection `logos`): white, about the name's height */
+.lp-logo { display: block; height: 22px; width: auto; max-width: 9rem; object-fit: contain; object-position: left center; filter: brightness(0) invert(1); }

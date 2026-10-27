@@ -1,0 +1,352 @@
+/* The page's last two sections on /v7 (DeckFinale.tsx): the FAQ as numbered hairline rows beside a
+   sticky header, then the closing band as one light card with a wide green bar at its foot. No
+   shadows, no dark grounds; tokens only. */
+
+/* ── FAQ ──────────────────────────────────────────────────────────────────────────────────────── */
+.dkf-grid { display: grid; gap: var(--space-10); }
+@media (width >= 1056px) {
+  .dkf-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-16); align-items: start; }
+  .dkf-aside { position: sticky; top: calc(var(--sn-h, 69px) + var(--space-10)); }
+}
+.dkf-aside { display: flex; flex-direction: column; gap: var(--space-3); }
+.dkf-help {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  max-width: 22rem;
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--border-decorative);
+}
+.dkf-help-title { margin: 0; font-size: var(--type-body-size); line-height: 1.4; font-weight: var(--font-weight-semibold); color: var(--content-primary); }
+.dkf-help-line { margin: 0; font-size: var(--type-label-size); line-height: 1.5; color: var(--content-secondary); }
+.dkf-help-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1-5, 6px);
+  margin-top: var(--space-2);
+  font-size: var(--type-label-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-ssb-light-9);
+  text-decoration: none;
+}
+.dkf-help-link svg { width: 0.875rem; height: 0.875rem; transition: transform 0.2s ease; }
+.dkf-help-link:hover svg { transform: translateX(3px); }
+
+.dkf-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-decorative); }
+.dkf-item { border-bottom: 1px solid var(--border-decorative); }
+.dkf-q { margin: 0; }
+.dkf-q button {
+  all: unset;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-6) 0;
+  cursor: pointer;
+}
+.dkf-q button:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 4px; border-radius: var(--radius-md); }
+.dkf-num {
+  font-size: var(--type-label-size);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--font-weight-medium);
+  color: var(--content-tertiary, var(--content-secondary));
+  transition: color 0.25s ease;
+}
+.dkf-q-text {
+  font-size: 1.1875rem;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  font-weight: var(--font-weight-medium);
+  color: var(--content-primary);
+}
+.dkf-icon {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-decorative);
+  color: var(--content-primary);
+  transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1), background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+.dkf-icon svg { width: 0.875rem; height: 0.875rem; }
+.dkf-q button:hover .dkf-icon { border-color: var(--content-primary); }
+.dkf-item[data-open] .dkf-num { color: var(--color-ssb-light-9); }
+.dkf-item[data-open] .dkf-icon {
+  transform: rotate(45deg);
+  border-color: var(--color-ssb-light-9);
+  background: var(--color-ssb-light-9);
+  color: #fff;
+}
+/* the answer opens by its row's height (grid 0fr to 1fr), under the question, not the number */
+.dkf-a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.35s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.dkf-item[data-open] .dkf-a { grid-template-rows: 1fr; }
+.dkf-a-inner { overflow: hidden; }
+.dkf-a p {
+  margin: 0;
+  padding: 0 3.5rem var(--space-6) calc(2.5rem + var(--space-3));
+  max-width: 44rem;
+  font-size: var(--type-body-size);
+  line-height: 1.65;
+  color: var(--content-secondary);
+}
+.dkf-a a { color: var(--color-ssb-light-9); font-weight: var(--font-weight-medium); text-underline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .dkf-a, .dkf-icon { transition: none; } }
+@media (width < 672px) {
+  .dkf-q button { grid-template-columns: 2rem minmax(0, 1fr) auto; padding: var(--space-5) 0; }
+  .dkf-q-text { font-size: 1.0625rem; }
+  .dkf-icon { width: 1.75rem; height: 1.75rem; }
+  .dkf-a p { padding: 0 0 var(--space-5) calc(2rem + var(--space-3)); font-size: var(--type-label-size); }
+}
+
+/* ── The closing band (rebuilt 2026-10-28): the photo across the card, a progressive frost over its
+   left in the brand's deep green, white type on it, the design system's buttons. Static. ───────────── */
+.dkc-card {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  min-height: clamp(30rem, 72svh, 38rem);
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--color-ssb-dark-1, #08140d);
+}
+.dkc-photo {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 62% 40%;
+}
+/* the frost: a blur that strengthens toward the copy, and the brand's deep green under the type */
+.dkc-frost {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  backdrop-filter: blur(22px) saturate(1.1);
+  -webkit-backdrop-filter: blur(22px) saturate(1.1);
+  mask-image: linear-gradient(to right, #000 0%, #000 34%, rgb(0 0 0 / 0.6) 48%, transparent 66%);
+  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 34%, rgb(0 0 0 / 0.6) 48%, transparent 66%);
+  background: linear-gradient(to right, rgb(4 30 17 / 0.82) 0%, rgb(4 30 17 / 0.66) 40%, rgb(4 30 17 / 0.2) 62%, transparent 76%);
+}
+.dkc-copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: min(100%, 38rem);
+  padding: var(--space-12);
+  color: #fff;
+}
+.dkc-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-1-5, 6px) var(--space-3);
+  border: 1px solid rgb(255 255 255 / 0.22);
+  border-radius: var(--radius-md);
+  background: rgb(255 255 255 / 0.1);
+  font-size: var(--type-label-size);
+  line-height: 1.2;
+  font-weight: var(--font-weight-medium);
+  color: #fff;
+}
+.dkc-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: #5fdc9a;
+}
+.dkc-title {
+  margin-top: var(--space-1);
+  font-size: clamp(2.5rem, 4.6vw, 4rem) !important;
+  line-height: 1.04 !important;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+  color: #fff;
+}
+.dkc-line { color: rgb(255 255 255 / 0.78) !important; }
+.dkc-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-3); }
+.dkc-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-10);
+  margin: var(--space-6) 0 0;
+  padding-top: var(--space-5);
+  border-top: 1px solid rgb(255 255 255 / 0.2);
+}
+.dkc-facts > div { display: flex; flex-direction: column-reverse; gap: 2px; }
+.dkc-facts dd { margin: 0; font-size: 1.25rem; line-height: 1.2; letter-spacing: -0.02em; font-weight: var(--font-weight-semibold); color: #fff; }
+.dkc-facts dt { font-size: var(--type-caption-size); line-height: 1.3; color: rgb(255 255 255 / 0.66); }
+
+/* phones: the photo above, the frost rising behind the copy at the card's foot */
+@media (width < 672px) {
+  .dkc-card { align-items: flex-end; min-height: 40rem; }
+  .dkc-photo { height: 58%; object-position: 50% 40%; }
+  .dkc-frost {
+    mask-image: linear-gradient(to bottom, transparent 30%, rgb(0 0 0 / 0.7) 44%, #000 56%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 30%, rgb(0 0 0 / 0.7) 44%, #000 56%);
+    background: linear-gradient(to bottom, transparent 30%, rgb(4 30 17 / 0.6) 46%, rgb(4 30 17 / 0.92) 60%);
+  }
+  .dkc-copy { padding: var(--space-6) var(--space-5); gap: var(--space-3); }
+  .dkc-title { font-size: 2.25rem !important; }
+  .dkc-actions > * { flex: 1 1 100%; justify-content: center; }
+  .dkc-facts { gap: var(--space-3) var(--space-6); margin-top: var(--space-4); padding-top: var(--space-4); }
+  .dkc-facts dd { font-size: 1.0625rem; }
+}
+
+/* phones: the "still have questions?" note after the questions, not between the header and them */
+@media (width < 1056px) {
+  .dkf-aside { display: contents; }
+  .dkf-grid { gap: var(--space-3); }
+  .dkf-list { order: 1; margin-top: var(--space-6); }
+  .dkf-help { order: 2; margin-top: var(--space-6); padding-top: 0; border-top: 0; }
+}
+/* phones: the photo's foot faded into the card's deep green, so no edge shows behind the title */
+@media (width < 672px) {
+  .dkc-photo {
+    height: 62%;
+    object-position: 50% 40%;
+    mask-image: linear-gradient(to bottom, #000 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent 100%);
+  }
+  .dkc-card { background: #06200f; }
+}
+
+/* ── (later, 2026-10-28, the user's ask: a better photo, a nicer blur behind the copy, a shorter card)
+   the card lower; the photo placed with her at the right; the frost smoother: a soft blur that eases in
+   over a long ramp (no edge), a deep green tint graded with it, a faint light along its top ──────── */
+.dkc-card { min-height: clamp(24rem, 54svh, 30rem); }
+.dkc-photo { object-position: 70% 42%; }
+.dkc-frost {
+  backdrop-filter: blur(26px) saturate(1.15);
+  -webkit-backdrop-filter: blur(26px) saturate(1.15);
+  mask-image: linear-gradient(to right, #000 0%, #000 30%, rgb(0 0 0 / 0.85) 38%, rgb(0 0 0 / 0.5) 46%, rgb(0 0 0 / 0.2) 54%, transparent 62%);
+  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 30%, rgb(0 0 0 / 0.85) 38%, rgb(0 0 0 / 0.5) 46%, rgb(0 0 0 / 0.2) 54%, transparent 62%);
+  background:
+    radial-gradient(70% 90% at 0% 100%, rgb(29 146 91 / 0.35) 0%, transparent 70%),
+    linear-gradient(to right, rgb(5 40 24 / 0.78) 0%, rgb(5 40 24 / 0.62) 32%, rgb(5 40 24 / 0.3) 50%, transparent 62%);
+}
+.dkc-copy { width: min(100%, 36rem); padding: var(--space-10) var(--space-12); gap: var(--space-3); }
+.dkc-title { font-size: clamp(2.25rem, 3.8vw, 3.25rem) !important; }
+.dkc-actions { margin-top: var(--space-2); }
+.dkc-facts { margin-top: var(--space-4); padding-top: var(--space-4); }
+@media (width < 672px) {
+  .dkc-card { min-height: 34rem; }
+  .dkc-photo { height: 56%; object-position: 62% 40%; }
+  .dkc-copy { padding: var(--space-5); }
+  .dkc-title { font-size: 2rem !important; }
+  .dkc-frost {
+    mask-image: linear-gradient(to bottom, transparent 30%, rgb(0 0 0 / 0.6) 42%, #000 54%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 30%, rgb(0 0 0 / 0.6) 42%, #000 54%);
+    background: linear-gradient(to bottom, transparent 30%, rgb(5 40 24 / 0.6) 44%, rgb(5 40 24 / 0.9) 58%);
+  }
+}
+
+/* ── (later, 2026-10-28, the user's ask: "a real background blur, not a green tint; a grey or black
+   gradient; proper hierarchy, gaps and line heights; the brochure an outline with a light transparent
+   fill; premium and engaging") ─────────────────────────────────────────────────────────────────────
+   The blur: a copy of the photo blurred and scaled a touch (so its soft rim falls outside the card),
+   masked to ease in from the right edge of the copy; over it a neutral charcoal gradient, strongest
+   under the type. The type in one deliberate scale: chip, a 20px gap, the title (52px, 1.05), 16px,
+   the line (18px, 1.55), 32px, the actions, 40px, the facts under a hairline. */
+.dkc-card { background: #111; min-height: clamp(26rem, 58svh, 32rem); }
+.dkc-photo { object-position: 60% 35%; }
+.dkc-photo-blur {
+  z-index: -2;
+  filter: blur(28px) saturate(1.05);
+  transform: scale(1.12);
+  mask-image: linear-gradient(to right, #000 0%, #000 34%, rgb(0 0 0 / 0.7) 44%, rgb(0 0 0 / 0.3) 52%, transparent 60%);
+  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 34%, rgb(0 0 0 / 0.7) 44%, rgb(0 0 0 / 0.3) 52%, transparent 60%);
+}
+.dkc-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(to right, rgb(12 12 14 / 0.78) 0%, rgb(12 12 14 / 0.66) 30%, rgb(12 12 14 / 0.32) 50%, rgb(12 12 14 / 0) 66%),
+    linear-gradient(to top, rgb(12 12 14 / 0.35) 0%, transparent 40%);
+}
+.dkc-frost { display: none; }
+
+/* the type */
+.dkc-copy { display: block; width: min(100%, 37rem); padding: var(--space-12); }
+.dkc-eyebrow {
+  border-color: rgb(255 255 255 / 0.24);
+  background: rgb(255 255 255 / 0.08);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: rgb(255 255 255 / 0.92);
+}
+.dkc-title {
+  margin: var(--space-5) 0 0 !important;
+  font-size: clamp(2.375rem, 3.9vw, 3.25rem) !important;
+  line-height: 1.05 !important;
+  letter-spacing: -0.035em;
+  font-weight: var(--font-weight-semibold);
+}
+.dkc-line {
+  display: block;
+  max-width: 30rem;
+  margin: var(--space-4) 0 0 !important;
+  font-size: 1.125rem !important;
+  line-height: 1.55 !important;
+  color: rgb(255 255 255 / 0.8) !important;
+}
+.dkc-actions { margin-top: var(--space-8); gap: var(--space-3); }
+.dkc-facts {
+  margin-top: var(--space-10);
+  padding-top: var(--space-6);
+  gap: var(--space-4) var(--space-12);
+  border-top-color: rgb(255 255 255 / 0.18);
+}
+.dkc-facts > div { gap: var(--space-1); }
+.dkc-facts dd { font-size: 1.25rem; line-height: 1.2; }
+.dkc-facts dt { font-size: var(--type-caption-size); line-height: 1.3; color: rgb(255 255 255 / 0.66); }
+
+/* the actions: Apply the brand's green, as everywhere; the brochure an outline with a light, see-through
+   fill (the photo shows through it, softly frosted) */
+.dkc .dkc-brochure,
+.dkc .dkc-brochure:is(:hover, :focus-visible) {
+  border: 1px solid rgb(255 255 255 / 0.7);
+  background: rgb(255 255 255 / 0.12);
+  color: #fff;
+  box-shadow: none;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.dkc .dkc-brochure:hover { background: rgb(255 255 255 / 0.2); border-color: #fff; }
+
+/* phones: the photo above, the blur and charcoal rising behind the copy at the foot */
+@media (width < 672px) {
+  .dkc-card { min-height: 0; flex-direction: column; justify-content: flex-end; }
+  .dkc-photo { height: 52%; object-position: 62% 30%; mask-image: none; -webkit-mask-image: none; }
+  .dkc-photo-blur {
+    height: 100%;
+    mask-image: linear-gradient(to bottom, transparent 30%, rgb(0 0 0 / 0.7) 42%, #000 52%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 30%, rgb(0 0 0 / 0.7) 42%, #000 52%);
+  }
+  .dkc-scrim { background: linear-gradient(to bottom, transparent 28%, rgb(12 12 14 / 0.55) 44%, rgb(12 12 14 / 0.85) 62%); }
+  .dkc-copy { padding: 15rem var(--space-5) var(--space-6); }
+  .dkc-title { margin-top: var(--space-4) !important; font-size: 2.125rem !important; }
+  .dkc-line { font-size: 1rem !important; margin-top: var(--space-3) !important; }
+  .dkc-actions { margin-top: var(--space-6); }
+  .dkc-facts { margin-top: var(--space-8); padding-top: var(--space-5); gap: var(--space-3) var(--space-6); }
+  .dkc-facts dd { font-size: 1.0625rem; }
+}
+/* the new photo (2026-10-28): the presenter and the table at the right, clear of the copy */
+.dkc-photo:not(.dkc-photo-blur) { object-position: 72% 40%; }
+@media (width < 672px) { .dkc-photo:not(.dkc-photo-blur) { object-position: 70% 35%; } }
+/* SSB's own lecture-hall photo (2026-10-28, the user's pick): the full width of the card, cropped only
+   top and bottom, the rows of students centred a little high */
+.dkc-photo:not(.dkc-photo-blur) { object-position: 50% 42%; }
+@media (width < 672px) { .dkc-photo:not(.dkc-photo-blur) { object-position: 55% 30%; } }
+
+/* (the closing card was full bleed for a while, 2026-10-28; back in its rounded frame at the user's ask) */

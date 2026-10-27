@@ -34,7 +34,7 @@ type Project = { company: string; title: string; desc: string; /** a file name i
  * on a green ground instead. */
 const SHOW_PHOTOS = true;
 
-function ProjectCard({ project: p, priority = false }: { project: Project; priority?: boolean }) {
+function ProjectCard({ project: p, priority = false, logo }: { project: Project; priority?: boolean; logo?: string }) {
   return (
     <article className="ssx-card lp-card" data-align="start" data-photo={SHOW_PHOTOS && p.image ? '' : undefined}>
       {SHOW_PHOTOS && p.image ? (
@@ -49,7 +49,13 @@ function ProjectCard({ project: p, priority = false }: { project: Project; prior
       <div className="lp-content">
         {/* the company where the faculty card has its logo: first, over a hairline */}
         <p className="lp-company" data-part="title">
-          {p.company}
+          {logo ? (
+            // the company's own logo in white, in place of its name (the deck variant, /v7, 2026-10-28)
+            // eslint-disable-next-line @next/next/no-img-element
+            <img className="lp-logo" src={logo} alt={p.company} loading="lazy" decoding="async" />
+          ) : (
+            p.company
+          )}
         </p>
         <h3 className="lp-title" data-part="title">
           {p.title}
@@ -62,7 +68,8 @@ function ProjectCard({ project: p, priority = false }: { project: Project; prior
   );
 }
 
-export function LiveProjectsSection() {
+/** `logos` (the deck variant, /v7, 2026-10-28): each company's logo, in white, in place of its name. */
+export function LiveProjectsSection({ logos }: { logos?: Record<string, string> } = {}) {
   const { ref, goTo } = useHScroller();
   const sectionRef = React.useRef<HTMLElement>(null);
   useSectionEntrance(sectionRef);
@@ -96,7 +103,7 @@ export function LiveProjectsSection() {
           itemName="project"
           announce={(p) => `${p.company}, ${p.title}`}
           dots
-          renderCard={(p, i) => <ProjectCard project={p} priority={i === 0 || i === 1 || i === PROJECTS.length - 1} />}
+          renderCard={(p, i) => <ProjectCard project={p} logo={logos?.[p.company]} priority={i === 0 || i === 1 || i === PROJECTS.length - 1} />}
         />
       </Container>
 
@@ -108,7 +115,7 @@ export function LiveProjectsSection() {
             const copy = c > 0;
             return (
               <li key={`${c}-${p.company}`} data-copy={copy || undefined} aria-hidden={copy || undefined} inert={copy || undefined}>
-                <ProjectCard project={p} priority={!copy && i < 5} />
+                <ProjectCard project={p} logo={logos?.[p.company]} priority={!copy && i < 5} />
               </li>
             );
           }),

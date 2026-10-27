@@ -33,9 +33,12 @@
 /* desktop: 40px (the team's call, 2026-10-22; was 44), two lines beside the logos */
 @media (width >= 1056px) { .hf-title { font-size: 2.5rem; } }
 .hf-line { margin: var(--space-6) 0 0; color: var(--on-image-ink); }
-/* the phrases kept whole; the dot travels with the phrase after it */
-.hf-line > span { display: inline-block; }
-.hf-dot { margin: 0 var(--space-3); }
+/* the phrases kept whole, each led by its dot; the row is pulled left by one dot's width and
+   clipped, so a line never starts with a dot (HeroFrame) */
+.hf-line { --hf-dot-w: 1.75rem; overflow: hidden; }
+.hf-line-in { display: block; margin-left: calc(var(--hf-dot-w) * -1); }
+.hf-line-in > span { display: inline-block; }
+.hf-dot { display: inline-block; width: var(--hf-dot-w); text-align: center; }
 .hf-actions { display: flex; flex-wrap: wrap; gap: var(--space-4); margin-top: var(--space-8); }
 .hf-actions svg { width: 1.125rem; height: 1.125rem; }
 /* secondary: a white outline on the dark film; a pale filled button on the light frost */
@@ -84,7 +87,7 @@
   .hf-deadline [data-slot='banner-content'], .hf-deadline [data-slot='banner-message'] { flex: 1 1 auto; }
   .hf-deadline [data-slot='banner-message'] { font-size: var(--type-body-sm-size); }
   /* the line flows as one sentence, wrapping wherever it runs out of room (the team's ask for the hero line on phones) */
-  .hf-line > span { display: inline; }
+  /* phrases stay whole on a phone too: the dot clip needs each line to start on a phrase */
   .hf { padding: 0 var(--space-2) var(--space-2); }
   .hf-body { padding: 0 var(--space-4) var(--space-6); }
   .hf-eyebrow { margin-bottom: var(--space-3); font-size: 1rem; }
@@ -443,3 +446,30 @@ body:has(.hf-deadline) header.sn { top: var(--hf-bar, 0px); }
   .hf-actions { order: 5; margin-top: var(--space-6); }
   .hf-side > .hf-facts { order: 6; margin-top: var(--space-6); }
 }
+
+/* 9. (2026-10-28, the deck variant /v7) the eyebrow as a chip, the brand's palest green with its deepest
+   green ink (ssb-light-3 / -11, a hairline of ssb-light-6; was white on the solid green), 4px corners as the CTAs', at its own size (16px,
+   a phone's 14px), reading on the film and on a phone's white ground alike;
+   the title's line height from the design system: the display role's 1.15 on desktop (it was 1.2), the
+   hero token's 1.22 on a phone */
+.hf[data-variant='deck'] .hf-eyebrow {
+  justify-self: start; width: fit-content; padding: var(--space-1-5) var(--space-4);
+  border: 1px solid var(--color-ssb-light-6);
+  border-radius: var(--radius-md); background: var(--color-ssb-light-3); color: var(--color-ssb-light-11);
+  font-weight: var(--font-weight-medium);
+}
+/* desktop: the display role's 1.15 (the hero token's 1.08 read cramped over two lines, 2026-10-28) */
+.hf[data-variant='deck'] .hf-title { line-height: var(--type-display-lh); }
+/* "Built by leaders from" a step quieter than the title (2026-10-28, the user's ask): the film's secondary ink */
+.hf[data-variant='deck'] .hf-label { color: var(--on-image-ink-secondary); }
+@media (width < 672px) {
+  /* on a phone's white ground, the line's grey */
+  .hf[data-tone='light'][data-variant='deck'] .hf-label { color: #616161; }
+  .hf[data-tone='light'][data-variant='deck'] .hf-eyebrow { color: var(--color-ssb-light-11); opacity: 1; padding: var(--space-1) var(--space-3); }
+  .hf[data-variant='deck'] .hf-eyebrow { margin-bottom: var(--space-3); }
+  /* (2026-10-28, the user's ask) 22px, so the title sits on two lines on a 375px phone and wider
+     (24px, the h1 role's, left "Faculty" on a third line at 390px) */
+  .hf[data-variant='deck'] .hf-title { font-size: 1.375rem; line-height: 1.27; }
+}
+/* the wave (HeroFrameFlipLogos `wave`, /v7): a quicker turn, each tile a beat after the one before */
+.hf-flip[data-wave] .hf-flip-logo { animation-duration: 380ms; }

@@ -64,7 +64,7 @@ const STORIES: { name: string; line: string; cover: string; video?: string; clip
 
 // The stories as shorts (2026-10-09). PLACEHOLDER: no learner's short is in the project yet, so each
 // plays the campus film from a different moment; set a story's `clip` to its own short.
-const REELS: Reel[] = STORIES.map((s, i) => ({
+export const REELS: Reel[] = STORIES.map((s, i) => ({
   name: s.name,
   line: s.line,
   clip: s.clip ?? '/media/campus-film.mp4',
@@ -312,7 +312,16 @@ function LogoGrid() {
   );
 }
 
-export function InternshipSection() {
+/** `stats` replaces the three figures and `reels={false}` drops the success stories (the deck variant,
+ *  /v7: the stipend in place of the duration; the stories are its own section). */
+export function InternshipSection({
+  stats = STATS,
+  reels = true,
+}: {
+  stats?: typeof STATS;
+  /** `'framed'` (/v7, 2026-10-28): the stories under a "Student testimonials" heading of their own. */
+  reels?: boolean | 'framed';
+} = {}) {
   return (
     <Section id="internship" density="roomy" aria-labelledby="internship-title" className="overflow-x-clip">
       <PlacementsMotion>
@@ -333,7 +342,7 @@ export function InternshipSection() {
         {/* the numbers as Placements' cohort boxes (2026-10-07, the team's ask): a grey box each, three
             levels only: the eyebrow, the figure, what it counts (the icons and second lines are gone) */}
         <ul className="in-boxes">
-          {STATS.map((stat) => (
+          {stats.map((stat) => (
             <li key={stat.label} data-card className="pl-figure-box relative isolate overflow-hidden">
               <div data-card-body>
                 <Heading as="p" size="eyebrow" className="text-content-brand">
@@ -351,6 +360,15 @@ export function InternshipSection() {
           Roles across {FUNCTIONS.slice(0, -1).join(', ')} and {FUNCTIONS[FUNCTIONS.length - 1]}.
         </Text>
 
+        {reels === 'framed' ? (
+          // no frame (2026-10-28, the user's ask): the reels as they are, under a heading of their own
+          <div className="in-carousel in-reels-head" data-fade>
+            <Heading as="h3" size="2" className="in-reels-title">
+              Student testimonials. <span className="h-tail">In their own words.</span>
+            </Heading>
+            <StoryReels reels={REELS} label="Student testimonials" />
+          </div>
+        ) : reels ? (
         <div className="in-carousel" data-fade>
           <Heading as="h3" size="eyebrow" className="mb-4 text-content-secondary">
             Success stories
@@ -358,6 +376,7 @@ export function InternshipSection() {
           {/* shorts, in a reel row (2026-10-09); the card stack (<Stories />) was here */}
           <StoryReels reels={REELS} label="Learners: success stories" />
         </div>
+        ) : null}
 
         {/* where they interned: the Placements grid's logo frame, one logo to a cell */}
         <div className="in-companies" data-fade>

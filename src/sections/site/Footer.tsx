@@ -233,7 +233,7 @@ function BuildingFoot({ footRef, content, green = false }: { footRef: React.Ref<
   );
 }
 
-export function SsbFooter({ content = SSB_FOOTER, showCta = true, settled, variant = 'campus', children }: { content?: FooterContent; showCta?: boolean; /** `building` (the team's mock, 2026-10-08): light, the name with the building in front of it. `campus`: a dark footer standing on the campus photo. `classic`: the light footer with the particle wordmark. */ variant?: 'green' | 'building' | 'campus' | 'classic'; /** Draw the particle wordmark in place (still previews). */ settled?: boolean; /** The page above the footer: it lifts off the footer with the CTA band. */ children?: React.ReactNode }) {
+export function SsbFooter({ content = SSB_FOOTER, showCta = true, settled, variant = 'campus', lift = true, children }: { content?: FooterContent; showCta?: boolean; /** false: no lift reveal; the footer simply follows the page, static (the deck variant, /v7, 2026-10-28). */ lift?: boolean; /** `building` (the team's mock, 2026-10-08): light, the name with the building in front of it. `campus`: a dark footer standing on the campus photo. `classic`: the light footer with the particle wordmark. */ variant?: 'green' | 'building' | 'campus' | 'classic'; /** Draw the particle wordmark in place (still previews). */ settled?: boolean; /** The page above the footer: it lifts off the footer with the CTA band. */ children?: React.ReactNode }) {
   const ctaId = React.useId();
   const { cta } = content;
   const root = React.useRef<HTMLDivElement>(null);
@@ -273,7 +273,7 @@ export function SsbFooter({ content = SSB_FOOTER, showCta = true, settled, varia
   return (
     // the building looks are light whatever the OS's theme (the site is light; following a dark OS
     // turned the footer's white, and the card's fade, black)
-    <div ref={root} className="sf" data-brand="ssb" data-theme={variant === 'building' || variant === 'green' ? 'light' : theme} data-lift="">
+    <div ref={root} className="sf" data-brand="ssb" data-theme={variant === 'building' || variant === 'green' ? 'light' : theme} data-lift={lift ? '' : undefined}>
       {/* the sheet that lifts: the page and the CTA band, opaque, above the pinned footer */}
       <div ref={layer} className="sf-lift">
       {children}

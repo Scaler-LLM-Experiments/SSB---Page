@@ -84,7 +84,7 @@ function ChallengeCard({ item, onPlay }: { item: Item; onPlay: () => void }) {
 }
 
 /** The video, large, over the page; Esc, the close button or a click outside closes it. */
-function Lightbox({ id, title, onClose }: { id: string; title: string; onClose: () => void }) {
+export function Lightbox({ id, title, onClose }: { id: string; title: string; onClose: () => void }) {
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
     window.addEventListener('keydown', onKey);
@@ -107,7 +107,8 @@ function Lightbox({ id, title, onClose }: { id: string; title: string; onClose: 
   );
 }
 
-export function LearnByDoingSection() {
+/** `grid` (the deck variant, /v7, 2026-10-28): both cards side by side in a grid, no carousel controls. */
+export function LearnByDoingSection({ grid = false }: { grid?: boolean } = {}) {
   const l = SSB_JOURNEY.learn!;
   const [open, setOpen] = React.useState<Item | null>(null);
   return (
@@ -121,6 +122,7 @@ export function LearnByDoingSection() {
         sub={l.lede}
         itemName="challenge"
         cardWidth="38rem"
+        nav={!grid}
       >
         {l.items.map((item) => (
           <ChallengeCard key={item.n} item={item} onPlay={() => setOpen(item)} />

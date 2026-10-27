@@ -1,0 +1,57 @@
+/* The variant switch (VariantToggle.tsx): a small pill fixed at the bottom-left, over everything but
+   the navbar's menus. */
+.vt {
+  position: fixed;
+  z-index: 45;
+  left: var(--space-5);
+  bottom: var(--space-5);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  border: var(--border-width-hair) solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  background: var(--surface-raised, var(--surface-default));
+  box-shadow: 0 10px 30px -12px rgb(0 0 0 / 0.35);
+}
+/* phones: above the sticky apply bar */
+@media (width < 1056px) {
+  .vt {
+    left: var(--space-3);
+    bottom: calc(var(--bn-apply-h, 120px) + var(--space-3));
+  }
+}
+.vt-label {
+  padding-inline: var(--space-2) var(--space-1);
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-lh);
+  color: var(--content-secondary);
+}
+.vt-item {
+  padding: var(--space-1-5, 6px) var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--type-label-size);
+  line-height: var(--type-label-lh);
+  font-weight: var(--font-weight-medium);
+  color: var(--content-primary);
+  white-space: nowrap;
+  transition: background-color var(--motion-duration-fast) ease;
+}
+.vt-item:hover {
+  background: var(--surface-sunken);
+}
+.vt-item[aria-current='page'] {
+  background: var(--surface-inverse);
+  color: var(--content-inverse);
+}
+/* phones: compact, no label */
+@media (width < 672px) {
+  .vt-label {
+    display: none;
+  }
+  .vt-item {
+    padding: var(--space-1) var(--space-2-5, 10px);
+    font-size: var(--type-caption-size);
+    line-height: var(--type-caption-lh);
+  }
+}

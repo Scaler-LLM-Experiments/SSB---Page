@@ -16,10 +16,19 @@ import './hero-frame.css';
  * one glass panel split by hairlines. Phones: one column, the film above the copy.
  * Entrance: CSS only; the frame settles, then the copy fades up. Reduced motion: shown at once.
  */
-export function HeroFrame({ content: c }: { content: HeroFrameContent }) {
+/** `variant="deck"` (the deck variant, /v7, 2026-10-28): the eyebrow as a brand-green chip, the title on
+ *  the display line height, the logos turning over all together in a quick wave. */
+export function HeroFrame({ content: c, variant }: { content: HeroFrameContent; variant?: 'deck' }) {
   const tone = 'light';
   return (
-    <section className="hf" data-tone={tone} aria-labelledby="hf-title" data-brand="ssb" data-theme={tone}>
+    <section
+      className="hf"
+      data-tone={tone}
+      data-variant={variant}
+      aria-labelledby="hf-title"
+      data-brand="ssb"
+      data-theme={tone}
+    >
       {/* the frame is dark in both tones: the copy is white on the film */}
       <div className="hf-frame" data-brand="ssb" data-theme="dark">
         <video className="hf-film" src={c.video.src} poster={c.video.poster} autoPlay muted loop playsInline preload="auto" aria-hidden="true" />
@@ -33,12 +42,16 @@ export function HeroFrame({ content: c }: { content: HeroFrameContent }) {
               {c.title}
             </Heading>
             <Text size="lg" className="hf-line">
-              {c.line.map((phrase, i) => (
-                <span key={phrase}>
-                  {i ? <span className="hf-dot" aria-hidden="true">·</span> : null}
-                  {phrase}
-                </span>
-              ))}
+              {/* every phrase leads with its dot, and the row is pulled left by a dot's width and
+                  clipped: whichever phrase starts a line has its dot cut off (2026-10-28) */}
+              <span className="hf-line-in">
+                {c.line.map((phrase) => (
+                  <span key={phrase}>
+                    <span className="hf-dot" aria-hidden="true">·</span>
+                    {phrase}
+                  </span>
+                ))}
+              </span>
             </Text>
             {/* the light theme's buttons: the brand green at full strength (the dark theme mutes it);
                 the secondary is drawn per tone in hero-frame.css */}
@@ -60,7 +73,7 @@ export function HeroFrame({ content: c }: { content: HeroFrameContent }) {
               <span>{c.logosLabel}</span>
             </p>
             {/* the ten logos turning over on four tiles, at every width (the still list below is kept, hidden) */}
-            <HeroFrameFlipLogos logos={c.flipLogos} tiles={5} />
+            <HeroFrameFlipLogos logos={c.flipLogos} tiles={5} wave={variant === 'deck'} />
             <ul className="hf-logos">
               {c.logos.map((l) => (
                 <li key={l.name}>

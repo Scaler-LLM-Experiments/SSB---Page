@@ -35,6 +35,9 @@ export const brandMarks: Record<string, BrandMark> = {
   google: { src: '/logos/marks/lead-google.png', bg: '#FFFFFF' },
   airtel: { src: '/logos/marks/lead-airtel.png', bg: '#FFFFFF' },
   lightrock: { src: '/logos/marks/fc-lightrock.png', bg: '#FFFFFF' },
+  // (2026-10-28) the investors' row on /v7: Mokobara's and Global Founders Capital's own site icons (Mokobara's inverted to black on white, as the others' white boxes)
+  mokobara: { src: '/logos/marks/fc-mokobara.png', bg: '#FFFFFF' },
+  'global-founders-capital': { src: '/logos/marks/fc-global-founders-capital.png', bg: '#FFFFFF' },
   // the Impact Foundation's (2026-10-23)
   rippling: { src: '/logos/marks/fc-rippling.png' },
   zeta: { src: '/logos/marks/fc-zeta.png', bg: '#FFFFFF' },

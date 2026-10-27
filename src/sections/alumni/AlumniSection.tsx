@@ -3,19 +3,34 @@
 import * as React from 'react';
 import { Container, Heading, Section, Text } from '@kishanscaler/ssx-ui';
 
-import { alumni as allAlumni, pivotAlumni } from '@/content/alumni';
+import { alumni as allAlumni, pivotAlumni, type Alumnus } from '@/content/alumni';
 import { useSectionEntrance } from '@/sections/faculty/useSectionEntrance';
 import { ScrollDots } from '@/sections/shared/ScrollDots';
 import { useRows } from '@/sections/shared/useRows';
+import { Title } from '@/sections/shared/Title';
 import { AlumniCard } from './AlumniCard';
 import './alumni.css';
 
 // Those with a photo in the card's landscape style, then the internship section's learners (2026-10-07),
 // who have no portrait yet (the card's empty-room plate with their initials).
-const alumni = [...allAlumni.filter((a) => a.photo), ...pivotAlumni];
+const defaultAlumni = [...allAlumni.filter((a) => a.photo), ...pivotAlumni];
 
-/** `peers` is the logo ticker under the cards (a server component, so it comes in from the page). */
-export function AlumniSection({ peers }: { peers?: React.ReactNode }) {
+/** `peers` is the logo ticker under the cards (a server component, so it comes in from the page).
+ *  `people`, `eyebrow`, `title` ("Lead.|Tail.") and `sub` replace the defaults (the deck variant, /v7). */
+export function AlumniSection({
+  peers,
+  people = defaultAlumni,
+  eyebrow = 'Alumni',
+  title,
+  sub = 'Now in growth, strategy and brand roles at Blinkit, Emergent and more.',
+}: {
+  peers?: React.ReactNode;
+  people?: Alumnus[];
+  eyebrow?: string;
+  title?: string;
+  sub?: string;
+}) {
+  const alumni = people;
   const sectionRef = React.useRef<HTMLElement>(null);
   const rowRef = React.useRef<HTMLUListElement>(null);
   // Same entrance as Faculty: the header, then the cards on screen wiped open.
@@ -33,14 +48,20 @@ export function AlumniSection({ peers }: { peers?: React.ReactNode }) {
         >
           <div className="flex max-w-(--size-measure-max) flex-col gap-3">
             <Heading as="p" size="eyebrow" className="text-content-brand" data-enter="eyebrow">
-              Alumni
+              {eyebrow}
             </Heading>
             {/* Picks up Why SSB's "roles like…" (2026-10-07): our earlier cohorts, already there. */}
             <Heading as="h2" size="display" id="alumni-title" data-enter="headline">
-              Our earlier cohorts are already in roles like these. <span className="h-tail">At Blinkit, Emergent and more.</span>
+              {title ? (
+                <Title text={title} />
+              ) : (
+                <>
+                  Our earlier cohorts are already in roles like these. <span className="h-tail">At Blinkit, Emergent and more.</span>
+                </>
+              )}
             </Heading>
             <Text size="lg" tone="secondary" data-enter="sub">
-              Now in growth, strategy and brand roles at Blinkit, Emergent and more.
+              {sub}
             </Text>
           </div>
         </div>

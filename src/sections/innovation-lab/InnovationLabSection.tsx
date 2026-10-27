@@ -6,8 +6,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Container, Heading, Section, Text } from '@kishanscaler/ssx-ui';
 import { ease, motionTokens, prefersReducedMotion, useMotion } from '@kishanscaler/ssx-ui/motion';
 
-import { labBand, labTurn, labVentures } from '@/content/innovation-lab';
+import { labBand, labBand as defaultBand, labTurn, labVentures } from '@/content/innovation-lab';
+import type { Venture } from '@/content/community';
 import { VentureCard } from '@/sections/community/VentureCard';
+import { BuiltCards, type BuiltCard } from '@/sections/built/BuiltCards';
 import '@/sections/community/community.css';
 import { Accent } from '@/sections/shared/Accent';
 import { RowSection } from '@/sections/shared/RowSection';
@@ -53,10 +55,47 @@ export const AREAS = ['a', 'b', 'd', 'e'] as const;
  * ("go with the older layout"). Before all that: a sticky pitch beside count-up stat cards and a
  * framed row of banner cards (in git history).
  */
-export function InnovationLabSection() {
+/** `band`, `turn` and `ventures` replace the defaults (the deck variant, /v7: the deck's heading and its four startups). */
+export function InnovationLabSection({
+  band = labBand,
+  turn = labTurn,
+  ventures = labVentures,
+  variant,
+  builtCards = false,
+}: {
+  /** The startups on the student startups' cards (BuiltCards, its deck look), every field kept (/v7, 2026-10-28). */
+  builtCards?: boolean;
+  band?: typeof labBand;
+  turn?: typeof labTurn;
+  ventures?: Venture[];
+  /** 'deck' (/v7, 2026-10-28): the figures in a row under the heading, the mosaic shorter (deck.css). */
+  variant?: 'deck';
+} = {}) {
   return (
     <>
-      <LabBand />
+      <LabBand band={band} variant={variant} />
+      {builtCards ? (
+        <BuiltCards
+          id="sil"
+          variant="deck"
+          content={{ eyebrow: '', title: '', titleTail: '', label: 'Startups incubated in the Innovation Lab', companies: ventures.map(toBuiltCard) }}
+          heading={
+          // a subheading within the lab's section (the team's call): h3, a step smaller
+          <Heading
+            as="h3"
+            size="1"
+            id="sil-title"
+            data-enter="headline"
+            className="lab-sub max-w-(--size-measure-max) [text-wrap:balance]"
+          >
+            <span className="block">
+              <Accent text={turn.setup} word={turn.accent} />
+            </span>
+            <span className="block">{turn.lead}</span>
+          </Heading>
+          }
+        />
+      ) : (
       <RowSection
         id="sil"
         title="Startups incubated in the Innovation Lab"
@@ -70,9 +109,9 @@ export function InnovationLabSection() {
             className="lab-sub max-w-(--size-measure-max) [text-wrap:balance]"
           >
             <span className="block">
-              <Accent text={labTurn.setup} word={labTurn.accent} />
+              <Accent text={turn.setup} word={turn.accent} />
             </span>
-            <span className="block">{labTurn.lead}</span>
+            <span className="block">{turn.lead}</span>
           </Heading>
         }
         itemName="startup"
@@ -80,21 +119,39 @@ export function InnovationLabSection() {
         // two still rows, as Alumni (2026-10-23, the team's ask; was drifting)
         stacked
       >
-        {labVentures.map((v) => (
+        {ventures.map((v) => (
           <VentureCard key={v.company} {...v} />
         ))}
       </RowSection>
+      )}
     </>
   );
 }
 
-function LabBand() {
+/** A lab startup on the student startups' card: its banner as the photo (the words in it don't matter),
+ *  the sector over the name, the founders by name with their role, the line, the link. */
+function toBuiltCard(v: Venture): BuiltCard {
+  const names = v.founders.length > 1 ? `${v.founders.slice(0, -1).map(first).join(', ')} & ${first(v.founders.at(-1)!)}` : v.founders[0];
+  return {
+    company: v.company,
+    sector: v.sector,
+    by: v.role ? `${names} · ${v.role}` : names,
+    blurb: v.description,
+    image: { src: v.banner?.src ?? v.image ?? '/internship/plate.webp', alt: `${v.company}`, width: 1133, height: 542 },
+    focus: [0.5, 0.5],
+    stat: v.stat,
+    href: v.href,
+  };
+}
+const first = (name: string) => name.split(' ')[0];
+
+function LabBand({ band: labBand, variant }: { band: typeof defaultBand; variant?: 'deck' }) {
   const scope = React.useRef<HTMLElement>(null);
   useLabMotion(scope);
   const [first, ...rest] = labBand.photos;
 
   return (
-    <Section ref={scope} density="roomy" aria-labelledby="sil-band-title" className="lab">
+    <Section ref={scope} density="roomy" aria-labelledby="sil-band-title" className="lab" data-variant={variant}>
       <div data-lab-track className="lab-track">
         <div data-lab-stage className="lab-stage">
           <Container className="lab-frame">

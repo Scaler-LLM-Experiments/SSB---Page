@@ -136,7 +136,13 @@ export const investors = {
   sub: 'Investors and founders from Sequoia, Peak XV, McKinsey, Cashfree and Lightrock meet SSB students on campus.',
   // Photos in public/people (640x800); logos in public/logos, shown white on the card.
   people: [
-    { name: 'Navin Parwal', role: 'Founder, Mokobara', image: '/people/navin-parwal.webp' },
+    {
+      name: 'Navin Parwal',
+      role: 'Founder, Mokobara',
+      image: '/people/navin-parwal.webp',
+      // the mark only (brand-marks.ts): there is no wordmark file
+      logo: { name: 'Mokobara', src: '/logos/mokobara.svg' },
+    },
     {
       name: 'Sidhant Goyal',
       role: 'EIR, Toddle, Ex-Sequoia',
@@ -147,6 +153,7 @@ export const investors = {
       name: 'Roel Janssen',
       role: 'Partner, Global Founders Capital, Ex-McKinsey',
       image: '/people/roel-janssen.webp',
+      logo: { name: 'Global Founders Capital', src: '/logos/global-founders-capital.svg' },
     },
     {
       name: 'Akash Sinha',

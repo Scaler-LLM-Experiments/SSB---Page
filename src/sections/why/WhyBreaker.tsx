@@ -6,7 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Container } from '@kishanscaler/ssx-ui';
 import { ease, motionTokens, prefersReducedMotion, useMotion } from '@kishanscaler/ssx-ui/motion';
 
-import type { WhyFigure, WhyQuote } from './types';
+import type { WhyBreakerCopy, WhyFigure, WhyQuote } from './types';
 import './why.css';
 import { offsetPx } from '@/lib/motion-offset';
 
@@ -115,7 +115,16 @@ export function useBreakerMotion(scope: React.RefObject<HTMLElement | null>) {
  * used with their permission), playing only while on screen. Under reduced
  * motion it holds on its first frame (the poster).
  */
-export function WhyBreaker({ quote, figures }: { quote: WhyQuote; figures: WhyFigure[] }) {
+export function WhyBreaker({
+  quote,
+  figures,
+  copy,
+}: {
+  quote: WhyQuote;
+  figures: WhyFigure[];
+  /** The deck variant's copy (/v7): title, line, a small note in place of the quote, the roles as pills. */
+  copy?: WhyBreakerCopy;
+}) {
   const scope = React.useRef<HTMLElement>(null);
   const { video, poster } = quote;
 
@@ -184,16 +193,40 @@ export function WhyBreaker({ quote, figures }: { quote: WhyQuote; figures: WhyFi
               {/* The argument out front (the team, 2026-10-12: "pay more attention to the traditional
                   MBA"): the line as the section's title, "traditional MBA" in the logo's green, then
                   the quote under it a step quieter. Was a white eyebrow over the quote. */}
-              <h2 id="why-breaker-title" data-breaker-part className="why-breaker-kicker">
-                {emphasise(quote.eyebrow ?? '', 'traditional MBA')}
-              </h2>
-              <p data-breaker-part className="why-breaker-words">
-                “{quote.caption}”
-              </p>
-              {/* Who said it, a small footnote (the team's call). */}
-              <p data-breaker-part className="why-breaker-credit type-body">
-                — {[quote.attribution, quote.role?.split(', ').pop()].filter(Boolean).join(', ')}
-              </p>
+              {copy ? (
+                <>
+                  <h2 id="why-breaker-title" data-breaker-part className="why-breaker-kicker why-breaker-title">
+                    {emphasise(copy.title, 'traditional MBA')}
+                  </h2>
+                  <p data-breaker-part className="why-breaker-sub">
+                    {copy.sub}
+                  </p>
+                  <p data-breaker-part className="why-breaker-note-line">
+                    {copy.note}
+                  </p>
+                  <div data-breaker-part className="why-breaker-roles">
+                    <p className="why-breaker-roles-lead">{copy.rolesLead}</p>
+                    <ul className="why-breaker-pills">
+                      {copy.roles.map((r) => (
+                        <li key={r}>{r}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <h2 id="why-breaker-title" data-breaker-part className="why-breaker-kicker">
+                    {emphasise(quote.eyebrow ?? '', 'traditional MBA')}
+                  </h2>
+                  <p data-breaker-part className="why-breaker-words">
+                    “{quote.caption}”
+                  </p>
+                  {/* Who said it, a small footnote (the team's call). */}
+                  <p data-breaker-part className="why-breaker-credit type-body">
+                    — {[quote.attribution, quote.role?.split(', ').pop()].filter(Boolean).join(', ')}
+                  </p>
+                </>
+              )}
             </div>
           </div>
 

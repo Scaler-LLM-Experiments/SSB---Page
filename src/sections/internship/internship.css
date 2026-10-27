@@ -135,3 +135,7 @@
   .in-reels-nav { margin-top: var(--space-4); }
 }
 .in-reels-nav[hidden] { display: none; }
+
+/* the stories on /v7 (2026-10-28): no frame, a heading of their own over the reels */
+.in-reels-head .in-reels-title { margin-bottom: var(--space-6); font-weight: var(--font-weight-medium); }
+@media (width < 672px) { .in-reels-head .in-reels-title { margin-bottom: var(--space-4); } }
