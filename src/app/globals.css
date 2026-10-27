@@ -123,3 +123,12 @@ main .h-tail, main .sj-ai-accent { color: var(--content-secondary) !important; }
 @media (width < 672px) {
   main :is(h2, p.type-display) .h-tail, main h2 .sj-ai-accent, main h2.sg-title span { display: none !important; } /* p.type-display: a tab's heading stacked under another (the founders') */ /* Admissions' title kept whole: its grey part ends the sentence */
 }
+
+/* ── m-web (2026-10-27, the user's ask: section headers too big on a phone, sections a little closer)
+   Every section title on a phone 24px (the display token, was 28), its sub-line 14px (was 16), and
+   40px between sections (was 48). The eyebrow stays 12px: the type floor. ── */
+@media (width < 672px) {
+  main { --type-display-size: 1.5rem; }
+  main :is(h2, h3).type-display + p.type-body-lg { font-size: 0.875rem; line-height: 1.55; }
+  main [data-slot='section'][data-density='roomy'], .pv-page.pv-home { padding-block: var(--space-10); }
+}

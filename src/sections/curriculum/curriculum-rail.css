@@ -511,3 +511,26 @@
   .cr-main .sj-career-card .sj-tl-item { flex-basis: 82%; height: auto; min-height: 132px; border: 1px solid var(--border-decorative); }
   .cr-main .sj-career .sj-tl-dots { display: block; margin-top: 16px; }
 }
+
+/* ── (2026-10-27, the user's ask) the minimal page's five pillars: each item its number in the brand
+   green, then the pillar and, on desktop, its one line under it in grey (wrapping); the line hidden
+   in the phones' pill row, the number kept small beside the label ── */
+.cr-item[data-pillar] { align-items: flex-start; }
+.cr-num { flex: none; font-variant-numeric: tabular-nums; color: var(--content-brand); font-weight: var(--font-weight-medium); }
+.cr-text { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.cr-line { font-size: var(--type-body-sm-size); line-height: 1.45; font-weight: 400; color: var(--content-secondary); white-space: normal; }
+.cr-item[data-pillar][aria-current='true'] .cr-line { color: var(--content-primary); }
+@media (width < 1056px) {
+  .cr-item[data-pillar] { align-items: center; gap: 6px; }
+  .cr-line { display: none; }
+  .cr-item[data-pillar][aria-current='true'] .cr-num { color: inherit; opacity: 0.7; }
+}
+/* the pillars wrap inside the column (the items were one line, `nowrap`, and ran over the content),
+   the column a little wider for their lines: 16rem (was 13) */
+.cr-item[data-pillar] { white-space: normal; }
+@media (min-width: 1056px) { .cr:has(.cr-item[data-pillar]) { grid-template-columns: 16rem minmax(0, 1fr); } }
+/* the one line only under the pillar on screen, so the five fit a laptop's height under the nav */
+@media (min-width: 1056px) { .cr-item[data-pillar]:not([aria-current='true']) .cr-line { display: none; } }
+/* (2026-10-27, the user's ask) m-web: no floating pillar menu over the curriculum; the sections simply
+   run one after another (tablets keep the pill) */
+@media (width < 672px) { .cr-nav { display: none; } }

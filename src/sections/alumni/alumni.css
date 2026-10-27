@@ -410,3 +410,12 @@ html body .alumni-row + .alumni-dots { display: block !important; margin-top: va
 
 /* phones: two rows again, card over card, as on desktop (2026-10-23, the team's ask: "every such card
    stacked top and bottom as set earlier"; one row tried that day) */
+
+/* m-web (2026-10-27, the user's ask): 3 × 8, every cell a tile of its own (rounded, a hairline edge,
+   8px apart), no longer joined in one framed panel. Tablet and desktop keep the joined 6 × 4. */
+@media (width < 672px) {
+  .peers-flip, .peers-flip:is(*) { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); overflow: visible; border: 0; border-radius: 0; background: none; }
+  .peers-flip-cell, .peers-flip-cell:is(*) { height: 3.75rem; }
+  .peers-flip-face, .peers-flip-face:is(*) { padding: 0 var(--space-3); border-radius: var(--radius-lg); box-shadow: inset 0 0 0 1px var(--border-subtle); }
+  .peers-flip-logo[style] { --peers-s: 0.6; max-height: 60%; }
+}

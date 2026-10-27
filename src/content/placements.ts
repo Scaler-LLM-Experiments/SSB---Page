@@ -157,7 +157,7 @@ export const placements: PlacementsContent = {
   // industries or roles". TO CONFIRM: Cohort 2's final figure (the note said ₹23-24 LPA).
   v3Cohorts: [
     { value: '₹19L', label: 'Cohort 1 average CTC' },
-    { value: '₹23–24L', label: 'Cohort 2 average CTC' },
+    { value: '₹21L', label: 'Cohort 2 average CTC' }, // ₹21L (2026-10-27, the user's ask; was ₹23–24L)
   ],
   // One merged list, framed as visits (feedback, 2026-10-06).
   recruitersTitle: 'Companies that have visited Scaler School of Business',

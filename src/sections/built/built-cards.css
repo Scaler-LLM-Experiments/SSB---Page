@@ -1,0 +1,117 @@
+/* =========================================================
+   Built at SSB as a row of cards (BuiltCards, 2026-10-27): the alumni card's design (fluid, 4:3), the founder at the left, the copy over the right; the row
+   as Alumni's, starting on the page's content edge and running off the right.
+   ========================================================= */
+
+/* header: eyebrow, then the turn, its second half quieter (as BuiltSection's) */
+.bc-head { display: flex; flex-direction: column; gap: var(--space-2); margin-bottom: var(--space-8); }
+.bc-eyebrow { color: var(--content-brand); }
+.bc-title { max-width: 22ch; }
+.bc-title span { color: var(--content-secondary); }
+@media (width < 672px) {
+  .bc-head { margin-bottom: var(--space-6); }
+  .bc-title { max-width: 15ch; }
+  .bc-title span { display: block; }
+}
+
+/* the row: three and a half cards on desktop, 400px on a tablet, 85% of a phone */
+.bc-row {
+  --scroller-inset: calc(max(0px, (100% - var(--size-container-max)) / 2) + var(--space-gutter));
+  display: flex; gap: var(--space-4); margin: 0; padding: 0 var(--scroller-inset) var(--space-2); list-style: none;
+  overflow-x: auto; overscroll-behavior-x: contain; scroll-padding-inline: var(--scroller-inset); scroll-snap-type: x mandatory; scrollbar-width: none;
+}
+.bc-row::-webkit-scrollbar { display: none; }
+.bc-row > li {
+  position: relative; flex: none; aspect-ratio: 4 / 3; scroll-snap-align: start;
+  width: calc((100vw - (max(0px, (100vw - var(--size-container-max)) / 2) + var(--space-gutter)) - 3 * var(--space-4)) / 3.5);
+}
+@media (width < 1056px) { .bc-row > li { width: 25rem; } }
+@media (width < 672px) { .bc-row > li { width: 85vw; } }
+.bc-dots { margin-top: var(--space-6); }
+
+/* the card: fluid, its type set in px at 12px and up (the floor) */
+.bc-card {
+  position: relative; display: grid; width: 100%; height: 100%; overflow: hidden;
+  border-radius: var(--radius-lg); background: var(--surface-inverse); color: var(--on-image-ink);
+}
+.bc-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 0% 50%; }
+/* the right side darker under the copy (the photos' own blur is light in places) */
+.bc-card::after { content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to right, transparent 34%, rgb(0 0 0 / 0.5) 52%, rgb(0 0 0 / 0.66) 100%); }
+.bc-initials { position: absolute; left: 22%; top: 50%; translate: -50% -50%; font-size: 2.75rem; line-height: 1; font-weight: var(--font-weight-medium); letter-spacing: -0.01em; color: var(--on-image-ink); }
+
+.bc-body {
+  position: relative; z-index: 1; display: flex; flex-direction: column; gap: 10px; min-width: 0;
+  margin-left: 44%; padding: 20px 16px 18px 0; background: transparent; color: var(--on-image-ink);
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.35), 0 2px 14px rgb(0 0 0 / 0.4);
+}
+.bc-top { display: flex; flex-direction: column; gap: 4px; }
+.bc-k { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 12px; line-height: 1.2; font-weight: var(--font-weight-medium); letter-spacing: 0.06em; text-transform: uppercase; color: rgb(255 255 255 / 0.74); }
+.bc-k b { font-weight: var(--font-weight-medium); color: #6bee9f; }
+.bc-name { margin: 2px 0 0; font-size: 20px; line-height: 1.15; letter-spacing: -0.02em; font-weight: var(--font-weight-medium); }
+.bc-by { margin: 0; overflow: hidden; font-size: 12px; line-height: 1.3; white-space: nowrap; text-overflow: ellipsis; color: rgb(255 255 255 / 0.72); }
+.bc-blurb { margin: 0; font-size: 13px; line-height: 1.4; color: rgb(255 255 255 / 0.9);
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 5; overflow: hidden; }
+.bc-met { margin-top: auto; }
+.bc-met-v { margin: 0; font-size: 30px; line-height: 1; letter-spacing: -0.04em; font-weight: var(--font-weight-medium); font-variant-numeric: tabular-nums; }
+.bc-met-l { margin: 4px 0 0; font-size: 12px; line-height: 1.3; color: rgb(255 255 255 / 0.8); }
+
+/* phones: square, so the copy beside the face has the height it needs at 12px and up (after the card's
+   rules, so it wins) */
+@media (width < 672px) {
+  .bc-row > li { aspect-ratio: 1; }
+  .bc-body { margin-left: 42%; }
+  .bc-blurb { -webkit-line-clamp: 8; }
+}
+
+/* (later, 2026-10-27, the user's ask) two rows, card over card, as Alumni's; each card taller, so its
+   parts sit further apart: 6:5 on desktop and tablets (was 4:3), 9:10 on a phone (was square) */
+.bc-row { display: grid; grid-template-rows: repeat(2, auto); grid-auto-flow: column; gap: var(--space-4);
+  grid-auto-columns: calc((100vw - (max(0px, (100vw - var(--size-container-max)) / 2) + var(--space-gutter)) - 3 * var(--space-4)) / 3.5); }
+.bc-row > li { width: auto; aspect-ratio: 6 / 5; }
+@media (width < 1056px) { .bc-row { grid-auto-columns: 25rem; } }
+@media (width < 672px) { .bc-row { grid-auto-columns: 85vw; gap: var(--space-3); } .bc-row > li { aspect-ratio: 9 / 10; } }
+.bc-body { gap: 16px; padding-top: 24px; padding-bottom: 22px; }
+.bc-top { gap: 6px; }
+
+/* (later, 2026-10-27, the user's ask) the companies' photos, so the photo covers the card (no left
+   anchoring); no shadow behind the type (the gradient carries the contrast, a step darker); a hairline
+   under the company and its founders, before the rest */
+.bc-photo { object-position: 50% 50%; }
+.bc-card::after { background: linear-gradient(to right, rgb(0 0 0 / 0.2) 0%, rgb(0 0 0 / 0.72) 38%, rgb(0 0 0 / 0.84) 56%, rgb(0 0 0 / 0.88) 100%); }
+.bc-body { text-shadow: none; }
+.bc-rule { width: 100%; height: 1px; margin: 0; border: 0; background: rgb(255 255 255 / 0.22); }
+
+/* (later, 2026-10-27, the user's ask) m-web in portrait: the photo across the top, fading into the
+   card's dark ground, the copy under it the card's full width; two rows still, cards 72% of the
+   screen (the next column peeks in), 3:4 */
+@media (width < 672px) {
+  .bc-row { grid-auto-columns: 72vw; }
+  .bc-row > li { aspect-ratio: 3 / 4; }
+  .bc-card { display: flex; flex-direction: column; background: #0b0d0c; }
+  .bc-photo { position: relative; inset: auto; flex: none; height: 40%;
+    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent); mask-image: linear-gradient(to bottom, #000 55%, transparent); }
+  .bc-card::after { content: none; }
+  .bc-body { flex: 1 1 auto; gap: 10px; margin: -8px 0 0; padding: 0 16px 16px; }
+  .bc-top { gap: 4px; }
+  .bc-name { font-size: 19px; }
+  .bc-blurb { -webkit-line-clamp: 5; }
+  .bc-met-v { font-size: 26px; }
+}
+/* (later) the portrait cards as tall as their copy, never cut: no fixed ratio on a phone (3:4 cut the
+   figure on narrower screens); the photo a fixed 16:10 band, the copy under it with 20px all round.
+   The cards in a row share the tallest's height (the grid stretches them). */
+@media (width < 672px) {
+  .bc-row > li { aspect-ratio: auto; }
+  .bc-photo { height: auto; aspect-ratio: 16 / 10; }
+  .bc-body { gap: 12px; margin-top: -12px; padding: 0 20px 20px; }
+  .bc-blurb { display: block; -webkit-line-clamp: unset; overflow: visible; }
+  /* the card sized by its copy (a 100% height held it to a row height measured a few px short) */
+  .bc-card { height: auto; min-height: 100%; }
+  .bc-body { flex: none; }
+  /* a fixed band (its 16:10 from the img's own ratio was measured differently by the grid) */
+  .bc-photo { width: 100%; height: 9rem; aspect-ratio: auto; }
+}
+
+/* (later) phones: one row of the portrait cards, a carousel (the user's ask: single row) */
+@media (width < 672px) { .bc-row { grid-template-rows: auto; } }

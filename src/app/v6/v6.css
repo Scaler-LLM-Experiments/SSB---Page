@@ -1,0 +1,112 @@
+/* /v6's own changes (2026-10-27): scoped to `main[data-page='v6']`, so /v3 stays as it is. */
+
+/* the hero's line (Learn by Doing · Build startups & AI products · No tech background required) at 14px
+   on a phone (was 16) */
+@media (width < 672px) {
+  main[data-page='v6'] .hf-line { font-size: 0.875rem; line-height: 1.5; }
+}
+
+/* no Apply Now in the navbar on a phone (the hero carries it, and the sticky apply bar once it comes) */
+@media (width < 672px) {
+  main[data-page='v6'] .sn-primary-btn { display: none; }
+}
+
+/* Placements' figures card on a phone (2026-10-27, the user's asks):
+   - no "Where the founding cohort landed" line, and the card's top padding equal to its sides (20px),
+     so the figures' box sits evenly inset;
+   - the 2 × 2 figures split by hairlines: a line between the columns and one between the rows. The
+     figures are the box's 1st, 3rd, 5th and 7th children (the column rules between them are hidden here). */
+@media (width < 760px) {
+  main[data-page='v6'] .pl-merge { padding-top: 20px; padding-inline: 20px; }
+  main[data-page='v6'] .pl-merge-title { display: none; }
+  main[data-page='v6'] .pl-merge-main { gap: 0; padding-block: 0; }
+  main[data-page='v6'] .pl-merge-main > .pl-merge-stats,
+  main[data-page='v6'] .pl-merge-main > .pl-merge-stats:is(*) { margin-top: 0; gap: 0; padding: var(--space-1) var(--space-4); }
+  main[data-page='v6'] .pl-merge-stats > .pl-merge-stat { padding: var(--space-4) 0; }
+  main[data-page='v6'] .pl-merge-stats > .pl-merge-stat:nth-child(3),
+  main[data-page='v6'] .pl-merge-stats > .pl-merge-stat:nth-child(7) { padding-left: var(--space-4); border-left: 1px solid rgb(255 255 255 / 0.2); }
+  main[data-page='v6'] .pl-merge-stats > .pl-merge-stat:nth-child(5),
+  main[data-page='v6'] .pl-merge-stats > .pl-merge-stat:nth-child(7) { border-top: 1px solid rgb(255 255 255 / 0.2); }
+}
+
+/* (later) the figures a step smaller (32px, was 40; the labels 14px, was 15) and more room inside the
+   glass box (24px at its sides, 20px around each figure). `html body` and !important to pass the
+   page's type standard (type-standard.css), which sets these sizes that way. */
+@media (width < 760px) {
+  html body main[data-page='v6'] .pl-merge-stats dd { font-size: 2rem !important; }
+  html body main[data-page='v6'] .pl-merge-stats dt { font-size: 0.875rem !important; line-height: 1.4 !important; }
+  main[data-page='v6'] .pl-merge-main > .pl-merge-stats,
+  main[data-page='v6'] .pl-merge-main > .pl-merge-stats:is(*) { padding: var(--space-2) var(--space-6); }
+  main[data-page='v6'] .pl-merge-stats > .pl-merge-stat { padding: var(--space-5) 0; }
+  main[data-page='v6'] .pl-merge-stats > .pl-merge-stat:nth-child(3),
+  main[data-page='v6'] .pl-merge-stats > .pl-merge-stat:nth-child(7) { padding-left: var(--space-5); }
+}
+
+/* ── Placements' figures from 760px (2026-10-27, the user's reference): no "Where the founding cohort
+   landed" line; the figures on a solid white panel over the photo, four cells split by hairlines,
+   each figure large in the logo's green over its label in dark grey. The photo, its layout and the
+   article card stay. The page's colour and type standards set these with `html body` and !important,
+   so the overrides match them. ── */
+@media (width >= 760px) {
+  main[data-page='v6'] .pl-merge-title { display: none; }
+  main[data-page='v6'] .pl-merge-main { justify-content: flex-end; text-shadow: none; }
+  html body main[data-page='v6'] .pl-merge-main > .pl-merge-stats,
+  html body main[data-page='v6'] .pl-merge-main > .pl-merge-stats:is(*) {
+    width: 100%; margin-top: auto; padding: 0; gap: 0; justify-content: stretch;
+    background: #fff !important; border: 0 !important; border-radius: var(--radius-lg);
+    -webkit-backdrop-filter: none !important; backdrop-filter: none !important; box-shadow: 0 20px 40px -24px rgb(0 0 0 / 0.5);
+  }
+  html body main[data-page='v6'] .pl-merge-stats > .pl-merge-stat { flex: 1 1 0; min-width: 0; padding: var(--space-6) var(--space-6) var(--space-6); row-gap: var(--space-2); }
+  html body main[data-page='v6'] .pl-merge-stats > .pl-merge-rule { display: block; flex: none; width: 1px; align-self: stretch; background: var(--border-subtle) !important; }
+  html body main[data-page='v6'] .pl-merge-stats dd { font-size: 2.5rem !important; line-height: 1 !important; color: var(--color-ssb-light-9, #1d925b); }
+  html body main[data-page='v6'] .pl-merge-stats dt,
+  html body main[data-page='v6'] .pl-merge-stats .pl-merge-tail { font-size: 0.875rem !important; line-height: 1.45 !important; color: #3d3d3d !important; white-space: normal !important; }
+  html body main[data-page='v6'] .pl-merge-tail { display: inline !important; }
+}
+@media (width >= 760px) and (width < 1280px) {
+  html body main[data-page='v6'] .pl-merge-stats > .pl-merge-stat { padding: var(--space-5) var(--space-4); }
+  html body main[data-page='v6'] .pl-merge-stats dd { font-size: 2rem !important; }
+}
+/* (later) the panel tighter: figures 32px (28 under 1280px), labels 13px, 16px × 20px in each cell */
+@media (width >= 760px) {
+  html body main[data-page='v6'] .pl-merge-main > .pl-merge-stats,
+  html body main[data-page='v6'] .pl-merge-main > .pl-merge-stats:is(*) { padding: 0 !important; }
+  html body main[data-page='v6'] .pl-merge-stats > .pl-merge-stat { padding: var(--space-4) var(--space-5); row-gap: var(--space-1-5); }
+  html body main[data-page='v6'] .pl-merge-stats dd { font-size: 2rem !important; }
+  html body main[data-page='v6'] .pl-merge-stats dt,
+  html body main[data-page='v6'] .pl-merge-stats .pl-merge-tail { font-size: 0.8125rem !important; line-height: 1.4 !important; }
+}
+@media (width >= 760px) and (width < 1280px) {
+  html body main[data-page='v6'] .pl-merge-stats > .pl-merge-stat { padding: var(--space-3-5, 0.875rem) var(--space-4); }
+  html body main[data-page='v6'] .pl-merge-stats dd { font-size: 1.75rem !important; }
+}
+
+/* ── (later, 2026-10-27, the user's ask) phones as desktop: the figures on white, but as four separate
+   boxes, 2 × 2, 8px apart, over the photo (the glass panel and its hairlines off): each box 8px
+   corners, 16px in, the figure 28px in the logo's green over its label, 13px dark grey ── */
+@media (width < 760px) {
+  html body main[data-page='v6'] .pl-merge-main > .pl-merge-stats,
+  html body main[data-page='v6'] .pl-merge-main > .pl-merge-stats:is(*) {
+    display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2); padding: 0 !important;
+    background: transparent !important; border: 0 !important; box-shadow: none;
+    -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+  }
+  html body main[data-page='v6'] .pl-merge-stats > .pl-merge-stat,
+  html body main[data-page='v6'] .pl-merge-stats > .pl-merge-stat:nth-child(n) {
+    padding: var(--space-4); border: 0; border-radius: var(--radius-lg); background: #fff; row-gap: var(--space-1-5);
+  }
+  html body main[data-page='v6'] .pl-merge-stats dd { font-size: 1.75rem !important; line-height: 1 !important; color: var(--color-ssb-light-9, #1d925b); }
+  html body main[data-page='v6'] .pl-merge-stats dt,
+  html body main[data-page='v6'] .pl-merge-stats .pl-merge-tail { font-size: 0.8125rem !important; line-height: 1.4 !important; color: #3d3d3d !important; }
+  main[data-page='v6'] .pl-merge-main { text-shadow: none; }
+}
+
+/* the five pillars' header: no padding under it, so the rail's first section follows it as one block */
+main[data-page='v6'] [data-slot='section'][data-density='roomy'].v6-learn-head { padding-bottom: 0; }
+
+/* Singapore's day-by-day stage from 672px (2026-10-27, the user's ask): shorter (28–34rem, was
+   34–44rem) and the day's number smaller (48–72px, was 72–120px) */
+@media (width >= 672px) {
+  main[data-page='v6'] .sg-stage { height: clamp(28rem, calc(100svh - 20rem), 34rem); }
+  main[data-page='v6'] .sg-num { font-size: clamp(3rem, 5vw, 4.5rem); }
+}

@@ -38,7 +38,7 @@ export function useBreakerMotion(scope: React.RefObject<HTMLElement | null>) {
           stagger: st.base * 2,
           ease: enter,
           clearProps: 'transform,opacity,visibility',
-          scrollTrigger: { trigger: root, start: 'clamp(top 70%)', once: true },
+          scrollTrigger: { trigger: root, start: 'clamp(top 70%)', toggleActions: 'play none none none' },
         },
       );
       // Then the figures as their row arrives, one after the other: each one's line and figure
@@ -46,7 +46,7 @@ export function useBreakerMotion(scope: React.RefObject<HTMLElement | null>) {
       const row = q('[data-breaker-stats]')[0];
       if (row) {
         const figures = gsap.timeline({
-          scrollTrigger: { trigger: row, start: 'clamp(top 90%)', once: true },
+          scrollTrigger: { trigger: row, start: 'clamp(top 90%)', toggleActions: 'play none none none' },
         });
         q('[data-breaker-stat]').forEach((stat, i) => {
           const at = i * st.base * 3;

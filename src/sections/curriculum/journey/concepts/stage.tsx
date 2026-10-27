@@ -12,7 +12,7 @@ import { StageSheet, TermCounts } from './stage-sheet';
 import './stage.css';
 
 /** The terms' photos (the concept site's /v4), and their focal points. */
-const PHOTO: Record<number, { src: string; pos: string }> = {
+export const PHOTO: Record<number, { src: string; pos: string }> = {
   1: { src: '/media/terms/t1.webp', pos: '50% 40%' },
   2: { src: '/media/terms/t2.jpg', pos: '50% 55%' },
   3: { src: '/media/terms/t3.webp', pos: '45% 40%' },
@@ -20,7 +20,7 @@ const PHOTO: Record<number, { src: string; pos: string }> = {
   5: { src: '/media/terms/t5.webp', pos: '50% 50%' },
 };
 /** [CONFIRM] the cohort's dates, as the stack's: Term 1 Jan–Mar 2027, each term three months on. */
-const MONTHS: Record<number, [string, string]> = {
+export const MONTHS: Record<number, [string, string]> = {
   1: ['Jan – Mar 2027', 'Jan – Mar ’27'],
   2: ['Apr – Jun 2027', 'Apr – Jun ’27'],
   3: ['Jul – Sep 2027', 'Jul – Sep ’27'],

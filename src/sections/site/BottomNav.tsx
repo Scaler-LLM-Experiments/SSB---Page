@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Button } from '@kishanscaler/ssx-ui';
 import { ArrowRight, BookOpen, Briefcase, Buildings, GraduationCap, Phone, PhoneCall, type Icon } from '@phosphor-icons/react';
 
-import { bottomNav } from '@/content/bottom-nav';
+import { bottomNav, type BottomNavItem } from '@/content/bottom-nav';
 import { SSB_FOOTER } from './data';
 import './bottom-nav.css';
 
@@ -35,7 +35,8 @@ const TAB_ICONS: Icon[] = [GraduationCap, BookOpen, Briefcase, Buildings];
  * with the call-back as a round button floating above it; shown and hidden as the
  * bar is.
  */
-export function BottomNav() {
+/** `items`: another page's own targets for the same pillars (/v6, whose sections run in another order). */
+export function BottomNav({ items = bottomNav.items }: { items?: BottomNavItem[] } = {}) {
   const [shown, setShown] = React.useState(false);
   const [active, setActive] = React.useState(-1);
   // tablets: the bar steps aside while the curriculum's own bar is at the window's foot
@@ -48,7 +49,7 @@ export function BottomNav() {
     const update = () => {
       raf = 0;
       const vh = window.innerHeight;
-      const first = sectionOf(bottomNav.items[0].target);
+      const first = sectionOf(items[0].target);
       const pastHero = first ? first.getBoundingClientRect().top < vh * 0.6 : window.scrollY > vh;
       // the footer is uncovered once the sheet the page lifts off it has risen above the window's foot
       const sheet = document.querySelector('.sf-lift');
@@ -79,7 +80,7 @@ export function BottomNav() {
       const apply = document.querySelector('.bn-apply');
       if (apply) document.documentElement.style.setProperty('--bn-apply-h', `${Math.round(apply.getBoundingClientRect().height)}px`);
       let at = -1;
-      bottomNav.items.forEach((item, i) => {
+      items.forEach((item, i) => {
         const s = sectionOf(item.target);
         if (s && s.getBoundingClientRect().top <= vh * 0.4) at = i;
       });
@@ -145,7 +146,7 @@ export function BottomNav() {
       <div ref={wrap} className="bn" data-shown={(shown && !inRail) || undefined} data-brand="ssb" data-theme="light">
         <nav className="bn-bar" aria-label={bottomNav.label}>
           <ul ref={list} className="bn-list">
-          {bottomNav.items.map((item, i) => (
+          {items.map((item, i) => (
             <li key={item.target}>
               <a
                 className="bn-item"
@@ -171,7 +172,7 @@ export function BottomNav() {
       {/* phones: a thin strip of the sections under the navbar */}
       <nav className="bn-strip" data-shown={shown || undefined} aria-label={bottomNav.label} data-brand="ssb" data-theme="light">
         <ul ref={strip} className="bn-strip-list">
-          {bottomNav.items.map((item, i) => (
+          {items.map((item, i) => (
             <li key={item.target}>
               <a
                 className="bn-item"

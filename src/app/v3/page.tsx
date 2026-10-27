@@ -9,7 +9,7 @@ import { CurriculumRail } from '@/sections/curriculum/CurriculumRail';
 import { FaqSection } from '@/sections/faq/FaqSection';
 import { HeroFrame, HeroFrameDeadline } from '@/sections/hero/frame/HeroFrame';
 import { Curriculum, FooterShell, HomeNav, ScrollRefresh } from '@/sections/home/client';
-import { BuiltSection } from '@/sections/built/BuiltSection';
+import { BuiltCards } from '@/sections/built/BuiltCards';
 import { PressSection } from '@/sections/press/PressSection';
 import { SingaporeSection } from '@/sections/international/SingaporeSection';
 import { BottomNav } from '@/sections/site/BottomNav';
@@ -53,68 +53,64 @@ export default function V3Page() {
         <HomeNav light />
         <BottomNav />
         <HeroFrame content={heroFrame} />
-        {/* 2 placements (main's showcase take) */}
+        {/* (2026-10-27, the user's ask) the page in the minimal page's five pillars, every section kept:
+            Placements, Faculty, How you learn, Admissions, Campus (the bottom nav names these five) */}
+
+        {/* ── 1 Placements ── */}
         {/* /v3 (2026-10-09): /v2 with Placements pinned to version C (stats + logos), no switch */}
         <PlacementsShowcase {...placements} fixed="v3" />
-        {/* (review call, 21 Oct 2026) the companies students founded, straight after the placements */}
-        {/* student founders (deck p5); before the second breaker since 2026-10-09 (the team's call) */}
-        {/* Built at SSB: the concept site's /v4 section, on the light page (2026-10-23, the team's pick; it
-            replaces Beyond Placements' card rows, whose component is kept) */}
-        <BuiltSection />
-        {/* why SSB (deck slide 4) */}
-        {/* The "He’s right about the old MBA" turn and its Build / Grow cards hidden for now (2026-10-09);
-            drop answer={false} to bring them back. The breaker above them stays. */}
-        {/* The "He’s right about the old MBA" turn and its Build / Ship / Grow cards off again (2026-10-23, the
-            team's ask); the breaker above them stays. Drop answer={false} to bring them back. */}
-        <WhySection {...why} answer={false} />
-        {/* 3 alumni: our earlier cohorts, already in the roles Why SSB names */}
+        {/* the companies students founded, straight after the placements (review call, 21 Oct 2026);
+            as a row of cards (2026-10-27); the one-photo stage (BuiltSection) kept in code */}
+        <BuiltCards />
+        {/* alumni: our earlier cohorts, already in roles, then where the peers come from */}
         <AlumniSection peers={<PeersTicker />} />
         {/* the second breaker: founders backing the students (a judge's offer of funding, a founder's
             advice), a person to a slide */}
         <TestimonialSection />
-        {/* faculty and mentors (the founding team and investors come after the innovation lab) */}
-        {/* faculty and mentors as sections of their own (2026-10-12, the team's ask; were tabs of one):
-            faculty with the stacked cards, mentors with the photo cards, smaller */}
+
+        {/* ── 2 Faculty ── */}
         {/* faculty as drifting rows of course cards, as Alumni's (2026-10-13, the team's mock) */}
         <PeopleTabsSection groups={['faculty']} drift />
         {/* mentors as the founding team's photo cards, one still row (2026-10-23, the team's ask) */}
         <PeopleTabsSection groups={['mentors']} id="mentors" label="Mentors" still />
-        {/* International immersion: a week in Singapore, after the mentors (2026-10-23, the team's ask) */}
-        <SingaporeSection />
-        {/* the curriculum, together (the team's call, 2026-10-06): the terms, then learn by doing, career prep, the
-            150-hour AI curriculum, the live projects, the internship and the immersions behind one side navigation */}
-        {/* the terms as v3 of the /v2-stack experiment (the team's pick, 2026-10-09): stacking cards, each
-            opening a sheet with In class and Out of class */}
-        {/* the terms as the concept site's /v4 stage, light (2026-10-23, the team's pick; v3's stack kept as termsVersion 3) */}
-        <Curriculum part="terms" termsStack termsVersion={4} />
-        <CurriculumRail
-          sections={[
-            // the team's order (2026-10-07): AI journey, career prep, learn by doing, internship, immersions
-            { id: 'ai-journey', label: 'AI journey', icon: 'ai', node: <Curriculum part="ai" aiCarousel /> }, // the experiment's carousel of cards (2026-10-09)
-            { id: 'career-prep', label: 'Career prep', icon: 'career', node: <Curriculum part="career" /> },
-            { id: 'learn-by-doing', label: 'Learn by doing', icon: 'learn', node: <LearnByDoingSection /> },
-            // Live projects back on the rail (2026-10-08, the team's ask), after learn by doing
-            { id: 'live-projects-rail', label: 'Live projects', icon: 'projects', node: <LiveProjectsSection /> },
-            { id: 'internship-rail', label: 'Internship', icon: 'internship', node: <InternshipSection /> },
-            { id: 'immersions-rail', label: 'Immersions', icon: 'immersions', node: <ImmersionsSection /> },
-            // Super Mentor Sessions, into the curriculum's rail (2026-10-07, the team's ask; it followed the Innovation Lab)
-            { id: 'sessions-rail', label: 'Super Mentor Sessions', icon: 'sessions', node: <SuperMentorsSection /> },
-          ]}
-        />
-        {/* innovation lab */}
-        <InnovationLabSection />
         {/* the founding team and investors */}
         <PeopleTabsSection groups={['founding', 'investors']} id="founders" label="The team and backers behind SSB" still />
-        {/* campus life, then in the news (deck p24, p25) */}
-        <CampusLifeSection />
-        {/* In the press: the concept site's /v4 section, light (2026-10-23, the team's pick; In the News kept in code) */}
-        <PressSection />
-        {/* the Scaler Impact Foundation came off (2026-10-23, the team's call: it is in the scholarships now) */}
-        {/* 12 admissions: process, fees and eligibility */}
+
+        {/* ── 3 How you learn ── */}
+        {/* why SSB (deck slide 4): Kamath's breaker, the case for learning by doing. The "He’s right about
+            the old MBA" turn and its Build / Ship / Grow cards are off (2026-10-23, the team's ask); drop
+            answer={false} to bring them back. */}
+        <WhySection {...why} answer={false} />
+        {/* the terms as the concept site's /v4 stage, light (2026-10-23, the team's pick; v3's stack kept as termsVersion 3) */}
+        <Curriculum part="terms" termsStack termsVersion={4} />
+        {/* (2026-10-27, the user's ask) the minimal page's "Five ways SSB teaches business", numbered, each
+            with its one line; every section kept: career prep and the internship sit with the live
+            projects (work on real briefs), Singapore with the immersions */}
+        <CurriculumRail
+          sections={[
+            { id: 'ai-journey', num: '01', label: 'Learn AI fluency', line: 'Ship an AI product every term. No coding background needed.', icon: 'ai', node: <Curriculum part="ai" aiCarousel /> },
+            { id: 'learn-by-doing', num: '02', label: 'Build real businesses', line: 'Build two real businesses with real money, then pitch one to VCs.', icon: 'learn', node: <LearnByDoingSection /> },
+            { id: 'live-projects-rail', num: '03', label: 'Work on live projects', line: 'Work real briefs from real companies, then defend your plan to their founders.', icon: 'projects', node: <><LiveProjectsSection /><InternshipSection /><Curriculum part="career" /></> },
+            { id: 'immersions-rail', num: '04', label: 'Go on industry immersions', line: 'Learn where the work happens: factory floors, quick-commerce ops and a creative agency.', icon: 'immersions', node: <><ImmersionsSection /><SingaporeSection /></> },
+            { id: 'sessions-rail', num: '05', label: 'Learn from super mentors', line: 'The people who built India’s best-known companies come to campus to teach how.', icon: 'sessions', node: <SuperMentorsSection /> },
+          ]}
+        />
+        {/* (International immersion, Singapore: now inside the rail's 04, with the immersions) */}
+        {/* innovation lab */}
+        <InnovationLabSection />
+
+        {/* ── 4 Admissions ── */}
         {/* Admissions: the concept site's /v4 section, light (2026-10-23, the team's pick; the earlier one kept in code) */}
         <AdmissionsV4 />
         {/* the FAQ (deck p28) */}
         <FaqSection />
+
+        {/* ── 5 Campus ── */}
+        {/* campus life (deck p24) */}
+        <CampusLifeSection />
+        {/* In the press: the concept site's /v4 section, light (2026-10-23, the team's pick; In the News kept in code) */}
+        <PressSection />
+        {/* the Scaler Impact Foundation came off (2026-10-23, the team's call: it is in the scholarships now) */}
       </main>
     </FooterShell>
   );

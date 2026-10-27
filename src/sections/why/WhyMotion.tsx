@@ -93,7 +93,7 @@ export function WhyMotion({ children }: { children: React.ReactNode }) {
             duration: d.slowest,
             ease: ease('expressiveEntrance'),
             clearProps: 'transform,opacity,visibility',
-            scrollTrigger: { trigger: line, start: 'clamp(top 85%)', once: true },
+            scrollTrigger: { trigger: line, start: 'clamp(top 85%)', toggleActions: 'play none none none' },
           },
         );
       }
@@ -115,7 +115,7 @@ export function WhyMotion({ children }: { children: React.ReactNode }) {
             delay: d.slower,
             ease: ease('expressiveInOut'),
             onStart: () => struck.removeAttribute('data-pending'),
-            scrollTrigger: { trigger: strike, start: 'clamp(top 80%)', once: true },
+            scrollTrigger: { trigger: strike, start: 'clamp(top 80%)', toggleActions: 'play none none none' },
           },
         );
       }

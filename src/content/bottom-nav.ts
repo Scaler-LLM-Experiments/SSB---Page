@@ -1,4 +1,4 @@
-// The page's bottom navigation (the team's ask, 2026-10-08): seven of its sections, and the call-back
+// The page's bottom navigation (the team's ask, 2026-10-08): its five pillars (2026-10-27; was seven sections), and the call-back
 // action beside them. Each item names a section by an id already on the page (its section, or its
 // heading inside it). The call-back's href is the same placeholder as Admissions' "Talk to advisor"
 // until a real destination is agreed.
@@ -16,13 +16,13 @@ export const bottomNav: {
 } = {
   label: 'Sections of the page',
   items: [
-    { label: 'Outcomes', target: 'placements-showcase-title' },
-    { label: 'Why SSB', target: 'why-breaker-title' },
+    // (2026-10-27, the user's ask) the minimal page's five pillars; each points at its group's first
+    // section (was seven: Outcomes, Why SSB, Faculty, Curriculum, Innovation Lab, Campus life, Admissions)
+    { label: 'Placements', target: 'placements-showcase-title' },
     { label: 'Faculty', target: 'people' },
-    { label: 'Curriculum', target: 'curriculum' },
-    { label: 'Innovation Lab', target: 'sil-band-title' },
-    { label: 'Campus life', target: 'campus-title' },
+    { label: 'How you learn', target: 'why-breaker-title' },
     { label: 'Admissions', target: 'admissions' },
+    { label: 'Campus', target: 'campus-title' },
   ],
   callback: { label: 'Request a callback', href: '#advisor' },
   apply: {

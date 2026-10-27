@@ -374,3 +374,100 @@
 }
 /* phones: the carousel's cards a step taller, square (was 4:3), so more of the photo shows over the panel (2026-10-23, the team's ask) */
 @media (width < 672px) { .imm-feature, .imm-feature:is(*) { aspect-ratio: 1 / 1; } }
+
+/* ── (2026-10-27, the user's ask) the three domestic immersions, after Masters' Union's "1 Day
+   Immersions": a subheading, then three cards across (a swipe row on a phone). Each: the photo
+   (16:10, 8px corners) with "At a" and the place large in white over a shade at its foot; under it
+   the name, a hairline, the line in grey. Then the creator-preneur track as one wide feature. ── */
+.imm-sub { display: flex; flex-direction: column; gap: var(--space-2); max-width: 40rem; margin-bottom: var(--space-6); }
+.imm-sub__title { font-weight: var(--font-weight-medium); }
+.imm-trips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-6); margin: 0; padding: 0; list-style: none; }
+.imm-trip { display: flex; flex-direction: column; min-width: 0; }
+.imm-trip__media { position: relative; overflow: hidden; aspect-ratio: 16 / 10; border-radius: var(--radius-lg); background: var(--surface-inverse); }
+.imm-trip__photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.imm-trip__media::after { content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to top, rgb(0 0 0 / 0.72) 0%, rgb(0 0 0 / 0.35) 45%, rgb(0 0 0 / 0) 75%); }
+.imm-trip__place { position: absolute; z-index: 1; left: var(--space-5); right: var(--space-5); bottom: var(--space-5); margin: 0;
+  font-size: clamp(1.5rem, 2.4vw, 2.25rem); line-height: 1.02; letter-spacing: -0.03em; font-weight: var(--font-weight-semibold, 600); color: #fff; text-wrap: balance; }
+.imm-trip__place span { display: block; font-weight: var(--font-weight-medium); font-size: 0.8em; }
+.imm-trip__name { margin: var(--space-4) 0 0; padding-bottom: var(--space-3); border-bottom: 1px solid var(--border-subtle);
+  font-size: var(--type-h3-size); line-height: 1.3; font-weight: var(--font-weight-semibold, 600); color: var(--content-primary); }
+.imm-trip__text { margin: var(--space-3) 0 0; font-size: var(--type-body-size); line-height: 1.55; color: var(--content-secondary); }
+.imm-trips-dots { display: none; }
+@media (width >= 672px) and (width < 1056px) { .imm-trips { gap: var(--space-4); } .imm-trip__place { left: var(--space-4); bottom: var(--space-4); } }
+@media (width < 672px) {
+  .imm-trips { display: flex; gap: var(--space-3); margin-inline: calc(var(--space-gutter) * -1); padding: 0 var(--space-gutter) var(--space-1);
+    overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--space-gutter); scrollbar-width: none; }
+  .imm-trips::-webkit-scrollbar { display: none; }
+  .imm-trips > li { flex: 0 0 84%; min-width: 0; scroll-snap-align: start; }
+  .imm-trips-dots { display: block; margin-top: var(--space-4); }
+  .imm-trip__place { left: var(--space-4); bottom: var(--space-4); font-size: 1.75rem; }
+  .imm-trip__text { font-size: var(--type-body-sm-size); }
+}
+
+/* (later) taller cards and a smaller place, so three lines fit in a third of the column: 4:3, the
+   place 22–28px; a file whose scene is its left half drawn at twice the box's width */
+.imm-trip__media { aspect-ratio: 4 / 3; }
+.imm-trip__place { font-size: clamp(1.375rem, 1.9vw, 1.75rem); line-height: 1.05; }
+.imm-trip__photo[data-left-half] { width: 200%; max-width: none; }
+
+/* the creator-preneur track: one wide card, the scene's clear left half at the left, the copy beside it */
+.imm-track { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); align-items: center; gap: var(--space-8); margin-top: var(--space-12);
+  padding: var(--space-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--surface-page); }
+.imm-track__media { position: relative; overflow: hidden; aspect-ratio: 4 / 3; border-radius: var(--radius-lg); background: var(--surface-inverse); }
+.imm-track__photo { position: absolute; top: 0; left: 0; width: 200%; max-width: none; height: 100%; object-fit: cover; object-position: 0% 50%; }
+.imm-track__body { display: flex; flex-direction: column; gap: var(--space-2); padding-right: var(--space-6); }
+@media (width < 672px) {
+  .imm-track { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); margin-top: var(--space-10); }
+  .imm-track__body { padding: 0 var(--space-2) var(--space-2); }
+  .imm-trip__place { font-size: 1.5rem; }
+}
+
+/* (later, 2026-10-27, the user's ask: "as the other cards, to the theme") the trips as the page's
+   cards, the AI terms': a light card, a hairline edge, 8px corners, the photo across its head (no type
+   over it), then the place and its line inside 20px of padding. The track's photo card is gone: its
+   heading and line sit over the creators. */
+.imm-trip { overflow: hidden; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--surface-page); }
+.imm-trip__media { border-radius: 0; aspect-ratio: 16 / 10; }
+.imm-trip__media::after { content: none; }
+.imm-trip__body { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-5); }
+.imm-trip__name { margin: 0; padding: 0; border: 0; font-size: var(--type-h3-size); line-height: 1.3; }
+.imm-trip__text { margin: 0; font-size: var(--type-body-sm-size); line-height: 1.5; }
+.imm-trips > li { display: flex; }
+.imm-trips > li > .imm-trip { flex: 1; }
+.imm-sub--track { margin-top: var(--space-16); }
+@media (width < 672px) { .imm-sub--track { margin-top: var(--space-12); } }
+
+/* (later) the company's logo (or, until named, the place) over a hairline, then the line, as Masters'
+   Union's cards */
+.imm-trip__body { gap: 0; }
+.imm-trip__name { display: flex; align-items: center; min-height: 2rem; padding-bottom: var(--space-3); border-bottom: 1px solid var(--border-subtle); }
+.imm-trip__logo { display: block; width: auto; max-width: 70%; object-fit: contain; }
+.imm-trip__text { margin-top: var(--space-3); }
+
+/* ── (later, 2026-10-27, the user's ask: "same as the Masters' Union screenshot") no card: the photo
+   (16:9, 8px corners) with "At a" and the place in white, large, over a shade at its foot; under it,
+   flush with the photo's edge, the company's mark over a hairline, then the line in grey ── */
+.imm-trip { overflow: visible; border: 0; border-radius: 0; background: none; }
+.imm-trip__media { aspect-ratio: 16 / 10; border-radius: var(--radius-lg); }
+.imm-trip__media::after { content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to top, rgb(0 0 0 / 0.62) 0%, rgb(0 0 0 / 0.28) 45%, rgb(0 0 0 / 0) 72%); }
+.imm-trip__place { display: block; position: absolute; z-index: 1; left: var(--space-5); right: var(--space-5); bottom: var(--space-5); margin: 0;
+  font-size: clamp(1.5rem, 2.2vw, 2rem); line-height: 1.02; letter-spacing: -0.03em; font-weight: 600; color: #fff; text-wrap: balance; }
+.imm-trip__place span { display: block; margin-bottom: 0.15em; font-weight: var(--font-weight-medium); }
+.imm-trip__body { gap: 0; padding: var(--space-4) 0 0; }
+.imm-trip__name { display: flex; align-items: center; min-height: 2.25rem; padding-bottom: var(--space-3); border-bottom: 1px solid var(--border-subtle); }
+.imm-trip__mark { font-size: 1.125rem; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; color: var(--content-primary); }
+.imm-trip__text { margin-top: var(--space-3); font-size: 0.9375rem; line-height: 1.55; color: var(--content-secondary); }
+@media (width < 672px) { .imm-trip__place { left: var(--space-4); bottom: var(--space-4); font-size: 1.5rem; } }
+
+/* ── (later, 2026-10-27, the user's ask) back to the page's card, no type over the photo, the company's
+   logo as the card's heading: a light card with a hairline edge, the photo across its head (16:10),
+   then 20px in: the logo (28px tall, its own colours), 12px, the line ── */
+.imm-trip { overflow: hidden; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--surface-page); }
+.imm-trip__media { border-radius: 0; }
+.imm-trip__media::after { content: none; }
+.imm-trip__body { padding: var(--space-5); }
+.imm-trip__name { min-height: 0; padding: 0; border: 0; }
+.imm-trip__logo { height: 1.75rem; max-width: 60%; }
+.imm-trip__text { margin-top: var(--space-3); font-size: 0.875rem; }

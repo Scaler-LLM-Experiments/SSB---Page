@@ -42,7 +42,7 @@ export function cardEntrance(carousel: HTMLElement, onDone: () => void) {
   carousel.setAttribute('data-hold', '');
   const deck = gsap.timeline({
     defaults: { ease: ease('expressiveEntrance') },
-    scrollTrigger: { trigger: carousel, start: 'clamp(top 75%)', once: true },
+    scrollTrigger: { trigger: carousel, start: 'clamp(top 75%)', toggleActions: 'play none none none' },
     onComplete: () => {
       carousel.removeAttribute('data-hold');
       onDone();
@@ -83,7 +83,7 @@ export function cardEntrance(carousel: HTMLElement, onDone: () => void) {
 export function stripEntrance(root: HTMLElement) {
   const block = root.querySelector<HTMLElement>('[data-strip]');
   if (!block) return;
-  const tl = gsap.timeline({ scrollTrigger: { trigger: block, start: 'clamp(top 85%)', once: true } });
+  const tl = gsap.timeline({ scrollTrigger: { trigger: block, start: 'clamp(top 85%)', toggleActions: 'play none none none' } });
   tl.fromTo(
     block,
     { autoAlpha: 0, y: offset.enter },

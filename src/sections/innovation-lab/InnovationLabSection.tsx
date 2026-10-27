@@ -339,15 +339,16 @@ export function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
             duration: d.slowest,
             ease: enter,
             clearProps: 'transform,opacity,visibility',
-            scrollTrigger: { trigger: head, start: 'clamp(top 85%)', once: true },
+            scrollTrigger: { trigger: head, start: 'clamp(top 85%)', toggleActions: 'play none none none' },
           },
         );
         gsap.set(chars, { opacity: 0, filter: 'blur(6px)' });
+        // once each (guards, not `once: true`, which threw on a mid-page reload: see useSectionEntrance)
         ScrollTrigger.create({
           trigger: head,
           start: 'clamp(top 85%)',
-          once: true,
           onEnter: () => {
+            if (writing) return;
             writing = writeFigures(figures).delay(d.slow);
           },
         });
@@ -356,11 +357,11 @@ export function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
         const cards = [hero, ...tiles];
         const radius = getComputedStyle(hero).borderTopLeftRadius || '0px';
         gsap.set(cards, { clipPath: `inset(100% 0% 0% 0% round ${radius})` });
+        const opened = new WeakSet<Element>();
         ScrollTrigger.batch(cards, {
           start: 'clamp(top 85%)',
-          once: true,
           onEnter: (batch) =>
-            batch.forEach((card, i) => {
+            batch.filter((card) => !opened.has(card) && opened.add(card)).forEach((card, i) => {
               gsap.to(card, {
                 clipPath: `inset(0% 0% 0% 0% round ${radius})`,
                 duration: long * 1.25,

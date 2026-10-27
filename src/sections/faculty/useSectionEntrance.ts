@@ -64,16 +64,25 @@ export function useSectionEntrance(
       // cards' wipe on the entrance curve (it eased in slowly on expressiveInOut), a gentler zoom, tighter
       // staggers, and each part starting a little sooner as it comes on screen
       const long = d.slower * 0.8; // 0.4s
+      // /v6 (2026-10-27, the user's ask: the sections in sooner): every part plays 1.6x as fast, and
+      // starts a little lower on the screen, so a section is in by the time it is read
+      const quick = !!root.closest('[data-page="v6"]');
+      const speed = quick ? 1.6 : 1;
+      const at = (pct: number) => `clamp(top ${quick ? Math.min(98, pct + 6) : pct}%)`;
 
       // clamp() keeps each start reachable when the section ends the page.
       const tl = gsap.timeline({
         defaults: { ease: enter },
         scrollTrigger: {
           trigger: q('[data-enter="header"]')[0] ?? root,
-          start: 'clamp(top 90%)',
-          once: true,
+          start: at(90),
+          // played once and kept, never `once: true`: a once trigger kills itself as soon as it is
+          // created past its start (a reload mid-page), inside ScrollTrigger's refresh loop, and the
+          // shrinking list threw "reading 'end'" and took the page down (2026-10-27)
+          toggleActions: 'play none none none',
         },
       });
+      tl.timeScale(speed);
 
       // fromTo, never from(): an explicit end state survives React re-running
       // the effect (Strict Mode), where from() would read a half-hidden value.
@@ -109,9 +118,9 @@ export function useSectionEntrance(
           { autoAlpha: 0, y: offset.reveal },
           {
             ...shown,
-            duration: long,
+            duration: long / speed,
             ease: enter,
-            scrollTrigger: { trigger: block, start: 'clamp(top 90%)', once: true },
+            scrollTrigger: { trigger: block, start: at(90), toggleActions: 'play none none none' },
           },
         );
       });
@@ -141,9 +150,10 @@ export function useSectionEntrance(
         }
         const deck = gsap.timeline({
           defaults: { ease: enter },
-          scrollTrigger: { trigger: row ?? cards[0], start: 'clamp(top 85%)', once: true },
+          scrollTrigger: { trigger: row ?? cards[0], start: at(85), toggleActions: 'play none none none' },
           onComplete: () => row?.removeAttribute('data-hold'),
         });
+        deck.timeScale(speed);
         onScreen.forEach((card, i) => {
           const t = i * gap;
           const radius = getComputedStyle(card).borderTopLeftRadius || '0px';

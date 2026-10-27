@@ -100,6 +100,14 @@ html body .pl-merge-stats dd {
 @media (width >= 1056px) and (width < 1280px) {
   html body .pl-merge-stats dd { font-size: var(--type-h1-size) !important; }
 }
+/* (2026-10-27, the user's ask: the eye on the figures) a step up: 40px on phones, 44px from 1280px,
+   32px in the narrow 1056–1279px band; the labels 15px, wrapping to two lines so four still fit */
+html body .pl-merge-stats dd { font-size: 2.5rem !important; }
+@media (width >= 760px) and (width < 1056px) { html body .pl-merge-stats dd { font-size: var(--type-display-size) !important; } }
+@media (width >= 1056px) and (width < 1280px) { html body .pl-merge-stats dd { font-size: 2rem !important; } }
+@media (width >= 1280px) { html body .pl-merge-stats dd { font-size: 2.75rem !important; } }
+html body .pl-merge-stats dt { font-size: 0.9375rem !important; line-height: 1.35 !important; }
+@media (width >= 760px) { html body .pl-merge-stats dt { white-space: normal !important; } html body .pl-merge-tail { display: block !important; } }
 
 /* the hero title: the hero token, 28 → 48 (it was 28.13px on a phone, a clamp) */
 html body .fold-title-leaders {

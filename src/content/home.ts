@@ -120,13 +120,16 @@ export const heroFrame: HeroFrameContent = {
   // (review call, 21 Oct 2026) the programme's name; one subline, the "build startups" line dropped
   eyebrow: 'Full-Time PGP in Management & Technology',
   title: 'Learn Business hands-on from 100+ Industry Leaders & Faculty',
-  line: ['18 months, full-time, on campus in Bengaluru', 'No tech background required'],
+  // (2026-10-27, the user's ask) three pointers, at every width; was "18 months, full-time, on campus
+  // in Bengaluru · No tech background required"
+  line: ['Learn by Doing', 'Build startups & AI products', 'No tech background required'],
   // placeholder hrefs, as the other folds'
   primaryCta: { label: 'Apply Now', href: '#apply' },
-  // (review call) the placement report was here; the brochure again (2026-10-23, the team's ask). PLACEHOLDER href
-  secondaryCta: { label: 'Download Brochure', href: '#brochure' },
-  // (the team, 2026-10-22: "Learn from Uber" read oddly) the title's own words, leading into the logos
-  logosLabel: 'Faculty & leaders from',
+  // (review call) placement report → brochure (2026-10-23) → placement report again (2026-10-27, the user's ask). PLACEHOLDER href
+  secondaryCta: { label: 'Download Placement Report', href: '#placement-report' },
+  // (the team, 2026-10-22: "Learn from Uber" read oddly) the title's own words, leading into the logos;
+  // "Built by leaders from…" (2026-10-27, the user's ask; was "Faculty & leaders from")
+  logosLabel: 'Built by leaders from…',
   logos: [
     { name: 'Uber', src: '/logos/uber.svg' },
     { name: 'Colgate', src: '/logos/colgate.svg' },

@@ -17,7 +17,9 @@ import './curriculum-rail.css';
 
 const ICONS = { career: BriefcaseIcon, ai: SparkleIcon, projects: HandshakeIcon, internship: IdentificationBadgeIcon, immersions: FactoryIcon, learn: RocketLaunchIcon, sessions: MicrophoneStageIcon };
 
-export type RailSection = { id: string; label: string; icon: keyof typeof ICONS; node: React.ReactNode };
+/** `num` and `line` (2026-10-27, the minimal page's "Five ways"): the item drawn as a numbered pillar,
+ *  "01 Learn AI fluency" over its one line, in place of the icon. */
+export type RailSection = { id: string; label: string; icon: keyof typeof ICONS; node: React.ReactNode; num?: string; line?: string };
 
 export function CurriculumRail({ sections }: { sections: RailSection[] }) {
   const [active, setActive] = React.useState(0);
@@ -71,9 +73,21 @@ export function CurriculumRail({ sections }: { sections: RailSection[] }) {
             const Icon = ICONS[s.icon];
             return (
               <li key={s.id}>
-                <button type="button" className="cr-item" aria-current={i === active ? 'true' : undefined} onClick={() => go(s.id)}>
-                  <Icon weight={i === active ? 'fill' : 'regular'} aria-hidden="true" />
-                  {s.label}
+                <button type="button" className="cr-item" data-pillar={s.num ? '' : undefined} aria-current={i === active ? 'true' : undefined} onClick={() => go(s.id)}>
+                  {s.num ? (
+                    <>
+                      <span className="cr-num" aria-hidden="true">{s.num}</span>
+                      <span className="cr-text">
+                        <span className="cr-label">{s.label}</span>
+                        {s.line ? <span className="cr-line">{s.line}</span> : null}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <Icon weight={i === active ? 'fill' : 'regular'} aria-hidden="true" />
+                      {s.label}
+                    </>
+                  )}
                 </button>
               </li>
             );

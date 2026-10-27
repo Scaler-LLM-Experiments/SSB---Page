@@ -428,3 +428,18 @@ body:has(.hf-deadline) header.sn { top: var(--hf-bar, 0px); }
    was 33), 8px on a phone (~32px, was 25) */
 .hf-deadline [data-slot='banner'] { padding-block: var(--space-2-5); }
 @media (width < 672px) { .hf-deadline [data-slot='banner'] { padding-block: var(--space-2); } }
+
+/* 27. (the user's ask, 2026-10-27) m-web: the title, then the logos, then the line (its three
+   pointers), then the actions, then the facts. The copy and side columns dissolve
+   (display: contents) so their children order in one flex column. Desktop and tablet unchanged. */
+@media (width < 672px) {
+  .hf-body { display: flex; flex-direction: column; }
+  .hf-copy, .hf-side { display: contents; }
+  .hf-eyebrow { order: 0; }
+  .hf-title { order: 1; }
+  .hf-label { order: 2; margin-top: var(--space-6); }
+  .hf-side > .hf-flip { order: 3; margin-bottom: 0; }
+  .hf-line { order: 4; margin-top: var(--space-5); }
+  .hf-actions { order: 5; margin-top: var(--space-6); }
+  .hf-side > .hf-facts { order: 6; margin-top: var(--space-6); }
+}

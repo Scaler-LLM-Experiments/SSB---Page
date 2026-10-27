@@ -69,7 +69,7 @@ function fadeIn(block: HTMLElement) {
       duration: d.slowest,
       ease: ease('expressiveEntrance'),
       clearProps: 'transform,opacity,visibility',
-      scrollTrigger: { trigger: block, start: 'clamp(top 85%)', once: true },
+      scrollTrigger: { trigger: block, start: 'clamp(top 85%)', toggleActions: 'play none none none' },
     },
   );
 }
@@ -118,11 +118,18 @@ function cards(root: HTMLElement, context: gsap.Context) {
       );
   };
 
+  // each card played once (a guard, not `once: true`: once triggers created past their start kill
+  // themselves inside ScrollTrigger's refresh and threw on a mid-page reload)
+  const played = new WeakSet<Element>();
   ScrollTrigger.batch(list, {
     start: 'clamp(top 85%)',
-    once: true,
     // Added to the context, so the tweens are reverted with everything else.
-    onEnter: (batch) => context.add(() => batch.forEach((card, i) => play(card, i * CARD_GAP))),
+    onEnter: (batch) =>
+      context.add(() =>
+        batch
+          .filter((card) => !played.has(card) && played.add(card))
+          .forEach((card, i) => play(card, i * CARD_GAP)),
+      ),
   });
 }
 

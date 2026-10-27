@@ -219,7 +219,7 @@ export function ShowcaseMotion({ children }: { children: React.ReactNode }) {
           const radius = getComputedStyle(card).getPropertyValue('--story-radius').trim() || '1rem';
           carousel.setAttribute('data-hold', '');
           const tl = gsap.timeline({
-            scrollTrigger: { trigger: carousel, start: 'clamp(top 75%)', once: true },
+            scrollTrigger: { trigger: carousel, start: 'clamp(top 75%)', toggleActions: 'play none none none' },
             onComplete: () => {
               carousel.removeAttribute('data-hold');
               controls.update();
