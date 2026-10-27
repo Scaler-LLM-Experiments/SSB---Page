@@ -44,9 +44,16 @@ export function PeersFlip({ logos, label }: { logos: ResolvedLogo[]; label: stri
   React.useEffect(() => {
     if (logos.length <= n || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     let last = -1;
+    // only while the grid is on screen (2026-10-27, performance): ticking off screen, its reading of the
+    // cells' layout (offsetParent) forced the whole page to lay out again every second, an 80–120ms task
+    let onScreen = false;
+    const io = new IntersectionObserver(([e]) => {
+      onScreen = e.isIntersecting;
+    });
+    if (gridRef.current) io.observe(gridRef.current);
     const id = window.setInterval(() => {
       const grid = gridRef.current;
-      if (!grid || document.hidden) return;
+      if (!grid || document.hidden || !onScreen) return;
       // only the cells this breakpoint shows
       const visible = Array.from(grid.children).flatMap((el, i) => ((el as HTMLElement).offsetParent ? [i] : []));
       if (!visible.length) return;
@@ -66,7 +73,10 @@ export function PeersFlip({ logos, label }: { logos: ResolvedLogo[]; label: stri
         });
       });
     }, EVERY);
-    return () => window.clearInterval(id);
+    return () => {
+      window.clearInterval(id);
+      io.disconnect();
+    };
   }, [logos, n]);
 
   return (

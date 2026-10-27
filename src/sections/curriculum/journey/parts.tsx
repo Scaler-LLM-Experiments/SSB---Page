@@ -275,15 +275,25 @@ export function ProjectCarousel({ projects, cfg, label, auto, bare }: { projects
   const running = !!auto && !bare && playing && !still;
   React.useEffect(() => {
     if (!running) return undefined;
+    // only while the row is on screen (2026-10-27, performance: off screen it still measured and
+    // smooth-scrolled itself, laying the page out again each time)
+    let onScreen = false;
+    const io = new IntersectionObserver(([e]) => {
+      onScreen = e.isIntersecting;
+    });
+    if (track.current) io.observe(track.current);
     const id = window.setInterval(() => {
       const t = track.current;
-      if (!t || held.current || document.hidden) return;
+      if (!t || held.current || document.hidden || !onScreen) return;
       const first = t.children[0] as HTMLElement | undefined;
       const step = first ? first.getBoundingClientRect().width + parseFloat(getComputedStyle(t).columnGap || '16') : t.clientWidth;
       if (t.scrollLeft + t.clientWidth >= t.scrollWidth - 4) t.scrollTo({ left: 0, behavior: 'smooth' });
       else t.scrollBy({ left: step, behavior: 'smooth' });
     }, AUTO_MS);
-    return () => window.clearInterval(id);
+    return () => {
+      window.clearInterval(id);
+      io.disconnect();
+    };
   }, [running, kick]);
   const onFocus = (e: React.FocusEvent) => {
     held.current = (e.target as HTMLElement).matches?.(':focus-visible') ?? false;

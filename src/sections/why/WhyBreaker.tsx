@@ -152,17 +152,13 @@ export function WhyBreaker({ quote, figures }: { quote: WhyQuote; figures: WhyFi
         <div data-breaker-stage className="why-breaker-stage">
           {video ? (
             <>
-              {/* Phone: a blurred copy under the sharp clip, carrying it to the breaker's foot. */}
-              <video
-                data-breaker-clip
-                className="why-breaker-haze"
-                src={video}
-                poster={poster}
-                muted
-                loop
-                playsInline
-                preload="metadata"
-              />
+              {/* Phone: a copy under the sharp clip, carrying it to the breaker's foot, blurred by the
+                  frost over it. The poster, a still (2026-10-27, performance): a second copy of the
+                  clip downloaded and decoded the 35 MB file twice; the testimonial does the same. */}
+              {poster ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img className="why-breaker-haze" src={poster} alt="" decoding="async" loading="lazy" />
+              ) : null}
               <video
                 data-breaker-clip
                 className="why-breaker-clip"

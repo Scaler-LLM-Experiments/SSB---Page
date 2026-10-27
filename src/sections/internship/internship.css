@@ -110,7 +110,8 @@
 .in-reel video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1); }
 .in-reel:hover video { transform: scale(1.03); }
 .in-reel-shade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgb(0 0 0 / 0.25) 0%, transparent 22%, transparent 50%, rgb(0 0 0 / 0.78) 100%); }
-.in-reel-sound { position: absolute; top: 12px; right: 12px; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: rgb(0 0 0 / 0.4); color: #fff; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+/* (2026-10-27, performance) a solid shade, no backdrop blur: over a playing video it re-blurred every frame */
+.in-reel-sound { position: absolute; top: 12px; right: 12px; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: rgb(0 0 0 / 0.55); color: #fff; }
 .in-reel-sound svg { width: 16px; height: 16px; }
 .in-reel-copy { position: absolute; inset: auto 16px 16px; display: grid; gap: 4px; color: #fff; }
 .in-reel-name { font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.02em; color: rgb(255 255 255 / 0.8); }

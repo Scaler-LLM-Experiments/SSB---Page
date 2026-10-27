@@ -26,21 +26,31 @@ export function StoryReels({ reels, label }: { reels: Reel[]; label: string }) {
   const [loud, setLoud] = React.useState<number | null>(null);
   const [edges, setEdges] = React.useState({ start: true, end: false });
 
-  // play what is on screen, pause the rest
+  // play the one short most on screen, pause the rest (2026-10-27, performance: two or three 1080p
+  // shorts decoding at once, each under a blurred button, held the page at 30fps)
   React.useEffect(() => {
     const row = rowRef.current;
     if (!row) return undefined;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const vids = Array.from(row.querySelectorAll('video'));
+    const seen = new Map<HTMLVideoElement, number>();
     const io = new IntersectionObserver(
       (entries) => {
-        for (const e of entries) {
-          const v = e.target as HTMLVideoElement;
-          if (e.isIntersecting && !reduced) v.play().catch(() => {});
+        for (const e of entries) seen.set(e.target as HTMLVideoElement, e.isIntersecting ? e.intersectionRatio : 0);
+        let best: HTMLVideoElement | null = null;
+        let most = 0.6;
+        seen.forEach((ratio, v) => {
+          if (ratio >= most) {
+            most = ratio;
+            best = v;
+          }
+        });
+        vids.forEach((v) => {
+          if (v === best && !reduced) v.play().catch(() => {});
           else v.pause();
-        }
+        });
       },
-      { threshold: 0.6 },
+      { threshold: [0, 0.6, 0.8, 1] },
     );
     vids.forEach((v) => io.observe(v));
     const onScroll = () =>
