@@ -38,7 +38,6 @@ import { PressSection } from '@/sections/press/PressSection';
 import { TestimonialSection } from '@/sections/testimonial/TestimonialSection';
 import { BottomNav } from '@/sections/site/BottomNav';
 import { CalmEntrance } from '@/sections/shared/CalmEntrance';
-import { VariantToggle } from '@/sections/site/VariantToggle';
 import { Tone } from '@/sections/tone/Tone';
 import '../v6/v6.css';
 
@@ -228,7 +227,6 @@ export default function V8Page() {
           {/* 30 the closing band */}
           <DeckCloseSection />
         </Tone>
-        <VariantToggle current="tone" />
       </main>
       {/* the footer's green card on the light ground, after the light banner */}
       <Tone>
