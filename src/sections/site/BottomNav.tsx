@@ -36,7 +36,9 @@ const TAB_ICONS: Icon[] = [GraduationCap, BookOpen, Briefcase, Buildings];
  * bar is.
  */
 /** `items`: another page's own targets for the same pillars (/v6, whose sections run in another order). */
-export function BottomNav({ items = bottomNav.items }: { items?: BottomNavItem[] } = {}) {
+/** `instant` (the final page, 2026-10-28, the user's ask): no pop-up entrance; the bars appear as they
+ *  are, as soon as the first fold (the hero) has been scrolled past. */
+export function BottomNav({ items = bottomNav.items, instant = false }: { items?: BottomNavItem[]; instant?: boolean } = {}) {
   const [shown, setShown] = React.useState(false);
   const [active, setActive] = React.useState(-1);
   // tablets: the bar steps aside while the curriculum's own bar is at the window's foot
@@ -50,7 +52,12 @@ export function BottomNav({ items = bottomNav.items }: { items?: BottomNavItem[]
       raf = 0;
       const vh = window.innerHeight;
       const first = sectionOf(items[0].target);
-      const pastHero = first ? first.getBoundingClientRect().top < vh * 0.6 : window.scrollY > vh;
+      const hero = instant ? document.querySelector('.hf') : null;
+      const pastHero = hero
+        ? hero.getBoundingClientRect().bottom < vh * 0.5
+        : first
+          ? first.getBoundingClientRect().top < vh * 0.6
+          : window.scrollY > vh;
       // the footer is uncovered once the sheet the page lifts off it has risen above the window's foot
       const sheet = document.querySelector('.sf-lift');
       const footer = sheet ? sheet.getBoundingClientRect().bottom < vh - 24 : false;
@@ -95,13 +102,15 @@ export function BottomNav({ items = bottomNav.items }: { items?: BottomNavItem[]
     update();
     window.addEventListener('scroll', on, { passive: true });
     window.addEventListener('resize', on);
+    document.documentElement.toggleAttribute('data-bn-instant', instant);
     return () => {
       cancelAnimationFrame(raf);
       document.documentElement.removeAttribute('data-bn-strip');
+      document.documentElement.removeAttribute('data-bn-instant');
       window.removeEventListener('scroll', on);
       window.removeEventListener('resize', on);
     };
-  }, []);
+  }, [instant]);
 
   // The entrance (bottom-nav.css, after the carousel controls'): the bar opens out of a square at
   // its centre and the call-back slides out from behind it, so the call-back starts this far left

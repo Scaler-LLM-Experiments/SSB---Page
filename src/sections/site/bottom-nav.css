@@ -417,3 +417,11 @@ html body .bn-tab span { font-size: 0.6875rem !important; letter-spacing: -0.005
     backdrop-filter: none !important;
   }
 }
+
+/* (2026-10-28, the user's ask: the final page, `BottomNav instant`) no pop-up entrance on desktop or
+   phones: the bar, the call-back, the strip and the apply bar simply appear (and go), no rise, split,
+   pop or fade */
+html[data-bn-instant] :is(.bn, .bn *, .bn-strip, .bn-call, .bn-apply, .bn-apply > *) {
+  animation: none !important;
+  transition: none !important;
+}

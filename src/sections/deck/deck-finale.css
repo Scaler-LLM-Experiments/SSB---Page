@@ -339,3 +339,14 @@
 @media (width < 672px) { .dkc-photo:not(.dkc-photo-blur) { object-position: 55% 30%; } }
 
 /* (the closing card was full bleed for a while, 2026-10-28; back in its rounded frame at the user's ask) */
+
+/* (2026-10-28, the user's ask: "a font-size problem" on phones) the questions and answers sat above
+   the section's own sub-line (17 and 15px over its 14): on phones the questions 15px, the answers
+   14px, the page's phone body size, so the header leads */
+@media (width < 672px) {
+  .dkf-q button { padding: var(--space-4) 0; }
+  .dkf-q-text { font-size: 15px; line-height: 1.4; letter-spacing: -0.01em; }
+  .dkf-a p { font-size: 14px; line-height: 1.55; padding-bottom: var(--space-4); }
+  .dkf-icon { width: 24px; height: 24px; }
+  .dkf-icon::before, .dkf-icon::after { width: 10px; margin-left: -5px; }
+}

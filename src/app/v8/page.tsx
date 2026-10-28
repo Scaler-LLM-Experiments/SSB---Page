@@ -62,6 +62,7 @@ export default function V8Page() {
         <HeroFrameDeadline deadline={heroFrame.deadline} />
         <HomeNav light followTone pinned />
         <BottomNav
+          instant
           items={[
             { label: 'Placements', target: 'placements-showcase-title' },
             { label: 'Startups', target: 'bc-title' },
