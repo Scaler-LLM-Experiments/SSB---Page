@@ -65,3 +65,65 @@
 
 /* the smallest phones (under 360px): the counts' columns closer and their icons off, so all three fit */
 @media (width < 360px) { .tc-item { padding-inline: var(--space-2); } .tc-icon { display: none; } }
+
+/* ── The term sheet in the deck's copy (DeckSheetBody, the final page, 2026-10-28): out of class, in
+   class, the outcome, the masterclasses; each a quiet uppercase heading over hairline rows, 32px apart ── */
+.ss-deck { gap: var(--space-8); }
+.ss-deck .ss-h { margin-bottom: var(--space-3); }
+
+/* out of class: numbered rows, the work's name, its line, its reference quieter under a small label */
+.ssd-outs { counter-reset: ssd; display: grid; margin: 0; padding: 0; list-style: none; }
+.ssd-out { counter-increment: ssd; position: relative; display: grid; gap: var(--space-1-5); padding: var(--space-4) 0 var(--space-4) 2.25rem; border-top: var(--border-hair, 1px) solid var(--border-subtle); }
+.ssd-out:last-child { border-bottom: var(--border-hair, 1px) solid var(--border-subtle); }
+.ssd-out::before { content: counter(ssd, decimal-leading-zero); position: absolute; left: 0; top: var(--space-4); font-size: var(--type-caption-size); line-height: 1.6; font-variant-numeric: tabular-nums; color: var(--content-brand); }
+.ss .ssd-out h5 { margin: 0; font-size: var(--type-body-size); line-height: 1.35; letter-spacing: -0.01em; font-weight: var(--font-weight-medium); color: var(--content-primary); }
+.ss .ssd-out p { margin: 0; font-size: var(--type-body-sm-size); line-height: 1.5; color: var(--content-secondary); }
+.ss .ssd-ref { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-2); margin-top: var(--space-1); font-size: var(--type-caption-size); line-height: 1.45; }
+.ssd-ref span { font-weight: var(--font-weight-medium); letter-spacing: 0.06em; text-transform: uppercase; color: var(--content-primary); opacity: 0.6; }
+/* an alternative to the one before: no number of its own, "or" in its place, no rule between the two */
+.ssd-out[data-or] { counter-increment: none; border-top: 0; padding-top: 0; }
+.ssd-out[data-or]::before { content: none; }
+.ssd-or { position: absolute; left: 0; top: 0; font-size: var(--type-caption-size); line-height: 1.6; font-weight: var(--font-weight-medium); letter-spacing: 0.06em; text-transform: uppercase; color: var(--content-secondary); }
+/* the internship: its name only */
+.ssd-out[data-plain] { padding-block: var(--space-3-5, 0.875rem); }
+
+/* in class: each area a row, its name at the left, its subjects at the right */
+.ssd-in { display: grid; margin: 0; }
+.ssd-in > div { display: grid; grid-template-columns: minmax(0, 11rem) minmax(0, 1fr); gap: var(--space-4); padding-block: var(--space-3); border-top: var(--border-hair, 1px) solid var(--border-subtle); }
+.ssd-in > div:last-child { border-bottom: var(--border-hair, 1px) solid var(--border-subtle); }
+.ssd-in dt { font-size: var(--type-caption-size); line-height: 1.6; font-weight: var(--font-weight-medium); letter-spacing: 0.06em; text-transform: uppercase; color: var(--content-brand); }
+.ssd-in dd { margin: 0; font-size: var(--type-body-sm-size); line-height: 1.5; color: var(--content-primary); }
+@container (width < 480px) { .ssd-in > div { grid-template-columns: 1fr; gap: var(--space-1); } }
+
+/* the outcome: one line, a step up, on a faint brand tint */
+.ssd-outcome p { margin: 0; padding: var(--space-4) var(--space-5); border-radius: var(--radius-lg); background: var(--surface-brand-subtle);
+  font-size: var(--type-body-size); line-height: 1.5; font-weight: var(--font-weight-medium); color: var(--content-primary); }
+
+/* masterclasses and workshops: quiet chips */
+.ssd-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+.ssd-chips li { padding: var(--space-1-5, 6px) var(--space-3); border: var(--border-hair, 1px) solid var(--border-decorative); border-radius: 999px;
+  font-size: var(--type-body-sm-size); line-height: 1.3; color: var(--content-primary); }
+
+/* (the same day, the user's ask: "bring back the videos layout") out of class as the sheet's video rows:
+   the thumbnail with its play mark at the left, the work, its line and its reference at the right; the
+   numbered list's own rules off */
+.ssd-outs { counter-reset: none; }
+.ss-out.ssd-out { counter-increment: none; padding-left: 0; align-items: start; }
+.ss-out.ssd-out::before { content: none; }
+.ss-out.ssd-out > div { display: grid; gap: var(--space-1); }
+.ss .ss-out.ssd-out p { margin: 0; }
+.ss .ss-out.ssd-out .ssd-ref { margin-top: var(--space-1); }
+.ss-out.ssd-out[data-or] { padding-top: var(--space-3-5, 0.875rem); border-top: var(--border-hair, 1px) dashed var(--border-subtle); }
+.ss-out.ssd-out .ssd-or { position: static; display: block; margin-bottom: 2px; }
+
+/* phones (the same day, the user's ask: m-web's earlier in class and out of class, the new copy): in
+   class as the sheet's earlier columns (each area in green caps with its count over a numbered list);
+   out of class keeps the earlier video rows (a 7rem thumbnail beside the copy) */
+.ssd-in-m { display: none; }
+@media (width < 768px) {
+  .ss-deck .ssd-in { display: none; }
+  .ss-deck .ssd-in-m { display: grid; }
+}
+/* the reference as one run of text, its label leading it (on a phone the label took a line of its own) */
+.ss .ss-out.ssd-out .ssd-ref { display: block; }
+.ss-out.ssd-out .ssd-ref span { margin-right: var(--space-1-5, 6px); }

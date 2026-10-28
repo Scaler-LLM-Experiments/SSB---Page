@@ -80,3 +80,95 @@
 /* the photo inset evenly on all four sides: stretched by its grid row, no min-height (100% plus the
    margins ran it past the card's foot) */
 @media (width >= 672px) { .tr-photo { min-height: 0; align-self: stretch; } }
+
+/* (the final page, 2026-10-28, the user's ask: the deck's copy) the card as the deck sets it: the term,
+   its title, its line, then the link at the card's foot; the line given room (no flagship, no counts) */
+.tr[data-deck] .tr-title { margin-top: var(--space-2); }
+.tr[data-deck] .tr-sum { margin-top: var(--space-3); line-height: 1.6; }
+
+/* (the same day, the user's asks) the masterclasses on the card, filling the room between the line and
+   the button: a quiet label over chips, each with its mark. The button at the card's foot, at its left
+   with the copy (it sat at the right, and its 24px top padding stretched it tall) */
+.tr-ws { margin-top: var(--space-6); padding-top: var(--space-5); border-top: var(--border-hair, 1px) solid var(--border-subtle); }
+.tr-ws-k { margin: 0; font-size: var(--type-caption-size); line-height: 1.3; font-weight: var(--font-weight-medium); letter-spacing: 0.06em; text-transform: uppercase; color: var(--content-secondary); }
+.tr-ws-list { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: var(--space-3) 0 0; padding: 0; list-style: none; }
+.tr-ws-list li {
+  display: inline-flex; align-items: center; gap: var(--space-1-5, 6px);
+  padding: var(--space-1-5, 6px) var(--space-3) var(--space-1-5, 6px) var(--space-2-5, 10px);
+  border: var(--border-hair, 1px) solid var(--border-decorative); border-radius: 999px;
+  font-size: var(--type-caption-size); line-height: 1.3; font-weight: var(--font-weight-medium); color: var(--content-primary);
+}
+.tr-ws-list svg { flex: none; width: 1rem; height: 1rem; color: var(--color-ssb-light-9, #1d925b); }
+.tr[data-deck] .tr-card .tr-more,
+[data-page] .tr[data-deck] .tr-card .tr-more { align-self: flex-start; margin-top: auto; }
+.tr[data-deck] .tr-ws { margin-bottom: var(--space-6); }
+@media (width < 672px) {
+  .tr-ws { margin-top: var(--space-5); padding-top: var(--space-4); }
+  .tr-ws-list li { font-size: 0.75rem; }
+  [data-page] .tr[data-deck] .tr-card .tr-more { align-self: stretch; }
+}
+
+/* (the same day: "fix the spacing, reduce the card heights") the label 10px over its chips (the
+   curriculum's list reset had taken the gap to 0), the chips a step slimmer; the cards about 100px
+   shorter: no 34rem floor (they take their copy's height), the body less padded, the blocks closer */
+[data-page] .tr .tr-ws .tr-ws-list { margin-top: var(--space-2-5, 10px); gap: var(--space-1-5, 6px); }
+[data-page] .tr .tr-ws-list li { padding: 5px var(--space-2-5, 10px) 5px var(--space-2, 8px); }
+[data-page] .tr[data-deck] .tr-card { min-height: 0; }
+@media (width >= 672px) {
+  [data-page] .tr[data-deck] .tr-body { padding: var(--space-8) var(--space-8) var(--space-6) var(--space-5); }
+  [data-page] .tr[data-deck] .tr-sum { margin-top: var(--space-2); }
+  [data-page] .tr[data-deck] .tr-ws { margin-top: var(--space-5); padding-top: var(--space-4); margin-bottom: var(--space-5); }
+}
+/* the tallest card set the row's height (its title on two lines, four chips on four): the title a step
+   smaller so most keep one line, the chips at 12px so two sit side by side */
+@media (width >= 672px) {
+  [data-page] .tr[data-deck] .tr-title { font-size: 1.5rem; line-height: 1.2; }
+  [data-page] .tr[data-deck] .tr-sum { font-size: 0.875rem; line-height: 1.55; }
+  [data-page] .tr .tr-ws-list li { font-size: 0.75rem; gap: 5px; }
+  [data-page] .tr .tr-ws-list svg { width: 0.875rem; height: 0.875rem; }
+}
+/* phones: the card about 150px shorter: a wider, lower photo, the line at 14px, the chips at 12px and
+   closer, the button nearer */
+@media (width < 672px) {
+  [data-page] .tr[data-deck] .tr-photo { aspect-ratio: 5 / 2; }
+  [data-page] .tr[data-deck] .tr-body { padding: var(--space-4) var(--space-4) var(--space-5); }
+  [data-page] .tr[data-deck] .tr-title { margin-top: var(--space-1-5, 6px); font-size: 1.125rem; }
+  [data-page] .tr[data-deck] .tr-sum { margin-top: var(--space-2); font-size: 0.875rem; line-height: 1.5; }
+  [data-page] .tr[data-deck] .tr-ws { margin-top: var(--space-4); padding-top: var(--space-3); margin-bottom: var(--space-4); }
+  [data-page] .tr .tr-ws .tr-ws-list { margin-top: var(--space-2); }
+  [data-page] .tr .tr-ws-list li { font-size: 0.75rem; padding: 4px var(--space-2-5, 10px) 4px var(--space-2, 8px); }
+  [data-page] .tr .tr-ws-list svg { width: 0.875rem; height: 0.875rem; }
+}
+
+/* (the same day: "a ticker, as the 150-hour cards") the chips run in one line, looping, as the AI
+   journey's tools (journey.css .sj-tools-marquee: paused under the pointer, wrapped and still under
+   reduced motion); 10px under the label */
+[data-page] .tr .tr-ws .tr-ws-marquee { margin-top: var(--space-2-5, 10px); }
+[data-page] .tr .tr-ws .tr-ws-set { flex-wrap: nowrap; margin: 0; padding: 0 var(--space-1-5, 6px) 0 0; gap: var(--space-1-5, 6px); }
+.tr-ws-set > li { flex: none; white-space: nowrap; }
+@media (width < 672px) { [data-page] .tr .tr-ws .tr-ws-marquee { margin-top: var(--space-2); } }
+/* (the same day: "remove the stroke, a little slower, no divider") the chips as the AI tools are: a
+   mark and a name, no outline, more room between them; no hairline over the block; the loop 25% slower
+   (row.tsx) */
+[data-page] .tr .tr-ws-list li { padding: 0; border: 0; }
+[data-page] .tr .tr-ws .tr-ws-set { gap: var(--space-5); padding-right: var(--space-5); }
+[data-page] .tr[data-deck] .tr-ws { border-top: 0; padding-top: 0; }
+
+/* (the same day: "mimic the AI cards, the label green, better spacing") the block as the 150-hour cards'
+   Tools row: the label in the eyebrow's green, 12px semibold caps, 8px over the ticker; each item 28px
+   tall, a 19px mark 8px from its name in 14px semibold grey, 20px between items. The card's parts on
+   one rhythm: term 8 → title 12 → line 24 → masterclasses, 28 at least → button */
+[data-page] .tr .tr-ws .tr-ws-k { font-size: var(--type-eyebrow-size, 12px); font-weight: 600; letter-spacing: 0.08em; color: var(--color-ssb-light-9, #1d925b); }
+[data-page] .tr .tr-ws .tr-ws-marquee { margin-top: var(--space-2); }
+[data-page] .tr .tr-ws .tr-ws-set { gap: var(--space-5); padding-right: var(--space-5); }
+[data-page] .tr .tr-ws-list li { height: 28px; gap: var(--space-2); font-size: 0.875rem; font-weight: 600; color: var(--content-secondary); }
+[data-page] .tr .tr-ws-list svg { width: 1.1875rem; height: 1.1875rem; }
+[data-page] .tr[data-deck] .tr-title { margin-top: var(--space-2); }
+[data-page] .tr[data-deck] .tr-sum { margin-top: var(--space-3); }
+[data-page] .tr[data-deck] .tr-ws { margin-top: var(--space-6); margin-bottom: var(--space-7, 28px); }
+@media (width < 672px) {
+  [data-page] .tr .tr-ws-list li { height: 24px; font-size: 0.8125rem; }
+  [data-page] .tr .tr-ws-list svg { width: 1rem; height: 1rem; }
+  [data-page] .tr[data-deck] .tr-sum { margin-top: var(--space-2); }
+  [data-page] .tr[data-deck] .tr-ws { margin-top: var(--space-5); margin-bottom: var(--space-5); }
+}

@@ -1,0 +1,42 @@
+/* Career prep on the final page (DeckCareerPrep.tsx, 2026-10-28): the header and the 2 × 2 figures
+   side by side from 1056px, stacked below; each figure a card of the page's (its surface, a hairline,
+   8px corners), the figure large in the brand green over its label. */
+.dcp-wrap { display: grid; gap: var(--space-8); }
+@media (width >= 1056px) { .dcp-wrap { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); align-items: center; gap: var(--space-16, 4rem); } }
+.dcp-head { display: flex; flex-direction: column; gap: var(--space-3); max-width: var(--size-measure-max); }
+
+.dcp-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); margin: 0; }
+.dcp-stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-6);
+  border: 1px solid var(--border-decorative);
+  border-radius: var(--radius-lg);
+  background: var(--surface-default, #fff);
+}
+.dcp-stat dd {
+  margin: 0;
+  font-size: clamp(2rem, 3.2vw, 2.75rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-weight: var(--font-weight-medium);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ssb-light-9, #1d925b);
+}
+.dcp-stat dt { font-size: var(--type-label-size, 0.875rem); line-height: 1.4; font-weight: var(--font-weight-medium); color: var(--content-primary); }
+@media (width < 672px) {
+  .dcp-wrap { gap: var(--space-6); }
+  .dcp-grid { gap: var(--space-3); }
+  .dcp-stat { gap: var(--space-1-5, 6px); padding: var(--space-4); }
+  .dcp-stat dd { font-size: 1.75rem; }
+  .dcp-stat dt { font-size: var(--type-caption-size, 0.75rem); }
+}
+
+/* (the same day: "space the text out to the cards' height") desktop: the header as tall as the 2 × 2,
+   the eyebrow and title level with the cards' top, the line under them level with their foot */
+@media (width >= 1056px) {
+  .dcp-wrap { align-items: stretch; }
+  .dcp-head { justify-content: flex-start; }
+  .dcp-head > :last-child { margin-top: auto; }
+}

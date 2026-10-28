@@ -79,8 +79,12 @@ export function CalmEntrance() {
     // the blocks (the innermost substantial sections), scanned again as sections arrive (the
     // curriculum renders in the browser, after load)
     const scan = () => {
+      // not inside a sheet or drawer (the term sheets portal into main): those scroll on their own, so the
+      // page's scroll never shows them (2026-10-28: the sheet's In class and Outcome stayed hidden)
       const blocks = [...main.querySelectorAll<HTMLElement>('section')].filter(
-        (s) => ![...s.querySelectorAll<HTMLElement>('section')].some((c) => c.offsetHeight > 300),
+        (s) =>
+          !s.closest('[role="dialog"]') &&
+          ![...s.querySelectorAll<HTMLElement>('section')].some((c) => c.offsetHeight > 300),
       );
       blocks.forEach((b) => {
         if (seen.has(b)) return;

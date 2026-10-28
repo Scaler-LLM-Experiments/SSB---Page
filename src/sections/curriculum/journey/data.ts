@@ -39,6 +39,20 @@ export interface Year {
   /** Masterclasses & workshops that run alongside. */
   workshops?: string[];
   syllabus: string[] | null;
+  /** The term in the website deck's own words ("SSB Website vF | Sep'26", 2026-10-28): the card's line,
+   *  the sheet's out-of-class work, in-class subjects by area, outcome and masterclasses. */
+  deck?: DeckTerm;
+}
+
+/** A term as the website deck sets it out. An out-of-class item may be an alternative to the one before
+ *  it (`or`), or plain (the internship: no line, no reference). */
+export interface DeckTerm {
+  line: string;
+  /** `image` a photo key (photos.ts) for the row's thumbnail; a row with a `ref` is a video, so it shows a play mark */
+  outClass: { title: string; desc?: string; ref?: string; or?: boolean; image?: string }[];
+  inClass: { area: string; items: string[] }[];
+  outcome: string;
+  workshops: string[];
 }
 
 /** The AI journey (SSB): one capability and one product per term. */

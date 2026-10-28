@@ -29,6 +29,7 @@ import { HeroFrame, HeroFrameDeadline } from '@/sections/hero/frame/HeroFrame';
 import { Curriculum, HomeNav, ScrollRefresh } from '@/sections/home/client';
 import { DeckFooter } from '@/sections/deck/DeckFooter';
 import { DeckGlobalImmersion } from '@/sections/deck/DeckGlobalImmersion';
+import { DeckCareerPrep } from '@/sections/deck/DeckCareerPrep';
 import { CurriculumRail } from '@/sections/curriculum/CurriculumRail';
 import { InnovationLabSection } from '@/sections/innovation-lab/InnovationLabSection';
 import { InternshipSection } from '@/sections/internship/InternshipSection';
@@ -144,24 +145,27 @@ export default function V8Page() {
                   </DeckUsp>
                 ),
               },
+              // live projects third, immersions fourth (2026-10-28, the user's ask: swapped)
               {
-                ...deckUsps.items[2],
+                ...deckUsps.items[3],
+                num: '03',
                 line: undefined,
                 node: (
-                  <DeckUsp num="03" label={deckUsps.items[2].label}>
-                    <DeckImmersionsSection />
-                    {/* the global immersion, a week in Singapore, back from vFinal (2026-10-28, the user's ask) */}
-                    <DeckGlobalImmersion />
+                  <DeckUsp num="03" label={deckUsps.items[3].label}>
+                    {/* vFinal's cards (2026-10-28, the user's ask), each company's logo in white for its name */}
+                    <LiveProjectsSection logos={deckLiveLogos} />
                   </DeckUsp>
                 ),
               },
               {
-                ...deckUsps.items[3],
+                ...deckUsps.items[2],
+                num: '04',
                 line: undefined,
                 node: (
-                  <DeckUsp num="04" label={deckUsps.items[3].label}>
-                    {/* vFinal's cards (2026-10-28, the user's ask), each company's logo in white for its name */}
-                    <LiveProjectsSection logos={deckLiveLogos} />
+                  <DeckUsp num="04" label={deckUsps.items[2].label}>
+                    <DeckImmersionsSection />
+                    {/* the global immersion, a week in Singapore, back from vFinal (2026-10-28, the user's ask) */}
+                    <DeckGlobalImmersion />
                   </DeckUsp>
                 ),
               },
@@ -189,9 +193,15 @@ export default function V8Page() {
         </Tone>
         {/* 17–22 the curriculum: the five terms (each opens its courses), then the AI journey (career prep came off, 2026-10-28, the user's ask: "not looking good") */}
         <Tone>
-          <Curriculum part="terms" termsStack termsVersion={4} />
+          <Curriculum part="terms" termsStack termsVersion={4} deck />
+        </Tone>
+        {/* career prep back, above the AI curriculum (2026-10-28, the user's ask): the deck's figures 2 × 2, dark */}
+        <Tone dark>
+          <DeckCareerPrep />
+        </Tone>
+        <Tone>
           {/* 23 the 150-hour AI curriculum */}
-          <Curriculum part="ai" aiCarousel />
+          <Curriculum part="ai" aiCarousel deck />
         </Tone>
         {/* 24 internship statistics */}
         {/* the students' videos inside the internship section, framed, no heading (2026-10-28, the user's ask) */}

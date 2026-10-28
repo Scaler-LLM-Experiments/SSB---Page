@@ -83,6 +83,24 @@ export const SSB_JOURNEY: Journey = {
         { title: 'Idea Pitch Tank', desc: 'Pitch a startup idea to a panel in Week 1.', image: 'pGtm', video: 'Scaler Spark Tank' },
       ],
       syllabus: null,
+      // the website deck's own copy ("SSB Website vF | Sep'26", 2026-10-28)
+      deck: {
+        line: 'Learn core business principles like economics, accounting and marketing, and use them straight away by selling on the street and launching your first D2C brand.',
+        outClass: [
+          { image: 'pCreator', title: 'Street-Selling Challenge', desc: 'Sell a product to strangers in a day to learn persuasion and customer empathy.', ref: 'Caffeine Clash (C1), Go Zero Ice-cream Challenge (C3)' },
+          { image: 'y1Flagship', title: 'D2C Startup Challenge', desc: 'Launch a live D2C brand with ₹25K funding and a ₹5L+ revenue target in 6 weeks.', ref: 'Year 1 cohort generated ₹15L+ revenue in 1 month' },
+          { image: 'pGtm', title: 'Idea Pitch Tank', desc: 'Pitch a startup idea to a panel in Week 1.', ref: 'Scaler Spark Tank' },
+        ],
+        inClass: [
+          { area: 'Management & Strategy', items: ['Managerial Economics', 'Business Communications'] },
+          { area: 'Finance', items: ['Financial Reporting & Analysis 1'] },
+          { area: 'Marketing', items: ['Marketing Strategies'] },
+          { area: 'Data, Tech & Product', items: ['Business Statistics'] },
+          { area: 'AI', items: ['AI Foundations & No-Code Business Tools'] },
+        ],
+        outcome: 'First revenue, first pitch, first P&L.',
+        workshops: ['MS Excel Fundamentals', 'Structured Thinking', 'Build Your Own AI Chatbot'],
+      },
     },
     {
       year: 2,
@@ -106,6 +124,25 @@ export const SSB_JOURNEY: Journey = {
         { title: 'No-Code AI Build', desc: 'Build an AI product with zero coding knowledge.', image: 'pAgents', video: 'n8n AI Workshop' },
       ],
       syllabus: null,
+      // the website deck's own copy ("SSB Website vF | Sep'26", 2026-10-28)
+      deck: {
+        line: 'Master strategy, consumer behaviour and product basics, pitch real expansion plans to founders and ship your first AI product with zero code.',
+        outClass: [
+          { image: 'y2Flagship', title: 'Founder Consulting Sprint', desc: 'Solve a live expansion problem and pitch it directly to the founders.', ref: 'Mokobara, a ₹200 Cr APAC expansion strategy' },
+          { image: 'pAgents', title: 'Zero-Code AI Build Sprint', desc: 'MBA students ship an AI product with no engineering background.', ref: 'A Splitwise clone, a negotiation AI coach' },
+          { image: 'pBuilder', title: 'Venture Ideation', desc: 'Form startup teams and pressure-test ideas with mentors.', ref: 'HUSTLE Ideation' },
+          { image: 'pCargo', title: 'Industry Immersion I', desc: 'Time on manufacturing floors to see production and supply chains up close.' },
+        ],
+        inClass: [
+          { area: 'Management & Strategy', items: ['Global Macroeconomics', 'Intro to Business Strategy'] },
+          { area: 'Finance', items: ['Financial Reporting & Analysis 2'] },
+          { area: 'Marketing', items: ['Consumer Behaviour'] },
+          { area: 'Data, Tech & Product', items: ['Intro to Product Management'] },
+          { area: 'AI', items: ['Building Voice, Visual & Workflow AI Experiences'] },
+        ],
+        outcome: 'First founder-facing strategy and first shipped AI product.',
+        workshops: ['The Art of Business Decks', 'Design Thinking', 'SQL Querying Workshop', 'LinkedIn & Personal Branding'],
+      },
     },
     {
       year: 3,
@@ -128,6 +165,27 @@ export const SSB_JOURNEY: Journey = {
         { title: 'Hustle Ideation', desc: 'Work on the next billion-dollar idea and pitch it to VCs.', image: 'pBuilder', video: 'Hustle Ideation with Siddhant: students pitch to VCs' },
       ],
       syllabus: null,
+      // the website deck's own copy ("SSB Website vF | Sep'26", 2026-10-28)
+      deck: {
+        line: "Learn to sell, raise capital and research markets while building your startup's MVP and a placement-ready resume.",
+        outClass: [
+          { image: 'y3Flagship', title: 'GTM Challenge', desc: 'Build a full go-to-market plan and defend it before a real founder.', ref: '₹50 Cr GTM plan for a prebiotic soda founder' },
+          { image: 'pFitness', title: 'Live Market Simulation', desc: 'Trade under real market conditions.', ref: 'Stockathon with StockGro' },
+          { image: 'pHackathon', title: 'Build an MVP', desc: 'Turn the startup idea into a working product in the Innovation Lab with ₹50K funding.', ref: 'HUSTLE MVP' },
+          { image: 'pRouting', title: 'Industry Immersion II', desc: 'Time at quick-commerce backend ops and a fashion brand HQ.' },
+          { image: 'fPlacement', title: 'Internship' },
+        ],
+        inClass: [
+          { area: 'Management & Strategy', items: ['The Science of Selling'] },
+          { area: 'Finance', items: ['Corporate Finance Part I', 'Corporate Finance Part II (E)'] },
+          { area: 'Marketing', items: ['Market Research'] },
+          { area: 'Data, Tech & Product', items: ['Fundamental Data Analysis', 'Product Strategy & Execution (E)'] },
+          { area: 'Operations', items: ['Optimization for Decision Making (E)'] },
+          { area: 'AI', items: ['Automation & Product Integrations for Ops and Growth'] },
+        ],
+        outcome: 'A working MVP, a founder-tested GTM plan, and a placement-ready resume.',
+        workshops: ['Resumes 101', 'Hiring Assignments 101', 'Project Management using Asana/Jira/Notion', 'Designing on Canva'],
+      },
     },
     {
       year: 4,
@@ -150,6 +208,27 @@ export const SSB_JOURNEY: Journey = {
         { title: 'Take Your Startup to Market', desc: 'Launch and grow the startup you built in Term 3.', flagship: true, image: 'fFounder', video: 'D2C Startup Challenge: can these B-school students build a ₹50 lakh dropshipping business?', short: 'A ₹50 lakh dropshipping business' },
       ],
       syllabus: null,
+      // the website deck's own copy ("SSB Website vF | Sep'26", 2026-10-28)
+      deck: {
+        line: 'Choose your electives across Strategy, Finance, Marketing, Product and Operations, take your startup to market and build business AI agents.',
+        outClass: [
+          { image: 'pRecs', title: 'Product Teardown Project', desc: 'Map conversion friction on a live platform and build a prioritised fix roadmap.', ref: 'Ajio, covering discovery through search, product page and checkout' },
+          { image: 'pAnswer', title: '48-Hour AI Hackathon', desc: 'Build and demo a working AI prototype in two days.' },
+          { image: 'pCreator', title: 'Creator-preneur Track (opt-in)', desc: 'Grow a personal brand or work embedded at Jio Creative Labs.', ref: 'Tanisha Singhal (12.6M views, 13 brand deals); Jio Dhan Dhana Dhan campaign' },
+          { image: 'pSocial', title: 'Creator Challenge', desc: 'Build and monetise a personal brand on Instagram or YouTube to learn the influencer economy first-hand.', or: true },
+          { image: 'fPlacement', title: 'Internship' },
+        ],
+        inClass: [
+          { area: 'Management & Strategy', items: ['Corporate Strategy'] },
+          { area: 'Finance', items: ['Valuation'] },
+          { area: 'Marketing', items: ['Branding', 'Digital Marketing'] },
+          { area: 'Data, Tech & Product', items: ['Product Metrics & Analytics', 'Intro to SQL'] },
+          { area: 'Operations', items: ['Operations & Supply Chain'] },
+          { area: 'AI', items: ['Open-Source AI & building Business AI Agents'] },
+        ],
+        outcome: 'A domain portfolio and a second revenue or traction proof point.',
+        workshops: ['Personal Interviews Part 1', 'Case Solving & Guesstimates Part 1', 'MixPanel for Product Analytics', 'Supply Chain Simulation (Beer Game)'],
+      },
     },
     {
       year: 5,
@@ -171,6 +250,25 @@ export const SSB_JOURNEY: Journey = {
         { title: 'D2C Start-Up Challenge', desc: 'Build a D2C brand with a student of Scaler School of Business.', image: 'pSocial', video: 'D2C Start-Up Challenge with a student of Scaler School of Business' }, // [SSB] [CONFIRM]
       ],
       syllabus: null,
+      // the website deck's own copy ("SSB Website vF | Sep'26", 2026-10-28)
+      deck: {
+        line: 'Learn deal-making and investing, pitch your startup to VCs on Demo Day and walk into placements with founder-level proof of work.',
+        outClass: [
+          { image: 'fFounder', title: 'VC Demo Day', desc: 'Pitch the startup to real investors, with funding that can scale up to ₹25L.', ref: 'HUSTLE Final Pitches; Anupam Mittal offered ₹50L to Hummusapiens (July 2026)' },
+          { image: 'pSchema', title: 'Tech in Finance Lab', desc: 'Hands-on work with blockchain, crypto, DAOs, Solana and algorithmic trading strategies.', ref: 'Tech in Finance and Algorithmic Trading workshops' },
+          { image: 'pAssistant', title: 'AI Domain Workshop', desc: 'Apply AI to a specific industry problem.' },
+        ],
+        inClass: [
+          { area: 'Management & Strategy', items: ['Negotiations'] },
+          { area: 'Finance', items: ['Intro to PE & VC', 'Investment Analysis & Decision Making'] },
+          { area: 'Marketing', items: ['Pricing'] },
+          { area: 'Data, Tech & Product', items: ['Python for Data Analysis'] },
+          { area: 'Operations', items: ['Business of Online Marketplaces'] },
+          { area: 'AI', items: ['Scaling AI Products: Strategy, Pricing & ROI'] },
+        ],
+        outcome: 'Graduate with founder experience, a VC-tested pitch, and interview readiness.',
+        workshops: ['Personal Interviews Part 2', 'Case Solving & Guesstimates Part 2', 'Algorithmic Trading', 'Fundamental Analysis using Screener'],
+      },
     },
   ],
   // [SSB concept] ssb-school-concept.vercel.app, "The AI journey"; images are that site's assets

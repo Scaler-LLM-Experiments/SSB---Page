@@ -449,3 +449,18 @@ export const deckOutcomes = {
   photo: { caption: 'The founding cohort, Bengaluru' },
   recruitersTitle: 'Our recruiters: MNCs, AI companies & top startups',
 };
+
+/** Career prep (the final page, 2026-10-28, the user's ask: back, above the AI curriculum), in the
+ *  website deck's words: its title, the four figures, and the three phases as the line under it. */
+export const deckCareerPrep = {
+  eyebrow: 'Career prep',
+  title: 'Career prep,|running parallel from Month 1.',
+  // shortened from the deck's three-phase line (2026-10-28, the user's ask: fewer lines)
+  sub: 'Three phases, Clarity, Building and Executing: from 1:1 counselling to mock interviews and salary negotiation.',
+  stats: [
+    { value: '150+', label: 'Career Prep Hours' },
+    { value: '1,100+', label: 'Mock Interviews' },
+    { value: '300+', label: 'Hours 1:1 Problem-Solving' },
+    { value: '200+', label: 'Hours Domain Prep' },
+  ],
+};

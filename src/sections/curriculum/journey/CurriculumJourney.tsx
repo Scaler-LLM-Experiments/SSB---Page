@@ -118,7 +118,7 @@ export function CurriculumJourney({ config, journey: given, portal, initialOpen 
                 const props = { j, cfg, width, portal: host, initialOpen };
                 if (cfg.concept === 'build') return <BuildJourney key={id} {...props} />;
                 // (2026-10-27, the user's ask) one plain row of equal cards; the stage (StageJourney) kept
-                if (cfg.termsStage) return <RowJourney key={id} j={j} width={width} portal={host} />;
+                if (cfg.termsStage) return <RowJourney key={id} j={j} width={width} portal={host} deck={cfg.deckCopy} />;
                 if (cfg.concept === 'stack') return <StackJourney key={id} {...props} />;
               }
               return view === 'by-year' ? (

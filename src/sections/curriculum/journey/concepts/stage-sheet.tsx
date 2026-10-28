@@ -17,7 +17,7 @@ import {
   SideDrawerTitle,
 } from '@kishanscaler/ssx-ui';
 
-import type { Lane, Year } from '../data';
+import type { DeckTerm, Lane, Year } from '../data';
 import { countSkills, fmt } from '../data';
 import { useLabels } from '../parts';
 import { photoSrc } from '../photos';
@@ -65,7 +65,10 @@ export function StageSheet({
   portal,
   onSelect,
   onClose,
+  deck = false,
 }: {
+  /** the website deck's copy (`Year.deck`): out of class first, then in class, then the masterclasses */
+  deck?: boolean;
   years: Year[];
   open: number | null;
   mode: 'sheet' | 'drawer';
@@ -83,7 +86,15 @@ export function StageSheet({
     bodyRef.current?.closest('[data-slot$="body"], .overflow-y-auto')?.scrollTo({ top: 0 });
   }, [open]);
 
-  const body = y ? <SheetBody ref={bodyRef} y={y} prev={years[i - 1]} next={years[i + 1]} onSelect={onSelect} /> : null;
+  const fromDeck = deck && y?.deck ? y.deck : null;
+  const body = y ? (
+    fromDeck ? (
+      <DeckSheetBody ref={bodyRef} y={y} d={fromDeck} prev={years[i - 1]} next={years[i + 1]} onSelect={onSelect} />
+    ) : (
+      <SheetBody ref={bodyRef} y={y} prev={years[i - 1]} next={years[i + 1]} onSelect={onSelect} />
+    )
+  ) : null;
+  const desc = fromDeck ? fromDeck.line : y?.ship;
 
   if (mode === 'sheet')
     return (
@@ -92,7 +103,7 @@ export function StageSheet({
           <BottomSheetContent className="ss-panel" container={portal ?? undefined}>
             <BottomSheetHeader eyebrow={label} closeLabel={fmt(L.close, label)}>
               <BottomSheetTitle>{y.name}</BottomSheetTitle>
-              <BottomSheetDescription>{y.ship}</BottomSheetDescription>
+              <BottomSheetDescription>{desc}</BottomSheetDescription>
             </BottomSheetHeader>
             <BottomSheetBody>{body}</BottomSheetBody>
           </BottomSheetContent>
@@ -105,7 +116,7 @@ export function StageSheet({
         <SideDrawerContent size="wide" className="ss-panel" container={portal ?? undefined}>
           <SideDrawerHeader eyebrow={label} closeLabel={fmt(L.close, label)}>
             <SideDrawerTitle>{y.name}</SideDrawerTitle>
-            <SideDrawerDescription>{y.ship}</SideDrawerDescription>
+            <SideDrawerDescription>{desc}</SideDrawerDescription>
           </SideDrawerHeader>
           <SideDrawerBody>{body}</SideDrawerBody>
         </SideDrawerContent>
@@ -203,6 +214,118 @@ const SheetBody = React.forwardRef<
           ) : null}
         </nav>
       ) : null}
+    </div>
+  );
+});
+
+/** The other terms, as quiet text links at the sheet's foot. */
+function Pager({ prev, next, onSelect }: { prev?: Year; next?: Year; onSelect: (year: number) => void }) {
+  const L = useLabels();
+  if (!prev && !next) return null;
+  return (
+    <nav className="ss-pager" aria-label="Other terms">
+      {prev ? (
+        <button type="button" onClick={() => onSelect(prev.year)}>
+          <small>
+            <ArrowLeft aria-hidden="true" /> {fmt(L.yearLabel, prev.year)}
+          </small>
+          {prev.name}
+        </button>
+      ) : (
+        <span />
+      )}
+      {next ? (
+        <button type="button" className="ss-next" onClick={() => onSelect(next.year)}>
+          <small>
+            {fmt(L.yearLabel, next.year)} <ArrowRight aria-hidden="true" />
+          </small>
+          {next.name}
+        </button>
+      ) : null}
+    </nav>
+  );
+}
+
+/**
+ * The term sheet in the website deck's copy (the final page, 2026-10-28, the user's ask): out of class
+ * first, as the sheet's video rows (a thumbnail with a play mark, the work, its line and its reference;
+ * an alternative marked "or"), then in class
+ * (the subjects by area), the outcome, and the masterclasses and workshops at the end. No photos.
+ */
+const DeckSheetBody = React.forwardRef<
+  HTMLDivElement,
+  { y: Year; d: DeckTerm; prev?: Year; next?: Year; onSelect: (year: number) => void }
+>(function DeckSheetBody({ y, d, prev, next, onSelect }, ref) {
+  const term = `Term ${y.year}`;
+  return (
+    <div ref={ref} className="ss ss-deck">
+      <section aria-label={`Out of class · ${term}`}>
+        <h4 className="ss-h">Out of class</h4>
+        <ul className="ss-outs ssd-outs">
+          {d.outClass.map((o) => (
+            <li key={o.title} className="ss-out ssd-out" data-or={o.or || undefined}>
+              <span className="ss-thumb">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                {o.image ? <img src={photoSrc(o.image, 320, 200)} alt="" loading="lazy" /> : null}
+                {o.ref ? (
+                  <span className="ss-play" aria-hidden="true">
+                    <Play weight="fill" />
+                  </span>
+                ) : null}
+              </span>
+              <div>
+                {o.or ? <span className="ssd-or">or</span> : null}
+                <h5>{o.title}</h5>
+                {o.desc ? <p>{o.desc}</p> : null}
+                {/* the references came off (2026-10-28, the user's ask); a row with one still shows the play mark */}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section aria-label={`In class · ${term}`}>
+        <h4 className="ss-h">In class</h4>
+        <dl className="ssd-in">
+          {d.inClass.map((g) => (
+            <div key={g.area}>
+              <dt>{g.area}</dt>
+              <dd>{g.items.join(', ')}</dd>
+            </div>
+          ))}
+        </dl>
+        {/* phones (2026-10-28, the user's ask): the sheet's earlier in-class columns, the deck's areas in them */}
+        <div className="ss-cols ssd-in-m">
+          {d.inClass.map((g) => (
+            <div key={g.area} className="ss-col">
+              <p className="ss-col-name">
+                {g.area} <span>{g.items.length}</span>
+              </p>
+              <ol>
+                {g.items.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ol>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section aria-label={`Outcome · ${term}`} className="ssd-outcome">
+        <h4 className="ss-h">Outcome</h4>
+        <p>{d.outcome}</p>
+      </section>
+
+      <section aria-label={`Masterclasses & workshops · ${term}`}>
+        <h4 className="ss-h">Masterclasses &amp; workshops</h4>
+        <ul className="ssd-chips">
+          {d.workshops.map((w) => (
+            <li key={w}>{w}</li>
+          ))}
+        </ul>
+      </section>
+
+      <Pager prev={prev} next={next} onSelect={onSelect} />
     </div>
   );
 });

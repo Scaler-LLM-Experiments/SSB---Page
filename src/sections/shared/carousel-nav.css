@@ -315,3 +315,13 @@
 @media (max-width: 671px) { .cn, .cn:is(*) { --cn-active: var(--cn-d); } }
 .cn-dot[aria-current='true']::before { width: var(--cn-d); background: var(--cn-fill); }
 .cn-fill, .cn-fill[data-timed] { width: var(--cn-d) !important; animation: none !important; background: var(--cn-fill); }
+
+/* (2026-10-28, the user's ask: the final page, /v8, the page with tones) no pop-up entrance on the
+   carousel controls: no rise, split or fade; they sit in place, as under reduced motion */
+html:has(main .tn) :is(.cn, .cn .cn-dots, .cn .cn-dot, .cn .cn-arrow) {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+  clip-path: none !important;
+}
+/* (the arrows' own disabled look still applies: it is set on the arrow's colour, not its opacity) */

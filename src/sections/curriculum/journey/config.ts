@@ -62,6 +62,10 @@ export interface JourneyConfig {
   termsStack?: boolean;
   /** The terms as the concept site's /v4 stage (StageJourney, 2026-10-23). */
   termsStage?: boolean;
+  /** The term cards and sheets in the website deck's own copy (`Year.deck`; the final page, 2026-10-28). */
+  deckCopy?: boolean;
+  /** Phones: a slider of the five terms above the AI journey's cards (the final page, 2026-10-28). */
+  aiTermTabs?: boolean;
   /** In class as an accordion instead of columns (the /v2-stack experiment's second version) */
   inClassAccordion?: boolean;
   /** v3: a short stacked card; In class and Out of class in a no-scroll sheet */

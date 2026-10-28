@@ -106,11 +106,37 @@ export function AiJourneyBlock({ ai, cfg, width }: { ai: AiJourney; cfg: Journey
   // desktop carousel: arrows step one card; they grey out at either end
   const track = React.useRef<HTMLOListElement>(null);
   const [edge, setEdge] = React.useState({ back: false, fwd: true });
+  // the term in view (the phones' term slider, cfg.aiTermTabs): the card whose left edge is nearest the track's
+  const [at, setAt] = React.useState(0);
   const sync = React.useCallback(() => {
     const el = track.current;
     if (!el) return;
     setEdge({ back: el.scrollLeft > 4, fwd: el.scrollLeft + el.clientWidth < el.scrollWidth - 4 });
+    const cards = Array.from(el.children) as HTMLElement[];
+    const left = el.getBoundingClientRect().left + parseFloat(getComputedStyle(el).scrollPaddingLeft || '0');
+    let best = 0;
+    cards.forEach((c, i) => {
+      if (Math.abs(c.getBoundingClientRect().left - left) < Math.abs(cards[best].getBoundingClientRect().left - left)) best = i;
+    });
+    // at the end of the row the last card can't reach the left edge: the last term
+    if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 4) best = cards.length - 1;
+    setAt(best);
   }, []);
+  const go = (i: number) => {
+    const el = track.current;
+    const card = el?.children[i] as HTMLElement | undefined;
+    if (!el || !card) return;
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const pad = parseFloat(getComputedStyle(el).scrollPaddingLeft || '0');
+    el.scrollTo({ left: card.offsetLeft - el.offsetLeft - pad, behavior: reduce ? 'auto' : 'smooth' });
+  };
+  const tabs = React.useRef<HTMLDivElement>(null);
+  // keep the active term's tab in view in the slider
+  React.useEffect(() => {
+    const row = tabs.current;
+    const b = row?.children[at] as HTMLElement | undefined;
+    if (row && b) row.scrollTo({ left: b.offsetLeft - (row.clientWidth - b.offsetWidth) / 2, behavior: 'smooth' });
+  }, [at]);
   React.useEffect(sync, [sync, width]);
   const step = (dir: number) => {
     const el = track.current;
@@ -184,6 +210,16 @@ export function AiJourneyBlock({ ai, cfg, width }: { ai: AiJourney; cfg: Journey
           </IconButton>
         </div>
       </div>
+      {/* phones (the final page, 2026-10-28, the user's ask): a slider of the five terms over the cards */}
+      {cfg.aiTermTabs ? (
+        <div ref={tabs} className="sj-ai-tabs" role="tablist" aria-label="Terms">
+          {ai.terms.map((t, i) => (
+            <button key={t.term} type="button" role="tab" aria-selected={i === at} className="sj-ai-tab" onClick={() => go(i)}>
+              Term {t.term}
+            </button>
+          ))}
+        </div>
+      ) : null}
       <ol ref={track} className="sj-ai-track" aria-label={ai.eyebrow} onScroll={sync}>
         {ai.terms.map((t) => {
           return (
