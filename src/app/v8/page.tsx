@@ -37,6 +37,7 @@ import { PeopleTabsSection } from '@/sections/people-tabs/PeopleTabsSection';
 import { PressSection } from '@/sections/press/PressSection';
 import { TestimonialSection } from '@/sections/testimonial/TestimonialSection';
 import { BottomNav } from '@/sections/site/BottomNav';
+import { CalmEntrance } from '@/sections/shared/CalmEntrance';
 import { VariantToggle } from '@/sections/site/VariantToggle';
 import { Tone } from '@/sections/tone/Tone';
 import '../v6/v6.css';
@@ -55,8 +56,10 @@ export default function V8Page() {
   return (
     // the deck variant's own footer, static, after the last section (2026-10-28, the user's ask: DeckFooter)
     <>
-      <main data-page="v7" data-brand="ssb" data-theme="light" className="bg-page text-content">
+      <main data-page="v7" data-entrance="calm" data-brand="ssb" data-theme="light" className="bg-page text-content">
         <ScrollRefresh />
+        {/* every section's appear animation, one calm fade (2026-10-28, the user's ask) */}
+        <CalmEntrance />
         <HeroFrameDeadline deadline={heroFrame.deadline} />
         <HomeNav light followTone />
         <BottomNav

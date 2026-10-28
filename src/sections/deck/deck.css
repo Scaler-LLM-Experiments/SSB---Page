@@ -1974,3 +1974,32 @@ main[data-page='v7'] .ad4-sc:hover .ad4-sc-p { transform: rotate(90deg); backgro
   .dk-frame .why-breaker-roles-lead { font-size: 13px; }
   .dk-frame .why-breaker-pills li { font-size: 12px; }
 }
+
+/* ── one calm appear animation for every section on the deck pages (2026-10-28, the user's ask;
+   CalmEntrance.tsx): a fade up of 16px over 700ms on a soft ease-out, once; the sections' own entrances
+   are off (see CalmEntrance), and so is the first fold's CSS rise ─────────────────────────────────── */
+main[data-entrance='calm'] section[data-calm] {
+  transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1), transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+main[data-entrance='calm'] section[data-calm='out'] { opacity: 0; transform: translateY(16px); }
+main[data-entrance='calm'] section[data-calm='in'] { opacity: 1; transform: none; }
+main[data-entrance='calm'] :is(.hf-frame, .hf-copy, .hf-side) { animation: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  main[data-entrance='calm'] section[data-calm] { opacity: 1 !important; transform: none !important; transition: none; }
+}
+/* the cards (later, the same day: "the cards' appear still doesn't look good"): each on its own as it
+   reaches the screen (CalmEntrance), every card the same: a 24px rise and fade over 1.1s on a soft
+   ease-out, cards arriving together 80ms apart left to right; no blur, no scale; filled backwards only,
+   so once played the cards' own hover and press transitions are theirs again */
+main[data-entrance='calm'] [data-calm-card='out'] { opacity: 0; }
+main[data-entrance='calm'] [data-calm-card='in'] {
+  animation: calm-card 1100ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: var(--calm-d, 0ms);
+}
+/* the rise on `translate`, not `transform` (later, the same day: "the same slide up in the stack cards"):
+   the people cards keep a scale of their own in `transform` (--fc-scale), which a transform keyframe
+   overrode and then snapped back to; `translate` adds to it, so every card rises the same */
+@keyframes calm-card { from { opacity: 0; translate: 0 24px; } }
+@media (prefers-reduced-motion: reduce) {
+  main[data-entrance='calm'] [data-calm-card] { opacity: 1 !important; animation: none !important; }
+}

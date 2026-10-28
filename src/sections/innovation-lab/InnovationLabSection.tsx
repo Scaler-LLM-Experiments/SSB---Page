@@ -290,7 +290,9 @@ export function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
       // anything laid over the middle tile (campus life's follow buttons) comes up with the head
       const overlays = gsap.utils.toArray<HTMLElement>('[data-lab-overlay]', root);
       if (!track || !stage || !head || !mosaic || !slot || !hero || !photo) return;
-      const figures = figuresIn(root);
+      // the deck pages (2026-10-28): no appear effects, the figures simply there; the scroll moment kept
+      const calm = !!root.closest('[data-entrance="calm"]');
+      const figures = calm ? [] : figuresIn(root);
       const chars = figures.flat();
       let writing: gsap.core.Timeline | null = null;
       const unwrite = () => {
@@ -387,6 +389,7 @@ export function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
       });
 
       mm.add(`not all and ${LIVE}`, () => {
+        if (calm) return;
         const enter = ease('expressiveEntrance');
         const long = d.slower;
         gsap.fromTo(

@@ -50,7 +50,8 @@ export function useSectionEntrance(
   useMotion(
     () => {
       const root = scope.current;
-      if (!root || prefersReducedMotion(root)) return;
+      // the deck pages (2026-10-28, the user's ask): one calm fade for every section instead (CalmEntrance)
+      if (!root || prefersReducedMotion(root) || root.closest('[data-entrance="calm"]')) return;
       gsap.registerPlugin(ScrollTrigger, SplitText);
 
       const q = gsap.utils.selector(root);

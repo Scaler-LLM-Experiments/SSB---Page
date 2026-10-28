@@ -42,8 +42,10 @@ export function PlacementsMotion({ children }: { children: React.ReactNode }) {
       if (!root) return;
       gsap.registerPlugin(ScrollTrigger);
       const reduced = prefersReducedMotion(root);
+      // the deck pages (2026-10-28): their calm section fade instead of these fades and wipes (CalmEntrance)
+      const calm = !!root.closest('[data-entrance="calm"]');
 
-      if (!reduced) {
+      if (!reduced && !calm) {
         gsap.utils.toArray<HTMLElement>('[data-fade]', root).forEach(fadeIn);
         cards(root, context);
       }

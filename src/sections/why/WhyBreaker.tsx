@@ -23,7 +23,8 @@ export function useBreakerMotion(scope: React.RefObject<HTMLElement | null>) {
   useMotion(
     () => {
       const root = scope.current;
-      if (!root || prefersReducedMotion(root)) return;
+      // the deck pages: their calm section fade instead (CalmEntrance, 2026-10-28)
+      if (!root || prefersReducedMotion(root) || root.closest('[data-entrance="calm"]')) return;
       gsap.registerPlugin(ScrollTrigger);
       const q = gsap.utils.selector(root);
       const enter = ease('expressiveEntrance');
