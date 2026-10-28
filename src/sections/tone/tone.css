@@ -186,3 +186,17 @@
 }
 /* (the ground behind the navbar was dark while the first two folds were dark; they're light again,
    2026-10-28, the user's ask, so the page's own ground runs to the top: no dark band behind the bar) */
+
+/* the carousel controls on the dark ground (2026-10-28, the user's ask: "as the other sections"): the
+   light sections' grey tiles are a step off white; here the tiles are the same step off the dark ground
+   (8% white, 14% under the pointer), the arrows white (a disabled one dimmed), the dots soft white, the
+   active one mint; the testimonial band keeps its own (data-tone="dark") */
+.tn-dark .cn:not([data-tone='dark']) {
+  --cn-pill: rgb(255 255 255 / 0.08);
+  --cn-pill-hover: rgb(255 255 255 / 0.14);
+  --cn-dot: rgb(255 255 255 / 0.3);
+  --cn-dot-hover: rgb(255 255 255 / 0.55);
+  --cn-fill: #6bee9f;
+  --cn-ink: #fff;
+}
+.tn-dark .cn:not([data-tone='dark']) .cn-arrow:disabled { color: rgb(255 255 255 / 0.3); }
