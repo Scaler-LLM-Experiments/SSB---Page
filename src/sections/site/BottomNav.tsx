@@ -64,6 +64,9 @@ export function BottomNav({ items = bottomNav.items }: { items?: BottomNavItem[]
       const bar = document.querySelector('header.sn');
       const strip = document.querySelector<HTMLElement>('.bn-strip');
       if (bar && strip) strip.style.setProperty('--bn-top', `${Math.max(0, Math.round(bar.getBoundingClientRect().bottom))}px`);
+      // and the navbar's own height (its layout height, which its slide doesn't change), so on the deck
+      // pages the strip can ride under it with the same transform (bottom-nav.css, 2026-10-28)
+      if (bar && strip) strip.style.setProperty('--bn-nav-h', `${(bar as HTMLElement).offsetHeight}px`);
       // and the two read as one bar: while the strip is up on a phone, the navbar's frosted layer runs
       // down behind it (bottom-nav.css), so the page sees one surface, one edge
       const combined = pastHero && !footer && !!strip && getComputedStyle(strip).display !== 'none';

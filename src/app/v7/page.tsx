@@ -88,7 +88,7 @@ export default function V7Page() {
         <BuiltCards content={deckStartups} variant="deck" />
         {/* 7 investors and founders on campus (Sidhant Goyal's words and the VC events after it came off, 2026-10-28, the user's ask) */}
         {/* on the faculty and mentors' card (2026-10-28, the user's ask): the same size, the company's mark, no "Meet" */}
-        <PeopleTabsSection groups={['investors']} id="investors" label="Investors and founders on campus" still />
+        <PeopleTabsSection groups={['investors']} id="investors" label="Investors and founders on campus" stack />
         {/* 8 the Shark Tank judge (Anupam Mittal) and Ankur Warikoo on campus */}
         {/* vFinal's band (2026-10-28, the user's ask): Anupam Mittal's offer, Ankur Warikoo's convocation;
             framed as the first fold, as Kamath's (deck.css, .dk-frame) */}
@@ -149,7 +149,7 @@ export default function V7Page() {
         {/* 14 learn from your future recruiters: the faculty, then the mentors, each a section of its own
             (2026-10-28, the user's ask; no toggle between them; the founding team is at the foot, with the foundation) */}
         <PeopleTabsSection groups={['faculty']} drift />
-        <PeopleTabsSection groups={['mentors']} id="mentors" label="Mentors" still />
+        <PeopleTabsSection groups={['mentors']} id="mentors" label="Mentors" stack borrow={{ from: 'investors', count: 5 }} />
         {/* 15 student testimonials: inside the internship section now, framed (below) */}
         {/* 16 super mentor sessions */}
         <SuperMentorsSection />
@@ -166,7 +166,7 @@ export default function V7Page() {
         <PressSection />
         {/* 27 the founding team and the Scaler Impact Foundation */}
         {/* the founding team and the Scaler Impact Foundation as one toggle (2026-10-28, the user's ask) */}
-        <PeopleTabsSection groups={['founding', 'impact']} id="leadership" label="The team and the foundation behind SSB" still />
+        <PeopleTabsSection groups={['founding', 'impact']} id="leadership" label="The team and the foundation behind SSB" stack />
         {/* 28 admissions, fees and eligibility (the foundation's faces are in its own section above) */}
         <AdmissionsV4 backers={false} />
         {/* 29 the FAQ, the deck's six questions */}

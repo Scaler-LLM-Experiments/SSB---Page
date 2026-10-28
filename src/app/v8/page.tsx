@@ -102,7 +102,7 @@ export default function V8Page() {
             groups={['investors']}
             id="investors"
             label="Investors and founders on campus"
-            still
+            stack
           />
         </Tone>
         {/* 8 the Shark Tank judge (Anupam Mittal) and Ankur Warikoo on campus */}
@@ -174,7 +174,7 @@ export default function V8Page() {
           <PeopleTabsSection groups={['faculty']} drift />
         </Tone>
         <Tone>
-          <PeopleTabsSection groups={['mentors']} id="mentors" label="Mentors" still />
+          <PeopleTabsSection groups={['mentors']} id="mentors" label="Mentors" stack borrow={{ from: 'investors', count: 5 }} />
         </Tone>
         {/* 15 student testimonials: inside the internship section now, framed (below) */}
         {/* 16 super mentor sessions */}
@@ -207,7 +207,7 @@ export default function V8Page() {
             groups={['founding', 'impact']}
             id="leadership"
             label="The team and the foundation behind SSB"
-            still
+            stack
           />
         </Tone>
         {/* 28 admissions, fees and eligibility (the foundation's faces are in its own section above) */}

@@ -383,3 +383,37 @@ html body .bn-tab span { font-size: 0.6875rem !important; letter-spacing: -0.005
   .bn-bar .bn-cta-label, .bn-bar a:has(.bn-cta-label) { font-size: var(--type-label-size, 0.875rem); }
 }
 @media (width >= 672px) { html body .bn-bar .bn-cta, html body .bn-cta .bn-cta-label { font-size: var(--type-label-size, 0.875rem); } }
+
+/* the deck pages (/v7, /v8), phones (2026-10-28, the user's ask: "no gap between the announcement bar
+   and the nav"): the strip pinned at the announcement bar's foot and moved by the same transform, curve
+   and duration as the navbar's slide, so it always sits on the navbar's foot, and on the bar's own foot
+   once the navbar has gone; its own frosted surface throughout, so nothing under it ever shows through */
+@media (width < 672px) {
+  html:has(main[data-page='v7']) .bn-strip {
+    top: var(--hf-bar, 0px) !important;
+    transform: translateY(calc(var(--bn-nav-h, 61px) - 100%));
+    background: var(--glass-surface, rgb(255 255 255 / 0.85)) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    backdrop-filter: blur(16px) !important;
+    transition: transform 320ms cubic-bezier(0.32, 0.72, 0, 1), opacity 200ms ease;
+  }
+  html:has(main[data-page='v7']) .bn-strip[data-shown] { transform: translateY(var(--bn-nav-h, 61px)); }
+  html:has(main[data-page='v7'])[data-nav-hidden] .bn-strip[data-shown] { transform: none; }
+  html:has(main[data-page='v7'])[data-bn-strip] .sn::before { bottom: 0; }
+}
+/* (later, the same day: "a gap between the section bar and the navbar") phones on the deck pages: the
+   navbar's frosted glass let the page scrolling under it show through as a blurred band above the
+   strip, read as a gap; the navbar and the strip are solid in the page's colour, so the announcement
+   bar, the navbar and the strip read as one unbroken stack */
+@media (width < 672px) {
+  html:has(main[data-page='v7']) .sn::before {
+    background: var(--surface-page) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  html:has(main[data-page='v7']) .bn-strip {
+    background: var(--surface-page) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}

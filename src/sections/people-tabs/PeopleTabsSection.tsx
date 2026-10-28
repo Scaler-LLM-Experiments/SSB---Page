@@ -86,17 +86,20 @@ const PLACEHOLDER_COURSES = [
  * Faculty as two rows of `FacultyCard`s drifting sideways (2026-10-13, the team's ask: the alumni
  * section's layout): both rows the same way, the second half a card behind (faculty-card.css).
  */
-function FacultyDrift({ group: g }: { group: Group }) {
+function FacultyDrift({ group: g, stack = false }: { group: Group; stack?: boolean }) {
   const gridRef = React.useRef<HTMLUListElement>(null);
   const rows = useRows(2);
   const driftRef = React.useRef<HTMLDivElement>(null);
   useSwipeDrift(driftRef);
   // mentors on the web: the looping scroller (not the CSS drift), so the dots can follow and step it
   const { ref: tickerRef, goTo } = useHScroller({ speed: 40 });
-  // mentors: their earlier photo card (MeetCard), smaller, in this layout (2026-10-13, the team's ask)
-  const meet = g.id === 'mentors';
+  // mentors: their earlier photo card (MeetCard), smaller, in this layout (2026-10-13, the team's ask);
+  // with `stack` (the deck pages, 2026-10-28) every group takes the faculty's two rows on the web too
+  const meet = !stack && g.id === 'mentors';
+  // only the faculty teach a course; everyone else's card leads with their name and role
+  const withCourse = g.id === 'faculty';
   const card = (p: ShowcasePerson, i: number, priority: boolean) =>
-    meet ? (
+    !withCourse ? (
       // mentors as the faculty cards (2026-10-23, the team's ask): no "Meet", their name leading, their
       // role under it, their company as its mark and name (the company in the role; the second logo off)
       <FacultyCard person={p} credentials={p.role} priority={priority} />
@@ -134,7 +137,7 @@ function FacultyDrift({ group: g }: { group: Group }) {
         hidden={meet}
         data-kind={kind}
         // mentors: one row of bigger cards on desktop (2026-10-13, the team's ask)
-        data-single={g.id === 'mentors' || undefined}
+        data-single={(!stack && g.id === 'mentors') || undefined}
       >
       {[0, 1].map((r) => {
         const mine = rowsOf(r);
@@ -396,6 +399,8 @@ export function PeopleTabsSection({
   stacked = false,
   compact = false,
   drift = false,
+  stack = false,
+  borrow,
   still = false,
 }: {
   groups?: PeopleGroupId[];
@@ -403,6 +408,11 @@ export function PeopleTabsSection({
   still?: boolean;
   /** Faculty cards in two drifting rows, as Alumni's (2026-10-13). */
   drift?: boolean;
+  /** The faculty's two-row stack for any group, on the web and phones, no course on the cards (2026-10-28). */
+  stack?: boolean;
+  /** More cards for the group, borrowed from another: `count` of its people, every other one from the
+   *  start (a fixed pick, so server and browser agree), skipping anyone already there (2026-10-28). */
+  borrow?: { from: PeopleGroupId; count: number };
   /** The cards with the photo on top and the text under it (2026-10-12). */
   stacked?: boolean;
   /** Smaller cards, unchanged otherwise: four in view on desktop, two and a peek on a phone (2026-10-12, mentors). */
@@ -410,7 +420,17 @@ export function PeopleTabsSection({
   id?: string;
   label?: string;
 }) {
-  const GROUPS = React.useMemo(() => ALL_GROUPS.filter((g) => ids.includes(g.id)), [ids.join()]); // eslint-disable-line react-hooks/exhaustive-deps
+  const GROUPS = React.useMemo(() => {
+    const picked = ALL_GROUPS.filter((g) => ids.includes(g.id));
+    if (!borrow) return picked;
+    const source = ALL_GROUPS.find((g) => g.id === borrow.from)?.people ?? [];
+    return picked.map((g) => {
+      const have = new Set(g.people.map((p) => p.name));
+      const spread = [...source.filter((_, i) => i % 2 === 0), ...source.filter((_, i) => i % 2 === 1)];
+      const extra = spread.filter((p) => !have.has(p.name)).slice(0, borrow.count);
+      return { ...g, people: [...g.people, ...extra] };
+    });
+  }, [ids.join(), borrow?.from, borrow?.count]); // eslint-disable-line react-hooks/exhaustive-deps
   const titleId = `${id}-title`;
   const [active, setActive] = React.useState(0);
   const sectionRef = React.useRef<HTMLElement>(null);
@@ -514,8 +534,8 @@ export function PeopleTabsSection({
         </div>
       </Container>
       {/* keyed: each tab mounts its own row, so its carousel starts from the first card */}
-      {drift ? (
-        <FacultyDrift key={GROUPS[active].id} group={GROUPS[active]} />
+      {drift || stack ? (
+        <FacultyDrift key={GROUPS[active].id} group={GROUPS[active]} stack={stack} />
       ) : (
         <Row key={GROUPS[active].id} group={GROUPS[active]} stacked={stacked} compact={compact} still={still} />
       )}
