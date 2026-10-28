@@ -200,18 +200,23 @@ export function WhyBreaker({
                   </h2>
                   <p data-breaker-part className="why-breaker-sub">
                     {copy.sub}
+                    {copy.by ? <span className="why-breaker-by"> {copy.by}</span> : null}
                   </p>
-                  <p data-breaker-part className="why-breaker-note-line">
-                    {copy.note}
-                  </p>
-                  <div data-breaker-part className="why-breaker-roles">
-                    <p className="why-breaker-roles-lead">{copy.rolesLead}</p>
-                    <ul className="why-breaker-pills">
-                      {copy.roles.map((r) => (
-                        <li key={r}>{r}</li>
-                      ))}
-                    </ul>
-                  </div>
+                  {copy.note ? (
+                    <p data-breaker-part className="why-breaker-note-line">
+                      {copy.note}
+                    </p>
+                  ) : null}
+                  {copy.roles?.length ? (
+                    <div data-breaker-part className="why-breaker-roles">
+                      <p className="why-breaker-roles-lead">{copy.rolesLead}</p>
+                      <ul className="why-breaker-pills">
+                        {copy.roles.map((r) => (
+                          <li key={r}>{r}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
                 </>
               ) : (
                 <>
@@ -230,39 +235,41 @@ export function WhyBreaker({
             </div>
           </div>
 
-          {/* The figures, white over the clip. */}
-          <div className="why-breaker-foot">
-            <ul data-breaker-stats className="why-breaker-stats">
-              {figures.map((figure) => (
-                <li key={figure.value} data-breaker-stat className="why-breaker-stat">
-                  <p className="why-slide type-display why-breaker-ink">
-                    <span data-slide>{figure.value}</span>
-                  </p>
-                  <p data-stat-part className="mt-3 type-body-sm why-breaker-ink">
-                    {figure.description}
-                  </p>
-                  <p data-stat-part className="why-breaker-source">
-                    {figure.sourceLogo ? (
-                      // eslint-disable-next-line @next/next/no-img-element -- a small static logo, sized by its height
-                      <img
-                        src={figure.sourceLogo}
-                        alt={figure.source}
-                        height={figure.sourceLogoHeight ?? 18}
-                        style={{ height: figure.sourceLogoHeight ?? 18 }}
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    ) : (
-                      <span className="type-label why-breaker-ink">{figure.source}</span>
-                    )}
-                    {figure.sourceNote ? (
-                      <span className="type-caption why-breaker-note">{figure.sourceNote}</span>
-                    ) : null}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* The figures, white over the clip (none on the deck's Kamath band since 2026-10-28) */}
+          {figures.length ? (
+            <div className="why-breaker-foot">
+              <ul data-breaker-stats className="why-breaker-stats">
+                {figures.map((figure) => (
+                  <li key={figure.value} data-breaker-stat className="why-breaker-stat">
+                    <p className="why-slide type-display why-breaker-ink">
+                      <span data-slide>{figure.value}</span>
+                    </p>
+                    <p data-stat-part className="mt-3 type-body-sm why-breaker-ink">
+                      {figure.description}
+                    </p>
+                    <p data-stat-part className="why-breaker-source">
+                      {figure.sourceLogo ? (
+                        // eslint-disable-next-line @next/next/no-img-element -- a small static logo, sized by its height
+                        <img
+                          src={figure.sourceLogo}
+                          alt={figure.source}
+                          height={figure.sourceLogoHeight ?? 18}
+                          style={{ height: figure.sourceLogoHeight ?? 18 }}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      ) : (
+                        <span className="type-label why-breaker-ink">{figure.source}</span>
+                      )}
+                      {figure.sourceNote ? (
+                        <span className="type-caption why-breaker-note">{figure.sourceNote}</span>
+                      ) : null}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
         </div>
       </Container>
     </section>

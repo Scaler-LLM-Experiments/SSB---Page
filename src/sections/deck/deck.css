@@ -222,7 +222,7 @@
   margin: 0;
   padding: var(--space-1) var(--space-3) var(--space-1) var(--space-1);
   border: 1px solid var(--color-ssb-light-6);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-lg); /* 8px, not a pill (2026-10-28, the user's ask) */
   background: var(--color-ssb-light-2);
   font-size: var(--type-label-size);
   line-height: 1.4;
@@ -231,7 +231,7 @@
 }
 .dk-usp-num {
   padding: 2px var(--space-2);
-  border-radius: var(--radius-full);
+  border-radius: 4px; /* 4px, nested in the tag's 8 */
   background: var(--color-ssb-light-9);
   color: #fff;
   font-weight: var(--font-weight-semibold);
@@ -1603,10 +1603,31 @@
 
 /* ── (later, 2026-10-28, the user's ask: "edge to edge, let's see how it looks") the first fold and the two
    breakers (Kamath; Mittal and Warikoo) full bleed on /v7: no inset, no corners ──────────────────── */
-[data-page='v7'] .hf { padding-left: 0 !important; padding-right: 0 !important; padding-bottom: 0 !important; }
-[data-page='v7'] .hf-frame { left: 0 !important; right: 0 !important; margin-inline: 0 !important; width: 100% !important; border-radius: 0 !important; }
-[data-page='v7'] .dk-frame { padding-left: 0 !important; padding-right: 0 !important; }
-[data-page='v7'] .dk-frame .why-breaker { border-radius: 0 !important; }
+/* (later, 2026-10-28, the user's ask: "rounded corners with padding on all sides", as the footer) the
+   first fold inset again: 16px clear of the page's edges and the navbar (12 on a phone), 8px corners,
+   still one screen tall */
+@media (width >= 672px) {
+  [data-page='v7'] .hf { padding: var(--space-4) !important; }
+  [data-page='v7'] .hf-frame {
+    border-radius: var(--radius-lg) !important;
+    min-height: max(36rem, calc(100svh - var(--sn-h, 69px) - var(--hf-bar, 3.0625rem) - 2 * var(--space-4)));
+  }
+}
+/* phones as they were (2026-10-28, the user's ask): the first fold full bleed, no inset, no corners */
+@media (width < 672px) {
+  [data-page='v7'] .hf { padding: 0 !important; }
+  [data-page='v7'] .hf-frame {
+    left: 0 !important; right: 0 !important; margin-inline: 0 !important; width: 100% !important;
+    border-radius: 0 !important;
+  }
+}
+/* (later, 2026-10-28, the user's ask: "Kamath, Mittal and Warikoo like the hero, not edge to edge") the
+   breakers inset again on tablets and desktop, 16px from the window, 8px corners, as the first fold;
+   full bleed on a phone only, as the first fold is there */
+@media (width < 672px) {
+  [data-page='v7'] .dk-frame { padding-left: 0 !important; padding-right: 0 !important; }
+  [data-page='v7'] .dk-frame .why-breaker { border-radius: 0 !important; }
+}
 
 /* career prep, a section of its own again (2026-10-28, the user's ask: "no proper spacing") the page's own
    section rhythm: 64px above and below (40 on a phone), not the curriculum lab's 96; its header 32px
@@ -1666,6 +1687,12 @@
   [data-page='v7'] .tr .tr-counts .tc-icon { display: none !important; }
   [data-page='v7'] .tr .tr-counts .tc-item,
   [data-page='v7'] .tr .tr-counts .tc-item:first-child { gap: var(--space-1); }
+  /* (later: "masterclasses is too tight; the same space for each") each cell as wide as its label plus
+     an equal share of what's left, so every label has the same room either side; none spills */
+  [data-page='v7'] .tr .tr-counts { display: flex; }
+  [data-page='v7'] .tr .tr-counts .tc-item,
+  [data-page='v7'] .tr .tr-counts .tc-item:first-child { flex: 1 1 auto; min-width: 0; padding: var(--space-3) 10px; }
+  [data-page='v7'] .tr .tr-counts .tc-name { white-space: nowrap; }
 }
 
 /* (later, 2026-10-28, the user's ask) the business cards: the figures in the line (the deck's wording),
@@ -1766,4 +1793,184 @@
   .dk-biz-body { padding: var(--space-4) var(--space-5) var(--space-5) !important; }
   .dk-biz-proof--panel { padding: var(--space-3) var(--space-4) !important; }
   .dk-biz-proof-t { font-size: 0.875rem; }
+}
+
+/* the lab's scroll moment (2026-10-28, the user's ask: on /v8's dark ground the section's top padding
+   read as a dark strip over the full-bleed photo): in the moment the photo starts at the section's
+   own top edge, the breath before it the section's margin, in the page's tone above */
+@media (min-width: 1056px) and (min-height: 640px) and (prefers-reduced-motion: no-preference) {
+  main[data-page='v7'] section.lab[data-density='roomy'] { padding-top: 0; }
+}
+
+/* phones carry the same words as desktop (2026-10-28, the user's ask: "don't reduce the text in
+   m-web"): the headings' second halves (globals.css hides them below 672px) and the AI journey's
+   card descriptions, whole (concepts.css cuts them to two lines) */
+@media (width < 672px) {
+  main[data-page='v7'] :is(h2, p.type-display) .h-tail,
+  main[data-page='v7'] h2 .sj-ai-accent,
+  main[data-page='v7'] h2.sg-title span { display: inline !important; }
+  main[data-page='v7'] .sj-ai-card .sj-ai-desc {
+    display: block !important; -webkit-line-clamp: unset !important; line-clamp: unset !important;
+    overflow: visible !important; min-height: 0;
+  }
+}
+
+/* ── the scholarships (2026-10-28, the user's asks: "find a better banner", then "the colours don't go
+   with the photo; try another layout"): two parts side by side. At the left a photo card, graduates
+   throwing their caps (Unsplash, public/media/CREDITS.md), the heading at its foot over the closing
+   banner's blur and charcoal wash (deck-finale.css .dkc-photo-blur, .dkc-scrim); at the right the four
+   scholarships as placement's hairline tiles (deck-outcomes.css .dko-figs) on the page's own surface,
+   each with its number, label, title and the FAQ's square plus (deck-finale.css .dkf-icon). Nothing
+   sits on the photo but its heading. /v7 and /v8 only (tone.css darkens the tiles on /v8). ────────── */
+/* (later: "one banner, as a bento grid") one panel holding a bento: the photo two tiles wide and two
+   tall, the four scholarships around it a tile each (the grid's wrapper steps aside, display: contents,
+   so its cards sit on the banner's own grid) */
+main[data-page='v7'] .ad4-sch {
+  counter-reset: sch;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(13rem, auto));
+  gap: var(--space-2);
+  align-items: stretch;
+  padding: var(--space-2);
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: var(--surface-sunken);
+}
+main[data-page='v7'] .ad4-sch-head { grid-column: 1 / 3; grid-row: 1 / 3; }
+main[data-page='v7'] .ad4-sch .ad4-sch-grid { display: contents; }
+main[data-page='v7'] .ad4-sch-head {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 0;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  border-radius: var(--radius-lg);
+  color: #fff;
+  background: url('/deck/scholarships.jpg') 58% 40% / cover no-repeat, #111;
+}
+/* the blur and wash, from the foot up, where the heading sits */
+main[data-page='v7'] .ad4-sch-head::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(to top, rgb(12 12 14 / 0.82) 0%, rgb(12 12 14 / 0.66) 30%, rgb(12 12 14 / 0.3) 52%, rgb(12 12 14 / 0) 70%);
+  -webkit-backdrop-filter: blur(28px) saturate(1.05);
+  backdrop-filter: blur(28px) saturate(1.05);
+  -webkit-mask-image: linear-gradient(to top, #000 0%, #000 32%, rgb(0 0 0 / 0.7) 42%, rgb(0 0 0 / 0.3) 50%, transparent 58%);
+  mask-image: linear-gradient(to top, #000 0%, #000 32%, rgb(0 0 0 / 0.7) 42%, rgb(0 0 0 / 0.3) 50%, transparent 58%);
+}
+main[data-page='v7'] .ad4-sch-title { color: #fff; font-size: clamp(2rem, 3.2vw, 2.75rem); line-height: 1.05; letter-spacing: -0.03em; }
+main[data-page='v7'] .ad4-sch-head p { margin-top: var(--space-3); max-width: 30rem; font-size: 1rem; line-height: 1.55; color: rgb(255 255 255 / 0.9); }
+
+
+main[data-page='v7'] .ad4-sc {
+  counter-increment: sch;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  min-height: 0;
+  padding: var(--space-6);
+  padding-top: 5.5rem;
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: var(--surface-default, #fff);
+  box-shadow: none;
+  transition: background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+main[data-page='v7'] .ad4-sc:hover { background: var(--surface-subtle, #f7f7f5); box-shadow: none; border-color: transparent; }
+main[data-page='v7'] .ad4-sc:active { transform: none; }
+main[data-page='v7'] .ad4-sc::before {
+  content: counter(sch, decimal-leading-zero);
+  position: absolute;
+  top: var(--space-5);
+  left: var(--space-6);
+  font-size: clamp(2.25rem, 3vw, 3rem);
+  line-height: 1;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  color: var(--content-primary);
+}
+main[data-page='v7'] .ad4-sc-k { font-size: 11.5px; letter-spacing: 0.1em; }
+main[data-page='v7'] .ad4-sc-t { padding-right: var(--space-10); font-size: clamp(1.125rem, 1.4vw, 1.375rem); line-height: 1.22; letter-spacing: -0.02em; }
+/* the FAQ's plus: two bars on an 8px tile, green under the pointer */
+main[data-page='v7'] .ad4-sc-p {
+  top: auto;
+  right: var(--space-5);
+  bottom: var(--space-5);
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: #eef0ea;
+  color: var(--content-primary);
+  transition: transform 0.55s cubic-bezier(0.32, 0.72, 0, 1), background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+main[data-page='v7'] .ad4-sc-p svg { display: none; }
+main[data-page='v7'] .ad4-sc-p::before,
+main[data-page='v7'] .ad4-sc-p::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 1.6px;
+  margin: -0.8px 0 0 -6px;
+  border-radius: 1px;
+  background: currentColor;
+}
+main[data-page='v7'] .ad4-sc-p::after { transform: rotate(90deg); }
+main[data-page='v7'] .ad4-sc:hover .ad4-sc-p { transform: rotate(90deg); background: #075c32; color: #fff; }
+@media (width < 1056px) {
+  main[data-page='v7'] .ad4-sch { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: none; grid-auto-rows: minmax(11rem, auto); }
+  main[data-page='v7'] .ad4-sch-head { grid-column: 1 / -1; grid-row: auto; min-height: 22rem; }
+}
+/* phones (later: "too big; the type smaller on m-web"): a shorter photo card and smaller type, the
+   four as a tight 2 × 2 (number and plus along the top, label and title at the foot) */
+@media (width < 672px) {
+  main[data-page='v7'] .ad4-sch { gap: 6px; padding: 6px; grid-auto-rows: auto; }
+  main[data-page='v7'] .ad4-sch-head { min-height: 15rem; padding: var(--space-4); }
+  main[data-page='v7'] .ad4-sch-head::before {
+    background: linear-gradient(to top, rgb(12 12 14 / 0.84) 0%, rgb(12 12 14 / 0.7) 45%, rgb(12 12 14 / 0.36) 68%, rgb(12 12 14 / 0) 86%);
+    -webkit-mask-image: linear-gradient(to top, #000 0%, #000 56%, rgb(0 0 0 / 0.6) 68%, transparent 82%);
+    mask-image: linear-gradient(to top, #000 0%, #000 56%, rgb(0 0 0 / 0.6) 68%, transparent 82%);
+  }
+  main[data-page='v7'] .ad4-sch-title { font-size: 1.5rem; }
+  main[data-page='v7'] .ad4-sch-head p { margin-top: var(--space-2); font-size: 0.8125rem; line-height: 1.5; }
+  main[data-page='v7'] .ad4-sc { gap: 2px; padding: 3.25rem var(--space-3) var(--space-3); }
+  main[data-page='v7'] .ad4-sc::before { top: var(--space-3); left: var(--space-3); font-size: 1.375rem; }
+  main[data-page='v7'] .ad4-sc-k { font-size: 9.5px; letter-spacing: 0.08em; }
+  main[data-page='v7'] .ad4-sc-t { padding-right: 0; font-size: 0.875rem; line-height: 1.25; }
+  main[data-page='v7'] .ad4-sc-p { top: var(--space-3); right: var(--space-3); bottom: auto; margin-top: 0; width: 26px; height: 26px; }
+  main[data-page='v7'] .ad4-sc-p::before, main[data-page='v7'] .ad4-sc-p::after { width: 10px; margin-left: -5px; }
+}
+@media (prefers-reduced-motion: reduce) { main[data-page='v7'] .ad4-sc, main[data-page='v7'] .ad4-sc-p { transition: none; } }
+
+/* the global immersion keeps its eyebrow inside the USP block (the rule above hides the USP sections'
+   own; 2026-10-28, the user's ask: "Global immersion" over its heading) */
+.dk-usp #global-immersion [data-enter='eyebrow'] { display: block; }
+
+/* Kamath's band, one sub-line (2026-10-28): the credit at its end, a step quieter than the line */
+/* (later, the same day: "Nikhil Kamath, Zerodha on a line of its own") */
+.dk-frame .why-breaker-by { display: block; margin-top: var(--space-3); font-size: 0.875em; color: rgb(255 255 255 / 0.72); }
+
+/* Kamath's band with the 4b copy, simplified (2026-10-28, the user's ask): one clear scale, the title
+   prominent, the sub-line plain, his remark very small and quiet, the roles' lead and pills small */
+.dk-frame .why-breaker-title { font-size: clamp(2.5rem, 3.6vw, 3.25rem); line-height: 1.05; letter-spacing: -0.03em; }
+.dk-frame .why-breaker-sub { margin-top: var(--space-4); max-width: 34rem; font-size: 1.125rem; line-height: 1.5; color: #fff; }
+.dk-frame .why-breaker-note-line { margin-top: var(--space-3); max-width: 34rem; font-size: 12px; line-height: 1.5; color: rgb(255 255 255 / 0.7); }
+.dk-frame .why-breaker-roles { margin-top: var(--space-5); }
+.dk-frame .why-breaker-roles-lead { font-size: 14px; line-height: 1.4; color: rgb(255 255 255 / 0.9); }
+.dk-frame .why-breaker-pills { gap: 6px; margin-top: var(--space-2); }
+.dk-frame .why-breaker-pills li { padding: 4px 10px; font-size: 13px; line-height: 1.4; }
+@media (width < 672px) {
+  .dk-frame .why-breaker-title { font-size: 2.125rem; }
+  .dk-frame .why-breaker-sub { font-size: 1rem; }
+  .dk-frame .why-breaker-note-line { font-size: 12px; }
+  .dk-frame .why-breaker-roles-lead { font-size: 13px; }
+  .dk-frame .why-breaker-pills li { font-size: 12px; }
 }

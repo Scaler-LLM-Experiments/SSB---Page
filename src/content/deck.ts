@@ -48,10 +48,10 @@ export const deckPlacements: PlacementsContent = {
  *  as pills, the second figure simplified. */
 export const deckWhy: WhyBreakerCopy = {
   title: 'The traditional MBA is outdated',
-  // their notes condensed (2026-10-28, the user's ask: the same points, kept to the section's old weight)
-  sub: 'Business has changed. The education behind it hasn’t.',
-  note: '“Must be some kind of an idiot.” Nikhil Kamath, Co‑founder of Zerodha.',
-  rolesLead: 'Nobody is preparing you for emerging roles like',
+  // the stakeholders' 4b copy as written (2026-10-28, the user's ask: "the same copy, simplified")
+  sub: 'The skills needed for businesses to succeed have changed, but the education to build this new-age talent has not.',
+  note: 'Zerodha co-founder Nikhil Kamath told students at a company AMA that those pursuing a traditional MBA at 25 today “must be some kind of an idiot.” He isn’t alone in that read.',
+  rolesLead: 'Nobody is preparing you for emerging roles like:',
   roles: ['AI Product Manager', 'Founder’s Office', 'Growth Manager', 'Category Manager'],
 };
 export const deckWhyFigures: WhyFigure[] = why.figures.map((f, i) =>

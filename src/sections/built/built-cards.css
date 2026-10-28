@@ -134,6 +134,9 @@
   position: absolute; top: var(--space-3); left: var(--space-3);
   width: calc(40% - var(--space-3)); height: calc(100% - 2 * var(--space-3));
   overflow: hidden; border-radius: var(--radius-lg); background: var(--surface-sunken);
+  /* cut by a clip-path too (2026-10-28, the user's ask: the corners weren't cut): Chrome leaves the
+     shade's backdrop blur, and the photo's scaled layers, square past a rounded overflow */
+  clip-path: inset(0 round var(--radius-lg)); isolation: isolate;
 }
 [data-variant='deck'] .bc-media .bc-photo {
   position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 0;
@@ -142,7 +145,10 @@
 /* a progressive blur at the photo's foot (2026-10-28, the user's ask), under a dark shade: the
    figure reads on any photo. The blur is masked to fade out upward, so the photo stays sharp above it. */
 [data-variant='deck'] .bc-media-shade {
-  position: absolute; inset: 0; pointer-events: none;
+  /* 2px past the box on every side (2026-10-28, the user's ask: a light rim bled at its foot on a
+     phone): a box on a fractional pixel left a sliver of the bright photo outside the shade at the
+     edge; the box's own clip trims the overhang */
+  position: absolute; inset: -2px; pointer-events: none;
   background: linear-gradient(to top, rgb(0 0 0 / 0.66) 0%, rgb(0 0 0 / 0.34) 34%, transparent 60%);
   -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
   -webkit-mask-image: linear-gradient(to top, #000 0%, #000 30%, transparent 62%);
@@ -188,3 +194,22 @@
 .bc-link svg { width: 0.8em; height: 0.8em; color: var(--content-secondary); transition: transform 0.2s ease, color 0.2s ease; }
 .bc-link:hover svg { transform: translate(2px, -2px); color: var(--color-ssb-light-9); }
 .bc-link:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; border-radius: 2px; }
+
+/* a startup's banner (the lab's, 2026-10-28, the user's ask: the logos were cropped): the box in the
+   banner's own top and bottom colours, the whole banner across its middle, its top and bottom faded
+   into them, so the logo shows whole (as vFinal's lab cards, community.css .vc-banner) */
+[data-variant='deck'] .bc-media[data-banner] {
+  background: linear-gradient(to bottom, var(--bc-top), var(--bc-bottom));
+}
+[data-variant='deck'] .bc-media .bc-banner {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: none;
+  translate: 0 -50%;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 28%, #000 72%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 28%, #000 72%, transparent);
+}

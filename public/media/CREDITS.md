@@ -26,3 +26,4 @@ From Wikimedia Commons, resized to 1920px WebP in `public/media/singapore`.
 - `singapore/cbd-sunset.webp`: Basile Morin, CC BY-SA 4.0, https://commons.wikimedia.org/wiki/File:Skylines_of_the_Central_Business_District,_Singapore_at_sunset.jpg
 - `singapore/gardens-dusk.webp`: Nicolas Lannuzel., CC BY-SA 2.0, https://commons.wikimedia.org/wiki/File:Gardens_by_the_Bay_and_Marina_Bay_Sands,_Singapore,_at_dusk_-_20120928.jpg
 - `singapore/dragon-boat.webp`: Walk around the RED DOT from Singapore, CC0, https://commons.wikimedia.org/wiki/File:Dragonboat_Festival_-_the_race_-_Flickr_-_GeorgeTan%5E1.jpg
+- `deck/scholarships.jpg` (the scholarships banner, /v7 and /v8): Unsplash photo-1541339907198-e08756dedf3f, Unsplash License, graduates throwing their caps

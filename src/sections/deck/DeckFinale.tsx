@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Button, Container, Heading, Section, Text } from '@kishanscaler/ssx-ui';
-import { ArrowRight, Plus } from '@phosphor-icons/react';
+import { ArrowRight } from '@phosphor-icons/react';
 
 import { deckClose, deckFaqs } from '@/content/deck';
 import { useSectionEntrance } from '@/sections/faculty/useSectionEntrance';
@@ -15,9 +15,10 @@ import './deck-finale.css';
  * minimal, in the page's theme"; after details.so: Aave's editorial FAQ, Effortel's and Kinetic's
  * closing CTAs).
  *
- * The FAQ: the header in a sticky column at the left with a quiet "still have questions?" note under
- * it; at the right the questions as numbered hairline rows, no box, a plus that turns to a cross, the
- * number in the brand green while its row is open. One open at a time, the first to start.
+ * The FAQ, as the team's concept has it (ssb-school-concept /v4, 2026-10-28, the user's ask): the header
+ * in a sticky column at the left, its button under it (the page's primary CTA); at the right
+ * the questions as hairline rows, a square plus that turns to a minus on a green tile, the answer
+ * opening by its height and fading up. One open at a time, the first to start.
  */
 export function DeckFaqSection() {
   const ref = React.useRef<HTMLElement>(null);
@@ -39,14 +40,14 @@ export function DeckFaqSection() {
             <Text size="lg" tone="secondary" data-enter="sub">
               What applicants ask most, answered.
             </Text>
-            <div className="dkf-help">
-              <p className="dkf-help-title">{help.title}</p>
-              <p className="dkf-help-line">{help.line}</p>
-              <a className="dkf-help-link" href={help.href}>
+            {/* the page's own CTA (2026-10-28, the user's ask: "as the other CTAs"): the design system's
+                primary button with the shared arrow, as the closing card's Apply Now */}
+            <Button asChild size="lg" variant="primary" className="dkf-cta">
+              <a href={help.href}>
                 {help.cta}
-                <ArrowRight weight="bold" aria-hidden="true" />
+                <CtaIcon icon="arrow" />
               </a>
-            </div>
+            </Button>
           </div>
 
           <ol className="dkf-list" data-enter="block">
@@ -62,11 +63,8 @@ export function DeckFaqSection() {
                       aria-controls={id}
                       onClick={() => setOpen(on ? -1 : i)}
                     >
-                      <span className="dkf-num">{String(i + 1).padStart(2, '0')}</span>
                       <span className="dkf-q-text">{f.question}</span>
-                      <span className="dkf-icon" aria-hidden="true">
-                        <Plus weight="bold" />
-                      </span>
+                      <span className="dkf-icon" aria-hidden="true" />
                     </button>
                   </h3>
                   <div id={id} role="region" className="dkf-a" aria-hidden={!on}>

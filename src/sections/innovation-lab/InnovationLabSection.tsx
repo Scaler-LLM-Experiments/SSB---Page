@@ -128,7 +128,7 @@ export function InnovationLabSection({
   );
 }
 
-/** A lab startup on the student startups' card: its banner as the photo (the words in it don't matter),
+/** A lab startup on the student startups' card: its banner shown whole in its own colours,
  *  the sector over the name, the founders by name with their role, the line, the link. */
 function toBuiltCard(v: Venture): BuiltCard {
   const names = v.founders.length > 1 ? `${v.founders.slice(0, -1).map(first).join(', ')} & ${first(v.founders.at(-1)!)}` : v.founders[0];
@@ -141,6 +141,8 @@ function toBuiltCard(v: Venture): BuiltCard {
     focus: [0.5, 0.5],
     stat: v.stat,
     href: v.href,
+    // shown whole in its own colours (2026-10-28, the user's ask: the logos were cropped)
+    banner: v.banner ? { top: v.banner.top, bottom: v.banner.bottom } : undefined,
   };
 }
 const first = (name: string) => name.split(' ')[0];

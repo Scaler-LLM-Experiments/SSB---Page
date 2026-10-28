@@ -80,6 +80,7 @@ function Header({ id, eyebrow, title, sub }: { id: string; eyebrow?: string; tit
 export function DeckWhySection() {
   return (
     <div className="dk-frame">
+      {/* the figures back with the 4b copy, the second simplified (2026-10-28, the user's ask) */}
       <WhyBreaker quote={why.quote} figures={deckWhyFigures} copy={deckWhy} />
     </div>
   );

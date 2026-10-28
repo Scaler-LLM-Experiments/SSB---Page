@@ -146,7 +146,11 @@ export function SsbNavbar({
   onTheme,
   heroNav = false,
   themeToggle = true,
+  followTone = false,
 }: {
+  /** Take the theme of the section passing under the bar (its nearest `data-section-tone`, light or dark), as
+   *  the page scrolls (the tone variant, /v8, 2026-10-28). */
+  followTone?: boolean;
   content?: NavContent;
   theme?: Theme;
   onTheme?: (t: Theme) => void;
@@ -169,6 +173,40 @@ export function SsbNavbar({
   // scroll down slides the bar up behind the deadline bar (the section nav stays); any scroll up, or
   // the top of the page, brings it back. Never while a menu is open. Marked on <html> as
   // data-nav-hidden, so the phones' section strip can move up with it.
+  // the tone under the bar (followTone): the section just below its foot, re-read as the page scrolls
+  const [tone, setTone] = React.useState<Theme | null>(null);
+  React.useEffect(() => {
+    if (!followTone) return undefined;
+    let raf = 0;
+    const read = () => {
+      raf = 0;
+      const bar = root.current;
+      if (!bar) return;
+      // from just under the bar down, the first point over a toned section (the bar can be slid up out
+      // of view, and the deadline bar and the phones' section strip are untoned)
+      const from = Math.max(0, bar.getBoundingClientRect().bottom) + 1;
+      let t: string | null | undefined;
+      for (let y = from; y < from + 320 && !t; y += 16) {
+        const under = document
+          .elementsFromPoint(window.innerWidth / 2, y)
+          .find((el) => !bar.contains(el) && el.closest('[data-section-tone]'));
+        t = under?.closest('[data-section-tone]')?.getAttribute('data-section-tone');
+      }
+      if (t) setTone(t === 'dark' ? 'dark' : 'light');
+    };
+    const on = () => {
+      if (!raf) raf = requestAnimationFrame(read);
+    };
+    read();
+    window.addEventListener('scroll', on, { passive: true });
+    window.addEventListener('resize', on);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('scroll', on);
+      window.removeEventListener('resize', on);
+    };
+  }, [followTone]);
+
   const hideRef = React.useRef({ y: 0, hidden: false });
   React.useEffect(() => {
     const el = document.documentElement;
@@ -245,7 +283,7 @@ export function SsbNavbar({
   };
 
   return (
-    <header ref={root} className="sn" data-hero-nav={heroNav ? '' : undefined} data-brand="ssb" data-theme={heroNav ? 'dark' : theme ?? docTheme} data-scrolled={scrolled || undefined} data-open={open !== null || mobile || undefined} onPointerLeave={hoverClose}>
+    <header ref={root} className="sn" data-hero-nav={heroNav ? '' : undefined} data-brand="ssb" data-theme={heroNav ? 'dark' : (followTone && tone) || theme || docTheme} data-scrolled={scrolled || undefined} data-open={open !== null || mobile || undefined} onPointerLeave={hoverClose}>
       <div className="sn-bar">
         <a className="sn-logo" href="#top" aria-label="Scaler School of Business, home">
           <Logo brand="ssb" size="md" decorative />

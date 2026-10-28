@@ -1,0 +1,173 @@
+/* The tone variant (/v8, Tone.tsx): a dark section sits on the dark page ground with the dark theme's
+   ink; everything inside reads the dark tokens. Fixes for /v7's own literal colours follow, section by
+   section, scoped to .tn-dark so /v7 and vFinal are untouched. */
+.tn-dark {
+  background: var(--surface-page);
+  color: var(--content-primary);
+}
+/* every line in white, not grey (2026-10-28, the user's ask): headers, subs, captions alike. The
+   design system declares the tokens on [data-brand][data-theme], so this matches there, and on any
+   dark island nested inside, with !important to win over it */
+.tn-dark[data-theme='dark'],
+.tn-dark [data-theme='dark'] {
+  --content-primary: #fff !important;
+  --content-secondary: #fff !important;
+  --on-image-ink: #fff !important;
+  --on-image-ink-secondary: #fff !important;
+  /* black (2026-10-28, the user's ask: "a black tone, not dark green"; it was the concept's
+     green-black, #050E09): a near-black ground, cards a step up from it, mint accents kept */
+  --surface-page: #0a0a0a !important;
+  --surface-default: #111111 !important;
+  --surface-subtle: #0f0f0f !important;
+  --surface-sunken: #0f0f0f !important;
+  --surface-tray: #111111 !important;
+  --surface-raised: #161616 !important;
+  --surface-raised-hover: #1c1c1c !important;
+  --surface-hover: #161616 !important;
+  --surface-active: #1c1c1c !important;
+  --surface-brand-subtle: #141414 !important;
+  --border-subtle: rgb(255 255 255 / 0.14) !important;
+  --border-decorative: rgb(255 255 255 / 0.14) !important;
+  --border-raised: rgb(255 255 255 / 0.18) !important;
+  --border-inert: rgb(255 255 255 / 0.18) !important;
+  --content-brand: #6bee9f !important;
+  /* the logo's green (#1D925B) highlights headings and figures (Accent, the lab's figures): too dark
+     on this ground, so mint here (2026-10-28, the user's ask: the lab's highlight didn't stand out) */
+  --color-ssb-light-9: #6bee9f !important;
+}
+
+/* the startup cards (BuiltCards, deck look) pin their copy to the light theme; on a dark section the
+   card is dark, so their ink is set for it */
+.tn-dark [data-variant='deck'] .bc-card { background: #111111; border-color: rgb(255 255 255 / 0.14); }
+.tn-dark [data-variant='deck'] .bc-name,
+.tn-dark [data-variant='deck'] .bc-name a { color: #fff !important; }
+.tn-dark [data-variant='deck'] .bc-by { color: #fff !important; }
+.tn-dark [data-variant='deck'] .bc-blurb { color: #fff !important; }
+.tn-dark [data-variant='deck'] .bc-rule { background: rgb(255 255 255 / 0.12) !important; }
+.tn-dark [data-variant='deck'] .bc-k { color: #6bee9f !important; }
+.tn-dark .bc-link svg { color: rgb(255 255 255 / 0.6); }
+
+/* the closing card's, the footer's and admissions' own literal greys, white too (the same ask) */
+.tn-dark .dkc-eyebrow,
+.tn-dark .dkc p,
+.tn-dark .dkc dd,
+.tn-dark .dkc dt,
+.tn-dark .dkc dd span,
+.tn-dark .dkft-brand-line,
+.tn-dark .dkft-col-title,
+.tn-dark .dkft-address,
+.tn-dark .dkft-legal p,
+.tn-dark .ad4-tr[data-past] { color: #fff !important; }
+
+/* the press outlets' logos in white on the dark ground (some were dark ink, lost on it) */
+.tn-dark .pr-lg img { filter: brightness(0) invert(1); }
+/* a startup's figure line, white as the rest */
+.tn-dark [data-variant='deck'] .bc-met-l { color: #fff !important; }
+
+/* the fee table's open intake (2026-10-28, the user's ask: the green bar and green wash read badly on
+   the dark ground): a quiet white panel with a hairline edge, and a white "Open now" chip by its name;
+   the "Intake 2 open" chip and "Closed" in white too, no green */
+.tn-dark .ad4-tr[data-now] {
+  background: rgb(255 255 255 / 0.06);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.16);
+}
+.tn-dark .ad4-tr[data-now] > span:first-child::after {
+  content: 'Open now';
+  display: inline-block;
+  margin-left: var(--space-2);
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #fff;
+  color: #0a0a0a;
+  font-size: 0.6875rem;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  vertical-align: 2px;
+}
+.tn-dark .ad4-tr small { background: rgb(255 255 255 / 0.08); color: #fff; }
+.tn-dark .ad4-live { color: #fff !important; background: rgb(255 255 255 / 0.06) !important; }
+
+/* the FAQ on the dark ground: the plus on a faint glass tile, open on mint with a dark minus; the
+   button white with dark ink (the concept's light button), the question lighting mint under the pointer */
+.tn-dark .dkf-icon { background: rgb(255 255 255 / 0.08); color: #fff; }
+.tn-dark .dkf-item[data-open] .dkf-icon { background: #6bee9f; color: #0a0a0a; }
+.tn-dark .dkf-q button:hover .dkf-q-text { color: #6bee9f; }
+.tn-dark .dkf-a a { color: #6bee9f; text-decoration-color: rgb(107 238 159 / 0.4); }
+
+
+/* admissions on the dark ground (2026-10-28, the user's ask: "the lifted colours aren't visible; make it
+   premium"): the cards lifted clearly off the green-black (a step lighter, a soft top-down sheen, a
+   brighter hairline and a highlight along their top edge), the fast track a mint-tinted panel with its
+   own edge, the live dot and the step numbers mint, the hairlines between rows a little stronger */
+/* (later, the same day, the user's ask: "no borders on the lifted colours; flat") flat fills only */
+.tn-dark .ad4-card {
+  border-color: transparent;
+  background: #181818;
+  box-shadow: none;
+}
+.tn-dark .ad4-fast {
+  border: 0;
+  background: rgb(107 238 159 / 0.09);
+  color: #fff;
+}
+.tn-dark .ad4-tr[data-now] { background: rgb(255 255 255 / 0.07); box-shadow: none; }
+.tn-dark .ad4-fast b { color: #6bee9f; }
+.tn-dark .ad4-steps li,
+.tn-dark .ad4-tr { border-top-color: rgb(255 255 255 / 0.12); }
+.tn-dark .ad4-steps span { color: #6bee9f; }
+.tn-dark .ad4-dot { background: #6bee9f !important; }
+.tn-dark .ad4-link { border-bottom-color: rgb(255 255 255 / 0.4); }
+.tn-dark .ad4-link:hover { color: #6bee9f; border-color: #6bee9f; }
+
+/* the scholarships' tiles on the dark ground: the admissions cards' flat green, apart by a gap (no
+   hairlines, no borders: the user's call), the plus a faint tile, mint under the pointer */
+.tn-dark .ad4-sch { background: #111111 !important; }
+.tn-dark .ad4-sc { border-radius: var(--radius-lg) !important; background: #181818 !important; }
+.tn-dark .ad4-sc:hover { background: #202020 !important; }
+.tn-dark .ad4-sc-p { background: rgb(255 255 255 / 0.08) !important; color: #fff !important; }
+.tn-dark .ad4-sc:hover .ad4-sc-p { background: #6bee9f !important; color: #0a0a0a !important; }
+
+/* ── the final review (2026-10-28, the user's ask; /v8 only, every section sits in a .tn) ─────────────
+   1. No bold: weights are semibold (600), medium (500) or regular (400) only. The eyebrows' token and
+      the bold token come down to semibold, and the few labels set to 700 by hand follow. */
+.tn { --type-eyebrow-weight: 600; --font-weight-bold: 600; }
+.tn :is(b, strong) { font-weight: 600; }
+.tn :is(.alumni-card__label, .creator-card__badge, .creator-card__rule span, .dk-track-label, .lp-company,
+  .meet-card__kicker, .sj-ai-tag span, .sj-eyebrow, .sj-tool-mono, .font-bold) { font-weight: 600 !important; }
+/* 2. CTAs at 4px (the design system's buttons are; the campus section's Instagram glass link wasn't) */
+.tn .cm-glass { border-radius: 4px !important; }
+/* the closing card's chip reads on one line at 1.4 */
+.tn .dkc-eyebrow { line-height: 1.4; }
+/* 3. Dark mode: every card on the dark ground lifted the same way, the admissions cards' flat green
+      (#181818), no border; the startup and lab cards and the press cards brought in line */
+.tn-dark :is(.bc-card, .pr-card) {
+  border-color: transparent !important;
+  background: #181818 !important;
+  box-shadow: none !important;
+}
+.tn-dark .pr-card:hover { background: #202020 !important; }
+.tn-dark .lab-stats { background: #181818; }
+/* eyebrows inside theme islands (the curriculum re-declares the tokens) at semibold too */
+.tn .type-eyebrow { font-weight: 600 !important; }
+/* 4. line heights: multi-line labels no tighter than 1.35 on a phone */
+.tn :is(.ad4-sc-t, .mc-co__name) { line-height: 1.35 !important; }
+
+/* the term cards' "See every course" as the design system's secondary button (2026-10-28, the user's
+   ask): its secondary fill, border and ink, a step darker under the pointer; 4px as every CTA */
+.tn .tr-more {
+  border: 1px solid var(--action-secondary-border) !important;
+  background: var(--action-secondary-bg) !important;
+  color: var(--action-secondary-fg) !important;
+}
+.tn .tr-more:hover {
+  border-color: var(--action-secondary-border-hover, var(--action-secondary-border)) !important;
+  background: var(--action-secondary-bg-hover) !important;
+}
+
+/* the dark cards' edge (2026-10-28, the user's ask: "proper borders, not too bright, very light"): one
+   faint hairline on every lifted card and panel on the dark ground, 8% white, the same everywhere */
+.tn-dark :is(.ad4-card, .ad4-sc, .ad4-sch, .bc-card, .pr-card, .lab-stats) {
+  border: 1px solid rgb(255 255 255 / 0.08) !important;
+}
+.tn-dark :is(.ad4-sc, .bc-card, .pr-card):hover { border-color: rgb(255 255 255 / 0.12) !important; }

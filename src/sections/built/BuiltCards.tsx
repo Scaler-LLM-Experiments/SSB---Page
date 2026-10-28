@@ -16,6 +16,9 @@ export type BuiltCard = Pick<BuiltCompany, 'company' | 'sector' | 'by' | 'blurb'
   stat?: BuiltCompany['stat'];
   /** Its website: an arrow beside the company's name (the lab's startups on these cards, /v7). */
   href?: string;
+  /** The image is a wide banner (a white logo on two colours): shown whole across the box's middle,
+   *  the box in its top and bottom colours, as vFinal's lab cards show it (2026-10-28). */
+  banner?: { top: string; bottom: string };
 };
 export type BuiltContent = { eyebrow: string; title: string; titleTail: string; label: string; companies: BuiltCard[] };
 
@@ -97,7 +100,19 @@ export function BuiltCards({
 
 function Card({ co, i, deck }: { co: BuiltCard; i: number; deck: boolean }) {
   // (2026-10-27, the user's ask) the companies' own photos for now, until the founders' portraits come
-  const photo = (
+  const photo = co.banner ? (
+    // eslint-disable-next-line @next/next/no-img-element -- its width set, its height from the file's ratio
+    <img
+      className="bc-banner"
+      src={co.image.src}
+      alt={co.image.alt}
+      width={co.image.width}
+      height={co.image.height}
+      loading={i < 3 ? 'eager' : 'lazy'}
+      decoding="async"
+      data-part="photo"
+    />
+  ) : (
     // eslint-disable-next-line @next/next/no-img-element
     <img
       className="bc-photo"
@@ -121,7 +136,17 @@ function Card({ co, i, deck }: { co: BuiltCard; i: number; deck: boolean }) {
     <article className="bc-card">
       {/* the deck variant (2026-10-28): the photo inset, its figure over a shade at its foot */}
       {deck ? (
-        <div className="bc-media" data-brand="ssb" data-theme="dark">
+        <div
+          className="bc-media"
+          data-brand="ssb"
+          data-theme="dark"
+          data-banner={co.banner ? '' : undefined}
+          style={
+            co.banner
+              ? ({ '--bc-top': co.banner.top, '--bc-bottom': co.banner.bottom } as React.CSSProperties)
+              : undefined
+          }
+        >
           {photo}
           {met ? <span className="bc-media-shade" aria-hidden="true" /> : null}
           {met}

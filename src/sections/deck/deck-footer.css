@@ -290,6 +290,27 @@
 .dkft-address { white-space: nowrap; }
 @media (width < 420px) { .dkft-address { white-space: normal; } }
 
-/* (later, 2026-10-28, the user's ask: edge to edge) the footer full bleed: no white margin, no corners */
-.dkft-wrap { padding: 0 !important; }
-.dkft { border-radius: 0; }
+/* (later, 2026-10-28, the user's ask: "rounded corners with padding on all sides") the footer inset
+   again: a card 16px clear of the page's edges on every side (12 on a phone), 8px corners, on the
+   page's own ground (white on /v7, the green-black on /v8) */
+.dkft-wrap { padding: var(--space-4) !important; }
+.dkft { border-radius: var(--radius-lg) !important; overflow: hidden; }
+@media (width < 672px) { .dkft-wrap { padding: var(--space-3) !important; } }
+
+/* (later, 2026-10-28, the user's ask: "flat colour", a lighter dark green than the sections above it,
+   so it stands apart) one flat forest green, no gradient, no grain, no sheen; white text (10:1), the
+   quiet lines near-white, "build." a pale mint */
+.dkft { background: #134a2f !important; }
+.dkft::before { content: none !important; }
+.dkft-brand-line,
+.dkft-col-title,
+.dkft-note,
+.dkft-address,
+.dkft-legal p,
+.dkft-place svg { color: rgb(255 255 255 / 0.88) !important; }
+.dkft-col a,
+.dkft-place,
+.dkft-statement { color: #fff !important; }
+.dkft-statement span { color: #b9f6d4 !important; }
+.dkft-col a:hover { color: #d4fbe5 !important; }
+.dkft-legal { border-top-color: rgb(255 255 255 / 0.22) !important; }

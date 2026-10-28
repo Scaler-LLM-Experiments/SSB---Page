@@ -1,0 +1,248 @@
+/* The global immersion on the deck pages (DeckGlobalImmersion.tsx, 2026-10-28): a photo stage beside an
+   itinerary, the four pillars under them as hairline tiles. Tokens, 8px corners, no shadows; the stage's
+   blur and wash are the closing banner's (deck-finale.css). */
+.dkg-grid {
+  display: grid;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+}
+@media (width >= 1056px) {
+  .dkg-grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: stretch; }
+}
+
+/* ── the stage ─────────────────────────────────────────────────────────────────────────────────── */
+.dkg-stage {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 34rem;
+  border-radius: var(--radius-lg);
+  background: #111;
+  color: #fff;
+}
+.dkg-img {
+  -webkit-user-drag: none;
+  user-select: none;
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.04);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.dkg-img[data-on] { opacity: 1; transform: none; }
+/* the blur (2026-10-28, the user's ask: "a proper background blur"): the closing banner's way, a copy of
+   the day's photo blurred and scaled a touch (its soft rim falls outside the stage), masked to ease in
+   from the foot over the copy's half; over it the charcoal wash, strongest under the type */
+.dkg-img-blur {
+  z-index: -2;
+  filter: blur(28px) saturate(1.05);
+  transform: scale(1.12) !important;
+  -webkit-mask-image: linear-gradient(to top, #000 0%, #000 40%, rgb(0 0 0 / 0.7) 50%, rgb(0 0 0 / 0.3) 58%, transparent 66%);
+  mask-image: linear-gradient(to top, #000 0%, #000 40%, rgb(0 0 0 / 0.7) 50%, rgb(0 0 0 / 0.3) 58%, transparent 66%);
+  animation: dkg-blur-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes dkg-blur-in { from { opacity: 0; } }
+.dkg-shade {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(to top, rgb(12 12 14 / 0.78) 0%, rgb(12 12 14 / 0.62) 30%, rgb(12 12 14 / 0.3) 52%, rgb(12 12 14 / 0) 70%);
+}
+.dkg-credit {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  margin: 0;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgb(0 0 0 / 0.35);
+  font-size: 11px;
+  line-height: 1.5;
+  color: rgb(255 255 255 / 0.8);
+}
+.dkg-copy {
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  animation: dkg-rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes dkg-rise { from { opacity: 0; transform: translateY(8px); } }
+.dkg-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 4px 10px;
+  border: 1px solid rgb(255 255 255 / 0.24);
+  border-radius: var(--radius-lg);
+  background: rgb(255 255 255 / 0.08);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  font-size: var(--type-label-size);
+  line-height: 1.4;
+  font-weight: var(--font-weight-medium);
+  color: rgb(255 255 255 / 0.92);
+}
+.dkg-chip svg { width: 0.875rem; height: 0.875rem; }
+.dkg-day-title {
+  margin: var(--space-4) 0 0;
+  max-width: 24ch;
+  font-size: clamp(1.75rem, 2.6vw, 2.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  font-weight: var(--font-weight-medium);
+  color: #fff;
+}
+/* the day's plan as a table (2026-10-28, the user's ask: "a proper table, as earlier"): a row a slot,
+   hairlines between and under them, three columns (when, its icon, what), every line of a wrapped
+   "what" hanging under its first */
+.dkg-slots { display: grid; margin: var(--space-5) 0 0; padding: 0; list-style: none; border-bottom: 1px solid rgb(255 255 255 / 0.16); }
+.dkg-slots li {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-top: 1px solid rgb(255 255 255 / 0.16);
+}
+.dkg-when { padding-top: 3px; font-size: 11.5px; line-height: 1.4; letter-spacing: 0.1em; text-transform: uppercase; font-weight: var(--font-weight-medium); color: #6bee9f; }
+.dkg-what {
+  display: grid;
+  grid-template-columns: 1rem minmax(0, 1fr);
+  align-items: start;
+  column-gap: var(--space-2-5, 10px);
+  font-size: 1rem;
+  line-height: 1.45;
+  color: rgb(255 255 255 / 0.92);
+}
+.dkg-what svg { width: 1rem; height: 1rem; margin-top: 3px; }
+
+/* ── the itinerary: hairline rows, the chosen day on a grey fill, its number green ────────────────── */
+.dkg-days {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+  border: 1px solid var(--border-decorative);
+  border-radius: var(--radius-lg);
+  background: var(--surface-default, #fff);
+}
+.dkg-days li { flex: 1; display: flex; }
+.dkg-days li + li { border-top: 1px solid var(--border-decorative); }
+.dkg-day {
+  all: unset;
+  box-sizing: border-box;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  cursor: pointer;
+  transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.dkg-day:hover { background: var(--surface-subtle, #f7f7f5); }
+.dkg-day:focus-visible { outline: 2px solid var(--border-focus); outline-offset: -2px; }
+.dkg-day[aria-selected='true'] { background: #eef0ea; }
+.dkg-day-n {
+  font-size: 1.25rem;
+  line-height: 1;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--content-secondary);
+  transition: color 0.25s;
+}
+.dkg-day[aria-selected='true'] .dkg-day-n { color: var(--color-ssb-light-9); font-weight: var(--font-weight-medium); }
+.dkg-day-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.dkg-day-text b { font-size: 1rem; line-height: 1.3; font-weight: var(--font-weight-medium); color: var(--content-primary); }
+.dkg-day-text span { overflow: hidden; font-size: var(--type-label-size); line-height: 1.4; white-space: nowrap; text-overflow: ellipsis; color: var(--content-secondary); }
+
+/* ── the pillars: placement's hairline tiles ─────────────────────────────────────────────────────── */
+.dkg-pillars {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+  border: 1px solid var(--border-decorative);
+  border-radius: var(--radius-lg);
+  background: var(--border-decorative);
+}
+.dkg-pillar { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-5) var(--space-6); background: var(--surface-default, #fff); }
+.dkg-pillar svg { width: 1.5rem; height: 1.5rem; margin-bottom: var(--space-3); color: var(--color-ssb-light-9); }
+.dkg-pillar-t { margin: 0; font-size: 1.0625rem; line-height: 1.3; font-weight: var(--font-weight-medium); color: var(--content-primary); }
+.dkg-pillar-x { margin: 0; font-size: var(--type-label-size); line-height: 1.5; color: var(--content-secondary); }
+.dkg-note { margin-top: var(--space-4); }
+
+@media (width < 1056px) {
+  .dkg-pillars { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+/* phones (2026-10-28, the user's ask: "intuitive on desktop, not on m-web"): the week as a row of chips
+   above the photo (number and day, the chosen one in the brand's light green), scrolling sideways with
+   the chosen chip kept in view; the photo shorter; a swipe on it moves a day; the copy a step smaller;
+   the pillars two across, tighter */
+@media (width < 672px) {
+  .dkg-grid { display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-6); }
+  .dkg-days {
+    order: -1;
+    flex-direction: row;
+    gap: var(--space-2);
+    margin: 0 calc(var(--gutter, 1rem) * -1);
+    padding: 0 var(--gutter, 1rem);
+    overflow-x: auto;
+    scrollbar-width: none;
+    border: 0;
+    border-radius: 0;
+    background: none;
+  }
+  .dkg-days::-webkit-scrollbar { display: none; }
+  .dkg-days li { flex: none; }
+  .dkg-days li + li { border-top: 0; }
+  .dkg-day {
+    display: inline-flex;
+    gap: var(--space-2);
+    padding: 8px 14px;
+    border: 1px solid var(--border-decorative);
+    border-radius: var(--radius-lg);
+    background: var(--surface-default, #fff);
+  }
+  .dkg-day:hover { background: var(--surface-default, #fff); }
+  .dkg-day[aria-selected='true'] { border-color: var(--color-ssb-light-6); background: var(--color-ssb-light-2); }
+  .dkg-day-n { font-size: 0.875rem; font-weight: var(--font-weight-medium); }
+  .dkg-day[aria-selected='true'] .dkg-day-n { color: var(--color-ssb-light-11); }
+  .dkg-day-text b { font-size: 0.875rem; white-space: nowrap; }
+  .dkg-day[aria-selected='true'] .dkg-day-text b { color: var(--color-ssb-light-11); }
+  .dkg-day-text span { display: none; }
+  .dkg-stage { min-height: 24rem; touch-action: pan-y; }
+  .dkg-copy { padding: var(--space-6) var(--space-5) var(--space-6); } /* clear of the photo's edges (the user's ask) */
+  .dkg-chip { font-size: 12px; padding: 3px 8px; }
+  .dkg-day-title { margin-top: var(--space-3); font-size: 1.375rem; }
+  /* the table kept on a phone, roomier and a step smaller: a narrower "when" column, the "what" at 13px */
+  .dkg-slots { margin-top: var(--space-4); }
+  .dkg-slots li { grid-template-columns: 4.75rem minmax(0, 1fr); gap: var(--space-3); padding: 10px 0; }
+  .dkg-when { padding-top: 2px; font-size: 10px; letter-spacing: 0.08em; }
+  .dkg-what { grid-template-columns: 0.875rem minmax(0, 1fr); column-gap: var(--space-2); font-size: 0.8125rem; line-height: 1.45; }
+  .dkg-what svg { width: 0.875rem; height: 0.875rem; margin-top: 2px; }
+  .dkg-credit { top: var(--space-4); right: var(--space-4); font-size: 10px; }
+  .dkg-pillars { margin-top: var(--space-3); }
+  .dkg-pillar { gap: var(--space-1); padding: var(--space-4); }
+  .dkg-pillar svg { width: 1.25rem; height: 1.25rem; margin-bottom: var(--space-2); }
+  .dkg-pillar-t { font-size: 0.9375rem; }
+  .dkg-pillar-x { font-size: 0.8125rem; }
+  .dkg-note { font-size: 0.75rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dkg-img, .dkg-day, .dkg-day-n { transition: none; }
+  .dkg-copy, .dkg-img-blur { animation: none; }
+}

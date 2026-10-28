@@ -31,6 +31,7 @@ import { DeckCloseSection, DeckFaqSection } from '@/sections/deck/DeckFinale';
 import { HeroFrame, HeroFrameDeadline } from '@/sections/hero/frame/HeroFrame';
 import { Curriculum, HomeNav, ScrollRefresh } from '@/sections/home/client';
 import { DeckFooter } from '@/sections/deck/DeckFooter';
+import { DeckGlobalImmersion } from '@/sections/deck/DeckGlobalImmersion';
 import { CurriculumRail } from '@/sections/curriculum/CurriculumRail';
 import { InnovationLabSection } from '@/sections/innovation-lab/InnovationLabSection';
 import { InternshipSection } from '@/sections/internship/InternshipSection';
@@ -124,6 +125,8 @@ export default function V7Page() {
               node: (
                 <DeckUsp num="03" label={deckUsps.items[2].label}>
                   <DeckImmersionsSection />
+                  {/* the global immersion, a week in Singapore, back from vFinal (2026-10-28, the user's ask) */}
+                  <DeckGlobalImmersion />
                 </DeckUsp>
               ),
             },
@@ -145,20 +148,13 @@ export default function V7Page() {
         <InnovationLabSection band={deckLab.band} variant="deck" builtCards />
         {/* 14 learn from your future recruiters: the faculty, then the mentors, each a section of its own
             (2026-10-28, the user's ask; no toggle between them; the founding team is at the foot, with the foundation) */}
-        <PeopleTabsSection groups={['faculty']} still />
+        <PeopleTabsSection groups={['faculty']} drift />
         <PeopleTabsSection groups={['mentors']} id="mentors" label="Mentors" still />
         {/* 15 student testimonials: inside the internship section now, framed (below) */}
         {/* 16 super mentor sessions */}
         <SuperMentorsSection />
-        {/* 17–22 the curriculum: the five terms (each opens its courses), career prep, then the AI journey */}
+        {/* 17–22 the curriculum: the five terms (each opens its courses), then the AI journey (career prep came off, 2026-10-28, the user's ask: "not looking good") */}
         <Curriculum part="terms" termsStack termsVersion={4} />
-        {/* career prep, a section of its own again (2026-10-28, the user's ask), before the AI journey as
-            vFinal has it; in vFinal's layout, so in the rail's column (.cr-main), which carries its styles */}
-        <div className="dk-career">
-          <div className="cr-main">
-            <Curriculum part="career" />
-          </div>
-        </div>
         {/* 23 the 150-hour AI curriculum */}
         <Curriculum part="ai" aiCarousel />
         {/* 24 internship statistics */}

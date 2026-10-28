@@ -9,6 +9,8 @@ import './variant-toggle.css';
 const VARIANTS = [
   { id: 'vfinal', label: 'vFinal', href: '/vfinal' },
   { id: 'deck', label: 'Deck', href: '/v7' },
+  // the deck variant in two tones, light and dark sections (2026-10-28)
+  { id: 'tone', label: 'Tone', href: '/v8' },
 ] as const;
 
 export type HomeVariant = (typeof VARIANTS)[number]['id'];

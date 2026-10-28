@@ -30,9 +30,11 @@ export type WhyQuote = {
 export type WhyBreakerCopy = {
   title: string;
   sub: string;
-  note: string;
-  rolesLead: string;
-  roles: string[];
+  /** Who it's from, at the end of the sub-line, quieter */
+  by?: string;
+  note?: string;
+  rolesLead?: string;
+  roles?: string[];
 };
 
 /** The deck's turn from the evidence to SSB: a line ending in a role that keeps changing. */
