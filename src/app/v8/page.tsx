@@ -23,7 +23,7 @@ import {
   DeckUspHead,
   DeckWhySection,
 } from '@/sections/deck/DeckSections';
-import { DeckGlow, DeckOutcomes, DeckRecruiters } from '@/sections/deck/DeckOutcomes';
+import { DeckOutcomes } from '@/sections/deck/DeckOutcomes';
 import { DeckCloseSection, DeckFaqSection } from '@/sections/deck/DeckFinale';
 import { HeroFrame, HeroFrameDeadline } from '@/sections/hero/frame/HeroFrame';
 import { Curriculum, HomeNav, ScrollRefresh } from '@/sections/home/client';
@@ -72,19 +72,15 @@ export default function V8Page() {
           ]}
         />
         {/* 2 the first fold: vFinal's, its eyebrow without "Full-Time" as a brand-green chip, the title on the hero line height (2026-10-28, the user's ask) */}
-        {/* (2026-10-28, the user's ask) the first two folds dark */}
-        <Tone dark>
-          <HeroFrame content={deckHero} variant="deck" tone="dark" />
+        {/* the first two folds on light again (2026-10-28, the user's ask: "white, as earlier") */}
+        <Tone>
+          <HeroFrame content={deckHero} variant="deck" />
         </Tone>
         {/* 3 placement highlights: five figures, the audited report, the recruiters */}
         {/* rebuilt (2026-10-28, the user's brief): the figures as a bento, the report as a newspaper */}
-        <Tone dark>
-          <DeckOutcomes strip recruiters={false} />
-        </Tone>
-        {/* the glow divider, then the recruiters on light (2026-10-28, the user's ask) */}
-        <DeckGlow />
+        {/* the earlier design, with a ticker strip across it and a thicker edge (2026-10-28, the user's ask) */}
         <Tone>
-          <DeckRecruiters />
+          <DeckOutcomes ticker />
         </Tone>
         {/* 4 MBA is not dead: the heading, Kamath's breaker, the emerging roles */}
         <Tone>

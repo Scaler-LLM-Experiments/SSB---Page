@@ -20,8 +20,9 @@ import './deck-outcomes.css';
 export function DeckOutcomes({
   glass = false,
   strip = false,
+  ticker = false,
   recruiters = true,
-}: { glass?: boolean; strip?: boolean; recruiters?: boolean } = {}) {
+}: { glass?: boolean; strip?: boolean; ticker?: boolean; recruiters?: boolean } = {}) {
   const c = deckOutcomes;
   const press = c.press;
   const figs = (
@@ -89,6 +90,22 @@ export function DeckOutcomes({
 
         {strip ? (
           <StripCard press={pressCard} />
+        ) : ticker ? (
+          // /v8 (2026-10-28, the user's ask: "the earlier design, a ticker strip across it, the border a
+          // bit thicker"): the bento as it was, in one card with a 2px edge, the strip across its top
+          <div className="dko-card">
+            <div className="dko-ticker" aria-hidden>
+              <div className="dko-ticker-track">
+                {Array.from({ length: 12 }, (_, i) => (
+                  <span key={i}>Placement highlights</span>
+                ))}
+              </div>
+            </div>
+            <div className="dko-bento">
+              {figs}
+              {pressCard}
+            </div>
+          </div>
         ) : (
           <div className="dko-bento">
             {/* /v8 (2026-10-28, the user's ask: "like v3"): the figures on one glass plate over the cohort's photo */}

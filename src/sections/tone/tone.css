@@ -177,13 +177,6 @@
 .tn-dark .hf { background: var(--surface-page); }
 .tn-dark .dko-clip-logo { filter: brightness(0) invert(1); }
 
-/* (2026-10-28, the user's ask) the ground behind the navbar dark: the page opens on the dark folds,
-   so main's own ground (under the see-through bar, above the hero) is black at the top; the bar keeps
-   its own frosted glass */
-main:has(.tn-dark) {
-  background: linear-gradient(#0a0a0a 0 0) top / 100% 100vh no-repeat, var(--surface-page);
-}
-
 /* (2026-10-28, the user's ask: "the darkest grey, almost black") the dark ground #101010 (was #0a0a0a),
    the cards a step up from it */
 .tn-dark[data-theme='dark'],
@@ -191,4 +184,5 @@ main:has(.tn-dark) {
   --surface-page: #101010 !important;
   --surface-default: #171717 !important;
 }
-main:has(.tn-dark) { background: linear-gradient(#101010 0 0) top / 100% 100vh no-repeat, var(--surface-page); }
+/* (the ground behind the navbar was dark while the first two folds were dark; they're light again,
+   2026-10-28, the user's ask, so the page's own ground runs to the top: no dark band behind the bar) */
