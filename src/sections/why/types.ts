@@ -28,6 +28,8 @@ export type WhyQuote = {
  * title and a line under it, his remark retold as a small note (not a quote), the roles as pills.
  */
 export type WhyBreakerCopy = {
+  /** A line over the title, in the brand's eyebrow (and the title then plain white, no green) */
+  eyebrow?: string;
   title: string;
   sub: string;
   /** Who it's from, at the end of the sub-line, quieter */

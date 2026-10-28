@@ -196,8 +196,13 @@ export function WhyBreaker({
                   the quote under it a step quieter. Was a white eyebrow over the quote. */}
               {copy ? (
                 <>
+                  {copy.eyebrow ? (
+                    <p data-breaker-part className="why-breaker-eyebrow">
+                      {copy.eyebrow}
+                    </p>
+                  ) : null}
                   <h2 id="why-breaker-title" data-breaker-part className="why-breaker-kicker why-breaker-title">
-                    {emphasise(copy.title, 'traditional MBA')}
+                    {copy.eyebrow ? copy.title : emphasise(copy.title, 'traditional MBA')}
                   </h2>
                   <p data-breaker-part className="why-breaker-sub">
                     {copy.sub}

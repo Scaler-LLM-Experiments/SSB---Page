@@ -2003,3 +2003,21 @@ main[data-entrance='calm'] [data-calm-card='in'] {
 @media (prefers-reduced-motion: reduce) {
   main[data-entrance='calm'] [data-calm-card] { opacity: 1 !important; animation: none !important; }
 }
+
+/* Kamath's band with the reference copy (2026-10-28): the eyebrow in mint caps, the question as the
+   title, his words a size up and a touch softer, who said them small and quiet under them */
+.dk-frame .why-breaker-eyebrow {
+  margin: 0 0 var(--space-4);
+  font-size: var(--type-eyebrow-size, 12px);
+  line-height: 1.2;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #6bee9f;
+}
+.dk-frame .why-breaker-sub { margin-top: var(--space-6); max-width: 38rem; font-size: clamp(1.25rem, 1.7vw, 1.625rem); line-height: 1.4; color: rgb(255 255 255 / 0.88); }
+.dk-frame .why-breaker-note-line { margin-top: var(--space-4); font-size: 14px; line-height: 1.4; color: rgb(255 255 255 / 0.62); }
+@media (width < 672px) {
+  .dk-frame .why-breaker-sub { margin-top: var(--space-4); font-size: 1.125rem; }
+  .dk-frame .why-breaker-note-line { margin-top: var(--space-3); font-size: 13px; }
+}

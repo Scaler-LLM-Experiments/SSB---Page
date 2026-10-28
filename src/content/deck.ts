@@ -43,20 +43,18 @@ export const deckPlacements: PlacementsContent = {
   recruitersTitle: 'Our recruiters: MNCs, AI companies & top startups',
 };
 
-/** Slide 4: the Kamath breaker in the stakeholders' words (their notes on "4b", 2026-10-28): a
- *  prominent title, the line under it, his remark as a small note in place of the quote, the roles
- *  as pills, the second figure simplified. */
+/** Slide 4: the Kamath breaker (2026-10-28, the user's reference): "Why SSB" over the question, his
+ *  words in full under it, who said them, then the two figures with their sources. */
 export const deckWhy: WhyBreakerCopy = {
-  title: 'The traditional MBA is outdated',
-  // the stakeholders' 4b copy as written (2026-10-28, the user's ask: "the same copy, simplified")
-  sub: 'The skills needed for businesses to succeed have changed, but the education to build this new-age talent has not.',
-  note: 'Zerodha co-founder Nikhil Kamath told students at a company AMA that those pursuing a traditional MBA at 25 today “must be some kind of an idiot.” He isn’t alone in that read.',
-  rolesLead: 'Nobody is preparing you for emerging roles like:',
-  roles: ['AI Product Manager', 'Founder’s Office', 'Growth Manager', 'Category Manager'],
+  // (later, 2026-10-28, the user's reference) the eyebrow, the question as the title, his words in full
+  // as the line, who said them under it; no roles
+  eyebrow: 'Why SSB',
+  title: 'Why the traditional MBA doesn’t work',
+  sub: '“If you’re 25 and going to an MBA college today, you must be some kind of idiot, if you ask me.”',
+  note: 'Nikhil Kamath, Co‑founder, Zerodha',
 };
-export const deckWhyFigures: WhyFigure[] = why.figures.map((f, i) =>
-  i === 1 ? { ...f, value: '62% more', description: 'pay for workers with AI skills, in the same role' } : f,
-);
+/** The two figures with their sources, in full (the second's whole line, the user's reference) */
+export const deckWhyFigures: WhyFigure[] = why.figures;
 
 /** Slide 5: the eight alumni, in the deck's order, and "Your peers come from". */
 export const deckAlumni = {
