@@ -18,8 +18,8 @@ import './hero-frame.css';
  */
 /** `variant="deck"` (the deck variant, /v7, 2026-10-28): the eyebrow as a brand-green chip, the title on
  *  the display line height, the logos turning over all together in a quick wave. */
-export function HeroFrame({ content: c, variant }: { content: HeroFrameContent; variant?: 'deck' }) {
-  const tone = 'light';
+/** `tone="dark"` (/v8, 2026-10-28, the user's ask: the first two folds dark): the black ground, white type. */
+export function HeroFrame({ content: c, variant, tone = 'light' }: { content: HeroFrameContent; variant?: 'deck'; tone?: 'light' | 'dark' }) {
   return (
     <section
       className="hf"

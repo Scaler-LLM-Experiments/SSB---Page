@@ -23,7 +23,7 @@ import {
   DeckUspHead,
   DeckWhySection,
 } from '@/sections/deck/DeckSections';
-import { DeckOutcomes } from '@/sections/deck/DeckOutcomes';
+import { DeckGlow, DeckOutcomes, DeckRecruiters } from '@/sections/deck/DeckOutcomes';
 import { DeckCloseSection, DeckFaqSection } from '@/sections/deck/DeckFinale';
 import { HeroFrame, HeroFrameDeadline } from '@/sections/hero/frame/HeroFrame';
 import { Curriculum, HomeNav, ScrollRefresh } from '@/sections/home/client';
@@ -69,13 +69,19 @@ export default function V8Page() {
           ]}
         />
         {/* 2 the first fold: vFinal's, its eyebrow without "Full-Time" as a brand-green chip, the title on the hero line height (2026-10-28, the user's ask) */}
-        <Tone>
-          <HeroFrame content={deckHero} variant="deck" />
+        {/* (2026-10-28, the user's ask) the first two folds dark */}
+        <Tone dark>
+          <HeroFrame content={deckHero} variant="deck" tone="dark" />
         </Tone>
         {/* 3 placement highlights: five figures, the audited report, the recruiters */}
         {/* rebuilt (2026-10-28, the user's brief): the figures as a bento, the report as a newspaper */}
+        <Tone dark>
+          <DeckOutcomes strip recruiters={false} />
+        </Tone>
+        {/* the glow divider, then the recruiters on light (2026-10-28, the user's ask) */}
+        <DeckGlow />
         <Tone>
-          <DeckOutcomes />
+          <DeckRecruiters />
         </Tone>
         {/* 4 MBA is not dead: the heading, Kamath's breaker, the emerging roles */}
         <Tone>

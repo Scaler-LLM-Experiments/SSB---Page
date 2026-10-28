@@ -393,3 +393,319 @@ main[data-page='v7'] .peers-flip-logo[style] {
   main[data-page='v7'] .peers-flip-cell { height: 3.625rem !important; }
   [data-page='v7'] .in-logos > li { height: 3.625rem !important; }
 }
+
+/* ── (later, 2026-10-28, the user's ask, /v8 only: "like v3") the figures on a photo, as /v3's
+   placements banner: the founding cohort's photo fills the tile under v3's shade, and the six
+   figures sit on one frosted glass plate, inset a little (12px) from the photo's edge; hairlines of
+   light between the figures; the figures in the light brand green, the labels white ──────────────── */
+.dko-glass {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  background: #2b3340;
+}
+.dko-glass-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 38%;
+}
+.dko-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to bottom, rgb(10 14 20 / 0.35) 0%, rgb(10 14 20 / 0.5) 50%, rgb(10 14 20 / 0.7) 100%);
+}
+.dko-glass .dko-figs {
+  height: 100%;
+  gap: 0;
+  border: var(--border-width-hair, 1px) solid rgb(255 255 255 / 0.18);
+  background: rgb(255 255 255 / 0.1);
+  -webkit-backdrop-filter: blur(var(--glass-blur, 16px)) saturate(var(--glass-saturate, 1.3));
+  backdrop-filter: blur(var(--glass-blur, 16px)) saturate(var(--glass-saturate, 1.3));
+}
+.dko-glass .dko-fig,
+.dko-glass .dko-fig[data-lead] {
+  background: none;
+  box-shadow: 0 0 0 0.5px rgb(255 255 255 / 0.16);
+}
+.dko-glass .dko-fig dd,
+.dko-glass .dko-fig[data-lead] dd { color: #7ff0ae; }
+.dko-glass .dko-fig dt { color: #fff; }
+.dko-glass .dko-fig dt small { color: rgb(255 255 255 / 0.74); }
+@media (width < 672px) { .dko-glass { padding: var(--space-2); } }
+/* (the same day: "use a darker bg") the shade over the photo heavier, as v3's (0.5 to 0.9), and the
+   plate a dark glass (a black tint, the blur dimmed) in place of the white tint */
+.dko-glass::before { background: linear-gradient(to bottom, rgb(10 14 20 / 0.55) 0%, rgb(10 14 20 / 0.7) 50%, rgb(10 14 20 / 0.85) 100%); }
+.dko-glass .dko-figs {
+  border-color: rgb(255 255 255 / 0.14);
+  background: rgb(10 14 20 / 0.45);
+  -webkit-backdrop-filter: blur(var(--glass-blur, 16px)) saturate(1.1) brightness(0.6);
+  backdrop-filter: blur(var(--glass-blur, 16px)) saturate(1.1) brightness(0.6);
+}
+.dko-glass .dko-fig,
+.dko-glass .dko-fig[data-lead] { box-shadow: 0 0 0 0.5px rgb(255 255 255 / 0.12); }
+
+/* ── /v8 (2026-10-28, the user's reference): the divider from the dark folds to the light page: the
+   dark ground (the tone's #0a0a0a), a band of brand-green light low in it, fading into the page's
+   ground; its lower edge a soft, wide curve ─────────────────────────────────────────────────────── */
+.dko-glow {
+  position: relative;
+  height: clamp(9rem, 16vw, 15rem);
+  margin-bottom: calc(-1 * clamp(2rem, 4vw, 4rem));
+  background:
+    radial-gradient(140% 70% at 50% 100%, var(--surface-page) 30%, transparent 62%),
+    linear-gradient(to bottom, #0a0a0a 0%, #070c09 28%, #0f2a1a 46%, #3f9e66 64%, #8fd8aa 76%, var(--surface-page) 96%);
+  pointer-events: none;
+}
+/* the recruiters as their own section: no top margin of their own (the section's padding is it) */
+.dko-solo .dko-recruiters { margin-top: 0; }
+
+/* (the same day, the user's asks) the glass plate to the photo's edge (no inset), and the divider's
+   light an arc curving upwards: the page's ground rising as a wide dome from below, a green rim round
+   it, the black above */
+.dko-glass, .dko-glass:is(*) { padding: 0; }
+.dko-glass .dko-figs { border: 0; border-radius: inherit; }
+.dko-glow {
+  height: clamp(10rem, 18vw, 17rem);
+  background:
+    radial-gradient(75% 115% at 50% 135%, var(--surface-page) 52%, #b9e6c9 60%, #5fb883 66%, #1f5236 74%, rgb(10 10 10 / 0) 86%),
+    #0a0a0a;
+}
+/* the arc's ends meet the page under it: the lowest part fades to the page's ground across the width */
+.dko-glow {
+  background:
+    linear-gradient(to bottom, transparent 62%, var(--surface-page) 100%),
+    radial-gradient(75% 115% at 50% 135%, var(--surface-page) 52%, #b9e6c9 60%, #5fb883 66%, #1f5236 74%, rgb(10 10 10 / 0) 86%),
+    #0a0a0a;
+}
+/* (the same day: "make it curve downwards") the arc the other way: the black hangs down as a wide
+   dome from above, a green rim under it, the page's ground below; the top edge black across the width */
+.dko-glow {
+  background:
+    linear-gradient(to bottom, #0a0a0a 0%, rgb(10 10 10 / 0) 30%),
+    radial-gradient(75% 115% at 50% -35%, #0a0a0a 52%, #1f5236 60%, #5fb883 67%, #b9e6c9 75%, var(--surface-page) 88%),
+    var(--surface-page);
+}
+
+/* (the same day: "remove the background image, subtly lift the stat cards") no photo, no frost: the
+   six figures as one raised panel on the black, a step lighter than the ground, its light falling
+   from the top (a faint top rim and a soft glow), a deep soft shadow under it; hairlines between */
+.dko-glass, .dko-glass:is(*) { background: none; overflow: visible; }
+.dko-glass-bg, .dko-glass::before { display: none; }
+.dko-glass .dko-figs {
+  border: 1px solid rgb(255 255 255 / 0.09);
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgb(255 255 255 / 0.05), transparent 60%),
+    linear-gradient(to bottom, #161716, #101110);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.08),
+    0 1px 2px rgb(0 0 0 / 0.5),
+    0 24px 48px -24px rgb(0 0 0 / 0.9);
+}
+.dko-glass .dko-fig,
+.dko-glass .dko-fig[data-lead] { box-shadow: 0 0 0 0.5px rgb(255 255 255 / 0.08); }
+
+/* ── /v8 (2026-10-28, the user's reference: SST's placements card) one card: the "Placement
+   highlights" strip across its top, then the figures at the left (the lead large, its line, the other
+   five in one bordered row split by hairlines) and the press card at the right ─────────────────── */
+.dks {
+  margin-top: var(--space-8);
+  overflow: hidden;
+  border: 1px solid var(--border-decorative);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgb(255 255 255 / 0.04), transparent 60%),
+    var(--surface-default, #fff);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06), 0 24px 48px -28px rgb(0 0 0 / 0.8);
+}
+
+/* the strip: the brand green, a lighter sheen at either end, the words running left in spaced caps */
+.dks-strip {
+  position: relative;
+  overflow: hidden;
+  padding-block: var(--space-4);
+  background: linear-gradient(90deg, #2bb673 0%, #13744a 14%, #0e5e3b 50%, #13744a 86%, #2bb673 100%);
+}
+.dks-strip::before,
+.dks-strip::after {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  z-index: 1;
+  width: 18%;
+  pointer-events: none;
+}
+.dks-strip::before { left: 0; background: linear-gradient(90deg, rgb(255 255 255 / 0.28), transparent); }
+.dks-strip::after { right: 0; background: linear-gradient(270deg, rgb(255 255 255 / 0.28), transparent); }
+.dks-track {
+  display: flex;
+  width: max-content;
+  animation: dks-run 40s linear infinite;
+}
+.dks-track > span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-10, 2.5rem);
+  padding-right: var(--space-10, 2.5rem);
+  font-size: var(--type-label-size, 0.875rem);
+  line-height: 1;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #fff;
+}
+.dks-track > span::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #fff; }
+@keyframes dks-run { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .dks-track { animation: none; } }
+
+.dks-body {
+  display: grid;
+  gap: var(--space-8);
+  padding: var(--space-8);
+}
+@media (width >= 1056px) {
+  .dks-body { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: center; gap: var(--space-10, 2.5rem); padding: var(--space-10, 2.5rem); }
+}
+
+.dks-stats { display: flex; flex-direction: column; min-width: 0; }
+.dks-k {
+  margin: 0;
+  font-size: var(--type-eyebrow-size, 0.75rem);
+  line-height: 1.2;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--content-primary);
+}
+.dks-lead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin: var(--space-4) 0 0;
+  font-size: clamp(3.5rem, 6vw, 5.5rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-weight: var(--font-weight-medium);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ssb-light-9);
+}
+.dks-lead span { font-size: clamp(1.125rem, 1.6vw, 1.5rem); letter-spacing: -0.01em; }
+.dks-lead-sub {
+  margin: var(--space-4) 0 0;
+  font-size: var(--type-body-size, 1rem);
+  line-height: 1.5;
+  color: var(--content-secondary);
+}
+
+/* the other five in one bordered row, hairlines between */
+.dks-row {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin: var(--space-8) 0 0;
+  padding: var(--space-5) 0;
+  border: 1px solid var(--border-decorative);
+  border-radius: var(--radius-lg);
+  background: rgb(255 255 255 / 0.02);
+}
+.dks-fig { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; padding-inline: var(--space-5); }
+.dks-fig + .dks-fig { border-left: 1px solid var(--border-decorative); }
+.dks-fig dd {
+  margin: 0;
+  font-size: clamp(1.375rem, 1.9vw, 1.75rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-weight: var(--font-weight-medium);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--color-ssb-light-9);
+}
+.dks-fig dt { display: flex; flex-direction: column; gap: 2px; font-size: var(--type-caption-size, 0.75rem); line-height: 1.35; font-weight: var(--font-weight-medium); color: var(--content-primary); }
+.dks-fig dt small { font-size: var(--type-caption-size, 0.75rem); font-weight: 400; color: var(--content-secondary); opacity: 0.75; }
+
+/* the press card in the card: its own hairline card, as before */
+.dks .dko-press { align-self: stretch; }
+
+/* tablets: the row in three then two; phones: two across */
+@media (width < 1056px) {
+  .dks-row { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: var(--space-5); }
+  .dks-fig:nth-child(3n + 1) { border-left: 0; }
+}
+@media (width < 672px) {
+  .dks { margin-top: var(--space-6); }
+  .dks-strip { padding-block: var(--space-3); }
+  .dks-track > span { font-size: var(--type-caption-size, 0.75rem); gap: var(--space-6); padding-right: var(--space-6); }
+  .dks-body { gap: var(--space-6); padding: var(--space-5); }
+  .dks-lead { margin-top: var(--space-3); }
+  .dks-lead-sub { margin-top: var(--space-3); font-size: var(--type-label-size, 0.875rem); }
+  .dks-row { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: var(--space-6); padding: var(--space-4) 0; }
+  .dks-fig { padding-inline: var(--space-4); }
+  .dks-fig:nth-child(3n + 1) { border-left: 1px solid var(--border-decorative); }
+  .dks-fig:nth-child(odd) { border-left: 0; }
+}
+
+/* (the same day, the user's asks) the six figures 3 × 2 in the bordered panel (the lead no longer
+   singled out); the strip black, its words in a green gradient; the card lifted off the black ground */
+.dks-row, .dks-row:is(*) {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  row-gap: 0;
+  margin-top: var(--space-6);
+  padding: 0;
+}
+.dks-fig, .dks-fig:is(*) { gap: var(--space-3); padding: var(--space-6); border-left: 0; }
+.dks-fig:not(:nth-child(3n + 1)) { border-left: 1px solid var(--border-decorative); }
+.dks-fig:nth-child(n + 4) { border-top: 1px solid var(--border-decorative); }
+.dks-fig dd { font-size: clamp(1.75rem, 2.6vw, 2.375rem); }
+.dks-fig dt { font-size: var(--type-label-size, 0.875rem); }
+@media (width < 672px) {
+  .dks-row, .dks-row:is(*) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dks-fig, .dks-fig:is(*) { padding: var(--space-4); border-left: 0; border-top: 0; }
+  .dks-fig:nth-child(even) { border-left: 1px solid var(--border-decorative); }
+  .dks-fig:nth-child(n + 3) { border-top: 1px solid var(--border-decorative); }
+  .dks-fig dd { font-size: 1.625rem; }
+  .dks-fig dt { font-size: var(--type-caption-size, 0.75rem); }
+}
+
+.dks-strip {
+  background: #050505;
+  border-bottom: 1px solid rgb(255 255 255 / 0.08);
+}
+.dks-strip::before { background: linear-gradient(90deg, #050505, transparent); }
+.dks-strip::after { background: linear-gradient(270deg, #050505, transparent); }
+.dks-track > span {
+  color: transparent;
+  background: linear-gradient(90deg, #2bb673, #9ef5c0 50%, #2bb673);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.dks-track > span::after { background: #6bee9f; }
+
+.dks {
+  border-color: rgb(255 255 255 / 0.1);
+  background:
+    radial-gradient(120% 70% at 50% 0%, rgb(255 255 255 / 0.05), transparent 60%),
+    #141414;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.07),
+    0 0 0 1px rgb(0 0 0 / 0.6),
+    0 30px 60px -24px rgb(0 0 0 / 1),
+    0 0 80px -10px rgb(255 255 255 / 0.05);
+}
+/* (the same day: "a very slight gradient to lock into the rise") a faint wash of the divider's green
+   rising from the card's foot, so the card leads into the green glow below the section */
+.dks {
+  background:
+    radial-gradient(120% 70% at 50% 0%, rgb(255 255 255 / 0.05), transparent 60%),
+    radial-gradient(110% 60% at 50% 115%, rgb(43 182 115 / 0.1), transparent 70%),
+    #141414;
+}

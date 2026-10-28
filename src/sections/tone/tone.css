@@ -171,3 +171,15 @@
   border: 1px solid rgb(255 255 255 / 0.08) !important;
 }
 .tn-dark :is(.ad4-sc, .bc-card, .pr-card):hover { border-color: rgb(255 255 255 / 0.12) !important; }
+
+/* (2026-10-28, the user's ask: the first two folds dark) the hero on the black ground, and the press
+   card's wordmark (dark ink) in white on the dark card */
+.tn-dark .hf { background: var(--surface-page); }
+.tn-dark .dko-clip-logo { filter: brightness(0) invert(1); }
+
+/* (2026-10-28, the user's ask) the ground behind the navbar dark: the page opens on the dark folds,
+   so main's own ground (under the see-through bar, above the hero) is black at the top; the bar keeps
+   its own frosted glass */
+main:has(.tn-dark) {
+  background: linear-gradient(#0a0a0a 0 0) top / 100% 100vh no-repeat, var(--surface-page);
+}
