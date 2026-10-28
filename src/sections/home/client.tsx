@@ -52,9 +52,9 @@ export function ScrollRefresh() {
 
 /** The SSB navbar as the home page's nav: dark over the hero, turned light by the hero's motion.
  *  `light`: a light navbar from the start, over a light first fold (the framed fold's light tone). */
-export function HomeNav({ light = false, followTone = false }: { light?: boolean; followTone?: boolean }) {
+export function HomeNav({ light = false, followTone = false, pinned = false }: { light?: boolean; followTone?: boolean; pinned?: boolean }) {
   return light ? (
-    <SsbNavbar theme="light" themeToggle={false} followTone={followTone} />
+    <SsbNavbar theme="light" themeToggle={false} followTone={followTone} pinned={pinned} />
   ) : (
     <SsbNavbar heroNav themeToggle={false} />
   );

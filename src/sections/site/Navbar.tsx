@@ -147,7 +147,10 @@ export function SsbNavbar({
   heroNav = false,
   themeToggle = true,
   followTone = false,
+  pinned = false,
 }: {
+  /** Keep the bar in view: no hiding on the way down (the final page, 2026-10-28, the user's ask). */
+  pinned?: boolean;
   /** Take the theme of the section passing under the bar (its nearest `data-section-tone`, light or dark), as
    *  the page scrolls (the tone variant, /v8, 2026-10-28). */
   followTone?: boolean;
@@ -209,6 +212,7 @@ export function SsbNavbar({
 
   const hideRef = React.useRef({ y: 0, hidden: false });
   React.useEffect(() => {
+    if (pinned) return undefined;
     const el = document.documentElement;
     let raf = 0;
     const update = () => {
@@ -235,7 +239,7 @@ export function SsbNavbar({
       window.removeEventListener('scroll', onScroll);
       el.removeAttribute('data-nav-hidden');
     };
-  }, []);
+  }, [pinned]);
 
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 4);

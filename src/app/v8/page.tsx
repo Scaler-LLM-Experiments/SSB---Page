@@ -60,7 +60,7 @@ export default function V8Page() {
         {/* every section's appear animation, one calm fade (2026-10-28, the user's ask) */}
         <CalmEntrance />
         <HeroFrameDeadline deadline={heroFrame.deadline} />
-        <HomeNav light followTone />
+        <HomeNav light followTone pinned />
         <BottomNav
           items={[
             { label: 'Placements', target: 'placements-showcase-title' },
