@@ -10,42 +10,42 @@
    dark island nested inside, with !important to win over it */
 .tn-dark[data-theme='dark'],
 .tn-dark [data-theme='dark'] {
-  --content-primary: #fff !important;
-  --content-secondary: #fff !important;
-  --on-image-ink: #fff !important;
-  --on-image-ink-secondary: #fff !important;
+  --content-primary: var(--pg-white) !important;
+  --content-secondary: var(--pg-white) !important;
+  --on-image-ink: var(--pg-white) !important;
+  --on-image-ink-secondary: var(--pg-white) !important;
   /* black (2026-10-28, the user's ask: "a black tone, not dark green"; it was the concept's
      green-black, #050E09): a near-black ground, cards a step up from it, mint accents kept */
-  --surface-page: #0a0a0a !important;
-  --surface-default: #111111 !important;
-  --surface-subtle: #0f0f0f !important;
-  --surface-sunken: #0f0f0f !important;
-  --surface-tray: #111111 !important;
-  --surface-raised: #161616 !important;
-  --surface-raised-hover: #1c1c1c !important;
-  --surface-hover: #161616 !important;
-  --surface-active: #1c1c1c !important;
-  --surface-brand-subtle: #141414 !important;
-  --border-subtle: rgb(255 255 255 / 0.14) !important;
-  --border-decorative: rgb(255 255 255 / 0.14) !important;
-  --border-raised: rgb(255 255 255 / 0.18) !important;
-  --border-inert: rgb(255 255 255 / 0.18) !important;
-  --content-brand: #6bee9f !important;
+  --surface-page: var(--pg-dark-1) !important;
+  --surface-default: var(--pg-dark-3) !important;
+  --surface-subtle: var(--pg-dark-2) !important;
+  --surface-sunken: var(--pg-dark-2) !important;
+  --surface-tray: var(--pg-dark-3) !important;
+  --surface-raised: var(--pg-dark-5) !important;
+  --surface-raised-hover: var(--pg-dark-6) !important;
+  --surface-hover: var(--pg-dark-5) !important;
+  --surface-active: var(--pg-dark-6) !important;
+  --surface-brand-subtle: var(--pg-dark-4) !important;
+  --border-subtle: var(--pg-white-a14) !important;
+  --border-decorative: var(--pg-white-a14) !important;
+  --border-raised: var(--pg-white-a18) !important;
+  --border-inert: var(--pg-white-a18) !important;
+  --content-brand: var(--pg-mint) !important;
   /* the logo's green (#1D925B) highlights headings and figures (Accent, the lab's figures): too dark
      on this ground, so mint here (2026-10-28, the user's ask: the lab's highlight didn't stand out) */
-  --color-ssb-light-9: #6bee9f !important;
+  --color-ssb-light-9: var(--pg-mint) !important;
 }
 
 /* the startup cards (BuiltCards, deck look) pin their copy to the light theme; on a dark section the
    card is dark, so their ink is set for it */
-.tn-dark [data-variant='deck'] .bc-card { background: #111111; border-color: rgb(255 255 255 / 0.14); }
+.tn-dark [data-variant='deck'] .bc-card { background: var(--pg-dark-3); border-color: var(--pg-white-a14); }
 .tn-dark [data-variant='deck'] .bc-name,
-.tn-dark [data-variant='deck'] .bc-name a { color: #fff !important; }
-.tn-dark [data-variant='deck'] .bc-by { color: #fff !important; }
-.tn-dark [data-variant='deck'] .bc-blurb { color: #fff !important; }
-.tn-dark [data-variant='deck'] .bc-rule { background: rgb(255 255 255 / 0.12) !important; }
-.tn-dark [data-variant='deck'] .bc-k { color: #6bee9f !important; }
-.tn-dark .bc-link svg { color: rgb(255 255 255 / 0.6); }
+.tn-dark [data-variant='deck'] .bc-name a { color: var(--pg-white) !important; }
+.tn-dark [data-variant='deck'] .bc-by { color: var(--pg-white) !important; }
+.tn-dark [data-variant='deck'] .bc-blurb { color: var(--pg-white) !important; }
+.tn-dark [data-variant='deck'] .bc-rule { background: var(--pg-white-a12) !important; }
+.tn-dark [data-variant='deck'] .bc-k { color: var(--pg-mint) !important; }
+.tn-dark .bc-link svg { color: var(--pg-white-a60); }
 
 /* the closing card's, the footer's and admissions' own literal greys, white too (the same ask) */
 .tn-dark .dkc-eyebrow,
@@ -57,19 +57,19 @@
 .tn-dark .dkft-col-title,
 .tn-dark .dkft-address,
 .tn-dark .dkft-legal p,
-.tn-dark .ad4-tr[data-past] { color: #fff !important; }
+.tn-dark .ad4-tr[data-past] { color: var(--pg-white) !important; }
 
 /* the press outlets' logos in white on the dark ground (some were dark ink, lost on it) */
 .tn-dark .pr-lg img { filter: brightness(0) invert(1); }
 /* a startup's figure line, white as the rest */
-.tn-dark [data-variant='deck'] .bc-met-l { color: #fff !important; }
+.tn-dark [data-variant='deck'] .bc-met-l { color: var(--pg-white) !important; }
 
 /* the fee table's open intake (2026-10-28, the user's ask: the green bar and green wash read badly on
    the dark ground): a quiet white panel with a hairline edge, and a white "Open now" chip by its name;
    the "Intake 2 open" chip and "Closed" in white too, no green */
 .tn-dark .ad4-tr[data-now] {
-  background: rgb(255 255 255 / 0.06);
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.16);
+  background: var(--pg-white-a06);
+  box-shadow: inset 0 0 0 1px var(--pg-white-a16);
 }
 .tn-dark .ad4-tr[data-now] > span:first-child::after {
   content: 'Open now';
@@ -77,23 +77,23 @@
   margin-left: var(--space-2);
   padding: 2px 8px;
   border-radius: 999px;
-  background: #fff;
-  color: #0a0a0a;
+  background: var(--pg-white);
+  color: var(--pg-dark-1);
   font-size: 0.6875rem;
   font-weight: var(--font-weight-medium);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   vertical-align: 2px;
 }
-.tn-dark .ad4-tr small { background: rgb(255 255 255 / 0.08); color: #fff; }
-.tn-dark .ad4-live { color: #fff !important; background: rgb(255 255 255 / 0.06) !important; }
+.tn-dark .ad4-tr small { background: var(--pg-white-a08); color: var(--pg-white); }
+.tn-dark .ad4-live { color: var(--pg-white) !important; background: var(--pg-white-a06) !important; }
 
 /* the FAQ on the dark ground: the plus on a faint glass tile, open on mint with a dark minus; the
    button white with dark ink (the concept's light button), the question lighting mint under the pointer */
-.tn-dark .dkf-icon { background: rgb(255 255 255 / 0.08); color: #fff; }
-.tn-dark .dkf-item[data-open] .dkf-icon { background: #6bee9f; color: #0a0a0a; }
-.tn-dark .dkf-q button:hover .dkf-q-text { color: #6bee9f; }
-.tn-dark .dkf-a a { color: #6bee9f; text-decoration-color: rgb(107 238 159 / 0.4); }
+.tn-dark .dkf-icon { background: var(--pg-white-a08); color: var(--pg-white); }
+.tn-dark .dkf-item[data-open] .dkf-icon { background: var(--pg-mint); color: var(--pg-dark-1); }
+.tn-dark .dkf-q button:hover .dkf-q-text { color: var(--pg-mint); }
+.tn-dark .dkf-a a { color: var(--pg-mint); text-decoration-color: var(--pg-mint-a40); }
 
 
 /* admissions on the dark ground (2026-10-28, the user's ask: "the lifted colours aren't visible; make it
@@ -103,30 +103,30 @@
 /* (later, the same day, the user's ask: "no borders on the lifted colours; flat") flat fills only */
 .tn-dark .ad4-card {
   border-color: transparent;
-  background: #181818;
+  background: var(--pg-dark-card);
   box-shadow: none;
 }
 .tn-dark .ad4-fast {
   border: 0;
-  background: rgb(107 238 159 / 0.09);
-  color: #fff;
+  background: var(--pg-mint-a09);
+  color: var(--pg-white);
 }
-.tn-dark .ad4-tr[data-now] { background: rgb(255 255 255 / 0.07); box-shadow: none; }
-.tn-dark .ad4-fast b { color: #6bee9f; }
+.tn-dark .ad4-tr[data-now] { background: var(--pg-white-a07); box-shadow: none; }
+.tn-dark .ad4-fast b { color: var(--pg-mint); }
 .tn-dark .ad4-steps li,
-.tn-dark .ad4-tr { border-top-color: rgb(255 255 255 / 0.12); }
-.tn-dark .ad4-steps span { color: #6bee9f; }
-.tn-dark .ad4-dot { background: #6bee9f !important; }
-.tn-dark .ad4-link { border-bottom-color: rgb(255 255 255 / 0.4); }
-.tn-dark .ad4-link:hover { color: #6bee9f; border-color: #6bee9f; }
+.tn-dark .ad4-tr { border-top-color: var(--pg-white-a12); }
+.tn-dark .ad4-steps span { color: var(--pg-mint); }
+.tn-dark .ad4-dot { background: var(--pg-mint) !important; }
+.tn-dark .ad4-link { border-bottom-color: var(--pg-white-a40); }
+.tn-dark .ad4-link:hover { color: var(--pg-mint); border-color: var(--pg-mint); }
 
 /* the scholarships' tiles on the dark ground: the admissions cards' flat green, apart by a gap (no
    hairlines, no borders: the user's call), the plus a faint tile, mint under the pointer */
-.tn-dark .ad4-sch { background: #111111 !important; }
-.tn-dark .ad4-sc { border-radius: var(--radius-lg) !important; background: #181818 !important; }
-.tn-dark .ad4-sc:hover { background: #202020 !important; }
-.tn-dark .ad4-sc-p { background: rgb(255 255 255 / 0.08) !important; color: #fff !important; }
-.tn-dark .ad4-sc:hover .ad4-sc-p { background: #6bee9f !important; color: #0a0a0a !important; }
+.tn-dark .ad4-sch { background: var(--pg-dark-3) !important; }
+.tn-dark .ad4-sc { border-radius: var(--radius-lg) !important; background: var(--pg-dark-card) !important; }
+.tn-dark .ad4-sc:hover { background: var(--pg-dark-card-hover) !important; }
+.tn-dark .ad4-sc-p { background: var(--pg-white-a08) !important; color: var(--pg-white) !important; }
+.tn-dark .ad4-sc:hover .ad4-sc-p { background: var(--pg-mint) !important; color: var(--pg-dark-1) !important; }
 
 /* ── the final review (2026-10-28, the user's ask; /v8 only, every section sits in a .tn) ─────────────
    1. No bold: weights are semibold (600), medium (500) or regular (400) only. The eyebrows' token and
@@ -143,11 +143,11 @@
       (#181818), no border; the startup and lab cards and the press cards brought in line */
 .tn-dark :is(.bc-card, .pr-card) {
   border-color: transparent !important;
-  background: #181818 !important;
+  background: var(--pg-dark-card) !important;
   box-shadow: none !important;
 }
-.tn-dark .pr-card:hover { background: #202020 !important; }
-.tn-dark .lab-stats { background: #181818; }
+.tn-dark .pr-card:hover { background: var(--pg-dark-card-hover) !important; }
+.tn-dark .lab-stats { background: var(--pg-dark-card); }
 /* eyebrows inside theme islands (the curriculum re-declares the tokens) at semibold too */
 .tn .type-eyebrow { font-weight: 600 !important; }
 /* 4. line heights: multi-line labels no tighter than 1.35 on a phone */
@@ -168,9 +168,9 @@
 /* the dark cards' edge (2026-10-28, the user's ask: "proper borders, not too bright, very light"): one
    faint hairline on every lifted card and panel on the dark ground, 8% white, the same everywhere */
 .tn-dark :is(.ad4-card, .ad4-sc, .ad4-sch, .bc-card, .pr-card, .lab-stats) {
-  border: 1px solid rgb(255 255 255 / 0.08) !important;
+  border: 1px solid var(--pg-white-a08) !important;
 }
-.tn-dark :is(.ad4-sc, .bc-card, .pr-card):hover { border-color: rgb(255 255 255 / 0.12) !important; }
+.tn-dark :is(.ad4-sc, .bc-card, .pr-card):hover { border-color: var(--pg-white-a12) !important; }
 
 /* (2026-10-28, the user's ask: the first two folds dark) the hero on the black ground, and the press
    card's wordmark (dark ink) in white on the dark card */
@@ -181,8 +181,8 @@
    the cards a step up from it */
 .tn-dark[data-theme='dark'],
 .tn-dark [data-theme='dark'] {
-  --surface-page: #101010 !important;
-  --surface-default: #171717 !important;
+  --surface-page: var(--pg-dark-ground) !important;
+  --surface-default: var(--pg-dark-surface) !important;
 }
 /* (the ground behind the navbar was dark while the first two folds were dark; they're light again,
    2026-10-28, the user's ask, so the page's own ground runs to the top: no dark band behind the bar) */
@@ -192,11 +192,11 @@
    (8% white, 14% under the pointer), the arrows white (a disabled one dimmed), the dots soft white, the
    active one mint; the testimonial band keeps its own (data-tone="dark") */
 .tn-dark .cn:not([data-tone='dark']) {
-  --cn-pill: rgb(255 255 255 / 0.08);
-  --cn-pill-hover: rgb(255 255 255 / 0.14);
-  --cn-dot: rgb(255 255 255 / 0.3);
-  --cn-dot-hover: rgb(255 255 255 / 0.55);
-  --cn-fill: #6bee9f;
-  --cn-ink: #fff;
+  --cn-pill: var(--pg-white-a08);
+  --cn-pill-hover: var(--pg-white-a14);
+  --cn-dot: var(--pg-white-a30);
+  --cn-dot-hover: var(--pg-white-a55);
+  --cn-fill: var(--pg-mint);
+  --cn-ink: var(--pg-white);
 }
-.tn-dark .cn:not([data-tone='dark']) .cn-arrow:disabled { color: rgb(255 255 255 / 0.3); }
+.tn-dark .cn:not([data-tone='dark']) .cn-arrow:disabled { color: var(--pg-white-a30); }

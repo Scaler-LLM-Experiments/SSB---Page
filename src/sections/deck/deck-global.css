@@ -20,8 +20,8 @@
   justify-content: flex-end;
   min-height: 34rem;
   border-radius: var(--radius-lg);
-  background: #111;
-  color: #fff;
+  background: var(--pg-dark-3);
+  color: var(--pg-white);
 }
 .dkg-img {
   -webkit-user-drag: none;
@@ -44,8 +44,8 @@
   z-index: -2;
   filter: blur(28px) saturate(1.05);
   transform: scale(1.12) !important;
-  -webkit-mask-image: linear-gradient(to top, #000 0%, #000 40%, rgb(0 0 0 / 0.7) 50%, rgb(0 0 0 / 0.3) 58%, transparent 66%);
-  mask-image: linear-gradient(to top, #000 0%, #000 40%, rgb(0 0 0 / 0.7) 50%, rgb(0 0 0 / 0.3) 58%, transparent 66%);
+  -webkit-mask-image: linear-gradient(to top, var(--pg-black) 0%, var(--pg-black) 40%, var(--pg-black-a70) 50%, var(--pg-black-a30) 58%, transparent 66%);
+  mask-image: linear-gradient(to top, var(--pg-black) 0%, var(--pg-black) 40%, var(--pg-black-a70) 50%, var(--pg-black-a30) 58%, transparent 66%);
   animation: dkg-blur-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 @keyframes dkg-blur-in { from { opacity: 0; } }
@@ -54,7 +54,7 @@
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background: linear-gradient(to top, rgb(12 12 14 / 0.78) 0%, rgb(12 12 14 / 0.62) 30%, rgb(12 12 14 / 0.3) 52%, rgb(12 12 14 / 0) 70%);
+  background: linear-gradient(to top, var(--pg-charcoal-a78) 0%, var(--pg-charcoal-a62) 30%, var(--pg-charcoal-a30) 52%, var(--pg-charcoal-a00) 70%);
 }
 .dkg-credit {
   position: absolute;
@@ -63,10 +63,10 @@
   margin: 0;
   padding: 2px 8px;
   border-radius: 4px;
-  background: rgb(0 0 0 / 0.35);
+  background: var(--pg-black-a35);
   font-size: 11px;
   line-height: 1.5;
-  color: rgb(255 255 255 / 0.8);
+  color: var(--pg-white-a80);
 }
 .dkg-copy {
   padding: clamp(1.5rem, 3vw, 2.5rem);
@@ -79,15 +79,15 @@
   gap: 6px;
   margin: 0;
   padding: 4px 10px;
-  border: 1px solid rgb(255 255 255 / 0.24);
+  border: 1px solid var(--pg-white-a24);
   border-radius: var(--radius-lg);
-  background: rgb(255 255 255 / 0.08);
+  background: var(--pg-white-a08);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   font-size: var(--type-label-size);
   line-height: 1.4;
   font-weight: var(--font-weight-medium);
-  color: rgb(255 255 255 / 0.92);
+  color: var(--pg-white-a92);
 }
 .dkg-chip svg { width: 0.875rem; height: 0.875rem; }
 .dkg-day-title {
@@ -97,21 +97,21 @@
   line-height: 1.1;
   letter-spacing: -0.025em;
   font-weight: var(--font-weight-medium);
-  color: #fff;
+  color: var(--pg-white);
 }
 /* the day's plan as a table (2026-10-28, the user's ask: "a proper table, as earlier"): a row a slot,
    hairlines between and under them, three columns (when, its icon, what), every line of a wrapped
    "what" hanging under its first */
-.dkg-slots { display: grid; margin: var(--space-5) 0 0; padding: 0; list-style: none; border-bottom: 1px solid rgb(255 255 255 / 0.16); }
+.dkg-slots { display: grid; margin: var(--space-5) 0 0; padding: 0; list-style: none; border-bottom: 1px solid var(--pg-white-a16); }
 .dkg-slots li {
   display: grid;
   grid-template-columns: 6.5rem minmax(0, 1fr);
   align-items: start;
   gap: var(--space-4);
   padding: var(--space-3) 0;
-  border-top: 1px solid rgb(255 255 255 / 0.16);
+  border-top: 1px solid var(--pg-white-a16);
 }
-.dkg-when { padding-top: 3px; font-size: 11.5px; line-height: 1.4; letter-spacing: 0.1em; text-transform: uppercase; font-weight: var(--font-weight-medium); color: #6bee9f; }
+.dkg-when { padding-top: 3px; font-size: 11.5px; line-height: 1.4; letter-spacing: 0.1em; text-transform: uppercase; font-weight: var(--font-weight-medium); color: var(--pg-mint); }
 .dkg-what {
   display: grid;
   grid-template-columns: 1rem minmax(0, 1fr);
@@ -119,7 +119,7 @@
   column-gap: var(--space-2-5, 10px);
   font-size: 1rem;
   line-height: 1.45;
-  color: rgb(255 255 255 / 0.92);
+  color: var(--pg-white-a92);
 }
 .dkg-what svg { width: 1rem; height: 1rem; margin-top: 3px; }
 
@@ -133,7 +133,7 @@
   overflow: hidden;
   border: 1px solid var(--border-decorative);
   border-radius: var(--radius-lg);
-  background: var(--surface-default, #fff);
+  background: var(--surface-default);
 }
 .dkg-days li { flex: 1; display: flex; }
 .dkg-days li + li { border-top: 1px solid var(--border-decorative); }
@@ -149,9 +149,9 @@
   cursor: pointer;
   transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.dkg-day:hover { background: var(--surface-subtle, #f7f7f5); }
+.dkg-day:hover { background: var(--surface-subtle); }
 .dkg-day:focus-visible { outline: 2px solid var(--border-focus); outline-offset: -2px; }
-.dkg-day[aria-selected='true'] { background: #eef0ea; }
+.dkg-day[aria-selected='true'] { background: var(--pg-tile); }
 .dkg-day-n {
   font-size: 1.25rem;
   line-height: 1;
@@ -179,7 +179,7 @@
   border-radius: var(--radius-lg);
   background: var(--border-decorative);
 }
-.dkg-pillar { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-5) var(--space-6); background: var(--surface-default, #fff); }
+.dkg-pillar { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-5) var(--space-6); background: var(--surface-default); }
 .dkg-pillar svg { width: 1.5rem; height: 1.5rem; margin-bottom: var(--space-3); color: var(--color-ssb-light-9); }
 .dkg-pillar-t { margin: 0; font-size: 1.0625rem; line-height: 1.3; font-weight: var(--font-weight-medium); color: var(--content-primary); }
 .dkg-pillar-x { margin: 0; font-size: var(--type-label-size); line-height: 1.5; color: var(--content-secondary); }
@@ -215,9 +215,9 @@
     padding: 8px 14px;
     border: 1px solid var(--border-decorative);
     border-radius: var(--radius-lg);
-    background: var(--surface-default, #fff);
+    background: var(--surface-default);
   }
-  .dkg-day:hover { background: var(--surface-default, #fff); }
+  .dkg-day:hover { background: var(--surface-default); }
   .dkg-day[aria-selected='true'] { border-color: var(--color-ssb-light-6); background: var(--color-ssb-light-2); }
   .dkg-day-n { font-size: 0.875rem; font-weight: var(--font-weight-medium); }
   .dkg-day[aria-selected='true'] .dkg-day-n { color: var(--color-ssb-light-11); }

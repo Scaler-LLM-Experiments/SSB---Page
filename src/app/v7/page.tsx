@@ -43,6 +43,7 @@ import { BottomNav } from '@/sections/site/BottomNav';
 import { CalmEntrance } from '@/sections/shared/CalmEntrance';
 import { VariantToggle } from '@/sections/site/VariantToggle';
 import '../v6/v6.css';
+import '@/sections/deck/tokens.css';
 
 export const metadata: Metadata = { title: 'Deck · SSB home page' };
 

@@ -13,7 +13,7 @@
   padding: var(--space-6);
   border: 1px solid var(--border-decorative);
   border-radius: var(--radius-lg);
-  background: var(--surface-default, #fff);
+  background: var(--surface-default);
 }
 .dcp-stat dd {
   margin: 0;
@@ -22,7 +22,7 @@
   letter-spacing: -0.04em;
   font-weight: var(--font-weight-medium);
   font-variant-numeric: tabular-nums;
-  color: var(--color-ssb-light-9, #1d925b);
+  color: var(--color-ssb-light-9);
 }
 .dcp-stat dt { font-size: var(--type-label-size, 0.875rem); line-height: 1.4; font-weight: var(--font-weight-medium); color: var(--content-primary); }
 @media (width < 672px) {

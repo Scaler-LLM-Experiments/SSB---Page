@@ -41,6 +41,7 @@ import { BottomNav } from '@/sections/site/BottomNav';
 import { CalmEntrance } from '@/sections/shared/CalmEntrance';
 import { Tone } from '@/sections/tone/Tone';
 import '../v6/v6.css';
+import '@/sections/deck/tokens.css';
 
 export const metadata: Metadata = { title: 'Tone · SSB home page' };
 
