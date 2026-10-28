@@ -1624,9 +1624,11 @@
 /* (later, 2026-10-28, the user's ask: "Kamath, Mittal and Warikoo like the hero, not edge to edge") the
    breakers inset again on tablets and desktop, 16px from the window, 8px corners, as the first fold;
    full bleed on a phone only, as the first fold is there */
+/* (later, the same day: "not edge to edge on a phone; proper padding, as the banner on the web") on
+   a phone too the breakers sit inset, 12px from the window's edges, with 8px corners */
 @media (width < 672px) {
-  [data-page='v7'] .dk-frame { padding-left: 0 !important; padding-right: 0 !important; }
-  [data-page='v7'] .dk-frame .why-breaker { border-radius: 0 !important; }
+  [data-page='v7'] .dk-frame { padding-left: var(--space-3) !important; padding-right: var(--space-3) !important; }
+  [data-page='v7'] .dk-frame .why-breaker { border-radius: var(--radius-lg) !important; }
 }
 
 /* career prep, a section of its own again (2026-10-28, the user's ask: "no proper spacing") the page's own
@@ -2020,4 +2022,63 @@ main[data-entrance='calm'] [data-calm-card='in'] {
 @media (width < 672px) {
   .dk-frame .why-breaker-sub { margin-top: var(--space-4); font-size: 1.125rem; }
   .dk-frame .why-breaker-note-line { margin-top: var(--space-3); font-size: 13px; }
+}
+
+/* Kamath's band (later, the same day: "the title smaller, proper line heights, Kamath visible"): the
+   title a size down on a steady 1.1, the quote at 1.45, the credit and the figures' lines at 1.5; on a
+   phone the clip taller, so the copy and its frost start below his face */
+.dk-frame .why-breaker-title { font-size: clamp(2rem, 2.8vw, 2.625rem) !important; line-height: 1.1 !important; letter-spacing: -0.025em; }
+.dk-frame .why-breaker-sub { line-height: 1.45; }
+.dk-frame .why-breaker-note-line { line-height: 1.5; }
+.dk-frame .why-breaker-stat p,
+.dk-frame .why-breaker-stat dd,
+.dk-frame .why-breaker-stat dt { line-height: 1.5; }
+@media (width < 672px) {
+  .dk-frame .why-breaker-title { font-size: 1.75rem !important; line-height: 1.12 !important; }
+  .dk-frame .why-breaker-sub { font-size: 1.0625rem; line-height: 1.45; }
+  [data-page='v7'] .dk-frame .why-breaker:not(.oc-breaker) { --why-clip: 30rem; }
+}
+
+/* Kamath's band (later, the same day: "the quote the size of his name; the video much more visible"):
+   the quote and the credit one size (15px, 14 on a phone), the quote brighter; the frost over the clip
+   starting further right and lighter, and the shade at the foot lighter, so more of the clip shows clear */
+.dk-frame .why-breaker:not(.oc-breaker) .why-breaker-sub { margin-top: var(--space-5); font-size: 15px; line-height: 1.55; color: rgb(255 255 255 / 0.9); }
+.dk-frame .why-breaker:not(.oc-breaker) .why-breaker-note-line { margin-top: var(--space-2); font-size: 15px; line-height: 1.5; }
+@media (width >= 1056px) {
+  .dk-frame .why-breaker:not(.oc-breaker) .why-breaker-blur {
+    background: color-mix(in oklab, var(--why-shade) 30%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent 50%, #000 70%);
+    mask-image: linear-gradient(to right, transparent 50%, #000 70%);
+  }
+}
+.dk-frame .why-breaker:not(.oc-breaker)::after { height: 25%; background: linear-gradient(to top, rgb(0 0 0 / 0.22), transparent); }
+@media (width < 672px) {
+  .dk-frame .why-breaker:not(.oc-breaker) .why-breaker-sub,
+  .dk-frame .why-breaker:not(.oc-breaker) .why-breaker-note-line { font-size: 14px; }
+}
+
+/* (later, the same day: "WHY SSB in white; the Mittal band's dot nav white") Kamath's eyebrow white;
+   on the Mittal / Warikoo band the dot nav in white: white arrows, soft-white dots, the running fill
+   white, on a light glass tile */
+.dk-frame .why-breaker-eyebrow { color: #fff; }
+.dk-frame .oc-breaker .cn {
+  --cn-pill: rgb(255 255 255 / 0.14);
+  --cn-pill-hover: rgb(255 255 255 / 0.22);
+  --cn-dot: rgb(255 255 255 / 0.4);
+  --cn-dot-hover: rgb(255 255 255 / 0.7);
+  --cn-fill: #fff;
+  --cn-ink: #fff;
+}
+.dk-frame .oc-breaker .cn .cn-arrow:disabled { color: rgb(255 255 255 / 0.35); }
+
+/* Kamath's band on a phone (later, the same day: "the figures smaller so his face shows; the video
+   smaller and a bit up, the rest blurred in its own colours"): the clip framed smaller (22rem) and
+   lifted, the words and their frost starting lower, so his face sits clear at the top; under the clip
+   its own blurred footage (the haze) carries on in the same colours; the figures a size down */
+@media (width < 672px) {
+  [data-page='v7'] .dk-frame .why-breaker:not(.oc-breaker) { --why-clip: 22rem; }
+  [data-page='v7'] .dk-frame .why-breaker:not(.oc-breaker) .why-breaker-clip { translate: -35% -6%; }
+  [data-page='v7'] .dk-frame .why-breaker:not(.oc-breaker) .why-breaker-copy { padding-top: calc(var(--why-clip) * 0.66); }
+  [data-page='v7'] .dk-frame .why-breaker:not(.oc-breaker) .why-breaker-copy::before { top: calc(var(--why-clip) * 0.66 - 4rem); }
+  [data-page='v7'] .dk-frame .why-breaker:not(.oc-breaker) .why-breaker-stat .type-display { font-size: 1.75rem; line-height: 1.1; }
 }

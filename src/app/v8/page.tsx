@@ -112,7 +112,8 @@ export default function V8Page() {
         {/* 8 the Shark Tank judge (Anupam Mittal) and Ankur Warikoo on campus */}
         {/* vFinal's band (2026-10-28, the user's ask): Anupam Mittal's offer, Ankur Warikoo's convocation;
             framed as the first fold, as Kamath's (deck.css, .dk-frame) */}
-        <Tone dark>
+        {/* on the light tone (2026-10-28, the user's ask: no black frame round it), the band its own dark panel */}
+        <Tone>
           <div className="dk-frame">
             <TestimonialSection />
           </div>
