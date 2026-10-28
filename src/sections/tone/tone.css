@@ -183,3 +183,12 @@
 main:has(.tn-dark) {
   background: linear-gradient(#0a0a0a 0 0) top / 100% 100vh no-repeat, var(--surface-page);
 }
+
+/* (2026-10-28, the user's ask: "the darkest grey, almost black") the dark ground #101010 (was #0a0a0a),
+   the cards a step up from it */
+.tn-dark[data-theme='dark'],
+.tn-dark [data-theme='dark'] {
+  --surface-page: #101010 !important;
+  --surface-default: #171717 !important;
+}
+main:has(.tn-dark) { background: linear-gradient(#101010 0 0) top / 100% 100vh no-repeat, var(--surface-page); }

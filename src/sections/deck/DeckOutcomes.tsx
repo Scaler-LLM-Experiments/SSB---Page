@@ -179,7 +179,6 @@ function StripCard({ press }: { press: React.ReactNode }) {
       </div>
       <div className="dks-body">
         <div className="dks-stats">
-          <p className="dks-k">The founding cohort</p>
           <dl className="dks-row">
             {figures.map((f) => (
               <div key={f.value} className="dks-fig">

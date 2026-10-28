@@ -709,3 +709,28 @@ main[data-page='v7'] .peers-flip-logo[style] {
     radial-gradient(110% 60% at 50% 115%, rgb(43 182 115 / 0.1), transparent 70%),
     #141414;
 }
+/* (the same ask) the divider's dark and the card on the new ground (#101010); the stats panel's top
+   margin now the eyebrow is gone */
+.dko-glow {
+  background:
+    linear-gradient(to bottom, #101010 0%, rgb(16 16 16 / 0) 30%),
+    radial-gradient(75% 115% at 50% -35%, #101010 52%, #1f5236 60%, #5fb883 67%, #b9e6c9 75%, var(--surface-page) 88%),
+    var(--surface-page);
+}
+.dks {
+  background:
+    radial-gradient(120% 70% at 50% 0%, rgb(255 255 255 / 0.05), transparent 60%),
+    radial-gradient(110% 60% at 50% 115%, rgb(43 182 115 / 0.1), transparent 70%),
+    #181818;
+}
+.dks-row, .dks-row:is(*) { margin-top: 0; }
+
+/* (the same day, the user's ask: the startup cards' colours) the card as the startups' cards on the
+   dark ground: their surface (#171717) and hairline, flat (no sheen, no green wash, no glow), the
+   stats panel and the press card inside it on the same surface with the same hairline */
+.dks, .dks:is(*) {
+  border-color: var(--border-decorative);
+  background: var(--surface-default);
+  box-shadow: none;
+}
+.dks-row, .dks-row:is(*) { background: none; }
