@@ -1,0 +1,101 @@
+/* =========================================================
+   The minimal landing page's chrome, rebuilt for /v9 (MinimalChrome.tsx, 2026-11-03, the user's ask:
+   ssb-minimal.vercel.app/minimal-sudh's layout with the final page's sections): its top bar, its
+   floating pill at the foot, and its sign-up card. Always light, whatever the section under them.
+   ========================================================= */
+
+/* the top bar: sticky, frosted, 64px */
+.mn { position: sticky; top: 0; z-index: 60; background: rgb(255 255 255 / 0.72); -webkit-backdrop-filter: saturate(1.4) blur(20px); backdrop-filter: saturate(1.4) blur(20px); border-bottom: 1px solid rgb(0 0 0 / 0.06); color: #171717; }
+.mn-bar { display: flex; align-items: center; gap: var(--space-6); max-width: var(--mn-max, 1312px); height: 4rem; margin: 0 auto; padding: 0 var(--space-gutter, 24px); }
+.mn-logo { display: inline-flex; flex: none; margin-right: auto; }
+.mn-logo svg, .mn-logo [data-slot] { height: 2.25rem; width: auto; }
+.mn-links { display: flex; align-items: center; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
+.mn-links a { display: inline-flex; align-items: center; height: 2rem; padding: 0 var(--space-3); border-radius: var(--radius-md); font-size: 0.875rem; font-weight: 500; color: #3d3d3d; text-decoration: none; transition: background-color 0.2s, color 0.2s; }
+.mn-links a:hover { color: #171717; }
+.mn-links a[aria-current='true'] { background: rgb(0 0 0 / 0.05); color: #171717; }
+.mn-apply { display: inline-flex; align-items: center; height: 2rem; padding: 0 var(--space-3-5, 14px); border-radius: var(--radius-md); background: var(--color-ssb-light-9, #1d925b); color: #fff; font-size: 0.875rem; font-weight: 600; text-decoration: none; }
+.mn-apply:hover { background: var(--color-ssb-light-10, #17804f); }
+.mn :is(a):focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+@media (width < 860px) {
+  .mn-links { display: none; }
+  .mn-bar { height: 3.5rem; }
+  .mn-logo svg, .mn-logo [data-slot] { height: 1.875rem; }
+}
+
+/* the floating pill at the foot: "Variant", then the pages */
+.mv { position: fixed; bottom: var(--space-4); left: 50%; z-index: 55; display: flex; align-items: center; gap: var(--space-1); padding: var(--space-1); translate: -50% 0;
+  border: 1px solid rgb(0 0 0 / 0.08); border-radius: 999px; background: rgb(255 255 255 / 0.85); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); box-shadow: 0 8px 24px -12px rgb(0 0 0 / 0.25); }
+.mv-k { padding: 0 var(--space-2) 0 var(--space-3); font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #8a8a8a; }
+.mv a { display: inline-flex; align-items: center; height: 1.875rem; padding: 0 var(--space-3-5, 14px); border-radius: 999px; font-size: 0.8125rem; font-weight: 500; color: #3d3d3d; text-decoration: none; }
+.mv a:hover { background: rgb(0 0 0 / 0.04); }
+.mv a[aria-current='page'] { background: var(--color-ssb-light-9, #1d925b); color: #fff; }
+
+/* the sign-up card: white always, a green band at its head */
+.mf { overflow: hidden; border: 1px solid #e5e5e5; border-radius: var(--radius-lg); background: #fff; color: #171717; box-shadow: 0 20px 48px -28px rgb(0 0 0 / 0.35); }
+.mf-band { padding: var(--space-4) var(--space-6); background: #0f6b40; color: #fff; }
+.mf-band-t { margin: 0; font-size: 1rem; line-height: 1.3; font-weight: 600; }
+.mf-band-s { margin: var(--space-1) 0 0; font-size: 0.75rem; line-height: 1.4; color: rgb(255 255 255 / 0.82); }
+.mf-form { display: flex; flex-direction: column; padding: var(--space-6); }
+.mf-title { margin: 0; font-size: 1.25rem; line-height: 1.25; letter-spacing: -0.01em; font-weight: 600; color: #171717; }
+.mf-sub { margin: var(--space-1) 0 var(--space-4); font-size: 0.875rem; line-height: 1.4; color: #616161; }
+.mf-input { box-sizing: border-box; width: 100%; min-width: 0; height: 2.75rem; margin: 0; padding: 0 var(--space-3-5, 14px); border: 1px solid #e5e5e5; border-radius: var(--radius-md); background: #fff; font: inherit; font-size: 0.875rem; color: #171717; }
+.mf-input::placeholder { color: #8a8a8a; }
+.mf-input:focus { outline: 2px solid var(--border-focus, #1d925b); outline-offset: -1px; }
+.mf-phone { display: grid; grid-template-columns: 5.25rem minmax(0, 1fr); gap: var(--space-2); margin-top: var(--space-3); }
+.mf-cc { display: flex; align-items: center; justify-content: center; gap: var(--space-1-5, 6px); height: 2.75rem; border: 1px solid #e5e5e5; border-radius: var(--radius-md); font-size: 0.875rem; }
+.mf-deadline { margin: var(--space-6) 0 var(--space-3); font-size: 0.8125rem; line-height: 1.4; text-align: center; color: #616161; }
+.mf-deadline b { font-weight: 600; color: var(--color-ssb-light-9, #1d925b); }
+.mf-cta { all: unset; box-sizing: border-box; display: grid; place-items: center; width: 100%; height: 2.75rem; border-radius: var(--radius-md); background: var(--color-ssb-light-9, #1d925b); color: #fff; font-size: 0.9375rem; font-weight: 600; cursor: pointer; }
+.mf-cta:hover { background: var(--color-ssb-light-10, #17804f); }
+.mf-cta:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+.mf-wa { display: flex; align-items: center; gap: var(--space-2); margin-top: var(--space-4); font-size: 0.8125rem; line-height: 1.4; color: #3d3d3d; cursor: pointer; }
+.mf-wa input { flex: none; width: 1rem; height: 1rem; margin: 0; accent-color: var(--color-ssb-light-9, #1d925b); }
+.mf-terms { margin: var(--space-5) 0 0; font-size: 0.75rem; line-height: 1.5; color: #616161; }
+.mf-terms span { color: var(--color-ssb-light-9, #1d925b); text-decoration: underline; text-underline-offset: 2px; }
+
+/* ── (2026-11-03, the user's asks: phones, accessibility) ── */
+/* the card's title is the form's heading now (an h2): the same look */
+.mf .mf-title { margin: 0; font-family: inherit; }
+.mf-sr, .mn-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* placeholders at 4.5:1 on white (they were 3.4:1) */
+.mf-input::placeholder { color: #737373; opacity: 1; }
+.mf-terms b { font-weight: 600; color: #3d3d3d; }
+/* phones: the bar's Apply a 40px target */
+@media (width < 860px) { .mn-apply { height: 2.5rem; padding: 0 var(--space-4); font-size: 0.9375rem; } }
+
+/* the phones' Apply now bar at the window's foot, once the card after the first fold has gone by */
+.msa { display: none; }
+@media (width < 1056px) {
+  .msa { position: fixed; left: 0; right: 0; bottom: 0; z-index: 58; display: block; padding: var(--space-3) var(--space-gutter, 16px) calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
+    background: rgb(255 255 255 / 0.92); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border-top: 1px solid rgb(0 0 0 / 0.08);
+    transform: translateY(110%); transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+  .msa[data-shown] { transform: none; }
+  .msa-btn { display: flex; align-items: center; justify-content: center; height: 3rem; border-radius: var(--radius-md); background: var(--color-ssb-light-9, #1d925b); color: #fff; font-size: 1rem; font-weight: 600; text-decoration: none; }
+  .msa-btn:focus-visible { outline: 2px solid var(--border-focus, #1d925b); outline-offset: 2px; }
+  /* room at the page's foot, so the bar never covers the last lines */
+  html[data-m9-apply] body { padding-bottom: 4.5rem; }
+}
+@media (prefers-reduced-motion: reduce) { .msa { transition: none; } }
+
+/* (2026-11-04, the user's asks) the top bar under the announcement bar, both staying at the top (the bar
+   had slid over it); the phones' Apply bar with the last date and the time left at its left */
+.mn { top: var(--hf-bar, 0px); }
+.msa-when { display: none; }
+@media (width < 1056px) {
+  .msa[data-shown] { display: flex; align-items: center; gap: var(--space-3); }
+  .msa { display: flex; align-items: center; gap: var(--space-3); }
+  .msa-when { display: flex; flex-direction: column; gap: 2px; flex: 1 1 auto; min-width: 0; }
+  .msa-k { margin: 0; overflow: hidden; font-size: 0.75rem; line-height: 1.3; font-weight: 500; white-space: nowrap; text-overflow: ellipsis; color: #3d3d3d; }
+  .msa-count > span[aria-hidden] { display: flex; gap: var(--space-1-5, 6px); }
+  .msa-unit { font-size: 0.75rem; line-height: 1.2; color: #616161; }
+  .msa-unit b { margin-right: 1px; font-size: 1rem; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--color-ssb-light-9, #1d925b); }
+  .msa-btn { flex: none; padding: 0 var(--space-5); }
+}
+
+/* (2026-11-05, the user's ask) the card's order of reading: the band a quiet header, the card's own
+   title the loudest line, its prompt under it a step up */
+.mf-band { padding: var(--space-3) var(--space-6); }
+.mf-band-t { font-size: 0.875rem; font-weight: 600; letter-spacing: 0.01em; }
+.mf-band-s { font-size: 0.75rem; }
+.mf .mf-title { font-size: 1.625rem; line-height: 1.2; letter-spacing: -0.02em; font-weight: 600; }
+.mf-sub { margin-top: var(--space-1-5, 6px); font-size: 1rem; line-height: 1.45; color: #525252; }

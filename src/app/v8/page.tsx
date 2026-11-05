@@ -40,6 +40,7 @@ import { TestimonialSection } from '@/sections/testimonial/TestimonialSection';
 import { BottomNav } from '@/sections/site/BottomNav';
 import { CalmEntrance } from '@/sections/shared/CalmEntrance';
 import { Tone } from '@/sections/tone/Tone';
+import { ApplyModal } from '@/sections/site/ApplyModal';
 import '../v6/v6.css';
 import '@/sections/deck/tokens.css';
 
@@ -59,6 +60,8 @@ export default function V8Page() {
     <>
       <main data-page="v7" data-entrance="calm" data-brand="ssb" data-theme="light" className="bg-page text-content">
         <ScrollRefresh />
+        {/* every Apply now opens the live site's sign-in step, full page, for visualisation (2026-10-28, the user's ask) */}
+        <ApplyModal />
         {/* every section's appear animation, one calm fade (2026-10-28, the user's ask) */}
         <CalmEntrance />
         <HeroFrameDeadline deadline={heroFrame.deadline} />
