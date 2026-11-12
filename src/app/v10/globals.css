@@ -1,0 +1,14 @@
+/* /v10 only: the shared globals.css changes the minimal page made on 2026-11-11 (the user's asks),
+   kept here so the other routes keep the shared values. */
+@media (min-width: 672px) {
+  main [data-slot='section'][data-density='roomy'], .pv-page.pv-home { padding-block: var(--space-16); }
+}
+main :is(h2, h3).type-display + p.type-body-lg {
+  font-size: var(--tp-intro);
+  line-height: var(--tp-intro-lh);
+}
+@media (width < 672px) {
+  /* the sub-line's phone size comes from typography.css's scale */
+  main :is(h2, h3).type-display + p.type-body-lg { font-size: var(--tp-intro); line-height: var(--tp-intro-lh); }
+  main [data-slot='section'][data-density='roomy'], .pv-page.pv-home { padding-block: var(--space-8); }
+}

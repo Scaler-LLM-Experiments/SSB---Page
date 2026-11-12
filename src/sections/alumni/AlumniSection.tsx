@@ -23,12 +23,15 @@ export function AlumniSection({
   eyebrow = 'Alumni',
   title,
   sub = 'Now in growth, strategy and brand roles at Blinkit, Emergent and more.',
+  phoneRows = 2,
 }: {
   peers?: React.ReactNode;
   people?: Alumnus[];
   eyebrow?: string;
   title?: string;
   sub?: string;
+  /** Rows on a phone (/v10, 2026-11-11: three); the dots count columns of that many cards. */
+  phoneRows?: number;
 }) {
   const alumni = people;
   const sectionRef = React.useRef<HTMLElement>(null);
@@ -36,7 +39,16 @@ export function AlumniSection({
   // Same entrance as Faculty: the header, then the cards on screen wiped open.
   useSectionEntrance(sectionRef, { decks: ['.alumni-row > li > article'] });
   // The scrolling grid is the phone's (2026-10-13): two rows, card over card, so the dots count columns.
-  const rows = useRows(2);
+  const wideRows = useRows(2);
+  const [phone, setPhone] = React.useState(false);
+  React.useEffect(() => {
+    const mq = window.matchMedia('(width < 672px)');
+    const set = () => setPhone(mq.matches);
+    set();
+    mq.addEventListener('change', set);
+    return () => mq.removeEventListener('change', set);
+  }, []);
+  const rows = phone && phoneRows !== 2 ? phoneRows : wideRows;
 
 
   return (

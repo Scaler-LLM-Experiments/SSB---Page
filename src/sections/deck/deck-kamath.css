@@ -1,0 +1,84 @@
+/* Slide 4 as one card (DeckKamath, 2026-11-11): a grey card, the copy at the left and the video inset
+   at the right; phones: the video first. */
+.dkk-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: var(--space-12);
+  align-items: center;
+  padding: var(--space-5) var(--space-5) var(--space-5) var(--space-12);
+  border-radius: var(--radius-lg);
+  background: var(--surface-sunken);
+}
+
+/* the hierarchy (2026-11-11, the user's ask: grey, no quote marks): the eyebrow, the question as the
+   title, his words as the line under it, then who said them over a hairline */
+.dkk-copy { display: flex; flex-direction: column; padding-block: var(--space-8); }
+.dkk-eyebrow { color: var(--content-brand); }
+.dkk-title { margin-top: var(--space-3); color: var(--content-primary); text-wrap: balance; }
+.dkk-quote { margin: var(--space-4) 0 0; }
+.dkk-quote blockquote { margin: 0; }
+.dkk-quote p {
+  margin: 0; max-width: 32rem;
+  font-size: 1.125rem; line-height: 1.55; color: var(--content-secondary); text-wrap: pretty;
+}
+.dkk-by {
+  display: flex; align-items: center; gap: var(--space-3);
+  margin-top: var(--space-6); padding-top: var(--space-5);
+  border-top: 1px solid var(--border-subtle);
+}
+.dkk-by img { flex: none; width: 2.75rem; height: 2.75rem; border-radius: 50%; object-fit: cover; }
+.dkk-by > span { display: flex; flex-direction: column; gap: 2px; line-height: 1.3; }
+.dkk-by b { font-size: 1rem; font-weight: var(--font-weight-semibold); color: var(--content-primary); }
+.dkk-by > span > span { font-size: var(--type-caption-size); color: var(--content-tertiary, var(--content-secondary)); }
+
+/* the video: 16:9, rounded; the still with a green play button and a source label until clicked */
+.dkk-video {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: #000;
+  }
+.dkk-video iframe, .dkk-poster { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.dkk-poster { display: block; padding: 0; cursor: pointer; background: none; color: inherit; }
+.dkk-poster img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+.dkk-poster::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgb(0 0 0 / 0.55), transparent 45%);
+}
+.dkk-poster:hover img { transform: scale(1.02); }
+.dkk-play {
+  position: absolute; left: 50%; top: 50%; z-index: 1; translate: -50% -50%;
+  width: 4.25rem; height: 3rem;
+}
+.dkk-play-bg { fill: #212121; fill-opacity: 0.8; transition: fill 0.15s ease, fill-opacity 0.15s ease; }
+.dkk-poster:hover .dkk-play-bg, .dkk-poster:focus-visible .dkk-play-bg { fill: #f00; fill-opacity: 1; }
+.dkk-poster:focus-visible { outline: 2px solid #fff; outline-offset: -4px; }
+/* the label at the video's foot (where the clip is from, or a photo's credit) */
+.dkk-chip {
+  position: absolute; left: var(--space-4); bottom: var(--space-4); z-index: 1;
+  padding: 6px 10px; border-radius: 999px;
+  font-size: var(--type-caption-size); line-height: 1.3; font-weight: var(--font-weight-medium);
+  color: #fff; background: rgb(0 0 0 / 0.45);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+}
+
+@media (width < 1056px) {
+  .dkk-card { grid-template-columns: 1fr; gap: var(--space-6); padding: var(--space-5); }
+  .dkk-copy { padding: 0 var(--space-3) var(--space-3); }
+}
+/* phones: the video first (2026-11-11, the user's ask), then the copy */
+@media (width < 672px) {
+  .dkk-card { padding: var(--space-3); gap: var(--space-5); }
+  .dkk-video { order: -1; }
+  .dkk-copy { padding: 0 var(--space-2) var(--space-3); }
+  .dkk-quote p { font-size: 1rem; }
+  .dkk-play { width: 3.5rem; height: 2.5rem; }
+  .dkk-chip { left: var(--space-3); bottom: var(--space-3); }
+}
+
+/* the placements banner's frame round the card (2026-11-11, the user's ask): .dko-card's 2px edge and
+   white ground, no strip (the user's call); the grey card inset 20px (12px on a phone) */
+.dko-card.dkk-frame { margin-top: 0; }
+.dkk-frame > .dkk-card { margin: var(--space-5); }
+@media (width < 672px) { .dkk-frame > .dkk-card { margin: var(--space-3); } }

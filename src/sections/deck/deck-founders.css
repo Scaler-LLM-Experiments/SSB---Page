@@ -1,0 +1,65 @@
+/* Founders on campus (DeckFounders, 2026-11-11): a header, then three grey cards in the Kamath card's
+   look (deck-kamath.css: the clip, its green play button and label, who it is); three across on the
+   web, a row swiped sideways below that. */
+.dkf-head { display: flex; flex-direction: column; gap: var(--space-3); max-width: var(--size-measure-max); }
+.dkf-title { text-wrap: balance; }
+.dkf-sub { text-wrap: pretty; }
+
+.dkf-row {
+  --dkf-inset: calc(max(0px, (100vw - var(--size-container-max)) / 2) + var(--space-gutter));
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin: var(--space-10) 0 0;
+  padding: 0 var(--dkf-inset);
+  list-style: none;
+}
+.dkf-card {
+  display: flex; flex-direction: column; gap: var(--space-5);
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  /* white with the page's card stroke (2026-11-11, the user's ask; was the grey fill) */
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-default);
+}
+.dkf-media { flex: none; }
+.dkf-media video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.dkf-copy { display: flex; flex: 1; flex-direction: column; padding: 0 var(--space-3) var(--space-3); }
+.dkf-card-title { color: var(--content-primary); text-wrap: balance; }
+.dkf-line { margin: var(--space-2) 0 0; font-size: 1rem; line-height: 1.55; color: var(--content-secondary); text-wrap: pretty; }
+/* the person at the card's foot, so the three line up whatever the line's length */
+.dkf-line { margin-bottom: var(--space-5); }
+.dkf-copy > .dkk-by { margin-top: auto; padding-top: var(--space-4); }
+
+/* no photo or clip yet: a plate with the initials (Ashneer Grover's, until the team's assets arrive) */
+.dkf-plate {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  background: linear-gradient(135deg, #2b302e, #121614);
+}
+.dkf-plate span { font-size: 3.5rem; font-weight: var(--font-weight-semibold); letter-spacing: 0.02em; color: rgb(255 255 255 / 0.85); }
+.dkf-initials {
+  flex: none; display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: 50%;
+  font-size: 0.875rem; font-weight: var(--font-weight-semibold); color: #fff; background: #2b302e;
+}
+
+/* under 1056px: a sideways row, the next card peeking in */
+@media (width < 1056px) {
+  .dkf-row {
+    grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 22rem;
+    overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--dkf-inset);
+    scrollbar-width: none; overscroll-behavior-x: contain;
+  }
+  .dkf-row::-webkit-scrollbar { display: none; }
+  .dkf-card { scroll-snap-align: start; }
+}
+@media (width < 672px) {
+  .dkf-row { grid-auto-columns: 82vw; gap: var(--space-3); margin-top: var(--space-6); }
+  .dkf-card { gap: var(--space-4); }
+  .dkf-copy { padding: 0 var(--space-2) var(--space-2); }
+  .dkf-line { font-size: 0.9375rem; }
+}
+
+/* a still in place of a clip (Ashneer Grover's, for now), its license's credit on the chip, linked */
+.dkf-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.dkf-credit { text-decoration: none; font-size: 11px; font-weight: var(--font-weight-regular, 400); }
+.dkf-credit:hover { text-decoration: underline; }

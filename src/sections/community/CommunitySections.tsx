@@ -264,13 +264,17 @@ function CampusTabs({ labels, active, onSelect }: { labels: string[]; active: nu
   );
 }
 
-export function CampusLifeSection() {
+const NO_SCOPE: React.RefObject<HTMLElement | null> = { current: null };
+
+/** `clubs={false}`: campus life without the student clubs' row under it (the minimal page, 2026-11-11). */
+/** `still` (the minimal page, 2026-11-11, the user's ask): a plain gallery, no scroll moment or wipes. */
+export function CampusLifeSection({ clubs = true, still = false }: { clubs?: boolean; still?: boolean } = {}) {
   const ref = React.useRef<HTMLElement>(null);
   const [tab, setTab] = React.useState(0);
   // The Innovation Lab's moment (the team's ask, 2026-10-07): on desktop the cohort arrives
   // full-bleed and pulls back into the middle of a mosaic of the campus; elsewhere the tiles wipe
   // open. The follow buttons float on the cohort in glass, coming up with the heading.
-  useLabMotion(ref);
+  useLabMotion(still ? NO_SCOPE : ref);
   const c = campusLife;
   const labels = ['Campus', ...c.galleries.map((g) => g.label)];
   const gallery = tab === 0 ? null : c.galleries[tab - 1];
@@ -329,6 +333,7 @@ export function CampusLifeSection() {
 
       {/* The student clubs, as the Innovation Lab's startups: a subheading, then the row (the lab's
           CSS runs it on from the section above, `section.lab + section`). */}
+      {clubs ? (
       <RowSection
         id="clubs"
         title={c.clubsTurn.text}
@@ -353,6 +358,7 @@ export function CampusLifeSection() {
           <ClubCard key={club.name} club={club} />
         ))}
       </RowSection>
+      ) : null}
     </>
   );
 }

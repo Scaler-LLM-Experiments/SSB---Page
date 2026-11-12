@@ -1,0 +1,157 @@
+/* ── One type scale for the whole page (2026-11-11, the user's ask: "too much text hierarchy here and
+   there; make it consistent", web and mweb). Seven roles, each one size and line height per screen:
+
+   role               web (≥1056)   tablet        phone (<672)
+   section title      36 / 1.15     32 / 1.2      24 / 1.25
+   closing statement  44 / 1.1      36 / 1.15     28 / 1.2
+   section intro      16 / 1.6      16 / 1.6      15 / 1.55
+   item title         20 / 1.3      18 / 1.3      17 / 1.3
+   reading text       16 / 1.65     16 / 1.65     15 / 1.6
+   card text          14 / 1.6      14 / 1.6      13 / 1.5
+   meta               13 / 1.45     13 / 1.45     12 / 1.4      (eyebrows stay 12, caps)
+
+   The design system's tokens carry most of it (Heading and Text); the sections' own classes are set
+   here too, each class doubled (.x.x) so this file wins over the sections' own rules without
+   !important. Left alone: the people cards (one fixed 480 x 320 design scaled to its slot), the big
+   figures (stats, prices), buttons and the hero. ── */
+
+:root {
+  --tp-title: 2.25rem;     --tp-title-lh: 1.15;
+  --tp-close: 2.75rem;     --tp-close-lh: 1.1;
+  --tp-intro: 1rem;        --tp-intro-lh: 1.6;
+  --tp-item: 1.25rem;      --tp-item-lh: 1.3;
+  --tp-read: 1rem;         --tp-read-lh: 1.65;
+  --tp-card: 0.875rem;     --tp-card-lh: 1.6;
+  --tp-meta: 0.8125rem;    --tp-meta-lh: 1.45;
+}
+@media (width < 1056px) {
+  :root { --tp-title: 2rem; --tp-title-lh: 1.2; --tp-close: 2.25rem; --tp-close-lh: 1.15; --tp-item: 1.125rem; }
+}
+@media (width < 672px) {
+  :root {
+    --tp-title: 1.5rem;     --tp-title-lh: 1.25;
+    --tp-close: 1.75rem;    --tp-close-lh: 1.2;
+    --tp-intro: 0.9375rem;  --tp-intro-lh: 1.55;
+    --tp-item: 1.0625rem;
+    --tp-read: 0.9375rem;   --tp-read-lh: 1.6;
+    /* card text 13px on a phone (2026-11-11, the user's ask: every card's text as the student startups'
+       Dream Kit card, which the other cards outgrew at 14px) */
+    --tp-card: 0.8125rem;   --tp-card-lh: 1.5;
+    --tp-meta: 0.75rem;     --tp-meta-lh: 1.4;
+  }
+}
+
+/* the design system's own roles, through its tokens */
+html body main {
+  --type-display-size: var(--tp-title);  --type-display-lh: var(--tp-title-lh);
+  --type-body-lg-size: var(--tp-intro);  --type-body-lg-lh: var(--tp-intro-lh);
+  --type-body-size: var(--tp-read);      --type-body-lh: var(--tp-read-lh);
+  --type-body-sm-size: var(--tp-card);   --type-body-sm-lh: var(--tp-card-lh);
+  --type-h3-size: var(--tp-item);        --type-h3-lh: var(--tp-item-lh);
+  --type-h2-size: var(--tp-item);        --type-h2-lh: var(--tp-item-lh);
+}
+
+/* section titles and their intros: one size each, the intro held to a readable measure */
+html body main h2.type-display { font-size: var(--tp-title); line-height: var(--tp-title-lh); }
+html body main h2.type-display + p,
+html body main h2.type-display ~ p.type-body-lg { font-size: var(--tp-intro); line-height: var(--tp-intro-lh); max-width: 40rem; }
+
+/* the closing statement (its own rules set the size with !important, deck-finale.css) */
+html body .dkc-copy.dkc-copy h2, html body .dkc-title.dkc-title { font-size: var(--tp-close) !important; line-height: var(--tp-close-lh); }
+
+/* item titles: the cards' and lists' own headings */
+html body :is(
+  .bc-name.bc-name, .lp-title.lp-title, .sc-title.sc-title, .tr-title.tr-title,
+  .creator-card__name.creator-card__name, .dkg-day-title.dkg-day-title, .dko-clip-title.dko-clip-title,
+  .dkf-card-title.dkf-card-title, .dkf-q-text.dkf-q-text
+),
+html body .pr-card.pr-card > h3,
+html body .ad4-card.ad4-card > h3,
+html body .ad4-card-h.ad4-card-h > h3,
+html body [data-page] .tr[data-deck] .tr-title.tr-title {
+  font-size: var(--tp-item); line-height: var(--tp-item-lh);
+}
+
+/* reading text: the longer passages read on their own */
+html body :is(.ad4-lede.ad4-lede, .dkf-a-inner.dkf-a-inner > p, .dkk-quote.dkk-quote p, .ad4-steps.ad4-steps > li) {
+  font-size: var(--tp-read); line-height: var(--tp-read-lh);
+}
+
+/* card text: what a card says under its title */
+html body :is(
+  .bc-blurb.bc-blurb, .lp-desc.lp-desc, .sc-text.sc-text, .tr-sum.tr-sum, .dk-card-text.dk-card-text,
+  .dkg-pillar-x.dkg-pillar-x, .dko-clip-sub.dko-clip-sub, .dk-biz-sub.dk-biz-sub, .dkf-line.dkf-line,
+  .ad4-fast.ad4-fast, .ad4-fine.ad4-fine
+),
+html body .pr-card.pr-card > p,
+html body .ad4-card.ad4-card > p,
+html body .ad4-sch-head.ad4-sch-head > p {
+  font-size: var(--tp-card); line-height: var(--tp-card-lh);
+}
+
+/* meta: who, where from, small labels; never under 12px */
+html body :is(
+  .bc-by.bc-by, .bc-met-l.bc-met-l, .dkk-chip.dkk-chip, .ad4-sc-k.ad4-sc-k, .dk-biz-proof-k.dk-biz-proof-k,
+  .dkg-credit.dkg-credit, .dkg-when.dkg-when
+) {
+  font-size: var(--tp-meta); line-height: var(--tp-meta-lh);
+}
+html body .dkk-by.dkk-by > span > span { font-size: var(--tp-meta); }
+html body .dkk-by.dkk-by b { font-size: calc(var(--tp-meta) + 2px); }
+
+/* the footer's own text, on the same roles */
+html body .dkft-brand-line.dkft-brand-line { font-size: var(--tp-intro); line-height: var(--tp-intro-lh); }
+html body .dkft-address.dkft-address { font-size: var(--tp-meta); line-height: var(--tp-meta-lh); }
+
+/* the stragglers the audit found (2026-11-11): the curriculum's programme titles (its own token
+   override) and the closing banner's intro; the closing statement's line height (set !important) */
+html body main h3.type-h3.type-h3:not(.fc-card *, .alumni-card *) { font-size: var(--tp-item); line-height: var(--tp-item-lh); }
+html body .dkc-copy.dkc-copy h2 + p, html body .dkc-copy.dkc-copy p.type-body-lg { font-size: var(--tp-intro); line-height: var(--tp-intro-lh); }
+html body .dkc-copy.dkc-copy h2, html body .dkc-title.dkc-title { line-height: var(--tp-close-lh) !important; }
+html body .dkc-line.dkc-line { font-size: var(--tp-intro) !important; line-height: var(--tp-intro-lh); }
+html body .dk-biz-body.dk-biz-body h3 { font-size: var(--tp-item) !important; line-height: var(--tp-item-lh); }
+
+/* ── Section headers' rhythm (2026-11-11, the user's ask: "somewhere close, somewhere far; a sweet spot
+   in between"): eyebrow → title → subtext one gap everywhere, 12px on the web and tablets (was mostly
+   8, some 12, the closing banner 16–20), 10px on a phone. Set on the header blocks' own gap; blocks
+   spaced by margins instead (Kamath's card, the closing banner) get the same through margins. ── */
+:root { --tp-head-gap: 0.75rem; }
+@media (width < 672px) { :root { --tp-head-gap: 0.625rem; } }
+
+html body main :is(div, header):has(> h2.type-display):not(.dkk-copy, .dkc-copy, .pt-subs) { row-gap: var(--tp-head-gap) !important; }
+/* the Kamath card: eyebrow, title and quote by margins */
+html body .dkk-copy.dkk-copy .dkk-title { margin-top: var(--tp-head-gap); }
+html body .dkk-copy.dkk-copy .dkk-quote { margin-top: var(--tp-head-gap); }
+/* the closing banner: eyebrow, title and line by margins (its own rules set them !important) */
+html body .dkc-copy.dkc-copy { row-gap: 0 !important; }
+html body .dkc-copy.dkc-copy h2, html body .dkc-copy.dkc-copy .dkc-title { margin-top: var(--tp-head-gap) !important; }
+html body .dkc-copy.dkc-copy h2 + p, html body .dkc-copy.dkc-copy .dkc-line { margin-top: var(--tp-head-gap) !important; }
+
+/* compact cards on a phone (2026-11-11, the user's ask: the startups' line read as big as the name):
+   the 319 x 213 landscape cards (the student startups, the live projects) take one step under the card
+   text, 13px / 1.5, so the 17px name leads; full-size cards keep 14px */
+@media (width < 672px) {
+  html body [data-phone-rows='2'] .bc-blurb.bc-blurb,
+  html body .lp-phone-row.lp-phone-row .lp-desc { font-size: 0.8125rem; line-height: 1.5; }
+}
+
+/* ── The people cards on the same scale (2026-11-11, the user's ask: "the instructor's name and Dream
+   Kit's aren't equal"). Each is one 480 x 320 design scaled to its slot (--fc-scale, --alumni-scale),
+   so every size here is the scale's role divided by the card's scale: drawn, it lands on the role at
+   any width. Names = item title (and its weight); the company beside the logo = card text; credentials
+   = meta. (The alumni cards keep their own type: the user's call, 2026-11-11.) ── */
+html body .fc-card.fc-card .fc-card__course.fc-card__course {
+  font-size: calc(var(--tp-item) / var(--fc-scale, 1)) !important; line-height: var(--tp-item-lh) !important;
+  font-weight: var(--font-weight-semibold, 600);
+}
+html body .fc-card.fc-card .fc-card__co-name.fc-card__co-name { font-size: calc(var(--tp-card) / var(--fc-scale, 1)) !important; line-height: 1.3; }
+html body .fc-card.fc-card :is(.fc-card__credentials, .fc-card__by).fc-card__credentials,
+html body .fc-card.fc-card .fc-card__by.fc-card__by { font-size: calc(var(--tp-meta) / var(--fc-scale, 1)) !important; line-height: var(--tp-meta-lh) !important; }
+
+
+/* card text that outranked the scale (2026-11-11, the card audit): the business programmes' line, the
+   curriculum terms' summary, the admissions steps and the internship figures' captions (their own rules
+   set them !important or through page-scoped selectors) */
+html body :is(.dk-biz-sub.dk-biz-sub, [data-page] .tr[data-deck] .tr-sum.tr-sum, [data-page='v7'] .tr-sum.tr-sum, .ad4-steps.ad4-steps li, .pl-figure-box.pl-figure-box p.mt-1) {
+  font-size: var(--tp-card) !important; line-height: var(--tp-card-lh) !important;
+}

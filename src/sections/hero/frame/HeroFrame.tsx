@@ -1,5 +1,5 @@
 import { Banner, Button, Heading, Text } from '@kishanscaler/ssx-ui';
-import { ArrowUpRight } from '@phosphor-icons/react/ssr';
+import { ArrowUpRight, CalendarBlank } from '@phosphor-icons/react/ssr';
 
 import type { HeroFrameContent } from '@/content/home';
 import { HeroFrameBarHeight } from './HeroFrameBarHeight';
@@ -19,7 +19,8 @@ import './hero-frame.css';
 /** `variant="deck"` (the deck variant, /v7, 2026-10-28): the eyebrow as a brand-green chip, the title on
  *  the display line height, the logos turning over all together in a quick wave. */
 /** `tone="dark"` (/v8, 2026-10-28, the user's ask: the first two folds dark): the black ground, white type. */
-export function HeroFrame({ content: c, variant, tone = 'light' }: { content: HeroFrameContent; variant?: 'deck'; tone?: 'light' | 'dark' }) {
+/** `image`: a still in place of the film; `intake`: the intake's deadline under the CTAs (both /v10, 2026-11-11). */
+export function HeroFrame({ content: c, variant, tone = 'light', image, intake }: { content: HeroFrameContent; variant?: 'deck'; tone?: 'light' | 'dark'; image?: string; intake?: string }) {
   return (
     <section
       className="hf"
@@ -31,7 +32,12 @@ export function HeroFrame({ content: c, variant, tone = 'light' }: { content: He
     >
       {/* the frame is dark in both tones: the copy is white on the film */}
       <div className="hf-frame" data-brand="ssb" data-theme="dark">
-        <video className="hf-film" src={c.video.src} poster={c.video.poster} autoPlay muted loop playsInline preload="auto" aria-hidden="true" />
+        {image ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img className="hf-film" src={image} alt="" width={2000} height={817} loading="eager" fetchPriority="high" decoding="async" />
+        ) : (
+          <video className="hf-film" src={c.video.src} poster={c.video.poster} autoPlay muted loop playsInline preload="auto" aria-hidden="true" />
+        )}
         <div className="hf-fade" aria-hidden="true" />
 
         <div className="hf-body">
@@ -65,6 +71,12 @@ export function HeroFrame({ content: c, variant, tone = 'light' }: { content: He
               <Button asChild size="lg" variant="secondary" className="hf-secondary">
                 <a href={c.secondaryCta.href}>{c.secondaryCta.label}</a>
               </Button>
+              {intake ? (
+                <p className="hf-intake">
+                  <CalendarBlank weight="regular" aria-hidden="true" />
+                  {intake}
+                </p>
+              ) : null}
             </div>
           </div>
 

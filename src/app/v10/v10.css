@@ -1,0 +1,519 @@
+/* =========================================================
+   /v9, the minimal page's layout (2026-11-03): one column of sections at the left, the sign-up card
+   sticky in a rail at the right (desktop, from 1056px). Each section keeps its tone's full-width
+   ground; its content keeps to the column, and anything running sideways (the rows of cards) is cut
+   at the column's edge, so nothing passes under the card. Phones: one column, the card after the hero.
+   ========================================================= */
+main[data-layout='minimal'] {
+  --m9-max: 1312px;
+  --m9-aside: 26rem;
+  --m9-gap: 2.5rem;
+  --m9-edge: max(var(--space-gutter, 24px), calc((100vw - var(--m9-max)) / 2 + var(--space-gutter, 24px)));
+  --m9-right: calc(var(--m9-edge) + var(--m9-aside) + var(--m9-gap));
+  --sn-h: 64px;
+}
+.m9 { position: relative; }
+.m9-rail { display: none; }
+.m9-inline { padding: var(--space-6) var(--space-gutter, 16px) 0; }
+
+@media (width >= 1056px) {
+  .m9-inline { display: none; }
+  .m9-rail { position: absolute; top: var(--space-4); right: var(--m9-edge); bottom: var(--space-8); z-index: 20; display: block; width: var(--m9-aside); pointer-events: none; }
+  .m9-sticky { position: sticky; top: calc(4rem + var(--space-4)); pointer-events: auto; }
+
+  /* every section's content in the column: the page's containers start at the column's left and end
+     before the card */
+  main[data-layout='minimal'] .m9 [class*='max-w-(--size-container-max)'] {
+    width: auto;
+    max-width: none;
+    margin-left: var(--m9-edge);
+    margin-right: var(--m9-right);
+    padding-inline: 0;
+  }
+  /* rows that run off the right are cut at the column's edge (the ground stays full width: it is the
+     tone's, outside the cut) */
+  main[data-layout='minimal'] .m9 > .tn > :not(.m9-hero) { clip-path: inset(-100vh var(--m9-right) -100vh 0); }
+
+  /* the hero: its frame full width as on the minimal page, the copy, logos and facts stacked in the
+     column (the card sits over the frame's right) */
+  main[data-layout='minimal'] .m9-hero .hf-body {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'eyebrow' 'copy' 'side';
+    padding-right: calc(var(--m9-right) - var(--space-4));
+  }
+  main[data-layout='minimal'] .m9-hero .hf-side { margin-top: var(--space-8); }
+}
+
+/* ── the sections in the column (desktop): laid out as the column's width wants, not the window's ── */
+@media (width >= 1056px) {
+  /* how you learn: the four pillars one under another in the column, as the minimal page has them; the
+     final page's side list (it took a third of the column) off */
+  main[data-layout='minimal'] .m9 .cr { display: block; max-width: none; margin: 0; padding: 0; }
+  main[data-layout='minimal'] .m9 .cr-nav { display: none; }
+  /* placements: the six figures over the press card (side by side, both were cramped) */
+  main[data-layout='minimal'] .m9 .dko-bento { grid-template-columns: minmax(0, 1fr); }
+}
+@media (width >= 1056px) {
+  /* the rows that run sideways start where the column starts (they measured their start from the
+     window's container, 16px in, or from the window's edge in the pillars) */
+  /* (fixed the same day) each row exactly the column's width, its own scroller: it had run the window's
+     width under the cut, so the arrows and dots counted cards hidden behind it as on screen, and the
+     alumni's last column (it fitted the window) could not be reached */
+  html body main[data-layout='minimal'] .m9 :is(.alumni-row, .fc-grid, .h-scroller, .bc-row, .tr-row) {
+    --scroller-inset: 0px !important;
+    width: auto !important;
+    margin-left: var(--m9-edge) !important;
+    margin-right: var(--m9-right) !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    scroll-padding-inline: 0 !important;
+  }
+}
+/* the rows' arrows-and-dots, centred under the column (they centred on the window) */
+@media (width >= 1056px) {
+  main[data-layout='minimal'] .m9 .cn-frame { box-sizing: border-box; padding-left: var(--m9-edge); padding-right: var(--m9-right); }
+}
+
+/* ── (2026-11-03, the user's asks) the hero without its two CTAs (the sign-up card is the one action);
+   the people rows (alumni, faculty, mentors) as the final page has them, two rows, but smaller cards:
+   three across the column, so six show at once ── */
+main[data-layout='minimal'] .m9-hero .hf-actions { display: none; }
+@media (width >= 1056px) {
+  main[data-layout='minimal'] .m9 {
+    --m9-col: calc(100vw - var(--m9-edge) - var(--m9-right));
+    --m9-card: calc((var(--m9-col) - 3 * var(--space-3)) / 3); /* a gap short of a third: the dots count whole cards by the column width over one card and its gap */
+  }
+  html body main[data-layout='minimal'] .m9 :is(.alumni-row, .fc-grid) {
+    display: grid !important;
+    grid-template-rows: repeat(2, auto);
+    grid-auto-flow: column;
+    grid-auto-columns: var(--m9-card) !important;
+    gap: var(--space-3);
+  }
+  html body main[data-layout='minimal'] .m9 :is(.alumni-row, .fc-grid) > li { width: auto; }
+}
+
+/* (2026-11-03, the user's asks) the rows read as scrollable: three cards and the edge of a fourth in
+   the column; the hero's copy centred in its frame, and the card centred on the frame beside it
+   (HeroCardAlign sets where its rail starts) */
+@media (width >= 1056px) {
+  main[data-layout='minimal'] .m9 { --m9-card: calc((var(--m9-col) - 3 * var(--space-3)) / 3.3); }
+  main[data-layout='minimal'] .m9-rail { top: var(--m9-card-top, var(--space-4)); }
+  main[data-layout='minimal'] .m9-hero .hf-frame { align-items: center; }
+  main[data-layout='minimal'] .m9-hero .hf-body { padding-top: var(--space-16, 4rem); }
+}
+
+/* (2026-11-03, the user's ask) the press card under the figures, full width: the paper, headline and
+   byline across the top, then the photo at the left and the opening lines over the report's button at
+   the right */
+@media (width >= 1056px) {
+  main[data-layout='minimal'] .m9 .dko-press {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: 'top top' 'title title' 'by by' 'photo sub' 'photo foot';
+    grid-template-rows: auto auto auto 1fr auto;
+    column-gap: var(--space-6);
+  }
+  main[data-layout='minimal'] .m9 .dko-press-top { grid-area: top; }
+  main[data-layout='minimal'] .m9 .dko-press .dko-clip-title { grid-area: title; }
+  main[data-layout='minimal'] .m9 .dko-press-by { grid-area: by; }
+  main[data-layout='minimal'] .m9 .dko-press-story { display: contents; }
+  main[data-layout='minimal'] .m9 .dko-press-story .dko-clip-photo { grid-area: photo; align-self: stretch; height: auto; min-height: 0; border-radius: var(--radius-md); margin: var(--space-5) 0 var(--space-6) var(--space-6); width: calc(100% - var(--space-6)); object-fit: cover; aspect-ratio: auto; }
+  main[data-layout='minimal'] .m9 .dko-press .dko-clip-sub { grid-area: sub; align-self: end; margin: var(--space-5) var(--space-6) 0 0; }
+  main[data-layout='minimal'] .m9 .dko-press-foot { grid-area: foot; align-self: end; margin: var(--space-5) var(--space-6) var(--space-6) 0; padding: 0; border-top: 0; }
+}
+/* (the same day: "the photo a little lower, to the text's height, with room above and below") the photo
+   a wider frame (about 2.4:1), 24px clear of the rule above and the card's foot; the line and the
+   button centred on it as one block */
+@media (width >= 1056px) {
+  main[data-layout='minimal'] .m9 .dko-press {
+    grid-template-areas: 'top top' 'title title' 'by by' 'photo .' 'photo sub' 'photo foot' 'photo .';
+    grid-template-rows: auto auto auto 1fr auto auto 1fr;
+  }
+  main[data-layout='minimal'] .m9 .dko-press-story .dko-clip-photo {
+    align-self: center;
+    height: auto;
+    aspect-ratio: 2.4 / 1;
+    margin: var(--space-6) 0 var(--space-6) var(--space-6);
+  }
+  main[data-layout='minimal'] .m9 .dko-press .dko-clip-sub { align-self: auto; margin-top: 0; }
+  main[data-layout='minimal'] .m9 .dko-press-foot { align-self: auto; margin: var(--space-4) var(--space-6) 0 0; }
+}
+/* (the same day: "the cards a little bigger, 85% of the third showing") two cards and 85% of a third
+   in the column, in every row */
+@media (width >= 1056px) {
+  main[data-layout='minimal'] .m9 { --m9-card: calc((var(--m9-col) - 2 * var(--space-3)) / 2.85); }
+}
+@media (width >= 1056px) {
+  /* the same 12px gap in every row (the faculty's grid had its own, wider), so 85% shows in all */
+  html body main[data-layout='minimal'] .m9 :is(.alumni-row, .fc-grid) { gap: var(--space-3) !important; }
+}
+
+/* ── phones (2026-11-03, the user's asks) ── */
+@media (width < 1056px) {
+  /* the hero's foot kept the room of the two CTAs that came off: the card now 24px under the facts */
+  main[data-layout='minimal'] .m9-hero .hf-body { padding-bottom: var(--space-2); }
+  main[data-layout='minimal'] .m9-inline { padding-top: var(--space-4); }
+}
+@media (width < 672px) {
+  /* the people rows' cards smaller (72% of the screen, was 85%): two rows still, more of the next
+     column in view, so they read as scrollable */
+  /* (2026-11-11) superseded: the main page's sizes now, set at the file's foot */
+}
+/* the card's rail stops under both bars (the announcement bar now stays over the top bar) */
+@media (width >= 1056px) { main[data-layout='minimal'] .m9-sticky { top: calc(var(--hf-bar, 0px) + 4rem + var(--space-4)); } }
+
+/* (2026-11-05, the user's ask) the hero's copy, logos and facts start on the logo's line (the column's
+   left), not the frame's own inset; the frame sits var(--space-4) in from the window */
+@media (width >= 1056px) {
+  main[data-layout='minimal'] .m9-hero .hf-body { padding-left: calc(var(--m9-edge) - var(--space-4)); }
+}
+
+/* (2026-11-05, the user's ask) the headings a step down, so they don't outweigh the sign-up card:
+   section titles 36 → 28px, the hero's 40 → 34px (desktop; phones keep theirs) */
+@media (width >= 1056px) {
+  main[data-layout='minimal'] .m9 h2.type-display { font-size: 1.75rem; line-height: 1.2; letter-spacing: -0.015em; }
+  main[data-layout='minimal'] .m9-hero .hf-title { font-size: 2.125rem; line-height: 1.15; }
+}
+
+/* (2026-11-05, the user's asks) admissions in the column one block under another (the intro and
+   eligibility, then the process, then the fee), not side by side; the scholarships' type brought
+   into line with the rest of the page (the photo's title, the big numbers and the card titles a step
+   or two down) */
+@media (width >= 1056px) {
+  main[data-layout='minimal'] .m9 .ad4-top { grid-template-columns: minmax(0, 1fr); gap: var(--space-6); }
+  main[data-layout='minimal'] .m9 .ad4-left { position: static; }
+  main[data-layout='minimal'] .m9 .ad4-left .ad4-lede { max-width: 60ch; }
+  main[data-layout='minimal'] .m9 .ad4-sch-title { font-size: 1.75rem; line-height: 1.15; }
+  main[data-layout='minimal'] .m9 .ad4-sch-head p { font-size: 0.875rem; line-height: 1.5; }
+  main[data-layout='minimal'] .m9 .ad4-sc { padding: var(--space-5); padding-top: 4rem; }
+  main[data-layout='minimal'] .m9 .ad4-sc::before { top: var(--space-4); left: var(--space-5); font-size: 1.75rem; }
+  main[data-layout='minimal'] .m9 .ad4-sc-k { font-size: 11px; }
+  main[data-layout='minimal'] .m9 .ad4-sc-t { padding-right: var(--space-8); font-size: 1rem; line-height: 1.3; }
+  main[data-layout='minimal'] .m9 .ad4-sc-p { right: var(--space-4); bottom: var(--space-4); width: 28px; height: 28px; }
+}
+
+/* (2026-11-05, the user's ask) the hero's copy low in the frame, its foot on the card's foot
+   (HeroCardAlign lines the card up with the facts strip), so the video shows above both */
+@media (width >= 1056px) {
+  main[data-layout='minimal'] .m9-hero .hf-frame { align-items: end; }
+  main[data-layout='minimal'] .m9-hero .hf-body { padding-top: var(--space-8); padding-bottom: var(--space-12, 3rem); }
+}
+
+/* (2026-11-05, the user's asks) phones: the hero's film a little shorter (16:10 → 16:9), and the live
+   projects' cards square (were 3:4), the copy still clear at the foot */
+@media (width < 672px) {
+  main[data-layout='minimal'] .m9-hero .hf-film { aspect-ratio: 16 / 9; }
+  /* (2026-11-11) the live projects as the main page's: two rows of landscape cards (live-projects.css) */
+}
+
+/* =========================================================
+   (2026-11-05, the user's ask: every body, text, subtext and header consistent across sections) one
+   type scale for the column, whatever each section brought from the final page:
+     eyebrow and small caps labels   12 / 600
+     section title (h2)              28 desktop · 24 phone (set above / by the page)
+     section lede                    16 · 14
+     sub-heading inside a section    22 · 20, 600
+     card title                      18 · 16, 600
+     card text                       14 · 13
+     notes and fine print            13 · 12
+   The alumni and faculty cards are fixed designs scaled to their slot (their type renders at 14–17px)
+   and keep their own sizes.
+   ========================================================= */
+main[data-layout='minimal'] .m9 {
+  --m9-t-lede: 1rem;
+  --m9-t-sub: 1.375rem;
+  --m9-t-card: 1.125rem;
+  --m9-t-text: 0.875rem;
+  --m9-t-note: 0.8125rem;
+}
+@media (width < 672px) {
+  main[data-layout='minimal'] .m9 {
+    --m9-t-lede: 0.875rem;
+    --m9-t-sub: 1.25rem;
+    --m9-t-card: 1rem;
+    --m9-t-text: 0.8125rem;
+    --m9-t-note: 0.75rem;
+  }
+}
+main[data-layout='minimal'] .m9 :is(.dk-biz-proof-k, .ad4-sc-k, .dkg-when, .cm-social__label, .dk-track-label, .ad4-live, .ad4-fast b) {
+  font-size: 0.75rem !important; font-weight: 600 !important;
+}
+main[data-layout='minimal'] .m9 :is(section > div > [data-enter='header'] p.type-body-lg, p.text-content-secondary.type-body-lg, .ad4-lede) {
+  font-size: var(--m9-t-lede) !important; line-height: 1.55 !important;
+}
+main[data-layout='minimal'] .m9 :is(.peers-title, .dk-facts-head, .dk-track-title, .lab-sub, .dkg-day-title, .ad4-sch-title, .vc-title h3) {
+  font-size: var(--m9-t-sub) !important; line-height: 1.25 !important; letter-spacing: -0.015em !important; font-weight: 600 !important;
+}
+main[data-layout='minimal'] .m9 :is(.dk-biz-title, .dk-card-title, .lp-title, .dko-clip-title, .creator-card__name, .ad4-card h3, .dkg-pillar-t) {
+  font-size: var(--m9-t-card) !important; line-height: 1.3 !important; letter-spacing: -0.01em !important; font-weight: 600 !important;
+}
+main[data-layout='minimal'] .m9 :is(.dk-card-text, .lp-desc, .dko-clip-sub, .dk-biz-sub, .dk-biz-proof-t, .dkg-pillar-x, .vc-text, .ad4-elig p, .dk-track-line, .dkg-what) {
+  font-size: var(--m9-t-text) !important; line-height: 1.55 !important;
+}
+main[data-layout='minimal'] .m9 :is(.ad4-fine, .dkg-note, .ad4-fast, .dkg-credit, .dko-press-by, .dko-press-date) {
+  font-size: var(--m9-t-note) !important; line-height: 1.5 !important;
+}
+/* the scholarships' four tiles are narrow: their titles a step under the card title on desktop, and
+   the phones' tight 2 × 2 keeps its 14px */
+@media (width >= 672px) { main[data-layout='minimal'] .m9 .ad4-sc-t { font-size: 1rem !important; font-weight: 600 !important; } }
+
+/* (2026-11-11, the user's ask: "the same design language as the main page", phones only) the people rows
+   as the main page's: alumni and faculty at its sizes (alumni.css, faculty-card.css; their 72% override
+   off above), and every people row three rows high, the mentors and the rest too; the live projects'
+   landscape cards with the main page's type (17 / 13), not this page's card scale */
+@media (width < 672px) {
+  html body main[data-layout='minimal'] .m9 .fc-grid.fc-grid { grid-template-rows: repeat(3, auto) !important; }
+  html body main[data-layout='minimal'] .m9 .lp-phone-row .lp-title { font-size: 1.0625rem !important; line-height: 1.3 !important; }
+  html body main[data-layout='minimal'] .m9 .lp-phone-row .lp-desc { font-size: 0.8125rem !important; line-height: 1.5 !important; }
+}
+
+/* the founders' four cards (2026-11-11, the user's ask: Nikhil Kamath's and Anupam Mittal's sections as
+   one, all four cards): on the web, two by two inside the column (the row sits outside the Container,
+   so it takes the column's edges itself); below 1056px, the main page's sideways row */
+@media (width >= 1056px) {
+  html body main[data-layout='minimal'] .m9 .dkf .dkf-row.dkf-row {
+    grid-template-columns: none; grid-auto-flow: column;
+    /* (later that day, the user's ask: "scrollable rather than all facing upfront") one row scrolled
+       sideways, two cards and part of the third across the column */
+    grid-auto-columns: calc((var(--m9-col) - var(--space-4)) / 2.3);
+    overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
+    scrollbar-width: thin; padding-bottom: var(--space-3);
+    margin-left: var(--m9-edge);
+    margin-right: var(--m9-right);
+    padding-inline: 0;
+  }
+  html body main[data-layout='minimal'] .m9 .dkf .dkf-card { scroll-snap-align: start; }
+}
+
+/* web (2026-11-11, the user's ask: the faculty and mentors' cards "distorted", "make the card bigger so
+   there's some negative space"): at 2.85 to the column they were drawn at 57% of their 480 x 320
+   design, the course and credentials crowding the logo. Now one card and 85% of the next across the
+   column, ~430px on a 1440 screen (90% of the design), two rows as before. Alumni untouched.
+   (later that day: "too big, a bit smaller, the sweet spot") two cards and a third peeking, ~335px. */
+@media (width >= 1056px) {
+  html body main[data-layout='minimal'] .m9 .fc-grid.fc-grid {
+    grid-auto-columns: calc((var(--m9-col) - var(--space-3)) / 2.3) !important;
+  }
+}
+
+/* the hero's group photo in place of the film (2026-11-11, the user's ask): the whole frame, not the
+   film's 18% lift, so the back row's heads stay in; anchored a little above centre for the faces */
+html body main[data-layout='minimal'] .m9-hero img.hf-film { top: 0; height: 100%; object-position: 50% 20%; }
+@media (width < 1056px) {
+  html body main[data-layout='minimal'] .m9-hero img.hf-film { object-position: 50% 30%; }
+}
+
+/* campus life still (2026-11-11, the user's ask: "a static picture gallery, no appear animation"):
+   no scroll moment (CampusLifeSection still), so the track and stage drop their sticky heights */
+html body main[data-layout='minimal'] .cm .lab-track.lab-track { height: auto; }
+html body main[data-layout='minimal'] .cm .lab-stage.lab-stage { position: static; height: auto; overflow: visible; }
+html body main[data-layout='minimal'] .cm .lab-frame.lab-frame { height: auto; }
+
+/* ── phones only (2026-11-11, the user's ask: "proper text hierarchy" on mweb, the hero's copy up over
+   the photo, so part of the sign-up card shows in the first screen). The page's phone scale: section
+   titles 24, intros 14, card titles 16-18, body 13, small print 12. ── */
+@media (width < 672px) {
+  /* the hero: the photo a little taller, fading out over its lower half (the fade starting higher); the
+     copy pulled up over that fade; the facts strip off (the user: fine to lose it) */
+  html body main[data-layout='minimal'] .m9-hero .hf-film {
+    aspect-ratio: 4 / 3; object-position: 50% 25%;
+    -webkit-mask-image: linear-gradient(to bottom, #000 22%, rgb(0 0 0 / 0.35) 50%, transparent 72%);
+    mask-image: linear-gradient(to bottom, #000 22%, rgb(0 0 0 / 0.35) 50%, transparent 72%);
+  }
+  html body main[data-layout='minimal'] .m9-hero .hf-body { margin-top: -7.5rem; padding-top: 0; }
+  html body main[data-layout='minimal'] .m9-hero .hf-title { font-size: 1.5rem; line-height: 1.25; }
+  html body main[data-layout='minimal'] .m9-hero .hf-line { margin-top: var(--space-2); font-size: 0.875rem; line-height: 1.5; }
+  html body main[data-layout='minimal'] .m9-hero .hf-side { margin-top: var(--space-5); }
+  html body main[data-layout='minimal'] .m9-hero .hf-side > .hf-facts { display: none; }
+
+  /* the sign-up card: its title a card title (18, under the sections' 24), the rest body and small
+     print, 16px in from its edge (was 24), the fields and button 40px tall */
+  html body main[data-layout='minimal'] .mf .mf-band { padding: var(--space-3) var(--space-4); }
+  html body main[data-layout='minimal'] .mf .mf-band-t { font-size: 0.8125rem; }
+  html body main[data-layout='minimal'] .mf .mf-form { padding: var(--space-4); }
+  html body main[data-layout='minimal'] .mf .mf-title { font-size: 1.125rem; line-height: 1.3; letter-spacing: -0.01em; }
+  html body main[data-layout='minimal'] .mf .mf-sub { margin: var(--space-1) 0 var(--space-3); font-size: 0.8125rem; line-height: 1.4; }
+  html body main[data-layout='minimal'] .mf :is(.mf-input, .mf-cc) { height: 2.5rem; font-size: 0.8125rem; }
+  html body main[data-layout='minimal'] .mf .mf-phone { margin-top: var(--space-2); }
+  html body main[data-layout='minimal'] .mf .mf-deadline { margin: var(--space-4) 0 var(--space-2); font-size: 0.75rem; }
+  html body main[data-layout='minimal'] .mf .mf-cta { height: 2.5rem; font-size: 0.875rem; }
+  html body main[data-layout='minimal'] .mf .mf-wa { margin-top: var(--space-3); font-size: 0.75rem; }
+  html body main[data-layout='minimal'] .mf .mf-terms { margin-top: var(--space-3); font-size: 0.75rem; }
+}
+
+/* (2026-11-11, the user's asks) phones: the sign-up card flat, no shadow; the hero's "PGP in Management &
+   Technology" chip at the small-print size (12, was 14) */
+@media (width < 672px) {
+  html body main[data-layout='minimal'] .m9-inline .mf { box-shadow: none; }
+  html body main[data-layout='minimal'] .m9-hero .hf-eyebrow { padding: 3px var(--space-2); font-size: 0.75rem; line-height: 1.4; }
+}
+/* the footer without its Apply now and Download Brochure buttons (the page's own sign-up card and Apply
+   bar carry those), and campus life clear of it: the section's padding back at its foot (the lab's
+   rule drops it), 64px, 40px on a phone */
+html:has(main[data-layout='minimal']) body .dkft .dkft-actions { display: none; }
+html body main[data-layout='minimal'] .cm.cm { padding-bottom: var(--space-16); }
+@media (width < 672px) {
+  html body main[data-layout='minimal'] .cm.cm { padding-bottom: var(--space-10); }
+}
+
+/* (2026-11-11, the user's asks) the Cloudflare stand-in on phones: 12px under the phone field, the
+   deadline 12px under it */
+@media (width < 672px) {
+  html body main[data-layout='minimal'] .mf .mf-cf { margin-top: var(--space-3); }
+  html body main[data-layout='minimal'] .mf .mf-cf + .mf-deadline { margin-top: var(--space-3); }
+}
+
+/* the whole page on #FAFAFA (2026-11-11, the user's ask: "so the whites lift"): the page ground token
+   wherever the light theme is declared (every data-brand re-declares it), the footer's wrap too; white
+   cards stay white. The phone hero's photo fades into that ground, not white. */
+html:has(main[data-layout='minimal']) :is(body, [data-brand='ssb']:not([data-theme='dark'])) { --surface-page: #fafafa; }
+html:has(main[data-layout='minimal']) body { background: #fafafa; }
+@media (width < 672px) {
+  html body main[data-layout='minimal'] .m9-hero .hf[data-tone='light'] .hf-frame { background: #fafafa; }
+}
+
+/* phones (2026-11-11, the user's asks: "PGP-MT Admission Open for 2027" too big, then too like its line):
+   the green band a quiet header under the card's own title (18): its title 14, its line 12 at 75% */
+@media (width < 672px) {
+  html body main[data-layout='minimal'] .mf .mf-band { padding: 10px var(--space-4); }
+  /* (later: "the subtext and the header look the same", then "the headline a bit bigger") the title 16
+     semibold over its 12 line, still under the card's own title (18) */
+  html body main[data-layout='minimal'] .mf .mf-band-t { font-size: 1rem; line-height: 1.3; font-weight: 600; letter-spacing: -0.005em; }
+  html body main[data-layout='minimal'] .mf .mf-band-s { margin-top: 2px; font-size: 0.75rem; line-height: 1.35; color: rgb(255 255 255 / 0.75); }
+}
+
+/* ── phones: the type audit outside the cards (2026-11-11, the user's asks). The scale: labels 12,
+   section titles 24 medium, subheads 16 semibold, intros and buttons 14, small print 12. Card insides
+   untouched (the user's ask), but for the report's button, asked for by name. ── */
+@media (width < 672px) {
+  /* "Built by leaders from" a label (12, was 14) */
+  html body main[data-layout='minimal'] .m9-hero .hf-label { font-size: 0.75rem; }
+  /* the subheads under a section title ("Our recruiters…", "Your peers come from"): 16 semibold, was 20 */
+  html body main[data-layout='minimal'] .m9 .peers-title.peers-title { font-size: 1rem !important; line-height: 1.35 !important; }
+  /* the buttons as the sign-up card's: 14 medium, 40 tall (the report's, Start application, Apply now) */
+  html body main[data-layout='minimal'] .dko-press-foot .dko-cta { font-size: 0.875rem; font-weight: 500; }
+  html body main[data-layout='minimal'] .ad4-ctas > a:not(.ad4-link) { min-height: 0; height: 2.5rem; padding-block: 0; font-size: 0.875rem; font-weight: 500; }
+  html body main[data-layout='minimal'] .msa .msa-btn { height: 2.5rem; min-height: 0; font-size: 0.875rem; font-weight: 500; }
+}
+@media (width < 672px) {
+  /* the footer's text on the page's scale: its column titles labels (12), its links and city body (14),
+     its line 14; the closing statement stays display */
+  html:has(main[data-layout='minimal']) body .dkft .dkft-brand-line { font-size: 0.875rem; line-height: 1.5; }
+  html:has(main[data-layout='minimal']) body .dkft .dkft-col-title { font-size: 0.75rem; font-weight: 600; }
+  html:has(main[data-layout='minimal']) body .dkft :is(.dkft-col a, .dkft-place) { font-size: 0.875rem; }
+}
+
+/* phones (2026-11-11, the user's asks: "proper, equal gaps", then "nearer the headline, the gap too
+   much", the label left as it was): title, the leaders' block, the line, 16px apart (were 24 and 8);
+   the label 8 over its logos, its own design */
+@media (width < 672px) {
+  html body main[data-layout='minimal'] .m9-hero .hf-label { margin-top: var(--space-4); }
+  html body main[data-layout='minimal'] .m9-hero .hf-line { margin-top: var(--space-4); }
+}
+
+/* phones (2026-11-11, the user's ask: the room between a section's intro and its cards "too much"): 24px
+   in every section, as placements, the founders and campus life have it (alumni had 40, faculty and
+   mentors 32) */
+@media (width < 672px) {
+  html body main[data-layout='minimal'] .m9 div:has(> div > #alumni-title),
+  html body main[data-layout='minimal'] .m9 div:has(> .pt-panel) { margin-bottom: var(--space-6); }
+}
+
+/* phones (2026-11-11, the user's ask: the logo tiles too tall, "lots of negative space"): 44px tiles
+   (were 58), each logo about a quarter larger (half its design width was ~49px for Amazon, now ~62%),
+   so the mark fills more of a smaller box; both logo grids (recruiters, peers) share these tiles */
+@media (width < 672px) {
+  html body main[data-layout='minimal'] .m9 .peers-flip-cell { height: 2.75rem !important; }
+  html body main[data-layout='minimal'] .m9 .peers-flip-logo[style] { width: min(calc(var(--w) * 0.62), 4.625rem); max-width: 82%; max-height: 1.375rem; }
+}
+
+/* phones (2026-11-11, the user's ask: the placement figures' tiles shorter): the figure 6px over its
+   label (was 16), the tile 14px in (was 20) */
+@media (width < 672px) {
+  html body main[data-layout='minimal'] .m9 .dko-figs .dko-fig.dko-fig { gap: 6px; padding: 14px var(--space-4); }
+}
+
+/* phones (2026-11-11, the user's ask: "don't make it three short lines, let it flow with the page
+   width"): the founders' title wraps as the other section titles do, not balanced */
+@media (width < 672px) {
+  html body main[data-layout='minimal'] .m9 #dkf-title { text-wrap: wrap; }
+}
+
+/* phones (2026-11-11, the user's ask: the room between a section's label, title and intro "too much"):
+   6px between them (was 10-12), the title's leading tight (1.15, was 1.25) and the intro's 1.45 (was
+   1.55), so the three read as one block; every section's header alike */
+@media (width < 672px) {
+  /* the shared header gap (typography.css, 10px on a phone) at 6px here; Faculty and Mentors' panel set apart */
+  html:has(main[data-layout='minimal']) { --tp-head-gap: 6px; }
+  html body main[data-layout='minimal'] .m9 .pt-panel { row-gap: 6px; }
+  html body main[data-layout='minimal'] .m9 section h2[id]:not([id^='mf']) { line-height: 1.15; }
+  html body main[data-layout='minimal'] .m9 section :is(h2[id] + p, .ad4-lede, .pt-panel p:last-child) { line-height: 1.45; }
+}
+/* phones (2026-11-11, the user's ask: the figures' subtext "too congested"): the cohort line a step under
+   its label (11, was 12 like the label), quieter grey, 2px clear of it */
+@media (width < 672px) {
+  html body main[data-layout='minimal'] .m9 .dko-figs .dko-fig small { display: block; margin-top: 2px; font-size: 0.6875rem; line-height: 1.35; color: #8a8a8a; }
+}
+
+/* the scholarship cards (2026-11-11, the user's ask: "the eyebrow the same size as the header", "the
+   cards not aligned"): every card's label and title start at one line under its number (were set at the
+   card's foot, so a two-line label pushed its title out of line with the next card's); on a phone the
+   title 16 semibold, as on the web (was 14 under a 12px label) */
+html body main[data-layout='minimal'] .m9 .ad4-sch .ad4-sc { justify-content: flex-start; }
+/* (later: "still too heavy, not going with the page") phones, the whole block a step lighter: the panel's
+   title a subhead (18, was 24), the photo panel shorter (13rem, was 15); in the cards the number 18 light
+   (was 22), the label 12 at medium weight with less tracking (was semibold, 0.08em), the title 15 medium
+   (was 16 semibold), the plus 22px (was 26), the cards 12px in */
+@media (width < 672px) {
+  html body main[data-layout='minimal'] .m9 .ad4-sch .ad4-sch-head { min-height: 13rem; }
+  html body main[data-layout='minimal'] .m9 .ad4-sch .ad4-sch-title.ad4-sch-title { font-size: 1.125rem !important; line-height: 1.25 !important; font-weight: 600 !important; letter-spacing: -0.01em !important; }
+  html body main[data-layout='minimal'] .m9 .ad4-sch .ad4-sc { gap: 2px; padding: 2.75rem var(--space-3) var(--space-3); }
+  html body main[data-layout='minimal'] .m9 .ad4-sch .ad4-sc::before { font-size: 1.125rem; font-weight: 300; }
+  html body main[data-layout='minimal'] .m9 .ad4-sch .ad4-sc-k.ad4-sc-k { font-size: 10.5px !important; line-height: 1.3 !important; font-weight: 500 !important; letter-spacing: 0.05em !important; }
+  html body main[data-layout='minimal'] .m9 .ad4-sch .ad4-sc-t.ad4-sc-t { font-size: 0.9375rem !important; font-weight: 500 !important; line-height: 1.3 !important; letter-spacing: -0.005em !important; }
+  html body main[data-layout='minimal'] .m9 .ad4-sch .ad4-sc-p { width: 22px; height: 22px; }
+  html body main[data-layout='minimal'] .m9 .ad4-sch .ad4-sc-p::before,
+  html body main[data-layout='minimal'] .m9 .ad4-sch .ad4-sc-p::after { width: 9px; margin-left: -4.5px; }
+}
+
+/* phones (2026-11-11, the user's ask): "Talk to an advisor" centred under Start application */
+@media (width < 672px) {
+  html body main[data-layout='minimal'] .m9 .ad4-ctas .ad4-link { align-self: center; justify-self: center; margin-inline: auto; }
+}
+
+/* phones (2026-11-11, the user's ask): no grey second half on the section titles ("Our founding cohort
+   tripled its pay", "Already at Blinkit…"); deck.css shows them on phones, as the page had them hidden
+   all day before that file was loaded again */
+@media (width < 672px) {
+  html body main[data-layout='minimal'] :is(h2, p.type-display) .h-tail,
+  html body main[data-layout='minimal'] h2 .sj-ai-accent,
+  html body main[data-layout='minimal'] h2.sg-title span { display: none !important; }
+}
+
+/* phones (2026-11-11, the user's ask: the alumni cards "too small on my iPhone 16", the faculty and
+   mentors' size): 76vw wide with a 16px gap, as the faculty grid (were capped by the screen's height,
+   282px on a 393 x 852 phone, 8px apart); their own type, scaled with the card */
+@media (width < 672px) {
+  html body main[data-layout='minimal'] .m9 .alumni-row.alumni-row { grid-auto-columns: 76vw !important; gap: var(--space-4) !important; }
+}
+
+/* web (2026-11-12, the user's ask: the alumni cards the faculty and mentors' size, sizing only): the same
+   column as the faculty grid's, one card and a third across the column (~346px on a 1440 screen, was
+   275); two rows and the 12px gap as before; phones untouched */
+@media (width >= 1056px) {
+  html body main[data-layout='minimal'] .m9 .alumni-row.alumni-row {
+    grid-auto-columns: calc((var(--m9-col) - var(--space-3)) / 2.3) !important;
+  }
+}
+
+/* phones (2026-11-12, the user's ask: the hero's copy "a bit more upwards, overlapping"): the copy 48px
+   higher over the photo (-10.5rem, was -7.5; "more upwards", then a step back down), the photo's fade starting a step higher to keep the title
+   on a clear ground */
+@media (width < 672px) {
+  html body main[data-layout='minimal'] .m9-hero .hf-body { margin-top: -10.5rem; }
+  html body main[data-layout='minimal'] .m9-hero .hf-film {
+    -webkit-mask-image: linear-gradient(to bottom, #000 15%, rgb(0 0 0 / 0.35) 40%, transparent 59%);
+    mask-image: linear-gradient(to bottom, #000 15%, rgb(0 0 0 / 0.35) 40%, transparent 59%);
+  }
+}

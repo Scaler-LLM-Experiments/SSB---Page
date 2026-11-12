@@ -13,6 +13,8 @@ const LINKS = [
   { label: 'Admissions', target: 'admissions' },
   { label: 'Campus', target: 'campus-title' },
 ];
+/** /v10 (2026-11-11): the founders in place of "How you learn". */
+const LINKS_FOUNDERS = LINKS.map((l) => (l.target === 'dk-usp-title' ? { label: 'Founders', target: 'dkf-title' } : l));
 
 const sectionOf = (id: string) => {
   const el = document.getElementById(id);
@@ -24,7 +26,8 @@ const sectionOf = (id: string) => {
  * ask): sticky and frosted, the logo at the left, the five sections and a green Apply at the right;
  * the section being read is marked with a soft pill. A tap scrolls to the section under the bar.
  */
-export function MinimalNav() {
+export function MinimalNav({ founders = false }: { founders?: boolean } = {}) {
+  const links = founders ? LINKS_FOUNDERS : LINKS;
   const [active, setActive] = React.useState(-1);
   const bar = React.useRef<HTMLElement>(null);
 
@@ -33,7 +36,7 @@ export function MinimalNav() {
     const read = () => {
       raf = 0;
       let at = -1;
-      LINKS.forEach((l, i) => {
+      links.forEach((l, i) => {
         const s = sectionOf(l.target);
         if (s && s.getBoundingClientRect().top <= window.innerHeight * 0.35) at = i;
       });
@@ -50,7 +53,7 @@ export function MinimalNav() {
       window.removeEventListener('scroll', on);
       window.removeEventListener('resize', on);
     };
-  }, []);
+  }, [links]);
 
   const go = (e: React.MouseEvent, target: string) => {
     const s = sectionOf(target);
@@ -71,7 +74,7 @@ export function MinimalNav() {
         </a>
         <nav aria-label="Sections">
           <ul className="mn-links">
-            {LINKS.map((l, i) => (
+            {links.map((l, i) => (
               <li key={l.target}>
                 <a href={`#${l.target}`} aria-current={i === active ? 'true' : undefined} onClick={(e) => go(e, l.target)}>
                   {l.label}
@@ -107,7 +110,8 @@ export function VariantPill() {
  * apply modal. A green band (the intake), the title, email, the mobile with its country code, the
  * early-bird deadline, the button, the WhatsApp opt-in and the terms line.
  */
-export function MinimalForm({ id }: { id: string }) {
+/** `turnstile` (/v10, 2026-11-11): a static stand-in for Cloudflare's check above the deadline. */
+export function MinimalForm({ id, turnstile = false }: { id: string; turnstile?: boolean }) {
   const [wa, setWa] = React.useState(true);
   return (
     <div className="mf" data-brand="ssb" data-theme="light">
@@ -127,6 +131,16 @@ export function MinimalForm({ id }: { id: string }) {
           </span>
           <input className="mf-input" type="tel" placeholder="Enter Mobile Number" aria-label="Mobile number" autoComplete="off" />
         </div>
+        {turnstile ? (
+          <div className="mf-cf" data-placeholder="cloudflare-turnstile" aria-hidden="true">
+            <span className="mf-cf-box" />
+            <span className="mf-cf-label">Verify you are human</span>
+            <span className="mf-cf-brand">
+              <span className="mf-cf-name">CLOUDFLARE</span>
+              <span className="mf-cf-links">Privacy · Terms</span>
+            </span>
+          </div>
+        ) : null}
         <p className="mf-deadline">
           Early Bird Intake Application Deadline - <b>1st Nov 2026</b>
         </p>

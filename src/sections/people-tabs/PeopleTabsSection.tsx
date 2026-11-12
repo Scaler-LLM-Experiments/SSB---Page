@@ -88,7 +88,19 @@ const PLACEHOLDER_COURSES = [
  */
 function FacultyDrift({ group: g, stack = false }: { group: Group; stack?: boolean }) {
   const gridRef = React.useRef<HTMLUListElement>(null);
-  const rows = useRows(2);
+  // the dots count columns: rows as the grid lays them out (CSS sets three on a phone for the faculty,
+  // and for every group on the minimal page), read after layout and on resize
+  const wideRows = useRows(2);
+  const [cssRows, setCssRows] = React.useState(0);
+  React.useEffect(() => {
+    const el = gridRef.current;
+    if (!el) return undefined;
+    const read = () => setCssRows(getComputedStyle(el).display === 'grid' ? getComputedStyle(el).gridTemplateRows.split(' ').length : 0);
+    read();
+    window.addEventListener('resize', read);
+    return () => window.removeEventListener('resize', read);
+  }, []);
+  const rows = cssRows || wideRows;
   const driftRef = React.useRef<HTMLDivElement>(null);
   useSwipeDrift(driftRef);
   // mentors on the web: the looping scroller (not the CSS drift), so the dots can follow and step it

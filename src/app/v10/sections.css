@@ -1,0 +1,131 @@
+/* ── from src/sections/alumni/alumni.css (v10 only) ── */
+/* Three rows at every width (2026-11-09, the user's ask), the cards scaled down so all three rows fit
+   one screen between the navs with room to spare: a card's height is a third of the window less a
+   reserve (the top nav, the sticky bottom bar, the gaps and a margin), its width 3:2 to that
+   (AlumniCard scales its 480 x 320 design to the slot), never wider than before. */
+/* (2026-11-11, the user's ask) two rows from the tablet up, three on a phone (below): the card's height
+   is half the room on the web, the width capped as before */
+html body .alumni-row {
+  --alumni-fit: calc((100svh - 16rem) / 2 * 1.5);
+  grid-template-rows: repeat(2, auto); gap: var(--space-4);
+  grid-auto-columns: min(var(--alumni-fit), calc((100vw - (max(0px, (100vw - var(--size-container-max)) / 2) + var(--space-gutter)) - 3 * var(--space-4)) / 3.5));
+}
+@media (width < 1056px) { html body .alumni-row { grid-auto-columns: min(var(--alumni-fit), 25rem); } }
+/* phones: a larger reserve (their top bar with the section tabs, and the Apply bar with the tab bar
+   under it, take ~250px), never past three quarters of the width, so the next column peeks in */
+@media (width < 672px) {
+  html body .alumni-row {
+    --alumni-fit: calc((100svh - 18rem) / 3 * 1.5);
+    grid-template-rows: repeat(3, auto);
+    grid-auto-columns: min(var(--alumni-fit), 75vw); gap: var(--space-2);
+  }
+}
+
+
+/* Post SSB / Pre SSB a step larger on phones only (2026-11-11, the user's ask: "Blinkit" and "Software
+   Developer" read too small on mweb; the web untouched). In the card's 480 x 320 design units, 15 / 18 (a touch under the first 16 / 20, the user's ask)
+   (the card drawn at ~0.56 on a phone); the name, the role and the card's size as they were. */
+@media (width < 672px) {
+  html body .alumni-card .alumni-card__label.alumni-card__label { font-size: 0.9375rem !important; letter-spacing: 0.04em !important; }
+  html body .alumni-card .alumni-card__value.alumni-card__value { font-size: 1.125rem; line-height: 1.2; }
+  html body .alumni-card .alumni-card__step.alumni-card__step { gap: var(--space-4); }
+}
+
+/* the web (from 672px, 2026-11-11, the user's ask: "in web the size looks too small"): Post SSB / Pre SSB
+   a small step up, 13 / 16 in design units (was 12 / 14); the cards, name and role as they were */
+@media (width >= 672px) {
+  html body .alumni-card .alumni-card__label.alumni-card__label { font-size: 0.8125rem !important; }
+  html body .alumni-card .alumni-card__value.alumni-card__value { font-size: 1rem; line-height: 1.2; }
+}
+/* ── from src/sections/people-tabs/faculty-card.css (v10 only) ── */
+
+/* phones (2026-11-11, the user's ask: too much empty space in these cards once their type came down to
+   the page's scale): the instructor, mentor, investor and team cards a step smaller, 76% of the width
+   (285 x 190 on a 375px phone, was 85%: 319 x 213; 72% left the faculty's course, name and credentials
+   5px too tall), close to the alumni cards; the type keeps its size (typography.css divides it by the
+   card's scale), so only the empty space goes. Credentials may break after a slash ("Ex-Flipkart/…") */
+@media (width < 672px) {
+  html body .fc-grid.fc-grid:is([data-kind], :not([data-kind])) { grid-auto-columns: 76vw; }
+  html body .fc-card .fc-card__credentials { overflow-wrap: anywhere; }
+}
+/* web and tablets too (2026-11-11, the user's ask: the same empty space): 320px wide on the web (was
+   368, 3.5 across), 21rem on a tablet (was 25rem); the copy then fills ~92% of the card's height */
+@media (width >= 672px) {
+  html body .fc-grid.fc-grid:is([data-kind], :not([data-kind])) { grid-auto-columns: 21rem; }
+}
+@media (width >= 1056px) {
+  html body .fc-grid.fc-grid:is([data-kind], :not([data-kind])) { grid-auto-columns: 20rem; }
+}
+/* (the same day) the smaller cards' copy column a little wider, so the longest names and credentials
+   ("Divya Venkataraghavan", "Ex-Flipkart/Razorpay/…") stay inside: from 46% (was 49%, where the portrait
+   has already faded into the ground) with 12px at the right (was 24); credentials may break at a slash */
+html body .fc-card .fc-card__body.fc-card__body { margin-left: 46%; padding-right: 12px; }
+html body .fc-card .fc-card__credentials { overflow-wrap: anywhere; }
+
+/* the faculty on phones (2026-11-11, the user's ask): three rows, card over card, as the alumni; the
+   cards' size as they were; the mentors, investors and the team keep their two */
+@media (width < 672px) {
+  html body #people-panel-faculty .fc-grid.fc-grid { grid-template-rows: repeat(3, auto) !important; }
+}
+/* ── from src/sections/hero/frame/hero-frame.css (v10 only) ── */
+
+/* the intake's deadline under Apply Now (2026-11-11, the user's ask): a calendar icon and the line, small,
+   on a row of its own under the buttons; on the film, white at the line's strength */
+.hf-intake {
+  display: flex; flex-basis: 100%; align-items: center; gap: var(--space-2);
+  /* 15px on the web, over the film (a step under the 16px line and buttons); 14px on a phone, below */
+  margin: 0; font-size: 0.9375rem; line-height: 1.4;
+  font-weight: var(--font-weight-medium); color: var(--on-image-ink);
+}
+.hf-actions .hf-intake svg { flex: none; width: 1.125rem; height: 1.125rem; }
+/* phones: the buttons stack, so the line goes straight under Apply Now, centred, the brochure after it */
+@media (width < 672px) {
+  .hf-actions > .hf-primary { order: 0; }
+  .hf-actions > .hf-intake { order: 1; justify-content: center; margin: var(--space-1) 0 var(--space-2); font-size: 0.875rem; }
+  .hf-actions .hf-intake svg { width: 1rem; height: 1rem; }
+  .hf-actions > .hf-secondary { order: 2; }
+  .hf[data-tone='light'] .hf-intake { color: #616161; }
+}
+
+/* phones (2026-11-11): the short line now fits beside the countdown, so it needs a gap there too */
+@media (width < 672px) {
+  .hf-deadline [data-slot='banner-message'] { column-gap: var(--space-2); row-gap: var(--space-1); }
+  .hf-deadline .hf-count { margin: 0; }
+}
+/* ── from src/sections/minimal/minimal.css (v10 only) ── */
+
+/* (2026-11-11, the user's ask) the phones' Apply bar: the intake's last date and the time left on one
+   line on top, then Apply now across the whole bar (gutter to gutter), as the main page's bottom bar */
+@media (width < 1056px) {
+  .msa.msa, .msa.msa[data-shown] { flex-direction: column; align-items: stretch; gap: var(--space-2); padding-top: var(--space-2); }
+  .msa.msa .msa-when { flex-direction: row; align-items: baseline; justify-content: center; gap: var(--space-2); }
+  .msa.msa .msa-k { flex: none; font-size: 0.8125rem; }
+  .msa.msa .msa-btn { width: 100%; padding: 0; }
+  /* the time left at the date's size (13px), its figures still bold and green (2026-11-11, the user's ask) */
+  .msa.msa .msa-unit, .msa.msa .msa-unit b { font-size: 0.8125rem; line-height: 1.3; }
+  html[data-m9-apply] body { padding-bottom: 6.5rem; }
+}
+
+/* phones (2026-11-11, the user's ask: "lots of unwanted gap" in the footer): the footer kept 120px at
+   its foot for the main page's bottom Apply bar, but this page's Apply bar hides once the footer is
+   on screen, so that room was empty green under "Back to top". The footer now ends a step under it. */
+@media (width < 672px) {
+  html:has(main[data-layout='minimal']) body .dkft.dkft { padding-bottom: var(--space-4); }
+  html:has(main[data-layout='minimal']) body .dkft.dkft .dkft-legal { padding-bottom: var(--space-4); }
+}
+
+/* (2026-11-11, the user's asks) the card's button at medium weight, not semibold; and the Cloudflare
+   check's stand-in above the deadline, in Turnstile's own look (a light grey box, the checkbox and its
+   prompt at the left, the brand and its links at the right) */
+.mf .mf-cta { font-weight: 500; }
+.mf-cf {
+  display: flex; align-items: center; gap: var(--space-3); box-sizing: border-box; height: 65px;
+  margin-top: var(--space-4); padding: 0 var(--space-4);
+  border: 1px solid #e0e0e0; border-radius: 4px; background: #fafafa; color: #232323;
+}
+.mf-cf-box { flex: none; width: 24px; height: 24px; border: 2px solid #c4c4c4; border-radius: 3px; background: #fff; }
+.mf-cf-label { flex: 1; min-width: 0; font-size: 0.875rem; line-height: 1.3; }
+.mf-cf-brand { display: flex; flex: none; flex-direction: column; align-items: flex-end; gap: 2px; }
+.mf-cf-name { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.06em; color: #f38020; }
+.mf-cf-links { font-size: 0.625rem; color: #6b6b6b; }
+.mf .mf-cf + .mf-deadline { margin-top: var(--space-3); }
