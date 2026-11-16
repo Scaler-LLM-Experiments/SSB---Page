@@ -110,9 +110,11 @@ export function RowJourney({ j, width, portal, deck = false }: { j: Journey; wid
                   <p className="tr-k">Term {String(y.year).padStart(2, '0')}</p>
                   <h3 className="tr-title">{y.name}</h3>
                   <p className="tr-sum">{deck && y.deck ? y.deck.line : (y.summary ?? y.description)}</p>
-                  {/* in class and out of class on the card itself (2026-11-16, the team's review: "the inside
-                      content isn't visible at first glance"; was the masterclasses' ticker, now in the sheet) */}
+                  {/* the term's first three courses and challenges (2026-11-16, the team's review: "the inside
+                      content isn't visible at first glance"; the user's ask: the card as it was, three of
+                      each, the rest behind "See the full term"), then the masterclasses as before */}
                   {deck && y.deck ? <InOut d={y.deck} /> : null}
+                  {deck && y.deck ? <Workshops items={y.deck.workshops} /> : null}
                   {flagship && !deck ? (
                     <div className="tr-flag">
                       <p className="tr-flag-k">Flagship project</p>
@@ -148,13 +150,17 @@ export function RowJourney({ j, width, portal, deck = false }: { j: Journey; wid
   );
 }
 
+/** How many of each list the card shows; the rest are in the term sheet ("See the full term"). */
+const AT_A_GLANCE = 3;
+
 /**
- * The term at a glance (2026-11-16): its courses ("In class") and its challenges ("Out of class") side
- * by side under a hairline, each a plain list under a green label, the way the term sheet heads them;
- * the sheet ("See the full term") keeps the areas, the challenges' lines, the outcome and the masterclasses.
+ * The term at a glance (2026-11-16): its first three courses ("In class") and challenges ("Out of
+ * class") side by side under a hairline, each a plain list under a green label, the way the term sheet
+ * heads them; the sheet ("See the full term") keeps every course and challenge, the outcome and more.
  */
 function InOut({ d }: { d: DeckTerm }) {
-  const courses = d.inClass.flatMap((g) => g.items);
+  const courses = d.inClass.flatMap((g) => g.items).slice(0, AT_A_GLANCE);
+  const outs = d.outClass.slice(0, AT_A_GLANCE);
   return (
     <div className="tr-io">
       <section className="tr-io-col" aria-label="In class">
@@ -168,7 +174,7 @@ function InOut({ d }: { d: DeckTerm }) {
       <section className="tr-io-col" aria-label="Out of class">
         <p className="tr-io-k">Out of class</p>
         <ul>
-          {d.outClass.map((o) => (
+          {outs.map((o) => (
             <li key={o.title} data-or={o.or || undefined}>
               {o.or ? <span className="tr-io-or">or </span> : null}
               {o.title}
@@ -206,7 +212,7 @@ const MARKS: [RegExp, Icon, string?][] = [
  * The term's masterclasses and workshops on its card (the final page, 2026-10-28, the user's ask: the
  * space between the line and the button), each a small chip with its mark, under a quiet label.
  */
-export function Workshops({ items }: { items: string[] }) {
+function Workshops({ items }: { items: string[] }) {
   // a ticker, as the AI journey's tools (2026-10-28, the user's ask): two identical halves, the loop
   // moving one; a short list repeats so a half always outruns the card
   const reps = Math.max(1, Math.ceil(6 / items.length));
