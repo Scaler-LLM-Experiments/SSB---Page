@@ -83,7 +83,8 @@ the old `/v8`**: `/v7`'s sections in the deck's order, each wrapped in a light o
   a `<Tone>` or `<Tone dark>`. `DeckFooter` sits after `main`.
 - Order: hero (`HeroFrame`) > outcomes (`DeckOutcomes`) > why (`DeckWhySection`) > alumni >
   student startups (`BuiltCards`, dark) > investors (`PeopleTabsSection`) > `DeckFounders` (Anupam
-  Mittal, Ankur Warikoo, Ashneer Grover as three cards; it replaced the testimonial band) > "How you
+  Mittal, Shantanu Deshpande, Kiran Shah, Ankur Warikoo, Ashneer Grover, a sideways row three to a
+  screen; it replaced the testimonial band) > "How you
   learn", four USPs in `CurriculumRail` > curriculum terms > career prep (dark) > AI curriculum >
   Innovation Lab (dark) > faculty > mentors > super mentors > internship > campus life > press
   (dark) > founding team + Impact Foundation > admissions (dark) > FAQ + closing band > footer. The
@@ -164,11 +165,18 @@ the old `/v8`**: `/v7`'s sections in the deck's order, each wrapped in a light o
 - Section titles go through `Title` with `"Lead.|Tail."`: the tail renders as `.h-tail` in the
   secondary ink and is hidden below 672px.
 - **`PLACEHOLDER` marks made-up or unfinished copy**; grep for it before anything ships. Among them:
-  the hero's countdown deadline (`home.ts`), CTA hrefs, the alumni list repeated three times in
-  `page.tsx` (2026-11-09, to fill the three-row grid), startup names and figures (`community.ts`,
-  `deck.ts`), the deck's own "₹XCr+", the press card, placement figures and the report link
-  (`placements.ts`), the immersion companies' logos (`immersions.ts`), the faculty cards' courses and
-  bios (`PeopleTabsSection.tsx`), Ashneer Grover's card (`DeckFounders.tsx`).
+  the hero's countdown deadline (`home.ts`), CTA hrefs, startup names and figures (`community.ts`,
+  `deck.ts`; Valzy is the valet app's name to confirm), placement figures and the report link
+  (`placements.ts`), the immersions' lines and photos (`immersions.ts`, Britannia and Akshayakalpa,
+  to confirm with Guru), the student and lab startups' images (the brands' own, until the team's photos
+  of students with their products), the AI mentors' photos (`deck.ts`), Kiran Shah's card copy and
+  Ashneer Grover's card (`DeckFounders.tsx`), the faculty cards' courses and bios
+  (`PeopleTabsSection.tsx`).
+- **The team's review, 2026-11-16** (Chetna's list via Bivek; branch `main-page-feedback`): the
+  placement report card is no longer a Times of India clipping (it was a stand-in) and nothing says
+  "audited" (the report isn't audited yet); the figures run avg hike > top 25% > C2 CTC > C1 CTC >
+  top 10% > hiring partners; the startup fund reads ₹2Cr for now. Don't bring those back. Interim
+  image sources are in `public/media/CREDITS.md`.
 - Two admissions files, easy to mix up: `content/admissions.ts` is the home page's admissions section
   (the deck's slides 27-28); `content/admission.ts` is the `/admission` page, built on top of it.
 - `/internship`'s figures are the live page's as read on 2026-11-12 (70% full-time internships 2

@@ -172,3 +172,35 @@
   [data-page] .tr[data-deck] .tr-sum { margin-top: var(--space-2); }
   [data-page] .tr[data-deck] .tr-ws { margin-top: var(--space-5); margin-bottom: var(--space-5); }
 }
+
+/* (2026-11-16, the team's review: "change the layout, the in-class and out-class content isn't visible
+   at first glance") each card shows its term's courses and challenges: two columns under a hairline,
+   a green caps label over each plain list (14px, 6px apart), the photo a narrower strip so the copy
+   has the room; phones stack the two lists. The masterclasses moved to the term sheet. */
+.tr-io {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-6);
+  margin: var(--space-5) 0 var(--space-6); padding-top: var(--space-5);
+  border-top: 1px solid var(--border-subtle);
+}
+.tr-io-k {
+  margin: 0; font-size: var(--type-eyebrow-size, 12px); line-height: 1.2; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-ssb-light-9, #1d925b);
+}
+[data-page] .tr .tr-io ul { display: grid; gap: var(--space-1-5, 6px); margin: var(--space-3) 0 0; padding: 0; list-style: none; }
+.tr-io li {
+  position: relative; padding-left: var(--space-3);
+  font-size: 0.875rem; line-height: 1.45; color: var(--content-primary); text-wrap: pretty;
+}
+.tr-io li::before {
+  content: ''; position: absolute; left: 0; top: 0.6em; width: 4px; height: 4px; border-radius: 50%;
+  background: var(--color-ssb-light-9, #1d925b);
+}
+.tr-io li[data-or]::before { content: none; }
+.tr-io-or { color: var(--content-secondary); font-style: italic; }
+@media (width >= 1056px) {
+  [data-page] .tr[data-deck] .tr-card { grid-template-columns: minmax(0, 34%) minmax(0, 1fr); }
+}
+@media (width < 672px) {
+  .tr-io { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); margin: var(--space-4) 0 var(--space-5); padding-top: var(--space-4); }
+  .tr-io li { font-size: 0.8125rem; }
+}

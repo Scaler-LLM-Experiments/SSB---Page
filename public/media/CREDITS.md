@@ -29,3 +29,16 @@ From Wikimedia Commons, resized to 1920px WebP in `public/media/singapore`.
 - `deck/scholarships.jpg` (the scholarships banner, /v7 and /v8): Unsplash photo-1541339907198-e08756dedf3f, Unsplash License, graduates throwing their caps
 - `ashneer-card.jpg`, `ashneer-avatar.jpg` (the founders' cards, 2026-11-11, a placeholder): M Rahil 2004, CC BY-SA 4.0, https://commons.wikimedia.org/wiki/File:DOGLAPAN_FT~ASHNEER_GROVER~.jpg (his book Doglapan at a book fair; the avatar is cropped from the book's cover portrait, Penguin's: replace before launch)
 - `kamath-avatar.jpg`, `mittal-avatar.jpg`, `warikoo-avatar.jpg` (2026-11-11): cropped from the clips' posters above
+
+## The team's review, 2026-11-16
+
+Interim assets for the main page; each is to be swapped for the team's own once it arrives.
+
+- `public/alumni/{sagnik-banerjee,pranav-bagla,suhaas-sastry}.webp`: the team's headshots (Figma, SSB 2026 > Assest), cut-outs set on `public/internship/plate.webp`. Ours.
+- `shantanu-card.webp`, `shantanu-avatar.jpg`, `kiran-card.webp`, `kiran-avatar.jpg`: the team's photos of Shantanu Deshpande and Kiran Shah on SSB's stage (Figma, SSB 2026 > LP 2026-27 Assets). Ours. Shantanu's card plays SSB's own YouTube masterclass (ki_0jkW-2oc).
+- `public/sessions/varun-mohan.webp`: Varun Mohan's X avatar (@_mohansolo). `public/sessions/arvind-neelakantan.webp`: UCSB Center for Responsible Machine Learning's lecture page photo. Neither is ours: **replace** with the team's photos from their SSB sessions.
+- `public/deck/products/*.webp` (the AI products' cards): generated phone mock-ups of each kind of app (Aside image generation, 2026-11-16). Ours to use; stand-ins for students' own builds.
+- `public/deck/built/*.webp` (Beyond placements): each startup's own images, cropped 4:5. Dream Kit: dreamkit.cc's og:image. Gredo: @grabgredo's Instagram reel cover. Chaubaraa: chaubaraa.com (Shopify CDN, the Khoj discovery set). Onlyfeet: @onlyfeet.in's Instagram. GradeSense: gradesense.in/images/anupam-pitch-poster.jpg (Ayush Poojary at SSB's pitch session). Tally Konnect: tallykonnect.com/images/slides/smart-purchase.webp. Paritosh Sinha: @nithalla.itihaaskaar's Instagram profile photo. Valzy: valzy.co.in/img/apollo-onsite.jpg. **To confirm** with each founder; the team is collecting photos of the students with their products.
+- `public/startups/photos/*.webp` (the Innovation Lab's startups): Gahan AI: Scaler's blog post on the Gahan AI MoU. xSpecies AI: xspecies.ai's hero (a product render). Maximem: maximem.ai/about. Lemnisca: lemnisca.bio's team section. Antimattr: antimattr.one. Handa Uncle: handauncle.com (an app screen). **To confirm** with each startup.
+- `public/logos/britannia.webp`: Wikipedia's "Britannia Industries logo.svg" (non-free logo, fair use). `public/logos/akshayakalpa.webp`: Akshayakalpa's logo from Lok Capital's portfolio page.
+- `public/immersions/britannia.webp`: Moneycontrol's photo of a Britannia biscuit line (press; **replace**). `public/immersions/akshayakalpa.webp`: Akshayakalpa's own farm-visit blog banner. Both stand in until the trips' own photos come from the team (Guru).

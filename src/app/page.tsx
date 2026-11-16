@@ -94,9 +94,9 @@ export default function V8Page() {
             eyebrow={deckAlumni.eyebrow}
             title={deckAlumni.title}
             sub={deckAlumni.sub}
-            // PLACEHOLDER (2026-11-09, the user's ask): the eight alumni three times over, to see the
-            // three-row grid full; back to deckAlumni.people once the real alumni are in
-            people={[...deckAlumni.people, ...deckAlumni.people, ...deckAlumni.people]}
+            // the eight alumni once each, every one with a photo (2026-11-16; they were listed three times
+            // over, 2026-11-09, to fill the grid, and repeated faces read as placeholder content)
+            people={deckAlumni.people}
             peers={<PeersTicker title={deckAlumni.peersTitle} />}
           />
         </Tone>

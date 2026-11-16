@@ -24,6 +24,9 @@ import { why } from '@/content/why';
 export const deckHero: HeroFrameContent = {
   ...heroFrame,
   eyebrow: 'PGP in Management & Technology',
+  // three pills under the title (2026-11-16, the team's review: "add as pills"; was Learn by Doing ·
+  // Build startups & AI products · No tech background required)
+  line: ['AI-focused', 'Learn by doing', 'Build real businesses'],
   // without the trailing "…" (2026-10-28, the user's ask)
   logosLabel: 'Built by leaders from',
 };
@@ -33,7 +36,8 @@ export const deckPlacements: PlacementsContent = {
   ...placements,
   eyebrow: 'Outcomes',
   title: 'Placement highlights.|Where our first cohorts went.',
-  reportLabel: 'Download Audited Placement Report',
+  // not "audited": the report isn't audited yet (2026-11-16, the team's review)
+  reportLabel: 'Download Placement Report',
   // The showcase reads its first figures from the photo cards (₹25.7L, 3.2x); these follow them.
   v3Cohorts: [
     { value: '₹19L', label: 'Average CTC' },
@@ -56,19 +60,27 @@ export const deckWhy: WhyBreakerCopy = {
 /** The two figures with their sources, in full (the second's whole line, the user's reference) */
 export const deckWhyFigures: WhyFigure[] = why.figures;
 
-/** Slide 5: the eight alumni, in the deck's order, and "Your peers come from". */
+/** Slide 5: the eight alumni and "Your peers come from". Avendus, Razorpay and The Whole Truth lead
+ *  (2026-11-16, the team's review: "in the first fold"): the grid fills column by column (two rows on
+ *  the web, three on a phone), so the first three are the phone's first column and the web's first
+ *  three cards. */
+const alumniBy = new Map(alumni.map((a) => [a.company.name, a]));
+const alumniFirst = ['Avendus', 'Razorpay', 'The Whole Truth', 'Blinkit', 'Urban Company', 'Emergent', 'BharatPe', 'Ninjacart'];
 export const deckAlumni = {
   eyebrow: 'Alumni',
-  title: 'A strong alumni base.|Already at Blinkit, Urban Company, Razorpay and more.',
+  title: 'A strong alumni base.|Already at Avendus, Razorpay, The Whole Truth and more.',
   sub: 'From software, sales and finance into strategy, growth and investing roles.',
-  people: alumni,
+  people: alumniFirst.map((name) => alumniBy.get(name)!),
   peersTitle: 'Your peers come from',
 };
 
 /** Slide 6: the student startups on vFinal's Built at SSB cards (2026-10-28, the user's ask), with this
  *  variant's photos. Listed as the deck's two rows interleaved: the cards fill their two rows column by
  *  column, so row 1 runs along the top and row 2 under it. Figures only where the deck gives one. */
-const img = (src: string, alt: string, height = 800) => ({ src: `/deck/${src}.jpg`, alt, width: 1200, height });
+// (2026-11-16, the team's review: "images need to be replaced") each startup's own photo in place of
+// Unsplash's, cropped 4:5 to the card (public/deck/built, sources in CREDITS.md). PLACEHOLDER: the team
+// is collecting photos of the students with their products; these are the brands' own until then
+const built = (src: string, alt: string) => ({ src: `/deck/built/${src}.webp`, alt, width: 800, height: 1000 });
 const startupsRow1: BuiltCard[] = [
   {
     company: 'Dream Kit',
@@ -76,16 +88,7 @@ const startupsRow1: BuiltCard[] = [
     by: 'Aashish US',
     blurb: 'A homegrown STEAM toy brand used across schools, built while holding a full-time role at The Whole Truth.',
     stat: { value: '₹2Cr', label: '12,000+ students reached' },
-    image: img('toy', 'A small robot car built from a STEAM kit'),
-    focus: [0.5, 0.5],
-  },
-  {
-    company: 'Gredo',
-    sector: 'Protein food',
-    by: 'Sanskriti Deshmukh',
-    blurb: 'A protein-food brand live on Zomato and Swiggy, with vending machines across Bangalore.',
-    stat: { value: '₹1Cr+', label: 'ARR' },
-    image: img('protein', 'Protein bars stacked on a table'),
+    image: built('dream-kit', 'A child holding up a Dream Kit toy car'),
     focus: [0.5, 0.5],
   },
   {
@@ -94,7 +97,7 @@ const startupsRow1: BuiltCard[] = [
     by: 'Chavda Tirthrajsinh, Geetika Mehta & Malika Gupta',
     blurb: 'Solid and liquid perfumes inspired by familiar memories, emotions and characters.',
     stat: { value: '₹30L+', label: 'ARR' },
-    image: img('perfume', 'A glass perfume bottle on a stone table', 1200),
+    image: built('chaubaraa', 'Chaubaraa’s Khoj discovery set of perfumes'),
     focus: [0.5, 0.45],
   },
   {
@@ -103,18 +106,29 @@ const startupsRow1: BuiltCard[] = [
     by: 'Paritosh Sinha',
     blurb: 'Skipped placements to build his creator business full-time; now fielding publishing offers for his debut book.',
     stat: { value: '200K', label: 'Followers, up from 8K' },
-    image: img('creator', 'A creator’s desk with a laptop, camera and editing console'),
+    image: built('paritosh-sinha', 'Paritosh Sinha beside a stack of history books'),
     focus: [0.5, 0.5],
   },
 ];
 const startupsRow2: BuiltCard[] = [
+  // Gredo under Dream Kit (2026-11-16, the team's review: "Dream Kit and Gredo in the first fold"): the
+  // two share the first column, the first fold on a phone as on the web
+  {
+    company: 'Gredo',
+    sector: 'Protein food',
+    by: 'Sanskriti Deshmukh',
+    blurb: 'A protein-food brand live on Zomato and Swiggy, with vending machines across Bangalore.',
+    stat: { value: '₹1Cr+', label: 'ARR' },
+    image: built('gredo', 'A Gredo protein dessert, in hand'),
+    focus: [0.5, 0.5],
+  },
   {
     company: 'Onlyfeet',
     sector: 'Fashion',
     by: 'Mahnoor Z Mistry',
     blurb: 'Premium novelty socks in collectible cans, with quirky designs for Gen Z and millennials.',
     stat: { value: '₹28L+', label: 'ARR' },
-    image: img('socks', 'Colourful patterned socks drying on a line'),
+    image: built('onlyfeet', 'A pair of Onlyfeet socks'),
     focus: [0.5, 0.5],
   },
   {
@@ -122,7 +136,7 @@ const startupsRow2: BuiltCard[] = [
     sector: 'AI · EdTech',
     by: 'Ayush Poojary',
     blurb: 'An AI platform that evaluates descriptive and handwritten assessments at scale.',
-    image: img('exam', 'A hand marking an answer sheet'),
+    image: built('gradesense', 'Ayush Poojary pitching GradeSense at SSB'),
     focus: [0.5, 0.5],
   },
   {
@@ -130,16 +144,17 @@ const startupsRow2: BuiltCard[] = [
     sector: 'Family business',
     by: 'Moh Agarwal',
     blurb: 'Joined the family business after SSB and launched its ERP automation platform.',
-    image: img('erp', 'A warehouse stacked with boxed inventory'),
+    image: built('tally-konnect', 'Tally Konnect reading a purchase invoice into Tally'),
     focus: [0.5, 0.5],
   },
   {
-    // PLACEHOLDER name: the deck has "[app name]"
-    company: 'Smart valet app',
+    // the app's name (2026-11-16; the deck had "[app name]"): Valzy, valzy.co.in, where LinkedIn lists Yash
+    // Ramchandani. TO CONFIRM with the team that it is his
+    company: 'Valzy',
     sector: 'Mobility',
     by: 'Yash Ramchandani',
     blurb: 'A smart valet platform, built from scratch, that streamlines car handovers at high-footfall venues.',
-    image: img('parking', 'A car park seen from above'),
+    image: built('valzy', 'A Valzy valet stand at a hospital entrance'),
     focus: [0.5, 0.5],
   },
 ];
@@ -149,7 +164,8 @@ export const deckStartups: BuiltContent = {
   title: 'Startups by our students.',
   titleTail: 'Some didn’t just find careers. They built companies.',
   label: 'Startups built by SSB students',
-  companies: startupsRow1.flatMap((v, i) => [v, startupsRow2[i]]),
+  // the two rows interleaved, top first; row 2 is one longer since Gredo moved into it
+  companies: startupsRow2.flatMap((v, i) => (startupsRow1[i] ? [startupsRow1[i], v] : [v])),
 };
 
 /** Slide 7: the quote under the investors' row, and the VC events (the deck's note). */
@@ -174,7 +190,7 @@ export const deckUsps = {
   sub: 'Every term ends in a build. Some became companies.',
   items: [
     { id: 'usp-business', num: '01', label: 'Build real businesses', line: 'Build two real businesses with real money, then pitch one to VCs.', icon: 'learn' },
-    { id: 'usp-ai', num: '02', label: 'Learn AI fluency', line: 'Ship an AI product every term. No coding background needed.', icon: 'ai' },
+    { id: 'usp-ai', num: '02', label: 'Build AI fluency', line: 'Ship an AI product every term. No coding background needed.', icon: 'ai' },
     { id: 'usp-immersions', num: '03', label: 'Go on industry immersions', line: 'Learn where the work happens: factory floors, quick-commerce ops and a creative agency.', icon: 'immersions' },
     { id: 'usp-projects', num: '04', label: 'Work on live projects', line: 'Work real briefs from real companies, then defend your plan to their founders.', icon: 'projects' },
   ] as const,
@@ -189,6 +205,13 @@ export const deckBusinesses = {
       label: 'The D2C Startup Challenge',
       // the deck's own wording (2026-10-28, the user's ask: the figures in the line, not a strip)
       sub: 'Build a live D2C brand. Target ₹5L+ revenue within 6 weeks. ₹25,000 in startup funding. End-to-end execution: sourcing, branding, packaging & pricing.',
+      // the same, as points (2026-11-16, the team's review: "points or pills, it's a paragraph now")
+      points: [
+        'Build a live D2C brand',
+        '₹25,000 in startup funding',
+        'Target ₹5L+ revenue in 6 weeks',
+        'Own sourcing, branding, packaging & pricing',
+      ],
       stats: [
         { value: '₹25K', label: 'Startup funding' },
         { value: '₹5L+', label: 'Revenue target' },
@@ -201,6 +224,13 @@ export const deckBusinesses = {
     {
       label: 'The Hustle Program',
       sub: 'Go from MVP to revenue to raising VC capital. ₹50,000 in funding to start, a ₹25L funding pathway and a VC Demo Day pitch. Backed by Lightrock, Peak XV & Sidhant Goyal.',
+      points: [
+        'Go from MVP to revenue to VC capital',
+        '₹50,000 in funding to start',
+        'A ₹25L funding pathway',
+        'Pitch at a VC Demo Day',
+        'Backed by Lightrock, Peak XV & Sidhant Goyal',
+      ],
       stats: [
         { value: '₹50K', label: 'Funding to start' },
         { value: '₹25L', label: 'Funding pathway' },
@@ -217,12 +247,13 @@ export const deckBusinesses = {
 export const deckBusinessFacts = {
   title: 'Backed at every step.',
   items: [
-    // PLACEHOLDER figure: the deck's "₹XCr+"
-    { title: '₹XCr+ startup fund', text: 'Committed to student ventures, from the D2C Startup Challenge to the Hustle Program.', image: '/deck/fund.jpg' },
-    { title: 'VC Demo Days', text: 'Pitch to Peak XV, Tiger Global, Y Combinator, Entrepreneur First, Campus Fund and Mela Ventures.', image: '/deck/demoday.jpg' },
-    // the lab's own photo (public/media), not a stock one
+    // ₹2Cr for now (2026-11-16, the team's review; the deck had "₹XCr+"). The photos are our own now, not
+    // Unsplash's (the team's review: "images are random"): students at work, a student pitching Anupam
+    // Mittal on campus (ANI's photo, CREDITS.md), the lab, and a mentor with students in the lab
+    { title: '₹2Cr startup fund', text: 'Committed to student ventures, from the D2C Startup Challenge to the Hustle Program.', image: '/media/why-story-cohort-800.webp' },
+    { title: 'VC Demo Days', text: 'Pitch to Peak XV, Tiger Global, Y Combinator, Entrepreneur First, Campus Fund and Mela Ventures.', image: '/media/why-story-mittal-800.webp' },
     { title: 'Shared Innovation Lab', text: '10+ startups incubated, ₹10Cr+ in revenue and $1B+ in valuations, on campus.', image: '/media/lab-space-800.webp' },
-    { title: '1:1 mentorship', text: 'From leaders at BCG, McKinsey, Paytm, Blinkit, Google, Zomato, Flipkart and Bain.', image: '/deck/mentor.jpg' },
+    { title: '1:1 mentorship', text: 'From leaders at BCG, McKinsey, Paytm, Blinkit, Google, Zomato, Flipkart and Bain.', image: '/media/lab-mentor-800.webp' },
   ],
 }
 
@@ -242,10 +273,12 @@ export const deckAiProducts = {
       title: 'Build with mentors, not manuals.',
       // the mentors are named in the panel above, so the line doesn't repeat them (2026-10-28)
       line: '10+ AI workshops and a Scaler AI Labs partnership: frontier AI companies, RL environments and curated datasets.',
-      // photos where the project has one; initials until the team's arrive
+      // every mentor with a photo (2026-11-16, the team's review: "mentor images are missing"). PLACEHOLDER:
+      // Arvind Neelakantan's from UCSB's lecture page and Varun Mohan's his own X avatar (CREDITS.md), until
+      // the team's own photos from their sessions arrive
       mentors: [
-        { name: 'Arvind N', org: 'GPT-3 / GPT-4', logo: '/logos/marks/lead-openai.png' },
-        { name: 'Varun Mohan', org: 'Google DeepMind', logo: '/logos/marks/lead-google.png' },
+        { name: 'Arvind N', org: 'GPT-3 / GPT-4', photo: '/sessions/arvind-neelakantan.webp', logo: '/logos/marks/lead-openai.png' },
+        { name: 'Varun Mohan', org: 'Google DeepMind', photo: '/sessions/varun-mohan.webp', logo: '/logos/marks/lead-google.png' },
         { name: 'Yash Kumar', org: 'OpenAI', photo: '/sessions/yash-kumar.webp', logo: '/logos/marks/lead-openai.png' },
       ],
       badges: ['10+ AI workshops'],
@@ -261,33 +294,31 @@ export const deckAiProducts = {
   ],
   productsTitle: 'Types of products you’ll build',
   products: [
-    { title: 'Splitwise clone', text: 'Split expenses between friends', image: '/deck/expense.jpg' },
-    { title: 'Language learning assistant', text: 'A voice tutor that listens and corrects', image: '/deck/language.jpg' },
-    { title: 'Negotiation training AI coach', text: 'Practise a deal against an AI counterpart', image: '/deck/negotiation.jpg' },
-    { title: 'Case interview practice tool', text: 'Rehearse cases and guesstimates on demand', image: '/deck/interview.jpg' },
-    { title: 'Party icebreaker AI game', text: 'A game that gets a room talking', image: '/deck/party.jpg' },
+    // each card shows the product now, as SST's cards do (2026-11-16, the team's review: "add images"):
+    // generated phone mock-ups of each app (public/deck/products), stand-ins for students' own builds
+    { title: 'Splitwise clone', text: 'Split expenses between friends', image: '/deck/products/expense.webp' },
+    { title: 'Language learning assistant', text: 'A voice tutor that listens and corrects', image: '/deck/products/language.webp' },
+    { title: 'Negotiation training AI coach', text: 'Practise a deal against an AI counterpart', image: '/deck/products/negotiation.webp' },
+    { title: 'Case interview practice tool', text: 'Rehearse cases and guesstimates on demand', image: '/deck/products/interview.webp' },
+    { title: 'Party icebreaker AI game', text: 'A game that gets a room talking', image: '/deck/products/party.webp' },
   ],
 };
 
 /** Slide 11: the immersions in the deck's words (2026-10-28, the user's ask: the page's cards, the Jio
  *  Creative Labs photo with its line, then the SSB creators). Trips and creators are vFinal's. */
 export const deckImmersions = {
-  title: 'Immersions beyond the classroom.|Factory floors, quick commerce and a creative agency.',
+  // the tail after the companies the team named (2026-11-16; was "factory floors, quick commerce and a creative agency")
+  title: 'Immersions beyond the classroom.|Factory floors, farms and a creative agency.',
   // (2026-10-28, the user's ask) a feature card of its own, as the Jio Creative Labs one: an Unsplash
   // photo of a factory floor (stand-in), the three companies listed inside it
   trips: {
     label: 'Domestic immersions',
     title: '3 domestic immersions',
-    line: 'Across industries: manufacturing floors, quick-commerce backend ops, a fashion brand headquarters.',
+    // the companies by name (2026-11-16, the team's review); the deck had "manufacturing floors, quick-commerce
+    // backend ops, a fashion brand headquarters"
+    line: 'Across industries, from Britannia’s factory floor to Akshayakalpa’s organic dairy farm.',
     image: '/deck/immersion.jpg',
   },
-  // PLACEHOLDER names and stories (2026-10-28, the user's ask: "random student names and what they
-  // did there, in two lines"), until the team's real ones; keyed by the logo's company
-  stories: {
-    ArcelorMittal: { name: 'Riya Sharma', did: 'Costed every unit on the line and pitched a quality-check fix to the plant head.' },
-    Zepto: { name: 'Arjun Mehta', did: 'Ran a dark-store shift and cut picking time with a new inventory layout.' },
-    Myntra: { name: 'Sneha Iyer', did: 'Sat in on a season’s merchandising and pitched a campaign to the brand team.' },
-  } as Record<string, { name: string; did: string }>,
   track: {
     label: 'Creator-preneur track',
     title: '6 months inside Jio Creative Labs',
@@ -394,7 +425,7 @@ export const deckFaqs: Faq[] = [
   ...faqs,
   {
     question: 'Where can I see the full Outcomes Report?',
-    answer: 'Download the audited Outcomes Report.',
+    answer: 'Download the Outcomes Report.',
     link: { label: 'Outcomes Report', href: '#placement-report' },
   },
 ];
@@ -428,24 +459,26 @@ export const deckClose = {
 export const deckOutcomes = {
   eyebrow: 'Placements',
   title: 'Placement highlights.|Our founding cohort tripled its pay.',
+  // in the team's order (2026-11-16 review): avg hike > top 25% > C2 CTC > C1 CTC > top 10% > hiring partners
   figures: [
     { value: '3.2x', label: 'Average salary hike', note: 'Cohort 1', short: 'Avg hike · C1' },
-    { value: '₹19L', label: 'Average CTC', note: 'Cohort 1', short: 'Avg CTC · C1' },
-    { value: '₹21L', label: 'Average CTC', note: 'Cohort 2 · ongoing', short: 'Avg CTC · C2' },
     { value: '₹26L', label: 'Top 25% avg. CTC', note: 'Cohorts 1 & 2', short: 'Top 25% CTC' },
+    { value: '₹21L', label: 'Average CTC', note: 'Cohort 2 · ongoing', short: 'Avg CTC · C2' },
+    { value: '₹19L', label: 'Average CTC', note: 'Cohort 1', short: 'Avg CTC · C1' },
     { value: '₹30.7L', label: 'Top 10% avg. CTC', note: 'Cohorts 1 & 2', short: 'Top 10% CTC' },
-    { value: '500+', label: 'Hiring companies', note: 'Cohorts 1 & 2', short: 'Companies hiring' },
+    { value: '500+', label: 'Hiring partners', note: 'Cohorts 1 & 2', short: 'Hiring partners' },
   ],
-  // PLACEHOLDER press card: The Times of India's wordmark (Wikimedia Commons, "The times of india.svg"),
-  // the user's pick (2026-10-28), over words that stand in until the real coverage is chosen
+  // The report card, no newspaper (2026-11-16, the team's review: "Times of India, is it true?" It
+  // wasn't: the paper's wordmark, the date and the byline were stand-ins). Its kicker where the paper's
+  // name was, the cohorts where the date was; "audited" off the CTA (the report isn't audited yet).
   press: {
-    logo: { src: '/press/toi.svg', alt: 'The Times of India', width: 323, height: 23 },
-    date: '12 Oct 2026',
-    title: 'SSB’s founding cohort triples its pay',
-    byline: 'By Staff Reporter · 4 min read',
-    sub: 'A 3.2x average hike for the founding cohort, and 500+ companies hiring across two cohorts.',
-    cta: 'Download the audited report',
-  },
+    kicker: 'Placement report',
+    date: 'Cohorts 1 & 2',
+    title: 'SSB’s founding cohort tripled its pay',
+    byline: 'Cohort 1 placed · Cohort 2 placements ongoing',
+    sub: 'A 3.2x average hike for the founding cohort, and 500+ hiring partners across two cohorts.',
+    cta: 'Download the placement report',
+  } as { kicker?: string; logo?: { src: string; alt: string; width: number; height: number }; date: string; title: string; byline: string; sub: string; cta: string },
   photo: { caption: 'The founding cohort, Bengaluru' },
   recruitersTitle: 'Our recruiters: MNCs, AI companies & top startups',
 };

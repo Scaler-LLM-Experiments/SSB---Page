@@ -2,16 +2,7 @@
 
 import * as React from 'react';
 import { Button, Container, Heading, Section, Text } from '@kishanscaler/ssx-ui';
-import {
-  ArrowUpRight,
-  Briefcase,
-  ChatTeardropText,
-  Confetti,
-  DownloadSimple,
-  Handshake,
-  PlayIcon,
-  Receipt,
-} from '@phosphor-icons/react';
+import { ArrowUpRight, CheckCircle, DownloadSimple, PlayIcon } from '@phosphor-icons/react';
 
 import {
   deckAiProducts,
@@ -163,9 +154,16 @@ export function DeckBusinessSection() {
                 <Heading as="h3" size="3" className="dk-biz-title" data-part="title">
                   {b.label}
                 </Heading>
-                <p className="dk-biz-sub" data-part="description">
-                  {b.sub}
-                </p>
+                {/* the line as points, each led by a tick (2026-11-16, the team's review: "points or pills,
+                    it's a paragraph now") */}
+                <ul className="dk-biz-points" data-part="description">
+                  {b.points.map((pt) => (
+                    <li key={pt}>
+                      <CheckCircle weight="fill" aria-hidden="true" />
+                      {pt}
+                    </li>
+                  ))}
+                </ul>
                 {/* (2026-10-28, the user's ask) no stat strip: the figures are in the line above; the proof
                     highlighted on its own, green on grey */}
                 <div className="dk-biz-proof dk-biz-proof--panel" data-part="description">
@@ -248,9 +246,6 @@ function ToolMark({ name }: { name: string }) {
     />
   );
 }
-
-/** The products' icons, in the content's order (2026-10-28). */
-const PRODUCT_ICONS = [Receipt, ChatTeardropText, Handshake, Briefcase, Confetti];
 
 /**
  * Slide 10 (2026-10-28, the user's ask): the three steps as white cards, each led by a panel that
@@ -341,13 +336,22 @@ export function DeckAiProductsSection() {
           {c.productsTitle}
         </Heading>
         <ul ref={rowRef} className="dk-facts dk-products" aria-label={c.productsTitle}>
-          {c.products.map((pr, i) => {
-            const Icon = PRODUCT_ICONS[i];
+          {c.products.map((pr) => {
             return (
               <li key={pr.title} className="dk-photo-card dk-product">
-                <span className="dk-product-art" aria-hidden="true" data-part="photo">
-                  <Icon weight="duotone" />
-                </span>
+                {/* the product itself, a phone showing the app (2026-11-16, the team's review: "add images,
+                    like SST"; was a duotone icon on the green panel) */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  className="dk-product-img"
+                  src={pr.image}
+                  alt={`${pr.title}, an app on a phone`}
+                  width={1200}
+                  height={750}
+                  loading="lazy"
+                  decoding="async"
+                  data-part="photo"
+                />
                 <div className="dk-photo-card-body">
                   <p className="dk-card-title" data-part="title">
                     {pr.title}
@@ -474,12 +478,12 @@ export function DeckImmersionsSection() {
                     <img className="dk-trip-logo" src={t.logo.src} alt={t.logo.alt} loading="lazy" decoding="async" />
                   </span>
                 ) : null}
-                {/* a student and what they did there (placeholders, deck.ts `trips.stories`) */}
+                {/* what the immersion is, then a line on it (2026-11-16: no made-up students) */}
                 <p className="dk-card-title" data-part="title">
-                  {c.stories[t.logo?.alt ?? '']?.name ?? t.name}
+                  {t.name}
                 </p>
                 <p className="dk-card-text" data-part="description">
-                  {c.stories[t.logo?.alt ?? '']?.did ?? t.description}
+                  {t.description}
                 </p>
               </div>
             </li>

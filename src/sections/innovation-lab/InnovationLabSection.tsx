@@ -137,7 +137,10 @@ function toBuiltCard(v: Venture): BuiltCard {
     sector: v.sector,
     by: v.role ? `${names} · ${v.role}` : names,
     blurb: v.description,
-    image: { src: v.banner?.src ?? v.image ?? '/internship/plate.webp', alt: `${v.company}`, width: 1133, height: 542 },
+    // a photo where the startup has one (2026-11-16), its banner otherwise
+    image: v.banner
+      ? { src: v.banner.src, alt: `${v.company}`, width: 1133, height: 542 }
+      : { src: v.image ?? '/internship/plate.webp', alt: v.imageAlt ?? `${v.company}`, width: 800, height: 1000 },
     focus: [0.5, 0.5],
     stat: v.stat,
     href: v.href,

@@ -44,29 +44,25 @@ export type DomesticImmersion = {
   image: { src: string; width: number; height: number; position?: string; leftHalf?: boolean };
 };
 
+// (2026-11-16, the team's review: "copy is placeholder, add Britannia and Akshayakalpa, check with Guru")
+// the two companies the team named, in place of the placeholder three (ArcelorMittal, Zepto and Myntra's
+// logos over made-up students). PLACEHOLDER until Guru confirms: the lines are ours, from what each
+// company does, and the photos the companies' own (Akshayakalpa's farm-visit banner) or the press's
+// (Moneycontrol's, a Britannia biscuit line), not the trips'; the third immersion is to come.
 export const domesticImmersions: DomesticImmersion[] = [
   {
     place: 'Manufacturing floor',
-    name: 'Manufacturing',
-    // PLACEHOLDER logo (2026-10-27, the user's ask: "random companies' logos" until the real ones come)
-    logo: { src: '/logos/arcelormittal.svg', alt: 'ArcelorMittal' },
-    description: 'See how a product is made at scale: planning the line, quality checks and the cost of every unit.',
-    image: { src: '/media/built/tally.webp', width: 1600, height: 1065, position: '60% 50%' },
+    name: 'Inside a biscuit factory',
+    logo: { src: '/logos/britannia.webp', alt: 'Britannia' },
+    description: 'Walk Britannia’s production lines and see how one of India’s largest food brands plans, makes and ships at scale.',
+    image: { src: '/immersions/britannia.webp', width: 1200, height: 675, position: '60% 50%' },
   },
   {
-    place: 'Quick-commerce backend',
-    name: 'Quick commerce',
-    logo: { src: '/logos/zepto.svg', alt: 'Zepto' }, // PLACEHOLDER logo
-    description: 'Go behind the 10-minute delivery: dark-store operations, inventory and the last mile.',
-    // the scene is the file's left half (its right half is a baked blur)
-    image: { src: '/immersions/domestic-immersions.webp', width: 948, height: 544, position: '0% 50%', leftHalf: true },
-  },
-  {
-    place: 'Fashion brand’s HQ',
-    name: 'Fashion brand',
-    logo: { src: '/logos/myntra.svg', alt: 'Myntra' }, // PLACEHOLDER logo
-    description: 'Sit in with the teams who design, merchandise and market a fashion label.',
-    image: { src: '/live-projects/ajio.jpg', width: 900, height: 1200, position: '50% 45%' },
+    place: 'Organic dairy farm',
+    name: 'On an organic dairy farm',
+    logo: { src: '/logos/akshayakalpa.webp', alt: 'Akshayakalpa' },
+    description: 'Follow Akshayakalpa’s milk from its farmers’ cows to Bengaluru doorsteps: the testing, the processing and the supply chain.',
+    image: { src: '/immersions/akshayakalpa.webp', width: 1200, height: 600, position: '35% 50%' },
   },
 ];
 

@@ -25,7 +25,7 @@ import {
 
 import { ScrollDots } from '@/sections/shared/ScrollDots';
 
-import type { Journey } from '../data';
+import type { DeckTerm, Journey } from '../data';
 import { useOpenYear } from './shared';
 import { StageSheet, TermCounts } from './stage-sheet';
 import { MONTHS, PHOTO } from './stage';
@@ -110,7 +110,9 @@ export function RowJourney({ j, width, portal, deck = false }: { j: Journey; wid
                   <p className="tr-k">Term {String(y.year).padStart(2, '0')}</p>
                   <h3 className="tr-title">{y.name}</h3>
                   <p className="tr-sum">{deck && y.deck ? y.deck.line : (y.summary ?? y.description)}</p>
-                  {deck && y.deck ? <Workshops items={y.deck.workshops} /> : null}
+                  {/* in class and out of class on the card itself (2026-11-16, the team's review: "the inside
+                      content isn't visible at first glance"; was the masterclasses' ticker, now in the sheet) */}
+                  {deck && y.deck ? <InOut d={y.deck} /> : null}
                   {flagship && !deck ? (
                     <div className="tr-flag">
                       <p className="tr-flag-k">Flagship project</p>
@@ -146,6 +148,38 @@ export function RowJourney({ j, width, portal, deck = false }: { j: Journey; wid
   );
 }
 
+/**
+ * The term at a glance (2026-11-16): its courses ("In class") and its challenges ("Out of class") side
+ * by side under a hairline, each a plain list under a green label, the way the term sheet heads them;
+ * the sheet ("See the full term") keeps the areas, the challenges' lines, the outcome and the masterclasses.
+ */
+function InOut({ d }: { d: DeckTerm }) {
+  const courses = d.inClass.flatMap((g) => g.items);
+  return (
+    <div className="tr-io">
+      <section className="tr-io-col" aria-label="In class">
+        <p className="tr-io-k">In class</p>
+        <ul>
+          {courses.map((c) => (
+            <li key={c}>{c}</li>
+          ))}
+        </ul>
+      </section>
+      <section className="tr-io-col" aria-label="Out of class">
+        <p className="tr-io-k">Out of class</p>
+        <ul>
+          {d.outClass.map((o) => (
+            <li key={o.title} data-or={o.or || undefined}>
+              {o.or ? <span className="tr-io-or">or </span> : null}
+              {o.title}
+            </li>
+          ))}
+        </ul>
+      </section>
+    </div>
+  );
+}
+
 /** A masterclass's mark: the tool's own logo in its colour where it has one (Excel, LinkedIn, ChatGPT,
  *  Canva, Mixpanel), else an icon for what it teaches, in the brand green. Matched on its name. */
 const MARKS: [RegExp, Icon, string?][] = [
@@ -172,7 +206,7 @@ const MARKS: [RegExp, Icon, string?][] = [
  * The term's masterclasses and workshops on its card (the final page, 2026-10-28, the user's ask: the
  * space between the line and the button), each a small chip with its mark, under a quiet label.
  */
-function Workshops({ items }: { items: string[] }) {
+export function Workshops({ items }: { items: string[] }) {
   // a ticker, as the AI journey's tools (2026-10-28, the user's ask): two identical halves, the loop
   // moving one; a short list repeats so a half always outruns the card
   const reps = Math.max(1, Math.ceil(6 / items.length));

@@ -63,3 +63,17 @@
 .dkf-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .dkf-credit { text-decoration: none; font-size: 11px; font-weight: var(--font-weight-regular, 400); }
 .dkf-credit:hover { text-decoration: underline; }
+
+/* five founders (2026-11-16, Shantanu Deshpande and Kiran Shah added): the web's row scrolls sideways
+   too, three cards to a screen, snapping card to card; the page's arrows and dots under it */
+@media (width >= 1056px) {
+  .dkf-row {
+    grid-template-columns: none; grid-auto-flow: column;
+    grid-auto-columns: calc((100% - 2 * var(--space-4)) / 3);
+    overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--dkf-inset);
+    scrollbar-width: none; overscroll-behavior-x: contain;
+  }
+  .dkf-row::-webkit-scrollbar { display: none; }
+  .dkf-card { scroll-snap-align: start; }
+}
+.dkf-dots { margin-top: var(--space-6); }

@@ -2099,3 +2099,19 @@ main[data-entrance='calm'] [data-calm-card='in'] {
 @media (width < 672px) {
   .dk-frame .why-breaker:not(.oc-breaker) .why-breaker-stat .type-display { font-size: 1.375rem !important; }
 }
+
+/* 2026-11-16 (the team's review: "points or pills, it's a paragraph now"): the two programmes' lines as
+   points, each led by a brand-green tick, card text's size, 8px apart */
+.dk-biz-points {
+  display: grid; gap: var(--space-2);
+  margin: var(--space-3) 0 var(--space-5); padding: 0; list-style: none;
+}
+.dk-biz-points > li {
+  display: flex; align-items: flex-start; gap: var(--space-2);
+  font-size: var(--type-body-sm-size); line-height: 1.45; color: var(--content-primary);
+}
+.dk-biz-points svg { flex: none; width: 1.125rem; height: 1.125rem; margin-top: 0.125rem; color: var(--color-ssb-light-9); }
+
+/* 2026-11-16 (the team's review: "add images, like SST"): each kind of product as a picture of it, the
+   photo cards' inset photo (16:10), on the mock-ups' own pale mint */
+.dk-photo-card > img.dk-product-img { background: #e8f5ee; object-fit: cover; }
