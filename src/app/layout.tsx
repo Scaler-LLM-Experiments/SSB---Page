@@ -8,6 +8,8 @@ import './color-standard.css';
 import './typography.css';
 // photos inset in cards take the card's radius less the gap (2026-11-11)
 import './corners.css';
+// one rhythm of spacing and type on phones, after everything else (2026-11-16)
+import './mweb.css';
 
 const sans = Plus_Jakarta_Sans({
   subsets: ['latin'],

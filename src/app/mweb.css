@@ -1,0 +1,86 @@
+/* ── m-web rhythm (2026-11-16, the user's ask: "spacing and typography need to be evenised in mweb;
+   it looks very random"). An audit at 390px found the type mostly on typography.css's scale but the
+   space between things anywhere from 12 to 114px: headers 24 to 48px over their content, sub-headings
+   40 to 64px under the block before them, the USP chapters 56 to 72px apart, the Innovation Lab's dark
+   band 72px deep before its eyebrow. Phones only; the web is untouched. Imported last (layout.tsx).
+
+   One set of steps, everywhere on a phone:
+     section       32px above and below (64 between two sections' content)
+     header        24px from a section's header (eyebrow, title, intro) to its content
+     sub-heading   48px under the block before it, 16px over its own content; 17px semibold
+     controls      the carousel arrows and dots 32px under their row
+     chapter       the USP tags ("01 Build real businesses"): 64px apart, 16px over their title ── */
+
+@media (width < 672px) {
+  /* ── sections: 32px above and below ─────────────────────────────────────────────────────────── */
+  /* the first fold's copy ended 40px over the placements (8 more than any section's foot) */
+  html body .hf .hf-body { padding-bottom: var(--space-8) !important; }
+  /* the Innovation Lab's band opened 40px deeper than every other section (a margin kept from the
+     desktop's full-bleed photo entrance) */
+  html body main section.lab[data-density='roomy'] { margin-top: 0 !important; }
+  /* the press cards' and the clubs' rows carry 8px under them for a shadow: the section's foot ran 40 */
+  html body #press .pr-grid,
+  html body section:has(#clubs-title) .rs-row { padding-bottom: 0 !important; }
+  /* the FAQ ran 16px into its foot (48 to the closing band): the same 64 as between any two sections */
+  html body main section.dkf:has(.dkf-list) { padding-bottom: var(--space-12) !important; }
+
+  /* ── header → content: 24px ────────────────────────────────────────────────────────────────── */
+  /* the headers' own wrappers (mb-8, mb-10: 32 and 40px) */
+  html body main :is(.mb-8, .mb-10):has(h2.type-display) { margin-bottom: var(--space-6) !important; }
+  /* immersions: its first card's own 48px margin outran the header's */
+  html body main .mb-8:has(#dk-imm-title) + .dk-track { margin-top: 0 !important; }
+  /* press, the lab and campus life (their own head blocks, 32 and 40px) */
+  html body #press .pr-head,
+  html body main .lab .lab-head { margin-bottom: var(--space-6) !important; }
+  /* admissions: the eligibility card sat 18px under the intro */
+  html body .ad4-left > .ad4-elig { margin-top: 14px !important; }
+  /* the FAQ's list, 40px under its header and callback button */
+  html body main .dkf-grid { row-gap: var(--space-6) !important; }
+  /* the curriculum: its download button and the term tabs, 24 apart, as every other header's content */
+  html body .pv-home .sj-shell { row-gap: var(--space-6) !important; }
+  html body .pv-home .sj-frame-top { row-gap: var(--space-6) !important; }
+
+  /* ── sub-headings: 48px under the block before, 16px over their content, one look ───────────── */
+  /* placements' recruiters and the alumni's "Your peers come from" (64 under the dots) */
+  html body .dko-recruiters { margin-top: var(--space-12) !important; }
+  html body main .alumni-drift + * { margin-top: var(--space-12) !important; }
+  html body main div:has(> div > .peers-title) { row-gap: var(--space-4) !important; }
+  /* "Backed at every step." sat 64 under the businesses (their 16 foot and its own 48) */
+  html body .dk-usp[data-usp='01'] section[aria-labelledby='dk-backed-title'] { padding-top: var(--space-8) !important; }
+  html body main .dk-facts-head { margin-bottom: var(--space-4) !important; }
+  /* the creators' line, a 14px grey caption under 40px: a sub-heading like the rest */
+  html body main .dk-creators-title.dk-creators-title {
+    margin: var(--space-12) 0 var(--space-4) !important;
+    font-size: var(--tp-item) !important; line-height: var(--tp-item-lh) !important;
+    font-weight: var(--font-weight-semibold, 600) !important; color: var(--content-primary) !important;
+  }
+  /* the lab's startups and the student clubs (24 over their rows) */
+  html body main section.lab + section [data-enter='header'],
+  html body main section:has(#clubs-title) [data-enter='header'] { margin-bottom: var(--space-4) !important; }
+  /* the internship's two: "Student testimonials" at the semibold the others take; "Our learners are
+     now creating impact at" was an eyebrow (12px caps, grey) */
+  html body .in-reels-head .in-reels-title { font-weight: var(--font-weight-semibold, 600) !important; margin-bottom: var(--space-4) !important; }
+  html body .in-companies > h3 {
+    margin-bottom: var(--space-4) !important;
+    font-size: var(--tp-item) !important; line-height: var(--tp-item-lh) !important; letter-spacing: normal !important;
+    text-transform: none !important; font-weight: var(--font-weight-semibold, 600) !important; color: var(--content-primary) !important;
+  }
+  html body .in-companies { margin-top: var(--space-12) !important; }
+
+  /* ── the USP chapters: 64px apart, the tag 16px over its title ─────────────────────────────── */
+  html body .dk-usp { padding-top: var(--space-8) !important; }
+  html body main .dk-usp-head { padding-bottom: 0 !important; }
+  html body .dk-usp > section:nth-child(2) { padding-top: var(--space-4) !important; }
+
+  /* ── carousel controls: 32px under their row, as most already were ─────────────────────────── */
+  /* rows with no foot padding (the deck's photo-card rows, the founders') sat 24 under */
+  html body main .dk-facts-dots { margin-top: var(--space-8) !important; }
+  html body main .dkf-dots { margin-top: var(--space-8) !important; }
+
+  /* ── type: the stragglers off the scale ─────────────────────────────────────────────────────── */
+  /* Built at SSB's title broke its second half onto a line of its own; every other title runs on */
+  html body .bc-title.bc-title span { display: inline; }
+  /* the Singapore week's day titles and its four pillars (17px medium, 15px medium): item titles */
+  html body .dkg-day-title.dkg-day-title { font-weight: var(--font-weight-semibold, 600); }
+  html body .dkg-pillar-t.dkg-pillar-t { font-size: var(--tp-item); line-height: var(--tp-item-lh); font-weight: var(--font-weight-semibold, 600); }
+}

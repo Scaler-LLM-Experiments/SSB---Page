@@ -214,6 +214,11 @@ The cascade, in load order:
    reading text, card text, meta), each one size per breakpoint, as `--tp-*` variables. It wins by
    doubling class selectors (`.x.x`), not `!important`. Put new text on one of those roles rather than
    a new size. `corners.css` gives photos inset in a card `--radius-inset` (4px).
+7. `mweb.css`, imported after them (2026-11-16): phones only (`< 672px`), one rhythm of spacing: 32px
+   above and below every section, 24px from a header to its content, sub-headings 48px under the block
+   before and 16px over their own (17px semibold), carousel controls 32px under their row, the USP
+   chapters 64px apart. A new section on a phone should land on these steps; fix it here, not in the
+   section's file.
 
 `sections/deck/tokens.css` is imported by each page, not by the layout: import it in a new page too.
 
