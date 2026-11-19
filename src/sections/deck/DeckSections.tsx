@@ -445,7 +445,7 @@ export function DeckImmersionsSection() {
         </div>
         <article className="dk-track dk-track--flip">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="dk-track-photo" src={c.trips.image} alt="A factory floor" loading="lazy" decoding="async" data-part="photo" />
+          <img className="dk-track-photo" src={c.trips.image} alt={c.trips.imageAlt} loading="lazy" decoding="async" data-part="photo" />
           <div className="dk-track-body">
             <p className="dk-track-label">{c.trips.label}</p>
             <Heading as="h3" size="2" className="dk-track-title" data-part="title">

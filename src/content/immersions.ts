@@ -55,7 +55,8 @@ export const domesticImmersions: DomesticImmersion[] = [
     name: 'Inside a biscuit factory',
     logo: { src: '/logos/britannia.webp', alt: 'Britannia' },
     description: 'Walk Britannia’s production lines and see how one of India’s largest food brands plans, makes and ships at scale.',
-    image: { src: '/immersions/britannia.webp', width: 1200, height: 675, position: '60% 50%' },
+    // the team's photo (Drive, "Britannia + SSB outing", 2026-11-19): the cohort at Britannia Industries' gate
+    image: { src: '/immersions/britannia.webp', width: 1200, height: 675, position: '50% 55%' },
   },
   {
     place: 'Organic dairy farm',
@@ -63,6 +64,17 @@ export const domesticImmersions: DomesticImmersion[] = [
     logo: { src: '/logos/akshayakalpa.webp', alt: 'Akshayakalpa' },
     description: 'Follow Akshayakalpa’s milk from its farmers’ cows to Bengaluru doorsteps: the testing, the processing and the supply chain.',
     image: { src: '/immersions/akshayakalpa.webp', width: 1200, height: 600, position: '35% 50%' },
+  },
+  // (2026-11-19) the third, from the team's Drive ("Domestic immersion" in #ssb-assets: "Organic Mandya"):
+  // students on an organic farm near Mandya (coconut and areca groves, the farm's cattle). PLACEHOLDER until
+  // Guru confirms: the line is ours, and whether this trip is the one the review called Akshayakalpa's.
+  // The logo is Organic Mandya's own (organicmandya.com).
+  {
+    place: 'Organic farm',
+    name: 'On an organic farm',
+    logo: { src: '/logos/organic-mandya.webp', alt: 'Organic Mandya' },
+    description: 'Walk the fields with Organic Mandya’s farmers and see how organic produce gets from Mandya’s farms to city shelves.',
+    image: { src: '/immersions/organic-mandya.webp', width: 1200, height: 600, position: '50% 50%' },
   },
 ];
 

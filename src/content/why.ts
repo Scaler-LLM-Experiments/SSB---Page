@@ -67,10 +67,12 @@ export const why: WhyContent = {
         tag: 'Highlight',
         label: 'Hummusapiens · July 2026',
         headline: 'A student’s snack brand, offered ₹50 lakh by Shark Tank’s Anupam Mittal.',
+        // SSB's own photo of the visit (Drive, "Saba - story - anupam stalls", 2026-11-19), in place of
+        // ANI's: Mittal at a student founder's stall on campus
         imageUrl: '/media/why-story-mittal.webp',
         imageUrlSmall: '/media/why-story-mittal-800.webp',
-        imageAlt: 'Anupam Mittal in conversation on stage at Scaler School of Business',
-        imagePosition: '66% 50%',
+        imageAlt: 'Anupam Mittal at a student founder’s stall at Scaler School of Business',
+        imagePosition: '72% 45%',
       },
     },
     {
@@ -97,16 +99,16 @@ export const why: WhyContent = {
       title: 'Grow',
       description:
         'Prepare for emerging roles. Explore Founder’s Office, AI Product, Growth and Category roles with people who hire and lead in them.',
-      // The deck's convocation card (May 2026). PLACEHOLDER photo: a campus photo from SSB's own
-      // site, not the convocation, until the team sends one.
+      // The deck's convocation card (May 2026). The team's convocation photo (Drive, Convocation >
+      // Photos - SSB cam, 2026-11-19): the founding cohort in their gowns
       story: {
         tag: 'Highlight',
         label: 'The founding cohort · May 2026',
         headline: '55 graduates, headed to Blinkit, Urban Company and Emergent.',
         imageUrl: '/media/why-story-cohort.webp',
         imageUrlSmall: '/media/why-story-cohort-800.webp',
-        imageAlt: 'SSB students in a discussion round a table',
-        imagePosition: '40% 50%',
+        imageAlt: 'SSB’s founding cohort together in their convocation gowns and green stoles',
+        imagePosition: '50% 50%',
       },
     },
   ],

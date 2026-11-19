@@ -6,11 +6,11 @@
 | `san-francisco-golden-gate.webp` | [Golden Gate Bridge in 2012 as seen from Battery Spencer.jpg](https://commons.wikimedia.org/wiki/File:Golden_Gate_Bridge_in_2012_as_seen_from_Battery_Spencer.jpg) | Choinowski | CC0 |
 | `campus-*.webp`, `campus-film.mp4` | stills from the team's campus film | Scaler | ours |
 | `kamath-clip.mp4`, `kamath-clip.webp` | the team's cut of Nikhil Kamath's remark (Zerodha's 15th-anniversary AMA), from their GIF, cropped and encoded as H.264 (2026-10-06) | Zerodha | used with Zerodha's permission |
-| `why-story-mittal*.webp` | ANI's photo of Anupam Mittal's SSB visit, with its business-news release ([LatestLY, 29 July 2026](https://www.latestly.com/agency-news/business-news-anupam-mittal-says-50-lakh-mein-kitna-equity-dega-after-meeting-startups-built-by-scaler-school-of-business-students-7537299.html)); its frame trimmed, cropped to 1556 × 900 | ANI (likely SSB's own release photo) | **to confirm**: ask the team for SSB's original before anything ships |
+| `why-story-mittal*.webp` | (2026-11-19) the team's photo of Anupam Mittal at a student founder's stall on his July 2026 visit (Drive, "Saba - story - anupam stalls", shared in #ssb-assets), cropped to 1400 × 810; it replaced ANI's press photo | Scaler | ours |
 | `why-story-gradesense*.webp` | a screen from GradeSense's [Product Hunt listing](https://www.hunted.space/product/gradesense), cropped below the reviewer bar (it named a student) to the answer sheet and AI feedback | GradeSense (Ayush Poojary, an SSB student) | **to confirm** with the founder |
 | `mittal-band.mp4`, `mittal-band.webp` | the team's GIF of Anupam Mittal's campus visit (2026-10-07), cropped of the screen recorder's marks, flipped, widened to 21:9 on Magnific (Seedance 2.5 outpaint of the right side, the footage untouched in place; Magnific Precision upscale), H.264 CRF 16 at 2560 × 1098 | Scaler (the widened area AI-generated) | ours |
 | `warikoo-band.mp4`, `warikoo-band.webp` | the team's GIF of Ankur Warikoo's convocation speech (2026-10-07), its left 300px cropped so he sits in the band's left third, lightly denoised, H.264 CRF 16 at 980 × 720 | Scaler | ours |
-| `why-story-cohort*.webp` | `club_act5` from SSB's campus-life page (scaler.com/school-of-business/campus-life); stands in for a convocation photo | Scaler | ours |
+| `why-story-cohort*.webp` | (2026-11-19) the team's convocation photo, the founding cohort in their gowns (Drive, Convocation > Photos - SSB cam), lifted a little for exposure; it replaced `club_act5` from SSB's campus-life page | Scaler | ours |
 | `lab-*-<width>.webp` (build, hand, space, drone, mentor) | photos from Scaler's own Innovation Lab page ([scaler.com/innovation-lab](https://www.scaler.com/innovation-lab), served from framerusercontent.com), 2026-10-07; resized to 1890/960 (build) and 1400/800 wide | Scaler | ours |
 
 Resized for the page (1400 and 800px wide, or 1600px for the Commons photos), WebP. CC0 asks for no attribution; it is recorded here anyway.
@@ -42,3 +42,28 @@ Interim assets for the main page; each is to be swapped for the team's own once 
 - `public/startups/photos/*.webp` (the Innovation Lab's startups): Gahan AI: Scaler's blog post on the Gahan AI MoU. xSpecies AI: xspecies.ai's hero (a product render). Maximem: maximem.ai/about. Lemnisca: lemnisca.bio's team section. Antimattr: antimattr.one. Handa Uncle: handauncle.com (an app screen). **To confirm** with each startup.
 - `public/logos/britannia.webp`: Wikipedia's "Britannia Industries logo.svg" (non-free logo, fair use). `public/logos/akshayakalpa.webp`: Akshayakalpa's logo from Lok Capital's portfolio page.
 - `public/immersions/britannia.webp`: Moneycontrol's photo of a Britannia biscuit line (press; **replace**). `public/immersions/akshayakalpa.webp`: Akshayakalpa's own farm-visit blog banner. Both stand in until the trips' own photos come from the team (Guru).
+
+## The team's photos, 2026-11-19
+
+From the Drive folders K Smrti shared in #ssb-assets (student startups, co-curricular, domestic immersion) and
+the SSB campus and Life @ SSB folders; picked from contact sheets, cropped and saved as WebP. All Scaler's own.
+
+- `public/campus/class-{session,group-work,discussion}.webp`, `basketball.webp`: the old campus activities shoot (Photo
+  Gallery: SSB-2234, SSB-2154, SSB-169, SSB-2242), cropped from the bottom left to leave out its corner logo watermark.
+- `public/campus/class-{case-study,fireside}.webp`: Vision Board Photos (Rakshit's and Roel's sessions).
+- `public/campus/club-*.webp`: Life @ SSB Page Collateral (Club Activities "Case Crunch" and "Club Presentations to
+  Founders", Clubs - Guest Sessions incl. Meolaa's).
+- `public/campus/{cricket-*,badminton}.webp`: cricket (21/01/26) and the Badminton Tournament. `holi.webp`: Holi.
+- `public/campus/navera-*.webp`: Fest - Navera ('26, "The Builders' Era": award ceremony, Shark Tank, cultural night).
+- `public/campus/anupam-session.webp`: Saba - story - anupam stalls (his session with students). `warikoo-fireside.webp`:
+  Convocation > Fireside chat - Ankur & Vidit (lifted a little for exposure).
+- `public/campus/prom.webp`: Convocation > Prom. `music-night.webp`: Life @ SSB > Cultural & Sports (a video still).
+- `public/campus/residence-courtyard.webp`: SSB > Accomodation photos.
+- `public/media/d2c-bazaar-800.webp`: Sparktank / D2C Bazaar (a student brand's stall).
+- `public/immersions/britannia.webp`: Britannia + SSB outing (the cohort at the gate; no factory-floor photos in it).
+- `public/logos/organic-mandya.webp`: Organic Mandya's logo from organicmandya.com (Shopify CDN, OM_Logo_2.png), trimmed.
+- `public/immersions/farm-trip.webp`, `organic-mandya.webp`: Organic Mandya (the farm trip; no signage names the farm).
+- `public/deck/built/dream-kit.webp`: Aashish US and his co-founder with their Boombox Speaker kit and Anupam Mittal
+  (Saba - story - anupam stalls), cropped below the SST sign. `gredo.webp`: a frame of the team's Gredo vending
+  machine video (ungraded footage, colour-corrected; 720 × 900, the frame's limit). `onlyfeet.webp`: the founders'
+  banner at the D2C Bazaar (480 × 600, cropped tight so the name clears the card's figure; the photo is 1280 × 720).

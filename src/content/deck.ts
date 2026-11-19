@@ -78,8 +78,9 @@ export const deckAlumni = {
  *  variant's photos. Listed as the deck's two rows interleaved: the cards fill their two rows column by
  *  column, so row 1 runs along the top and row 2 under it. Figures only where the deck gives one. */
 // (2026-11-16, the team's review: "images need to be replaced") each startup's own photo in place of
-// Unsplash's, cropped 4:5 to the card (public/deck/built, sources in CREDITS.md). PLACEHOLDER: the team
-// is collecting photos of the students with their products; these are the brands' own until then
+// Unsplash's, cropped 4:5 to the card (public/deck/built, sources in CREDITS.md). (2026-11-19) Dream Kit,
+// Gredo and Onlyfeet are now the team's own photos (#ssb-assets Drive folders). PLACEHOLDER: the rest are
+// still the brands' own until the team has photos of the students with their products
 const built = (src: string, alt: string) => ({ src: `/deck/built/${src}.webp`, alt, width: 800, height: 1000 });
 const startupsRow1: BuiltCard[] = [
   {
@@ -88,7 +89,7 @@ const startupsRow1: BuiltCard[] = [
     by: 'Aashish US',
     blurb: 'A homegrown STEAM toy brand used across schools, built while holding a full-time role at The Whole Truth.',
     stat: { value: '₹2Cr', label: '12,000+ students reached' },
-    image: built('dream-kit', 'A child holding up a Dream Kit toy car'),
+    image: built('dream-kit', 'Dream Kit’s founders showing Anupam Mittal their Boombox Speaker kit at SSB'),
     focus: [0.5, 0.5],
   },
   {
@@ -119,7 +120,7 @@ const startupsRow2: BuiltCard[] = [
     by: 'Sanskriti Deshmukh',
     blurb: 'A protein-food brand live on Zomato and Swiggy, with vending machines across Bangalore.',
     stat: { value: '₹1Cr+', label: 'ARR' },
-    image: built('gredo', 'A Gredo protein dessert, in hand'),
+    image: { ...built('gredo', 'A Gredo vending machine, its logo above the screen'), width: 720, height: 900 },
     focus: [0.5, 0.5],
   },
   {
@@ -128,7 +129,7 @@ const startupsRow2: BuiltCard[] = [
     by: 'Mahnoor Z Mistry',
     blurb: 'Premium novelty socks in collectible cans, with quirky designs for Gen Z and millennials.',
     stat: { value: '₹28L+', label: 'ARR' },
-    image: built('onlyfeet', 'A pair of Onlyfeet socks'),
+    image: { ...built('onlyfeet', 'Onlyfeet’s founders holding up their banner at SSB’s D2C Bazaar'), width: 480, height: 600 },
     focus: [0.5, 0.5],
   },
   {
@@ -250,7 +251,9 @@ export const deckBusinessFacts = {
     // ₹2Cr for now (2026-11-16, the team's review; the deck had "₹XCr+"). The photos are our own now, not
     // Unsplash's (the team's review: "images are random"): students at work, a student pitching Anupam
     // Mittal on campus (ANI's photo, CREDITS.md), the lab, and a mentor with students in the lab
-    { title: '₹2Cr startup fund', text: 'Committed to student ventures, from the D2C Startup Challenge to the Hustle Program.', image: '/media/why-story-cohort-800.webp' },
+    // (2026-11-19) students at their own brand's stall at SSB's D2C Bazaar (the team's photo); the
+    // cohort photo it used is now the convocation, in the why section
+    { title: '₹2Cr startup fund', text: 'Committed to student ventures, from the D2C Startup Challenge to the Hustle Program.', image: '/media/d2c-bazaar-800.webp' },
     { title: 'VC Demo Days', text: 'Pitch to Peak XV, Tiger Global, Y Combinator, Entrepreneur First, Campus Fund and Mela Ventures.', image: '/media/why-story-mittal-800.webp' },
     { title: 'Shared Innovation Lab', text: '10+ startups incubated, ₹10Cr+ in revenue and $1B+ in valuations, on campus.', image: '/media/lab-space-800.webp' },
     { title: '1:1 mentorship', text: 'From leaders at BCG, McKinsey, Paytm, Blinkit, Google, Zomato, Flipkart and Bain.', image: '/media/lab-mentor-800.webp' },
@@ -317,7 +320,9 @@ export const deckImmersions = {
     // the companies by name (2026-11-16, the team's review); the deck had "manufacturing floors, quick-commerce
     // backend ops, a fashion brand headquarters"
     line: 'Across industries, from Britannia’s factory floor to Akshayakalpa’s organic dairy farm.',
-    image: '/deck/immersion.jpg',
+    // (2026-11-19) the team's photo from the Organic Mandya trip, in place of Unsplash's factory floor
+    image: '/immersions/farm-trip.webp',
+    imageAlt: 'SSB students out on a farm on a domestic immersion',
   },
   track: {
     label: 'Creator-preneur track',
