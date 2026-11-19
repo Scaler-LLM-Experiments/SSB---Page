@@ -213,18 +213,9 @@ const about: Record<string, { sector: string; description: string }> = {
   },
 };
 
-/** Each startup's own photo (2026-11-16, the team's review: "add images for the startups"), from its
- *  site or Scaler's blog (CREDITS.md), cropped 4:5 to the card, in place of its logo banner. Gahan AI's is
- *  its founders in the lab; Maximem's and Lemnisca's their founders; xSpecies AI's, Antimattr's and Handa
- *  Uncle's the product. A startup without one keeps its banner. */
-const photos: Record<string, { src: string; alt: string }> = {
-  'Gahan AI': { src: '/startups/photos/gahan-ai.webp', alt: 'Gahan AI’s founders in the Scaler Innovation Lab' },
-  'xSpecies AI': { src: '/startups/photos/xspecies-ai.webp', alt: 'xSpecies AI’s humanoid robot, Homie' },
-  Maximem: { src: '/startups/photos/maximem.webp', alt: 'Gaurav Dadhich, Maximem’s founder' },
-  'Lemnisca Bio Tech': { src: '/startups/photos/lemnisca.webp', alt: 'Lemnisca’s founder' },
-  Antimattr: { src: '/startups/photos/antimattr.webp', alt: 'MattrPods, Antimattr’s AI wearable, in use' },
-  'Handa Uncle': { src: '/startups/photos/handa-uncle.webp', alt: 'The Handa Uncle app' },
-};
+// (2026-11-19, the user's ask) back on their logo banners, as before the team's review of 2026-11-16 put
+// each startup's own photo in (Gahan AI's founders, Maximem's and Lemnisca's founders, the others' products;
+// in git history, 2d224a7).
 
 export const labVentures: Venture[] = labStartups.map((s) => {
   const founders = s.founders
@@ -238,9 +229,7 @@ export const labVentures: Venture[] = labStartups.map((s) => {
     role: founders.length > 1 ? 'Co-founders' : 'Founder',
     sector: about[s.name].sector,
     description: about[s.name].description,
-    ...(photos[s.name]
-      ? { image: photos[s.name].src, imageAlt: photos[s.name].alt }
-      : { banner: { src: `/startups/${s.image}`, top, bottom } }),
+    banner: { src: `/startups/${s.image}`, top, bottom },
     href: s.url,
   };
 });
