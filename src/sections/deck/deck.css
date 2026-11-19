@@ -1852,7 +1852,9 @@ main[data-page='v7'] .ad4-sch-head {
   padding: clamp(1.5rem, 3vw, 2.5rem);
   border-radius: var(--radius-lg);
   color: var(--pg-white);
-  background: url('/deck/scholarships.jpg') 58% 40% / cover no-repeat, var(--pg-dark-3);
+  /* (2026-11-19, the user's ask) SSB's own convocation: the founding cohort in caps and gowns (Drive,
+     Convocation > main photos > Side cam 2), in place of Unsplash's cap toss */
+  background: url('/deck/scholarships-convocation.webp') 55% 30% / cover no-repeat, var(--pg-dark-3);
 }
 /* the blur and wash, from the foot up, where the heading sits */
 main[data-page='v7'] .ad4-sch-head::before {
