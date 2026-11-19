@@ -11,13 +11,17 @@ import { useOpenYear } from './shared';
 import { StageSheet, TermCounts } from './stage-sheet';
 import './stage.css';
 
-/** The terms' photos (the concept site's /v4), and their focal points. */
+/** The terms' photos, and their focal points. (2026-11-19) the team's own, each of its term's flagship
+ *  (Drive, #ssb-assets): 1 the D2C Bazaar ("Learning begins with building"), 2 a team pitching Mokobara's
+ *  APAC expansion (Singapore, Mokobara's logo on the slide), 3 a pitch on SSB's stage, 4 a student brand's
+ *  founders at the D2C Bazaar, 5 Dream Kit's founders pitching on Anupam Mittal's visit. Before: a stock
+ *  lecture hall, luggage, a still of Anupam Mittal and a convocation speech. */
 export const PHOTO: Record<number, { src: string; pos: string }> = {
   1: { src: '/media/terms/t1.webp', pos: '50% 40%' },
-  2: { src: '/media/terms/t2.jpg', pos: '50% 55%' },
-  3: { src: '/media/terms/t3.webp', pos: '45% 40%' },
+  2: { src: '/media/terms/t2.webp', pos: '62% 50%' },
+  3: { src: '/media/terms/t3.webp', pos: '50% 45%' },
   4: { src: '/media/terms/t4.webp', pos: '50% 50%' },
-  5: { src: '/media/terms/t5.webp', pos: '50% 50%' },
+  5: { src: '/media/terms/t5.webp', pos: '42% 55%' },
 };
 /** [CONFIRM] the cohort's dates, as the stack's: Term 1 Jan–Mar 2027, each term three months on. */
 export const MONTHS: Record<number, [string, string]> = {

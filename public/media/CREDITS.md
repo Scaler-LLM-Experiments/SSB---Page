@@ -67,3 +67,16 @@ the SSB campus and Life @ SSB folders; picked from contact sheets, cropped and s
   (Saba - story - anupam stalls), cropped below the SST sign. `gredo.webp`: a frame of the team's Gredo vending
   machine video (ungraded footage, colour-corrected; 720 × 900, the frame's limit). `onlyfeet.webp`: the founders'
   banner at the D2C Bazaar (480 × 600, cropped tight so the name clears the card's figure; the photo is 1280 × 720).
+
+## The curriculum's photos, 2026-11-19
+
+The team's own, from the same Drive folders, replacing photos that didn't match their terms.
+
+- `public/media/terms/t1.webp`: D2C Bazaar (a student at the "Learning begins with building" panel). `t2.webp`: MOKOBARA
+  Brolls > Presentation (a team pitching Mokobara's APAC expansion). `t3.webp`: Saba - story - anupam stalls (a pitch on
+  SSB's stage). `t4.webp`: D2C Bazaar (Rebel Tryb's founders). `t5.webp`: Saba - story - anupam stalls (Dream Kit's
+  founders pitching), lifted for exposure. Replaced a lecture hall, luggage (`t2.jpg`), a still of Anupam Mittal and
+  a convocation speech.
+- `public/ai-terms/real/term1-laptops.webp`: MOKOBARA Brolls > Random pics (students at their laptops).
+  `term3-hackathon.webp`, `term4-hackathon-team.webp`: Fest - Navera > Hackathon. `term5-pitch.webp`: Fest - Navera >
+  Slikk - Case comp. Replaced the Innovation Lab's empty lounge, a table discussion, a robotic hand and SST students.
