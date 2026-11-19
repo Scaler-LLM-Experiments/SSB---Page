@@ -73,3 +73,16 @@ html body .cr-main .sj-ps-tab, html body .cr-main .sj-ps-tab[aria-current='true'
     grid-auto-columns: min(calc((100svh - 16rem) / 2 * 1.5), 22rem) !important;
   }
 }
+
+/* ── Play buttons, black everywhere (2026-11-19, the user's ask; some had a green triangle or disc, and
+   YouTube's turned red on hover). Over a photo: a white disc, a black triangle. On the page: a black disc, a
+   white triangle. YouTube's button (the founders' and Kamath's cards): black, and black on hover. ── */
+html body :is(.lb-play-disc, .in-lc-watch-play, .ss-play, .cm-still-play, .sj-video[data-tile] .sj-video-play, .tk-play-mark, [data-page] .sc .tk-play-mark) {
+  background: #fff !important; color: #000 !important;
+}
+html body :is(.sj-video-play:not(.sj-video[data-tile] .sj-video-play), .sp-play, .pp-cover-play, .ms-play) {
+  background: #000 !important; color: #fff !important;
+}
+html body .dkk-play-bg,
+html body .dkk-poster:is(:hover, :focus-visible) .dkk-play-bg { fill: #000 !important; }
+html body .dkk-poster:is(:hover, :focus-visible) .dkk-play-bg { fill-opacity: 1 !important; }

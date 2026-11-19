@@ -439,10 +439,10 @@ export const campusLife = {
     {
       id: 'classrooms',
       label: 'Classrooms',
-      feature: { media: '/campus/class-session.webp', alt: 'Students raising their hands in an SSB class', caption: 'Hands up in class', position: '50% 50%' },
+      feature: { media: '/campus/class-session.webp', alt: 'A full SSB classroom, a speaker at the front', caption: 'A class in session', position: '50% 50%' },
       photos: [
         { media: '/campus/class-case-study.webp', alt: 'A faculty member taking a case study class', caption: 'A case study class', position: '50% 50%' },
-        { media: '/campus/class-group-work.webp', alt: 'A group of students working through a problem together at a table', caption: 'Group work in class', position: '50% 50%' },
+        { media: '/campus/class-group-work.webp', alt: 'Students in a discussion round a table, one of them making her point', caption: 'Group work in class', position: '50% 50%' },
         { media: '/campus/class-discussion.webp', alt: 'Students in a discussion round a table in class', caption: 'A class discussion', position: '50% 50%' },
         { media: '/campus/class-fireside.webp', alt: 'A guest and an SSB faculty member in a fireside chat in front of the class', caption: 'A fireside chat with a guest', position: '40% 50%' },
       ],
@@ -486,9 +486,10 @@ export const campusLife = {
       id: 'cultural',
       label: 'Cultural',
       // no dance or festival-dinner photos in the team's folders yet: Holi, music, stand-up and the prom
-      feature: { media: '/campus/navera-music.webp', alt: 'A singer performing on stage at the fest’s cultural night', caption: 'Live music at Navera', position: '45% 45%' },
+      // (2026-11-19, the user's ask: "something exciting") Holi leads: a frame of the team's Holi video
+      feature: { media: '/campus/holi-colours.webp', alt: 'Two students smearing Holi colours on each other on campus', caption: 'Holi on campus', position: '50% 45%' },
       photos: [
-        { media: '/campus/holi.webp', alt: 'Two students covered in Holi colours on campus', caption: 'Holi on campus', position: '50% 40%' },
+        { media: '/campus/navera-music.webp', alt: 'A singer performing on stage at the fest’s cultural night', caption: 'Live music at Navera', position: '45% 45%' },
         { media: '/campus/prom.webp', alt: 'Students arriving on the red carpet for prom night', caption: 'Prom night', position: '50% 55%' },
         { media: '/campus/music-night.webp', alt: 'A singer and a guitarist performing at a music night', caption: 'A music night', position: '50% 50%' },
         { media: '/campus/navera-standup.webp', alt: 'A stand-up comic performing at the fest’s cultural night', caption: 'Stand-up at Navera', position: '62% 40%' },

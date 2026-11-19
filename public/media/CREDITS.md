@@ -98,3 +98,10 @@ The team's own, from the same Drive folders, replacing photos that didn't match 
   `tally-konnect.webp`: Moh Agarwal's LinkedIn profile photo. `valzy.webp`: Yash Ramchandani, valzy.co.in/img/founder.jpg.
   The founders' own: **to confirm** with each before launch.
 - `dream-kit.webp` and `paritosh-sinha.webp` as they were.
+
+## 2026-11-19, later: the user's picks
+
+- `public/media/terms/t1.webp`, `t2.webp`, `t4.webp`, `public/campus/class-session.webp`, `class-group-work.webp`: the old
+  campus activities shoot (Photo Gallery: SSB-157, SSB-2154, SSB-2230, SSB-79, SSB-2157), the corner logo cropped off.
+  `t5.webp`: Anupam Mittal at the stalls (Drive, Saba - story - anupam stalls). Ours.
+- `public/campus/holi-colours.webp`: a frame of the team's Holi video (Drive, Holi). Ours. `holi.webp` removed.

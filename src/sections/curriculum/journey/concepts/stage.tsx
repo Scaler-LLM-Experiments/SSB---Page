@@ -11,17 +11,16 @@ import { useOpenYear } from './shared';
 import { StageSheet, TermCounts } from './stage-sheet';
 import './stage.css';
 
-/** The terms' photos, and their focal points. (2026-11-19) the team's own, each of its term's flagship
- *  (Drive, #ssb-assets): 1 the D2C Bazaar ("Learning begins with building"), 2 a team pitching Mokobara's
- *  APAC expansion (Singapore, Mokobara's logo on the slide), 3 a pitch on SSB's stage, 4 a student brand's
- *  founders at the D2C Bazaar, 5 Anupam Mittal on his visit (the user's pick for "Pitch to VCs"). Before: a stock
- *  lecture hall, luggage, a still of Anupam Mittal and a convocation speech. */
+/** The terms' photos, and their focal points. (2026-11-19, the user's picks) the team's own: 1 a class in
+ *  session and 2 a team working a problem at the table (the old campus activities shoot), 3 a pitch on SSB's
+ *  stage, 4 a student making his point in class (the same shoot), 5 Anupam Mittal on his visit. The shoot's
+ *  corner logo is cropped off each file. */
 export const PHOTO: Record<number, { src: string; pos: string }> = {
-  1: { src: '/media/terms/t1.webp', pos: '50% 40%' },
-  2: { src: '/media/terms/t2.webp', pos: '62% 50%' },
+  1: { src: '/media/terms/t1.webp', pos: '72% 50%' },
+  2: { src: '/media/terms/t2.webp', pos: '52% 50%' },
   3: { src: '/media/terms/t3.webp', pos: '50% 45%' },
   4: { src: '/media/terms/t4.webp', pos: '50% 50%' },
-  5: { src: '/media/terms/t5.webp', pos: '30% 50%' },
+  5: { src: '/media/terms/t5.webp', pos: '50% 40%' },
 };
 /** [CONFIRM] the cohort's dates, as the stack's: Term 1 Jan–Mar 2027, each term three months on. */
 export const MONTHS: Record<number, [string, string]> = {
