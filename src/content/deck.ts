@@ -283,7 +283,8 @@ export const deckAiProducts = {
       mentors: [
         { name: 'Arvind N', org: 'GPT-3 / GPT-4', photo: '/sessions/arvind-neelakantan.webp', logo: '/logos/marks/lead-openai.png' },
         { name: 'Varun Mohan', org: 'Google DeepMind', photo: '/sessions/varun-mohan.webp', logo: '/logos/marks/lead-google.png' },
-        { name: 'Yash Kumar', org: 'OpenAI', photo: '/sessions/yash-kumar.webp', logo: '/logos/marks/lead-openai.png' },
+        // (2026-11-19, the user's ask: "cropped") his own square, cut from the session thumbnail (it carried a headline)
+      { name: 'Yash Kumar', org: 'OpenAI', photo: '/sessions/yash-kumar-avatar.webp', logo: '/logos/marks/lead-openai.png' },
       ],
       badges: ['10+ AI workshops'],
     },
