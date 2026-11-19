@@ -71,7 +71,8 @@ export const domesticImmersions: DomesticImmersion[] = [
   // The logo is Organic Mandya's own (organicmandya.com).
   {
     place: 'Organic farm',
-    name: 'On an organic farm',
+    // not "On an organic farm" (2026-11-19, the user's ask): the Akshayakalpa card's title next to it says as much
+    name: 'From field to shelf',
     logo: { src: '/logos/organic-mandya.webp', alt: 'Organic Mandya' },
     description: 'Walk the fields with Organic Mandya’s farmers and see how organic produce gets from Mandya’s farms to city shelves.',
     image: { src: '/immersions/organic-mandya.webp', width: 1200, height: 600, position: '50% 50%' },

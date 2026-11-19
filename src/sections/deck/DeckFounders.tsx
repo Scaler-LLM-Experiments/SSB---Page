@@ -24,11 +24,10 @@ type Founder = {
 };
 
 /**
- * Slide 8 (2026-11-11, the user's ask): the founders on campus as cards (three, five since 2026-11-16) in the Kamath card's
+ * Slide 8 (2026-11-11, the user's ask): the founders on campus as cards (three, five since 2026-11-16, four since 2026-11-19) in the Kamath card's
  * look (grey, the clip with a green play button, then the copy and who it is), in place of the
  * Mittal / Warikoo band. Copy ours, from the band's facts; Mittal's is an offer to invest (July 2026,
- * ANI), not a cheque. PLACEHOLDER: Ashneer Grover's title and line, and his photo and clip, to come
- * from the team; nothing on the site says what he did at SSB yet.
+ * ANI), not a cheque. (2026-11-19, the user's ask) Ashneer Grover's card is gone (no SSB photo, clip or line for him).
  */
 const FOUNDERS: Founder[] = [
   {
@@ -68,23 +67,6 @@ const FOUNDERS: Founder[] = [
     line: 'At convocation he gave the first cohort one line to carry: “Don’t get intellectually comfortable.”',
     avatar: '/media/warikoo-avatar.jpg',
     clip: { src: '/media/warikoo-band.mp4', poster: '/media/warikoo-band.webp', label: 'SSB convocation' },
-  },
-  {
-    name: 'Ashneer Grover',
-    credential: 'Co-founder, BharatPe · Founder, Third Unicorn',
-    title: 'Pressure-tested student pitches',
-    line: 'He put student founders through the questions an investor asks before writing a cheque.',
-    // PLACEHOLDER (2026-11-11, the user's ask: an image from the internet for now): the only freely
-    // licensed photo of him, his book Doglapan held up at a book fair (Wikimedia Commons, CC BY-SA 4.0,
-    // M Rahil 2004; credit required, shown on the card). The avatar is cropped from the book's cover
-    // portrait: swap both for the team's own photo or clip.
-    avatar: '/media/ashneer-avatar.jpg',
-    photo: {
-      src: '/media/ashneer-card.jpg',
-      alt: 'Ashneer Grover’s book Doglapan, held up at a book fair',
-      credit: 'Photo: M Rahil 2004, CC BY-SA 4.0',
-      href: 'https://commons.wikimedia.org/wiki/File:DOGLAPAN_FT~ASHNEER_GROVER~.jpg',
-    },
   },
 ];
 

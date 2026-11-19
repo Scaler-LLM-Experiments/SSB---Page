@@ -83,7 +83,7 @@ the old `/v8`**: `/v7`'s sections in the deck's order, each wrapped in a light o
   a `<Tone>` or `<Tone dark>`. `DeckFooter` sits after `main`.
 - Order: hero (`HeroFrame`) > outcomes (`DeckOutcomes`) > why (`DeckWhySection`) > alumni >
   student startups (`BuiltCards`, dark) > investors (`PeopleTabsSection`) > `DeckFounders` (Anupam
-  Mittal, Shantanu Deshpande, Kiran Shah, Ankur Warikoo, Ashneer Grover, a sideways row three to a
+  Mittal, Shantanu Deshpande, Kiran Shah, Ankur Warikoo; Ashneer Grover's card removed 2026-11-19; a sideways row three to a
   screen; it replaced the testimonial band) > "How you
   learn", four USPs in `CurriculumRail` > curriculum terms > career prep (dark) > AI curriculum >
   Innovation Lab (dark) > faculty > mentors > super mentors > internship > campus life > press
@@ -170,7 +170,7 @@ the old `/v8`**: `/v7`'s sections in the deck's order, each wrapped in a light o
   (`placements.ts`), the immersions' lines and photos (`immersions.ts`, Britannia and Akshayakalpa,
   to confirm with Guru), the student and lab startups' images (the brands' own, until the team's photos
   of students with their products), the AI mentors' photos (`deck.ts`), Kiran Shah's card copy and
-  Ashneer Grover's card (`DeckFounders.tsx`), the faculty cards' courses and bios
+  the faculty cards' courses and bios
   (`PeopleTabsSection.tsx`).
 - **The team's review, 2026-11-16** (Chetna's list via Bivek; branch `main-page-feedback`): the
   placement report card is no longer a Times of India clipping (it was a stand-in) and nothing says

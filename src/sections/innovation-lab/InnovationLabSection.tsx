@@ -311,7 +311,7 @@ export function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
 
         // The stage's box, the tile the photo closes into and each other tile's offset from that
         // tile's centre, all in the stage's coordinates.
-        const geo = { top: 0, right: 0, bottom: 0, left: 0, cx: 0, cy: 0, scale: 1, radius: 0, rise: 0 };
+        const geo = { top: 0, right: 0, bottom: 0, left: 0, cx: 0, cy: 0, w: 0, h: 0, scale: 1, radius: 0, rise: 0 };
         let offsets = tiles.map(() => ({ x: 0, y: 0 }));
         const measure = () => {
           gsap.set(tiles, { clearProps: 'transform' });
@@ -323,10 +323,13 @@ export function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
           geo.bottom = s.bottom - r.bottom;
           geo.cx = geo.left + r.width / 2;
           geo.cy = geo.top + r.height / 2;
-          // scaled about the tile's centre, the photo must still cover the tile on every side
-          const half = [r.width / 2 / geo.cx, r.width / 2 / (s.width - geo.cx)];
-          const tall = [r.height / 2 / geo.cy, r.height / 2 / (s.height - geo.cy)];
-          geo.scale = Math.min(1, Math.max(...half, ...tall) * 1.02);
+          geo.w = s.width;
+          geo.h = s.height;
+          // (2026-11-19, the user's ask: the middle photo "not looking right" once it closes) the photo
+          // ends as a plain cover crop of its tile: scaled to just cover it and slid onto its centre,
+          // instead of shrinking about the tile's centre (which, the tile sitting low in the stage,
+          // left a zoomed slice of the photo's lower half: the drone build's hands, not its faces)
+          geo.scale = Math.min(1, Math.max(r.width / s.width, r.height / s.height) * 1.01);
           geo.radius = parseFloat(getComputedStyle(tiles[0] ?? slot).borderTopLeftRadius) || 0;
           // the head rises the system's entrance offset, in px
           geo.rise = offset.enter;
@@ -344,10 +347,20 @@ export function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
           hero.style.clipPath = `inset(${geo.top * p}px ${geo.right * p}px ${geo.bottom * p}px ${
             geo.left * p
           }px round ${geo.radius * p}px)`;
-          gsap.set(photo, {
-            scale: 1 + (geo.scale - 1) * p,
-            transformOrigin: `${geo.cx}px ${geo.cy}px`,
-          });
+          // the photo now in the tile (campus life swaps it per tab); a gallery tab's stands still,
+          // in its tile like the others (CSS: [data-gallery])
+          const img = hero.querySelector('img');
+          if (mosaic.hasAttribute('data-gallery')) {
+            hero.style.clipPath = '';
+            if (img) gsap.set(img, { clearProps: 'transform,transformOrigin' });
+          } else if (img) {
+            gsap.set(img, {
+              x: (geo.cx - geo.w / 2) * p,
+              y: (geo.cy - geo.h / 2) * p,
+              scale: 1 + (geo.scale - 1) * p,
+              transformOrigin: '50% 50%',
+            });
+          }
           tiles.forEach((tile, i) =>
             gsap.set(tile, {
               x: offsets[i].x * out * (1 - p),
@@ -361,6 +374,10 @@ export function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
         };
         measure();
         render();
+        // campus life: a tab swaps the middle photo (and marks the mosaic); place the new one at once
+        const swaps = new MutationObserver(render);
+        swaps.observe(mosaic, { attributes: true, attributeFilter: ['data-gallery'] });
+        swaps.observe(hero, { childList: true, subtree: true });
 
         const tl = gsap.timeline({
           defaults: { ease: 'none' },
@@ -384,9 +401,10 @@ export function useLabMotion(scope: React.RefObject<HTMLElement | null>) {
           .to({}, { duration: 1 - CLOSE });
 
         return () => {
+          swaps.disconnect();
           root.removeAttribute('data-lab-live');
           hero.style.clipPath = '';
-          gsap.set([photo, head, ...tiles, ...overlays], { clearProps: 'transform,transformOrigin,opacity' });
+          gsap.set([hero.querySelector('img') ?? photo, head, ...tiles, ...overlays], { clearProps: 'transform,transformOrigin,opacity' });
           unwrite();
         };
       });

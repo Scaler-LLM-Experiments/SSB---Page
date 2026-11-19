@@ -139,3 +139,13 @@
 /* the stories on /v7 (2026-10-28): no frame, a heading of their own over the reels */
 .in-reels-head .in-reels-title { margin-bottom: var(--space-6); font-weight: var(--font-weight-medium); }
 @media (width < 672px) { .in-reels-head .in-reels-title { margin-bottom: var(--space-4); } }
+
+/* covers (2026-11-19, the live page's thumbnails): the card takes the cover's shape (780 × 1020) so its
+   headline isn't cut at the sides; the cover carries the headline and the play mark, so the card's own
+   copy, shade and sound chip come up only once the short is playing */
+.in-reel[data-cover] { aspect-ratio: 780 / 1020; }
+.in-reel[data-cover]:not([aria-pressed='true']) .in-reel-copy,
+.in-reel[data-cover]:not([aria-pressed='true']) .in-reel-shade,
+.in-reel[data-cover]:not([aria-pressed='true']) .in-reel-sound {
+  opacity: 0;
+}

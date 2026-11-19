@@ -13,6 +13,10 @@ export type Reel = {
   /** Where to start in the clip, in seconds (the placeholder footage is shared, so each starts elsewhere). */
   start?: number;
   poster?: string;
+  /** A cover (2026-11-19: the live page's thumbnails, with their own headline and play mark): shown
+   *  until the card is tapped. A row with covers plays nothing on its own; a tap plays that short with
+   *  sound, a second tap stops it and brings the cover back. */
+  cover?: string;
 };
 
 /**
@@ -25,13 +29,30 @@ export function StoryReels({ reels, label }: { reels: Reel[]; label: string }) {
   const rowRef = React.useRef<HTMLUListElement>(null);
   const [loud, setLoud] = React.useState<number | null>(null);
   const [edges, setEdges] = React.useState({ start: true, end: false });
+  const tapToPlay = reels.some((r) => r.cover);
+
+  // a row with covers: only the tapped short plays, with sound; the rest go back to their covers
+  React.useEffect(() => {
+    if (!tapToPlay) return;
+    const vids = Array.from(rowRef.current?.querySelectorAll('video') ?? []);
+    vids.forEach((v, j) => {
+      if (j === loud) {
+        v.muted = false;
+        v.play().catch(() => {});
+      } else if (v.currentTime > 0 || !v.paused) {
+        v.pause();
+        v.load(); // back to the cover
+      }
+    });
+  }, [loud, tapToPlay]);
 
   // play the one short most on screen, pause the rest (2026-10-27, performance: two or three 1080p
   // shorts decoding at once, each under a blurred button, held the page at 30fps)
   React.useEffect(() => {
     const row = rowRef.current;
     if (!row) return undefined;
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // a row with covers never plays on its own (see above)
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches || tapToPlay;
     const vids = Array.from(row.querySelectorAll('video'));
     const seen = new Map<HTMLVideoElement, number>();
     const io = new IntersectionObserver(
@@ -81,17 +102,18 @@ export function StoryReels({ reels, label }: { reels: Reel[]; label: string }) {
             <button
               type="button"
               className="in-reel"
+              data-cover={r.cover ? '' : undefined}
               aria-pressed={loud === i}
               aria-label={`${r.name}: ${r.line}. ${loud === i ? 'Mute' : 'Play with sound'}`}
               onClick={() => setLoud((cur) => (cur === i ? null : i))}
             >
               <video
                 src={`${r.clip}#t=${r.start ?? 0}`}
-                poster={r.poster}
+                poster={r.cover ?? r.poster}
                 muted={loud !== i}
                 loop
                 playsInline
-                preload="metadata"
+                preload={r.cover ? 'none' : 'metadata'}
                 aria-hidden
               />
               <span className="in-reel-shade" aria-hidden />

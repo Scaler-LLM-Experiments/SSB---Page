@@ -473,7 +473,7 @@ export const campusLife = {
       id: 'fests',
       label: 'Fests & events',
       // (2026-11-19) the team's photos of the two visits, in place of the YouTube thumbnails (text baked in)
-      feature: { media: '/campus/anupam-session.webp', alt: 'Anupam Mittal in a session with SSB students', caption: 'Anupam Mittal on campus', position: '45% 50%' },
+      feature: { media: '/campus/anupam-session.webp', alt: 'Anupam Mittal in a session with SSB students, a full room behind him', caption: 'Anupam Mittal on campus', position: '50% 50%' },
       photos: [
         { media: '/campus/warikoo-fireside.webp', alt: 'Ankur Warikoo in a fireside chat at the SSB convocation', caption: 'Ankur Warikoo at convocation', position: '38% 50%' },
         { media: '/campus/arch.webp', alt: 'The SSB arch on Commencement Day', caption: 'Commencement Day', position: '50% 50%' },
