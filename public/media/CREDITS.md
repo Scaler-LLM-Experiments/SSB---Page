@@ -86,3 +86,15 @@ The team's own, from the same Drive folders, replacing photos that didn't match 
 - `public/media/terms/t5.webp`, `public/campus/anupam-session.webp`: Anupam Mittal on his visit (Drive, Saba - story -
   anupam stalls). `public/ai-terms/real/term5-classroom.webp`: an SSB class (Vision Board Photos > Prakash Sharma),
   in place of the case presentation in an SST room.
+
+## Beyond placements' cards, 2026-11-19 (the user's ask: one kind of photo, the founders)
+
+- `chaubaraa.webp`: the founders at their perfume stall on Anupam Mittal's visit (Drive, Saba - story - anupam stalls;
+  CHAUBARAA on the boxes). `onlyfeet.webp`: the socks at the D2C Bazaar (Drive, Sparktank / D2C Bazaar); no photo
+  of the founder exists online. Ours.
+- `gredo.webp`: Sanskriti Deshmukh and Mayank Kelwani beside their vending machine, SSB's Instagram post
+  (instagram.com/scalerschool_of_business/p/DbqGCkAD_v5). Ours.
+- `gradesense.webp`: Ayush Poojary pitching at SSB's podium, from his LinkedIn post (activity 7478809816275099649).
+  `tally-konnect.webp`: Moh Agarwal's LinkedIn profile photo. `valzy.webp`: Yash Ramchandani, valzy.co.in/img/founder.jpg.
+  The founders' own: **to confirm** with each before launch.
+- `dream-kit.webp` and `paritosh-sinha.webp` as they were.

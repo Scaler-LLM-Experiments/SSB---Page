@@ -78,9 +78,10 @@ export const deckAlumni = {
  *  variant's photos. Listed as the deck's two rows interleaved: the cards fill their two rows column by
  *  column, so row 1 runs along the top and row 2 under it. Figures only where the deck gives one. */
 // (2026-11-16, the team's review: "images need to be replaced") each startup's own photo in place of
-// Unsplash's, cropped 4:5 to the card (public/deck/built, sources in CREDITS.md). (2026-11-19) Dream Kit,
-// Gredo and Onlyfeet are now the team's own photos (#ssb-assets Drive folders). PLACEHOLDER: the rest are
-// still the brands' own until the team has photos of the students with their products
+// Unsplash's, cropped 4:5 to the card (public/deck/built, sources in CREDITS.md). (2026-11-19, the user's
+// ask: "the images look out of place") every card a photo of its founders, with the product where there
+// is one: from the team's Drive, then the founders' own posts. Onlyfeet's founder has no photo anywhere,
+// so its card shows the socks at SSB's D2C Bazaar
 const built = (src: string, alt: string) => ({ src: `/deck/built/${src}.webp`, alt, width: 800, height: 1000 });
 const startupsRow1: BuiltCard[] = [
   {
@@ -98,7 +99,7 @@ const startupsRow1: BuiltCard[] = [
     by: 'Chavda Tirthrajsinh, Geetika Mehta & Malika Gupta',
     blurb: 'Solid and liquid perfumes inspired by familiar memories, emotions and characters.',
     stat: { value: '₹30L+', label: 'ARR' },
-    image: built('chaubaraa', 'Chaubaraa’s Khoj discovery set of perfumes'),
+    image: built('chaubaraa', 'Chaubaraa’s founders behind their perfume stall at SSB'),
     focus: [0.5, 0.45],
   },
   {
@@ -120,7 +121,7 @@ const startupsRow2: BuiltCard[] = [
     by: 'Sanskriti Deshmukh',
     blurb: 'A protein-food brand live on Zomato and Swiggy, with vending machines across Bangalore.',
     stat: { value: '₹1Cr+', label: 'ARR' },
-    image: { ...built('gredo', 'A Gredo vending machine, its logo above the screen'), width: 720, height: 900 },
+    image: built('gredo', 'Gredo’s founders beside their protein vending machine'),
     focus: [0.5, 0.5],
   },
   {
@@ -129,7 +130,7 @@ const startupsRow2: BuiltCard[] = [
     by: 'Mahnoor Z Mistry',
     blurb: 'Premium novelty socks in collectible cans, with quirky designs for Gen Z and millennials.',
     stat: { value: '₹28L+', label: 'ARR' },
-    image: { ...built('onlyfeet', 'Onlyfeet’s founders holding up their banner at SSB’s D2C Bazaar'), width: 480, height: 600 },
+    image: { ...built('onlyfeet', 'Onlyfeet’s novelty socks at SSB’s D2C Bazaar'), width: 720, height: 900 },
     focus: [0.5, 0.5],
   },
   {
@@ -137,7 +138,7 @@ const startupsRow2: BuiltCard[] = [
     sector: 'AI · EdTech',
     by: 'Ayush Poojary',
     blurb: 'An AI platform that evaluates descriptive and handwritten assessments at scale.',
-    image: built('gradesense', 'Ayush Poojary pitching GradeSense at SSB'),
+    image: { ...built('gradesense', 'Ayush Poojary pitching GradeSense at SSB'), width: 640, height: 800 },
     focus: [0.5, 0.5],
   },
   {
@@ -145,7 +146,7 @@ const startupsRow2: BuiltCard[] = [
     sector: 'Family business',
     by: 'Moh Agarwal',
     blurb: 'Joined the family business after SSB and launched its ERP automation platform.',
-    image: built('tally-konnect', 'Tally Konnect reading a purchase invoice into Tally'),
+    image: { ...built('tally-konnect', 'Moh Agarwal, Tally Konnect’s founder'), width: 640, height: 800 },
     focus: [0.5, 0.5],
   },
   {
@@ -155,7 +156,7 @@ const startupsRow2: BuiltCard[] = [
     sector: 'Mobility',
     by: 'Yash Ramchandani',
     blurb: 'A smart valet platform, built from scratch, that streamlines car handovers at high-footfall venues.',
-    image: built('valzy', 'A Valzy valet stand at a hospital entrance'),
+    image: { ...built('valzy', 'Yash Ramchandani, Valzy’s founder'), width: 720, height: 900 },
     focus: [0.5, 0.5],
   },
 ];
