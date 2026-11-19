@@ -62,3 +62,14 @@ html body .cs-media-tag {
    ssx-ui Link. Tab switches are segmented controls: 4px corners (radius-md), as the people tabs. */
 html body .bn-apply .bn-apply-btn { font-size: var(--font-size-base) !important; }
 html body .cr-main .sj-ps-tab, html body .cr-main .sj-ps-tab[aria-current='true'] { border-radius: var(--radius-md) !important; }
+
+/* ── The profile cards, one size (2026-11-19, the user's ask: "standardise everything, all the cards a
+   consistent size"). The alumni cards (368px on the web, 25rem on a tablet) and the instructor, mentor,
+   investor and team cards (320px, 21rem) are one 480 x 320 design scaled to their slot; now one slot for
+   all: 22rem (352px) from the tablet up, under the same cap the alumni had, so two rows still fit a short
+   window. Phones keep theirs (the alumni three rows at a fit, the rest 76vw). ── */
+@media (width >= 672px) {
+  html body :is(.alumni-row, .fc-grid.fc-grid) {
+    grid-auto-columns: min(calc((100svh - 16rem) / 2 * 1.5), 22rem) !important;
+  }
+}

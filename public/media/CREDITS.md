@@ -33,7 +33,7 @@ From Wikimedia Commons, resized to 1920px WebP in `public/media/singapore`.
 
 Interim assets for the main page; each is to be swapped for the team's own once it arrives.
 
-- `public/alumni/{sagnik-banerjee,pranav-bagla,suhaas-sastry}.webp`: the team's headshots (Figma, SSB 2026 > Assest), cut-outs set on `public/internship/plate.webp`. Ours.
+- `public/alumni/{sagnik-banerjee,pranav-bagla,suhaas-sastry}.webp`: the team's headshots (Figma, SSB 2026 > Assest), cut-outs set on `public/internship/plate.webp`. Ours. (2026-11-19) Suhaas moved 125px left, the plate's blur carried into the right edge, so he sits where the others do, clear of the card's copy.
 - `shantanu-card.webp`, `shantanu-avatar.jpg`, `kiran-card.webp`, `kiran-avatar.jpg`: the team's photos of Shantanu Deshpande and Kiran Shah on SSB's stage (Figma, SSB 2026 > LP 2026-27 Assets). Ours. Shantanu's card plays SSB's own YouTube masterclass (ki_0jkW-2oc).
 - `public/sessions/varun-mohan.webp`: Varun Mohan's X avatar (@_mohansolo). `public/sessions/arvind-neelakantan.webp`: UCSB Center for Responsible Machine Learning's lecture page photo. Neither is ours: **replace** with the team's photos from their SSB sessions.
 - `public/deck/products/*.webp` (the AI products' cards): generated phone mock-ups of each kind of app (Aside image generation, 2026-11-16). Ours to use; stand-ins for students' own builds.
