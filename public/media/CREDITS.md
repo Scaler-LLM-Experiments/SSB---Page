@@ -63,6 +63,10 @@ the SSB campus and Life @ SSB folders; picked from contact sheets, cropped and s
 - `public/immersions/britannia.webp`: Britannia + SSB outing (the cohort at the gate; no factory-floor photos in it).
 - `public/logos/organic-mandya.webp`: Organic Mandya's logo from organicmandya.com (Shopify CDN, OM_Logo_2.png), trimmed.
 - `public/immersions/farm-trip.webp`, `organic-mandya.webp`: Organic Mandya (the farm trip; no signage names the farm).
+- `public/deck/built/dream-kit.webp`: Aashish US and his co-founder with their Boombox Speaker kit and Anupam Mittal
+  (Saba - story - anupam stalls), cropped below the SST sign. `gredo.webp`: a frame of the team's Gredo vending
+  machine video (ungraded footage, colour-corrected; 720 × 900, the frame's limit). `onlyfeet.webp`: the founders'
+  banner at the D2C Bazaar (480 × 600, cropped tight so the name clears the card's figure; the photo is 1280 × 720).
 
 ## The curriculum's photos, 2026-11-19
 

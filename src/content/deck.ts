@@ -78,9 +78,9 @@ export const deckAlumni = {
  *  variant's photos. Listed as the deck's two rows interleaved: the cards fill their two rows column by
  *  column, so row 1 runs along the top and row 2 under it. Figures only where the deck gives one. */
 // (2026-11-16, the team's review: "images need to be replaced") each startup's own photo in place of
-// Unsplash's, cropped 4:5 to the card (public/deck/built, sources in CREDITS.md). PLACEHOLDER: the team
-// is collecting photos of the students with their products; these are the brands' own until then
-// (2026-11-19: the Drive photos were tried for Dream Kit, Gredo and Onlyfeet; the user kept these)
+// Unsplash's, cropped 4:5 to the card (public/deck/built, sources in CREDITS.md). (2026-11-19) Dream Kit,
+// Gredo and Onlyfeet are now the team's own photos (#ssb-assets Drive folders). PLACEHOLDER: the rest are
+// still the brands' own until the team has photos of the students with their products
 const built = (src: string, alt: string) => ({ src: `/deck/built/${src}.webp`, alt, width: 800, height: 1000 });
 const startupsRow1: BuiltCard[] = [
   {
@@ -89,7 +89,7 @@ const startupsRow1: BuiltCard[] = [
     by: 'Aashish US',
     blurb: 'A homegrown STEAM toy brand used across schools, built while holding a full-time role at The Whole Truth.',
     stat: { value: '₹2Cr', label: '12,000+ students reached' },
-    image: built('dream-kit', 'A child holding up a Dream Kit toy car'),
+    image: built('dream-kit', 'Dream Kit’s founders showing Anupam Mittal their Boombox Speaker kit at SSB'),
     focus: [0.5, 0.5],
   },
   {
@@ -120,7 +120,7 @@ const startupsRow2: BuiltCard[] = [
     by: 'Sanskriti Deshmukh',
     blurb: 'A protein-food brand live on Zomato and Swiggy, with vending machines across Bangalore.',
     stat: { value: '₹1Cr+', label: 'ARR' },
-    image: built('gredo', 'A Gredo protein dessert, in hand'),
+    image: { ...built('gredo', 'A Gredo vending machine, its logo above the screen'), width: 720, height: 900 },
     focus: [0.5, 0.5],
   },
   {
@@ -129,7 +129,7 @@ const startupsRow2: BuiltCard[] = [
     by: 'Mahnoor Z Mistry',
     blurb: 'Premium novelty socks in collectible cans, with quirky designs for Gen Z and millennials.',
     stat: { value: '₹28L+', label: 'ARR' },
-    image: built('onlyfeet', 'A pair of Onlyfeet socks'),
+    image: { ...built('onlyfeet', 'Onlyfeet’s founders holding up their banner at SSB’s D2C Bazaar'), width: 480, height: 600 },
     focus: [0.5, 0.5],
   },
   {
