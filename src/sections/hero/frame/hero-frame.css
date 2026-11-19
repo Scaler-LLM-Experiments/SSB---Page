@@ -483,12 +483,13 @@ body:has(.hf-deadline) header.sn { top: var(--hf-bar, 0px); }
   font-weight: var(--font-weight-medium); color: var(--on-image-ink);
 }
 .hf-actions .hf-intake svg { flex: none; width: 1.125rem; height: 1.125rem; }
-/* phones: the buttons stack, so the line goes straight under Apply Now, centred, the brochure after it */
+/* phones: the buttons stack; the line goes under both, below Download Placement Report (2026-11-19, the
+   user's ask; it sat between the two buttons), centred */
 @media (width < 672px) {
   .hf-actions > .hf-primary { order: 0; }
-  .hf-actions > .hf-intake { order: 1; justify-content: center; margin: var(--space-1) 0 var(--space-2); font-size: 0.875rem; }
+  .hf-actions > .hf-secondary { order: 1; }
+  .hf-actions > .hf-intake { order: 2; justify-content: center; margin: var(--space-1) 0 0; font-size: 0.875rem; }
   .hf-actions .hf-intake svg { width: 1rem; height: 1rem; }
-  .hf-actions > .hf-secondary { order: 2; }
   .hf[data-tone='light'] .hf-intake { color: #616161; }
 }
 
@@ -523,3 +524,12 @@ body:has(.hf-deadline) header.sn { top: var(--hf-bar, 0px); }
     -webkit-backdrop-filter: none; backdrop-filter: none;
   }
 }
+
+/* the three pills on one line on a phone (2026-11-19, the user's ask; they wrapped to two): no wrap, the
+   type and padding scaled to the width (14px at 430px wide, 12px at 360, the page's floor); under 360 they
+   may still wrap */
+@media (width < 672px) {
+  .hf .hf-pills { flex-wrap: nowrap; gap: clamp(0.25rem, 1.2vw, 0.375rem); }
+  .hf .hf-pills > li { flex: none; white-space: nowrap; padding: var(--space-1) clamp(0.3125rem, 1.8vw, 0.625rem); font-size: clamp(0.75rem, 3.3vw, 0.875rem); }
+}
+@media (width < 360px) { .hf .hf-pills { flex-wrap: wrap; } }
