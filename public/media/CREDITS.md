@@ -105,3 +105,5 @@ The team's own, from the same Drive folders, replacing photos that didn't match 
   campus activities shoot (Photo Gallery: SSB-157, SSB-2154, SSB-2230, SSB-79, SSB-2157), the corner logo cropped off.
   `t5.webp`: Anupam Mittal at the stalls (Drive, Saba - story - anupam stalls). Ours.
 - `public/campus/holi-colours.webp`: a frame of the team's Holi video (Drive, Holi). Ours. `holi.webp` removed.
+
+- `media/kamath-reel.mp4`, `kamath-reel-cover.webp` (2026-11-19): SSB's own Instagram reel (instagram.com/reel/DQy8-G0iNMs, 8 Nov 2025, "Business has changed. The way we learn it should too."), Instagram's 720p file; the cover is its first frame, for the overlay; the Why SSB card's thumbnail is `kamath-thumb.webp`, `kamath-clip.webp` turned into a 16:9 thumbnail with image generation (his likeness kept; the headline "Why MBA?" added). Shared by Stephan in #ssb-website-revamp.

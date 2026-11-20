@@ -13,9 +13,9 @@ import type { CloseContent } from '@/sections/deck/DeckFinale';
  * in the first fold; then the steps as one timeline. The copy is the live page's, set in the
  * components' patterns; nothing is added that the live page doesn't say. Links are the live page's.
  *
- * TO CONFIRM before this ships: the live page's dates and fees (the 2027 cohort: early bird closes
- * 15 Nov 2026, ₹1,500 application fee, ₹23,00,000 course fee, the batch from August 2027) are not the
- * home page's (Intake 2 closes 27 Dec 2026, ₹16,00,000; content/admissions.ts, content/home.ts).
+ * Dates and fees (2026-11-19, Stephan in #ssb-assets): early bird closes 20 Dec 2026, then Intakes 1 to 5
+ * (14 Feb, 28 Mar, 9 May, 20 Jun, 15 Aug 2027); ₹23,00,000 for every intake; ₹1,500 application fee. The
+ * home page's the same (content/admissions.ts, content/home.ts).
  */
 
 const APPLY = 'https://www.scaler.com/school-of-business/application';
@@ -24,10 +24,10 @@ const BROCHURE =
 
 /** The strip over the navbar (the home page's deadline bar): the early bird's last date, counting down. */
 export const admissionDeadline = {
-  message: 'Early bird applications close 15 Nov',
-  shortMessage: 'Early bird closes 15 Nov',
-  to: '2026-11-15T23:59:00+05:30',
-  label: '15 Nov 2026, 11:59 PM IST',
+  message: 'Early bird applications close 20 Dec',
+  shortMessage: 'Early bird closes 20 Dec',
+  to: '2026-12-20T23:59:00+05:30',
+  label: '20 Dec 2026, 11:59 PM IST',
 };
 
 /** The facts' and groups' icons (Phosphor, mapped in the components). */
@@ -55,7 +55,7 @@ export const admissionTop = {
     alt: 'The SSB campus arch on Commencement Day: Welcome aboard, future leaders',
   },
   facts: [
-    { value: '15 Nov 2026', label: 'Early bird closes', note: '11:59 PM IST', icon: 'calendar' },
+    { value: '20 Dec 2026', label: 'Early bird closes', note: '11:59 PM IST', icon: 'calendar' },
     { value: '₹1,500', label: 'Application fee', note: 'Non-refundable', icon: 'receipt' },
     { value: '₹23,00,000', label: 'Course fee', note: 'Subject to revision', icon: 'wallet' },
     { value: 'Aug 2027', label: 'Batch begins', note: 'The 2027 cohort, on campus', icon: 'cap' },
@@ -146,7 +146,7 @@ export const admissionSteps: AdmissionStepContent[] = [
     cta: {
       label: 'Apply Now',
       href: APPLY,
-      aside: { label: 'Early bird closes', date: '15 Nov 2026, 11:59 PM' },
+      aside: { label: 'Early bird closes', date: '20 Dec 2026, 11:59 PM' },
     },
     art: 'application',
   },
@@ -313,7 +313,7 @@ export const admissionCallback: CloseContent = {
   secondaryCta: { label: 'Download Brochure', href: BROCHURE, icon: 'download' },
   // the first fold's facts again, at the foot of the page (2026-11-11, the user's ask)
   facts: [
-    { value: '15 Nov', label: 'Early bird closes' },
+    { value: '20 Dec', label: 'Early bird closes' },
     { value: '₹1,500', label: 'Application fee' },
     { value: '₹23,00,000', label: 'Course fee' },
     { value: 'Aug 2027', label: 'Batch begins' },

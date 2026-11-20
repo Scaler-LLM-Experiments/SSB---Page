@@ -23,7 +23,7 @@ export type Reel = {
 /** A short, large, over the page (2026-11-19, the user's ask: "it should open in a big overlay"): 9:16
  *  as tall as fits, playing with sound and the browser's controls. Esc, the close button or a click
  *  outside closes it. In a portal, so no transformed ancestor can trap it. */
-function ReelBox({ reel, onClose }: { reel: Reel; onClose: () => void }) {
+export function ReelBox({ reel, onClose }: { reel: Reel; onClose: () => void }) {
   const close = React.useRef<HTMLButtonElement>(null);
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();

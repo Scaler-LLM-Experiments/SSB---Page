@@ -441,7 +441,7 @@ export const deckFaqs: Faq[] = [
 export const deckClose = {
   // (2026-10-28, the user's ask: the last two sections rebuilt) the band's eyebrow and facts, from the
   // page's own deadline bar and first fold
-  eyebrow: 'Intake 2 · Applications close 27 Dec',
+  eyebrow: 'Early bird · Applications close 20 Dec',
   facts: [
     { value: '11 months', label: 'incl. internship' },
     { value: 'Bangalore', label: 'On campus' },

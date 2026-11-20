@@ -214,7 +214,7 @@ export const SSB_JOURNEY: Journey = {
         outClass: [
           { image: 'pRecs', title: 'Product Teardown Project', desc: 'Map conversion friction on a live platform and build a prioritised fix roadmap.', ref: 'Ajio, covering discovery through search, product page and checkout' },
           { image: 'pAnswer', title: '48-Hour AI Hackathon', desc: 'Build and demo a working AI prototype in two days.' },
-          { image: 'pCreator', title: 'Creator-preneur Track (opt-in)', desc: 'Grow a personal brand or work embedded at Jio Creative Labs.', ref: 'Tanisha Singhal (12.6M views, 13 brand deals); Jio Dhan Dhana Dhan campaign' },
+          { image: 'pCreator', title: 'Creator-preneur Track (opt-in)', desc: 'Grow a personal brand or work embedded at Jio Creative Labs.', ref: 'Tanisha Singhal (12.6M views, 10+ brand deals); Jio Dhan Dhana Dhan campaign' },
           { image: 'pSocial', title: 'Creator Challenge', desc: 'Build and monetise a personal brand on Instagram or YouTube to learn the influencer economy first-hand.', or: true },
           { image: 'fPlacement', title: 'Internship' },
         ],

@@ -6,19 +6,29 @@ import { Container, Heading, Section } from '@kishanscaler/ssx-ui';
 import { deckWhy } from '@/content/deck';
 import { why } from '@/content/why';
 import { useSectionEntrance } from '@/sections/faculty/useSectionEntrance';
+import { ReelBox } from '@/sections/internship/StoryReels';
 import './deck-outcomes.css';
 import './deck-kamath.css';
 
-/** Zerodha's 15th-anniversary AMA (uploaded 24 October 2025), from his remark at 1:43:21. */
-const VIDEO = { id: 'fzTWpjAAUe0', start: 6201, label: 'Zerodha 15th-anniversary AMA', at: '1:43:21' };
+/** SSB's own reel (2026-11-19, the team's ask in #ssb-assets: "our video", instagram.com/reel/DQy8-G0iNMs,
+ *  8 Nov 2025, "Business has changed. The way we learn it should too."): it opens on his remark, then SSB.
+ *  Instagram's 720p file, 1:26, in public/media. The card's thumbnail (2026-11-19, the user's ask): the
+ *  landscape still of the same footage (kamath-clip.webp) made a 16:9 thumbnail with image generation, the
+ *  headline "Why MBA?" at its top-left (the user's line); the vertical reel cropped to 16:9 was only his face. */
+const VIDEO = {
+  clip: '/media/kamath-reel.mp4',
+  still: '/media/kamath-thumb.webp',
+  cover: '/media/kamath-reel-cover.webp',
+  label: 'Business has changed',
+  length: '1:26',
+};
 
 /**
  * Slide 4, "Why the traditional MBA doesn't work", as one card (2026-11-11, the user's sketch, in place
  * of the full-width breaker). A dark card with a soft brand-green glow: at the left the eyebrow, the
  * question as the title, his words as a pull quote (a large green mark) and who said them (a small
- * photo, his name, his role, over a hairline); at the right the YouTube video, from his remark, with a
- * label saying where it is from. The video is the clip's still with a green play button until clicked
- * (no YouTube load before then); the click swaps in youtube-nocookie's player, playing.
+ * photo, his name, his role, over a hairline); at the right SSB's reel, its first frame with a play button;
+ * a click opens it large over the page, with sound (ReelBox, as the testimonials' shorts).
  * Phones: the video first, then the copy (the user's ask).
  */
 /** YouTube's own play button (2026-11-11, the user's ask): the red rounded button, a white triangle; it
@@ -71,26 +81,25 @@ export function DeckKamath() {
           </div>
 
           <div className="dkk-video">
-            {playing ? (
-              <iframe
-                src={`https://www.youtube-nocookie.com/embed/${VIDEO.id}?start=${VIDEO.start}&autoplay=1&rel=0&modestbranding=1&playsinline=1`}
-                title={`${q.attribution} at the ${VIDEO.label}`}
-                allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-                allowFullScreen
-              />
-            ) : (
-              <button type="button" className="dkk-poster" onClick={() => setPlaying(true)} aria-label={`Play: ${q.attribution} at the ${VIDEO.label}`}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={q.poster} alt="" loading="lazy" decoding="async" />
-                <YouTubePlay />
-                <span className="dkk-chip" aria-hidden="true">
-                  {VIDEO.label} · from {VIDEO.at}
-                </span>
-              </button>
-            )}
+            <button type="button" className="dkk-poster" onClick={() => setPlaying(true)} aria-label={`Play: ${VIDEO.label}, with ${q.attribution}`}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={VIDEO.still} alt="" loading="lazy" decoding="async" />
+              <span className="dkk-disc" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" /></svg>
+              </span>
+              <span className="dkk-chip dkk-chip--end" aria-hidden="true">
+                {VIDEO.length}
+              </span>
+            </button>
           </div>
         </div>
         </div>
+        {playing ? (
+          <ReelBox
+            reel={{ name: q.attribution, line: VIDEO.label, clip: VIDEO.clip, cover: VIDEO.cover }}
+            onClose={() => setPlaying(false)}
+          />
+        ) : null}
       </Container>
     </Section>
   );

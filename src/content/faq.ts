@@ -188,7 +188,7 @@ export const faqCategories: FaqCategory[] = [
         q: 'What are the earliest and latest application deadlines for the MBA program?',
         a: [{ p: 'Admissions for 2026 cohort are now open, please visit the admission page for the deadlines:', link: { label: 'Important dates and fees', href: '/admission#fees' } }],
       },
-      { q: 'What is the total admission fee cost ?', a: [{ list: ['Early Bird - Rs 2000', 'Intake 1 - Rs 3000', 'Intake 2 - Rs 3500', 'Intake 3 - Rs 4000'] }] },
+      { q: 'What is the total admission fee cost ?', a: [{ p: '₹23,00,000 for every intake, and a ₹1,500 application fee, non-refundable. Scholarships of up to 100% apply to the tuition fee.' }] }, // (2026-11-19, Stephan: 23L across all intakes, application fee ₹1,500)
       {
         q: 'How can I strengthen my application?',
         a: [

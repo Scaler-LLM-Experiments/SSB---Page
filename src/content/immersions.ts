@@ -96,7 +96,7 @@ export const creators: Creator[] = [
     stats: [
       { value: '12.6M', label: 'Views' },
       { value: '90', label: 'Posts' },
-      { value: '13', label: 'Deals' },
+      { value: '10+', label: 'Deals' }, // (2026-11-19, Stephan)
     ],
   },
   {
@@ -106,7 +106,7 @@ export const creators: Creator[] = [
     stats: [
       { value: '7.8M', label: 'Views' },
       { value: '88', label: 'Posts' },
-      { value: '0', label: 'Deals' },
+      { value: '5+', label: 'Deals' }, // (2026-11-19, Stephan; was 0)
     ],
   },
   {
@@ -116,7 +116,7 @@ export const creators: Creator[] = [
     stats: [
       { value: '11.2M', label: 'Views' },
       { value: '75', label: 'Posts' },
-      { value: '0', label: 'Deals' },
+      { value: '5+', label: 'Deals' }, // (2026-11-19, Stephan; was 0)
     ],
   },
 ];
