@@ -21,6 +21,12 @@
   pointer-events: none;
   background: linear-gradient(to bottom, rgb(0 0 0 / 0) 46%, rgb(0 0 0 / 0.22) 70%, rgb(0 0 0 / 0.34) 100%);
 }
+/* (2026-11-11, the user's ask: "as the instructor cards", the photo edge to edge, the words clearly
+   white on it) the scrim under the blur a step darker towards the foot, so the line reads on a pale
+   photo (Mokobara's); the photo, the blurred copy and its mask as they were */
+.lp-card .ssx-card__media::after {
+  background: linear-gradient(to bottom, rgb(0 0 0 / 0) 40%, rgb(0 0 0 / 0.3) 64%, rgb(0 0 0 / 0.58) 100%);
+}
 /* the shell's own dark fade is not used here */
 .lp-card.ssx-card::after { background: none; }
 .lp-content { text-shadow: 0 1px 10px rgb(0 0 0 / 0.3); }
@@ -86,3 +92,58 @@
 
 /* a company's logo in place of its name (LiveProjectsSection `logos`): white, about the name's height */
 .lp-logo { display: block; height: 22px; width: auto; max-width: 9rem; object-fit: contain; object-position: left center; filter: brightness(0) invert(1); }
+
+/* phones (2026-11-11, the user's ask): two rows of landscape cards scrolled sideways together, in place
+   of the card stack; each card the instructor cards' size (85% of the width at 3:2, 319 x 213 on a
+   375px phone, 16px apart). The card as on the web, the photo filling it edge to edge and the words
+   over its foot on the blurred copy and the scrim; both start higher, as the words take a larger
+   share of a short card. The brief's name held to one line, its line to two. `html body` and
+   !important only where card-standard.css sets the text's padding that way. */
+.lp-phone { display: none; }
+@media (width < 672px) {
+  .lp-phone { display: block; }
+  .lp-phone-row {
+    --scroller-inset: var(--space-gutter);
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+    grid-auto-flow: column;
+    grid-auto-columns: 85vw;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0 var(--scroller-inset) var(--space-2);
+    list-style: none;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-padding-inline: var(--scroller-inset);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .lp-phone-row::-webkit-scrollbar { display: none; }
+  .lp-phone-row > li { min-width: 0; aspect-ratio: 3 / 2; scroll-snap-align: start; }
+  /* the card fills its landscape slot (it kept the portrait card's width, drawing square) */
+  .lp-phone-row .lp-card { width: 100%; height: 100%; aspect-ratio: auto; }
+  /* the photo's own crop: a landscape box shows its middle band, not the top-anchored zoom the
+     portrait card needs */
+  .lp-phone-row .lp-card .ssx-card__media > img { transform: none; object-position: 50% 45%; }
+  .lp-phone-row .lp-card .ssx-card__media > .lp-soft {
+    -webkit-mask-image: linear-gradient(to bottom, transparent 18%, rgb(0 0 0 / 0.55) 34%, #000 48%);
+    mask-image: linear-gradient(to bottom, transparent 18%, rgb(0 0 0 / 0.55) 34%, #000 48%);
+  }
+  .lp-phone-row .lp-card .ssx-card__media::after {
+    background: linear-gradient(to bottom, rgb(0 0 0 / 0) 22%, rgb(0 0 0 / 0.3) 46%, rgb(0 0 0 / 0.6) 100%);
+  }
+  html body .lp-phone-row .lp-content {
+    min-width: 0;
+    padding: var(--space-4) !important;
+  }
+  .lp-phone-row .lp-company { margin-bottom: var(--space-2); padding-bottom: var(--space-2); }
+  .lp-phone-row .lp-logo { height: 18px; max-width: 100%; }
+  .lp-phone-row :is(.lp-title, .lp-desc) {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .lp-phone-row .lp-title { -webkit-line-clamp: 1; }
+  .lp-phone-row .lp-desc { -webkit-line-clamp: 2; }
+  .lp-phone-dots { margin-top: var(--space-6); }
+}

@@ -314,3 +314,11 @@
 .dkft-statement span { color: var(--pg-green-61) !important; }
 .dkft-col a:hover { color: var(--pg-green-63) !important; }
 .dkft-legal { border-top-color: var(--pg-white-a22) !important; }
+
+/* phones (2026-11-11, the user's ask: the footer's "unwanted gap", as on the minimal page): the footer
+   kept the bottom Apply bar's height (--bn-apply-h) at its foot, but the bar hides once the footer is
+   on screen (BottomNav), so that room was empty green under "Back to top". It now ends a step under it. */
+@media (width < 672px) {
+  html body .dkft.dkft { padding-bottom: var(--space-4); }
+  html body .dkft.dkft .dkft-legal { padding-bottom: var(--space-4); }
+}

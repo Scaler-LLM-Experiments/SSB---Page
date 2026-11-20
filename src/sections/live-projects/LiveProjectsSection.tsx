@@ -2,7 +2,7 @@
 /**
  * Live consulting projects: one photo card per company brief, in the faculty section's
  * frame (PeopleShowcase's: the same header, arrows, looping row with progress dots,
- * the swipeable card stack on phones and the entrance; ../SSB---Page, read in place).
+ * and the entrance; ../SSB---Page, read in place). On phones, two rows of landscape cards (2026-11-11).
  * The card follows scaler.com/online-pgp-in-business-and-ai's case cards: the
  * photo fills it, the company sits on the photo's dark base over a hairline, the brief
  * under it. Content from the SSB concept site (ssb-school-concept.vercel.app, "Live
@@ -14,7 +14,6 @@ import * as React from 'react';
 import { Container, Heading, Section, Text } from '@kishanscaler/ssx-ui';
 import { HScrollerTrack, useHScroller } from '@/sections/faculty/HScroller';
 import { useSectionEntrance } from '@/sections/faculty/useSectionEntrance';
-import { CardStack } from '@/sections/shared/CardStack';
 import { ScrollDots } from '@/sections/shared/ScrollDots';
 import '@/sections/faculty/story-card.css';
 import './live-projects.css';
@@ -27,6 +26,9 @@ const PROJECTS: Project[] = [
   { company: 'Quenzy', title: 'Product-market fit', desc: 'Build a PMF and go-to-market strategy across culture, distribution and positioning.', image: 'quenzy' },
   { company: 'StockGro', title: 'Stockathon', desc: 'Trade in a live mock-market simulation under real market conditions.', image: 'stockgro' },
 ];
+
+/** Rows on a phone (2026-11-11, the user's ask): the dots count columns of this many cards. */
+const PHONE_ROWS = 2;
 
 type Project = { company: string; title: string; desc: string; /** a file name in public/live-projects, without the extension */ image?: string };
 
@@ -71,6 +73,7 @@ function ProjectCard({ project: p, priority = false, logo }: { project: Project;
 /** `logos` (the deck variant, /v7, 2026-10-28): each company's logo, in white, in place of its name. */
 export function LiveProjectsSection({ logos }: { logos?: Record<string, string> } = {}) {
   const { ref, goTo } = useHScroller();
+  const phoneRef = React.useRef<HTMLUListElement>(null);
   const sectionRef = React.useRef<HTMLElement>(null);
   useSectionEntrance(sectionRef);
   // a short list needs a third copy for the ticker to wrap seamlessly (as PeopleShowcase does)
@@ -94,18 +97,20 @@ export function LiveProjectsSection({ logos }: { logos?: Record<string, string> 
         </div>
       </Container>
 
-      {/* Phones: the card stack. */}
-      <Container className="sm:hidden">
-        <CardStack
-          items={PROJECTS}
-          getKey={(p) => p.company}
-          label="Live projects"
-          itemName="project"
-          announce={(p) => `${p.company}, ${p.title}`}
-          dots
-          renderCard={(p, i) => <ProjectCard project={p} logo={logos?.[p.company]} priority={i === 0 || i === 1 || i === PROJECTS.length - 1} />}
-        />
-      </Container>
+      {/* Phones: two rows of landscape cards, scrolled sideways together (2026-11-11, the user's ask;
+          was the card stack). The list once, no ticker; a dot per column. */}
+      <div className="lp-phone">
+        <ul ref={phoneRef} className="lp-phone-row" aria-label="Live projects">
+          {PROJECTS.map((p, i) => (
+            <li key={p.company}>
+              <ProjectCard project={p} logo={logos?.[p.company]} priority={i < 4} />
+            </li>
+          ))}
+        </ul>
+        <div className="lp-phone-dots">
+          <ScrollDots scroller={phoneRef} count={Math.ceil(PROJECTS.length / PHONE_ROWS)} itemName="projects" fill="solid" autoplay={false} />
+        </div>
+      </div>
 
       {/* Tablet and up: the looping ticker row. */}
       <HScrollerTrack trackRef={ref} label="Live projects">

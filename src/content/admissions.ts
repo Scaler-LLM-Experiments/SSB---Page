@@ -17,12 +17,15 @@ export const fastTrack = 'If 90 percentile & above in CAT/XAT/NMAT/SNAP, or a 64
 
 export const feeColumns = ['Intake', 'Deadline', 'Application fee', 'Course fee'] as const;
 
+// The 2027 cohort's intakes, fee and application fee (2026-11-19, Stephan in #ssb-assets: "23L across all
+// intakes", the six deadlines below, application fee ₹1,500)
 export const feeRows = [
-  { intake: 'Early bird', deadline: 'Oct 4, 2026', application: '₹1,000', course: '₹15,50,000' },
-  { intake: 'Intake 2', deadline: 'Dec 27, 2026', application: '₹1,000', course: '₹16,00,000' },
-  { intake: 'Intake 3', deadline: 'Feb 27, 2027', application: '₹1,000', course: '₹16,00,000' },
-  { intake: 'Intake 4', deadline: 'May 2, 2027', application: '₹1,000', course: '₹16,00,000' },
-  { intake: 'Final deadline: last intake', deadline: 'Jul 31, 2027', application: '₹1,000', course: '₹16,00,000' },
+  { intake: 'Early bird', deadline: 'Dec 20, 2026', application: '₹1,500', course: '₹23,00,000' },
+  { intake: 'Intake 1', deadline: 'Feb 14, 2027', application: '₹1,500', course: '₹23,00,000' },
+  { intake: 'Intake 2', deadline: 'Mar 28, 2027', application: '₹1,500', course: '₹23,00,000' },
+  { intake: 'Intake 3', deadline: 'May 9, 2027', application: '₹1,500', course: '₹23,00,000' },
+  { intake: 'Intake 4', deadline: 'Jun 20, 2027', application: '₹1,500', course: '₹23,00,000' },
+  { intake: 'Intake 5', deadline: 'Aug 15, 2027', application: '₹1,500', course: '₹23,00,000' },
 ];
 
 export const scholarships =
@@ -70,21 +73,25 @@ export const admissionsV4 = {
   advisor: { label: 'Talk to an advisor', href: '#advisor' },
   steps: ['Apply', 'Pay the application fee', 'Submit your application, with a short video essay', 'Interview with industry leaders', 'Receive your decision'],
   fastTrack: '90 percentile or above in CAT, XAT, NMAT or SNAP, or 640+ in the GMAT.',
+  // (2026-11-19, Stephan in #ssb-assets) the 2027 cohort's six deadlines, ₹23L for every intake
   intakes: [
-    { name: 'Early bird', by: '2026-10-04', byLabel: '4 Oct 2026', fee: '₹15,50,000' },
-    { name: 'Intake 2', by: '2026-12-27', byLabel: '27 Dec 2026', fee: '₹16,00,000' },
-    { name: 'Intake 3', by: '2027-02-27', byLabel: '27 Feb 2027', fee: '₹16,00,000' },
-    { name: 'Intake 4', by: '2027-05-02', byLabel: '2 May 2027', fee: '₹16,00,000' },
-    { name: 'Final intake', by: '2027-07-31', byLabel: '31 Jul 2027', fee: '₹16,00,000' },
+    { name: 'Early bird', by: '2026-12-20', byLabel: '20 Dec 2026', fee: '₹23,00,000' },
+    { name: 'Intake 1', by: '2027-02-14', byLabel: '14 Feb 2027', fee: '₹23,00,000' },
+    { name: 'Intake 2', by: '2027-03-28', byLabel: '28 Mar 2027', fee: '₹23,00,000' },
+    { name: 'Intake 3', by: '2027-05-09', byLabel: '9 May 2027', fee: '₹23,00,000' },
+    { name: 'Intake 4', by: '2027-06-20', byLabel: '20 Jun 2027', fee: '₹23,00,000' },
+    { name: 'Intake 5', by: '2027-08-15', byLabel: '15 Aug 2027', fee: '₹23,00,000' },
   ],
-  fine: 'Application fee ₹1,000 for every intake, non-refundable. Fees may be revised. Financing is available through our banking partners.',
+  fine: 'Application fee ₹1,500 for every intake, non-refundable. Fees may be revised. Financing is available through our banking partners.',
   scholarshipsTitle: 'Scholarships up to 100%.',
   scholarshipsText: 'Merit-based and decided after your interview. Every scholarship is awarded by the Scaler Impact Foundation. Applying early improves your chances.',
+  // the four scholarships in the live admission page's own words (scaler.com/school-of-business/admission/,
+  // read 2026-11-13, the user's ask: the same content everywhere the section is used)
   scholarships: [
-    { k: 'For founders', t: 'Future Business Innovators', full: 'Future Business Innovators Scholarship', lede: 'Rewarding entrepreneurial spirit and innovation in business.', c: ['You are a founder or co-founder, or built a startup with measurable impact', 'You have closed a funding round with VCs', 'You were a founding team member at a startup'] },
-    { k: 'For achievers', t: 'Extraordinary Achievements', full: 'Extraordinary Achievements Scholarship', lede: 'Recognising outstanding academic achievement and potential.', c: ['Academics: a top rank in national or international management entrance tests, or a merit rank at undergraduate level', 'Competitions: gold medal or equivalent in business case competitions, Olympiads or prestigious contests', 'Sport: exceptional accomplishments at national or international level'] },
-    { k: 'For professionals', t: 'Industry Leaders', full: 'Industry Leaders Scholarship', lede: 'Valuing professionals with impactful work and leadership.', c: ['Recognised accomplishments in your field with an established company', 'Consultant at a tier 1 or tier 2 consulting firm'] },
-    { k: 'For women leaders', t: 'Women in Leadership', full: 'Women in Leadership Scholarship', lede: 'Helping women into leadership roles in business.', c: ['Proven leadership and strong professional achievements', 'A leadership position in an organisation or college club'] },
+    { k: 'For founders', t: 'Future Business Innovators', full: 'Future Business Innovators Scholarship', lede: 'Rewarding entrepreneurial spirit and innovation in business', c: ['Is a founder/co-founder or built a startup with a measurable impact', 'Successfully closed a funding round with VCs', 'Founding team member at a startup'] },
+    { k: 'For achievers', t: 'Extraordinary Achievements', full: 'Extraordinary Achievements Scholarship', lede: 'This scholarship recognises outstanding academic achievement and potential', c: ['Academic Performance: Top rank in national/international management entrance tests or merit rank at the undergraduate level', 'Competitions: Gold medal or equivalent in business case competitions, Olympiads, or prestigious contests', 'Athletic Achievements: Exceptional accomplishments in sports at national/international levels'] },
+    { k: 'For professionals', t: 'Industry Leaders', full: 'Industry Leaders Scholarship', lede: 'Valuing professionals with impactful work and leadership', c: ['Recognised accomplishments in the field of work with an established company', 'Consultant at tier 1/2 consulting firms'] },
+    { k: 'For women leaders', t: 'Women in Leadership', full: 'Women in Leadership Scholarship', lede: 'Empowering women to achieve leadership roles in business', c: ['Proven leadership and strong professional achievements', 'Leadership position in organisations/college clubs'] },
   ],
   backersLabel: 'The Scaler Impact Foundation is backed by',
   backers: [

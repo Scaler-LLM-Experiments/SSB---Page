@@ -213,6 +213,10 @@ const about: Record<string, { sector: string; description: string }> = {
   },
 };
 
+// (2026-11-19, the user's ask) back on their logo banners, as before the team's review of 2026-11-16 put
+// each startup's own photo in (Gahan AI's founders, Maximem's and Lemnisca's founders, the others' products;
+// in git history, 2d224a7).
+
 export const labVentures: Venture[] = labStartups.map((s) => {
   const founders = s.founders
     .replace(/^By\s+/, '')

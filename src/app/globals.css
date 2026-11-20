@@ -42,8 +42,10 @@
 /* (2026-10-08, the team's ask for more air: the system's `roomy` rung, 96px / 48px, in place of the
    `default` rung's 64 / 40 chosen on 2026-10-07) */
 main [data-slot='section'][data-density='roomy'], .pv-page.pv-home { padding-block: var(--space-12); }
+/* (2026-11-11, the user's ask: sections too far apart) 64px from the tablet up, was 96 (about 128px
+   between two sections' content, was 192) */
 @media (min-width: 672px) {
-  main [data-slot='section'][data-density='roomy'], .pv-page.pv-home { padding-block: var(--space-24); }
+  main [data-slot='section'][data-density='roomy'], .pv-page.pv-home { padding-block: var(--space-16); }
 }
 .pv-home .sj-shell { padding-top: 0; padding-bottom: 0; }
 .pv-home .sj-shell > .sj-ai, .pv-home .sj-shell > .sj-learn { margin-top: 0; padding-top: 0; }
@@ -91,8 +93,9 @@ main section[aria-labelledby^='placements'] :is(.rounded-2xl, .rounded-xl, .pl-f
    characters a line. Every section header is the design system's display Heading followed by a
    large Text; this brings them to one setting wherever they sit. */
 main :is(h2, h3).type-display + p.type-body-lg {
-  font-size: var(--type-body-size);
-  line-height: 1.6;
+  /* the page's one intro size (typography.css, 2026-11-11) */
+  font-size: var(--tp-intro);
+  line-height: var(--tp-intro-lh);
   max-width: 40rem;
   color: var(--content-secondary);
   text-wrap: pretty;
@@ -129,6 +132,24 @@ main .h-tail, main .sj-ai-accent { color: var(--content-secondary) !important; }
    40px between sections (was 48). The eyebrow stays 12px: the type floor. ── */
 @media (width < 672px) {
   main { --type-display-size: 1.5rem; }
-  main :is(h2, h3).type-display + p.type-body-lg { font-size: 0.875rem; line-height: 1.55; }
-  main [data-slot='section'][data-density='roomy'], .pv-page.pv-home { padding-block: var(--space-10); }
+  /* (the sub-line's phone size now comes from typography.css's scale, 2026-11-11) */
+  /* 32px (2026-11-11, the user's ask; was 40) */
+  main [data-slot='section'][data-density='roomy'], .pv-page.pv-home { padding-block: var(--space-8); }
+}
+
+/* Phones (2026-11-13, the user's ask: "the CTAs are too big on mweb, fix it on all the pages"): every
+   button, large or medium, one quieter size on a phone: 40px tall, 14px text, 16px icons. Widths are
+   the sections' own (full-width CTAs stay full width). !important: some sections set their own heights. */
+@media (width < 672px) {
+  html body [data-slot='button']:is([data-size='lg'], [data-size='md']) {
+    height: 40px !important;
+    min-height: 40px !important;
+    padding-inline: var(--space-4) !important;
+    font-size: 0.875rem !important;
+  }
+  html body [data-slot='button']:is([data-size='lg'], [data-size='md']) svg { width: 16px !important; height: 16px !important; }
+}
+/* the fixed apply bar at a phone's foot, a step smaller again (the same ask): 36px, 14px */
+@media (width < 672px) {
+  html body .bn-apply .bn-apply-btn[data-slot='button'] { height: 36px !important; min-height: 36px !important; font-size: 0.875rem !important; }
 }

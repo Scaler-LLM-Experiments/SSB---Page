@@ -32,9 +32,21 @@ function Logo({ logo }: { logo: ResolvedLogo }) {
  * couple of seconds one cell, picked at random, flips over (a turn on its horizontal axis) to a logo
  * not on show: the cell's face is replaced by one carrying the new logo, which turns in.
  * Still under reduced motion. Screen readers get the full list.
+ * `cells`, `className` (the internship page's first fold, 2026-11-12: twelve cells over twenty-four
+ * logos, its own columns).
  */
-export function PeersFlip({ logos, label }: { logos: ResolvedLogo[]; label: string }) {
-  const n = Math.min(CELLS, logos.length);
+export function PeersFlip({
+  logos,
+  label,
+  cells: cellCount = CELLS,
+  className,
+}: {
+  logos: ResolvedLogo[];
+  label: string;
+  cells?: number;
+  className?: string;
+}) {
+  const n = Math.min(cellCount, logos.length);
   // per cell: the logo index on each face, and how far it has turned (in half turns)
   const [cells, setCells] = React.useState(() =>
     Array.from({ length: n }, (_, i) => ({ faces: [i, i] as [number, number], turns: 0 })),
@@ -86,7 +98,7 @@ export function PeersFlip({ logos, label }: { logos: ResolvedLogo[]; label: stri
           <li key={l.name}>{l.name}</li>
         ))}
       </ul>
-      <ul ref={gridRef} className="peers-flip" aria-hidden>
+      <ul ref={gridRef} className={className ? `peers-flip ${className}` : 'peers-flip'} aria-hidden>
         {cells.map((c, i) => (
           <li key={i} className="peers-flip-cell">
             {/* one face: a new logo remounts it (its key), and it turns in on its horizontal axis

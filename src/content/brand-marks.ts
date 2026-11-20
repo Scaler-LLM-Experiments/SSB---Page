@@ -29,6 +29,8 @@ export const brandMarks: Record<string, BrandMark> = {
   peakxv: { src: '/logos/marks/fc-peakxv.png', bg: '#FFFFFF' },
   // the founding team's and investors' companies (2026-10-23; the hero's marks where it has them)
   meta: { src: '/logos/marks/lead-meta.png', bg: '#FFFFFF' },
+  // SSB's own shield (2026-11-11), from the navbar's logo (the design system's), for the team's SSB roles
+  ssb: { src: '/logos/marks/ssb-mark.svg', bg: '#FFFFFF' },
   uber: { src: '/logos/marks/fc-uber.png', bg: '#FFFFFF' },
   bain: { src: '/logos/marks/lead-bain.png', bg: '#FFFFFF' },
   kearney: { src: '/logos/marks/lead-kearney.png', bg: '#FFFFFF' },

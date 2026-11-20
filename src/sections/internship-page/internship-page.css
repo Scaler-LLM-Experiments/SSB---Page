@@ -1,0 +1,485 @@
+/* The internship page (2026-11-12): its first fold (InternshipHero), the roles card in the placement
+   outcomes (InternshipStats, InternshipCloser) and the students' reels (InternshipReels). Built on the home
+   page's vocabulary: the admission page's green panel (admission.css), the "Your peers come from"
+   flip grid (alumni.css, deck-outcomes.css `peers-flip`), the placement highlights' press card
+   (deck-outcomes.css `dko-press`), the internship section's reels (internship.css).
+   Tokens only. */
+
+/* ── The first fold: the copy at the left, the companies at the right, on the panel's green; phones,
+   the logos under the copy ──────────────────────────────────────────────────────────────────────── */
+.int-hero-panel {
+  padding-block: var(--space-16);
+}
+.int-hero-grid {
+  display: grid;
+  gap: var(--space-10);
+  align-items: center;
+}
+@media (width >= 1056px) {
+  .int-hero-grid {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: var(--space-16);
+  }
+}
+.int-hero-logos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+/* the label and a hairline running out from it (the home page's "Built by leaders from") */
+.int-hero-logos-k {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin: 0;
+  font-size: var(--type-label-size);
+  line-height: 1.3;
+  font-weight: var(--font-weight-medium);
+  color: var(--pg-white-a88);
+}
+.int-hero-logos-k::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--pg-white-a12);
+}
+/* the grid (2026-11-12, the user's ask: five a row): 5 × 3 on desktop, 5 × 2 on a tablet, 3 × 2 on a
+   phone; white tiles on the green */
+main[data-page='v7'] .peers-flip.int-hero-flip {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+main[data-page='v7'] .int-hero-flip .peers-flip-cell {
+  display: block;
+  height: 4.5rem;
+}
+main[data-page='v7'] .int-hero-flip .peers-flip-cell:nth-child(n + 7) {
+  display: none;
+}
+@media (width >= 672px) {
+  main[data-page='v7'] .peers-flip.int-hero-flip {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+  main[data-page='v7'] .int-hero-flip .peers-flip-cell {
+    height: 4.75rem;
+  }
+  main[data-page='v7'] .int-hero-flip .peers-flip-cell:nth-child(n + 7) {
+    display: block;
+  }
+  main[data-page='v7'] .int-hero-flip .peers-flip-cell:nth-child(n + 11) {
+    display: none;
+  }
+}
+@media (width >= 1056px) {
+  main[data-page='v7'] .int-hero-flip .peers-flip-cell:nth-child(n + 11) {
+    display: block;
+  }
+}
+main[data-page='v7'] .int-hero-flip .peers-flip-face {
+  padding: 0 var(--space-2);
+  background: var(--surface-default);
+  box-shadow: none;
+}
+/* the logo files carry their own margins: a step larger than the recruiters' box */
+/* (2026-11-12, the user's asks: the logos bigger, less padding; then a tad smaller) each logo at 1.15 ×
+   its one-weight width, up to 84% of the tile and 38px tall; the files are trimmed to their artwork */
+main[data-page='v7'] .int-hero-flip .peers-flip-logo[style] {
+  width: min(calc(var(--w) * 1.15), 100%);
+  max-width: 84%;
+  max-height: 2.375rem;
+}
+@media (width < 672px) {
+  .int-hero-panel {
+    padding-block: var(--space-8) var(--space-6);
+  }
+  .int-hero-grid {
+    gap: var(--space-8);
+  }
+  main[data-page='v7'] .int-hero-flip .peers-flip-face {
+    padding: 0 var(--space-1-5, 6px);
+  }
+  main[data-page='v7'] .int-hero-flip .peers-flip-logo[style] {
+    width: min(calc(var(--w) * 0.95), 100%);
+    max-width: 88%;
+    max-height: 2rem;
+  }
+}
+
+/* ── The outcomes (AlumniSection with a lead and the closer look, 2026-11-12, after the user's
+   reference: the figures, then the profiles, then a closer look) ─────────────────────────────────── */
+/* the three figures: boxes of the page's in a row under the header, the figure in the brand green over
+   its label in small capitals */
+.int-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin: 0 0 var(--space-10);
+}
+.int-stats > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  border: 1px solid var(--border-decorative);
+  border-radius: var(--radius-lg);
+  background: var(--surface-default);
+}
+.int-stats dd {
+  margin: 0;
+  font-size: clamp(1.875rem, 2.6vw, 2.375rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-weight: var(--font-weight-medium);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ssb-light-9);
+}
+.int-stats dt {
+  font-size: var(--type-caption-size);
+  line-height: 1.35;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--content-secondary);
+}
+@media (width < 672px) {
+  .int-stats {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-3);
+    margin-bottom: var(--space-8);
+  }
+  .int-stats > div {
+    gap: var(--space-2);
+    padding: var(--space-4) var(--space-5);
+  }
+  .int-stats dd {
+    font-size: 1.75rem;
+  }
+}
+
+/* the closer look's heading, the brand green's bar beside it */
+.int-closer-title {
+  margin: 0;
+  padding-left: var(--space-4);
+  border-left: 3px solid var(--color-ssb-light-9);
+  font-size: var(--tp-title, 2.25rem);
+  line-height: var(--tp-title-lh, 1.15);
+  font-weight: var(--font-weight-medium);
+  color: var(--content-primary);
+}
+@media (width < 672px) {
+  .int-closer-title {
+    font-size: 1.5rem;
+    padding-left: var(--space-3);
+  }
+}
+
+/* ── A closer look (InternshipCloser, 2026-11-12, after the user's reference: his earlier "Take a look
+   at cohort distribution"): one white card split by hairlines; 01 and 02 side by side from 1056px, 03
+   across the foot ────────────────────────────────────────────────────────────────────────────────── */
+.int-num-card {
+  margin-top: var(--space-10);
+  overflow: hidden;
+  border: 1px solid var(--border-decorative);
+  border-radius: var(--radius-lg);
+  background: var(--surface-default);
+}
+.int-num-top {
+  display: grid;
+}
+@media (width >= 1056px) {
+  .int-num-top {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .int-num-top > .int-num-block + .int-num-block {
+    border-left: 1px solid var(--border-decorative);
+  }
+}
+@media (width < 1056px) {
+  .int-num-top > .int-num-block + .int-num-block {
+    border-top: 1px solid var(--border-decorative);
+  }
+}
+.int-num-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  min-width: 0;
+  padding: var(--space-8) var(--space-10);
+}
+.int-num-foot {
+  border-top: 1px solid var(--border-decorative);
+}
+.int-num-title {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--tp-item, 1.25rem);
+  line-height: var(--tp-item-lh, 1.3);
+  font-weight: var(--font-weight-medium);
+  color: var(--content-primary);
+}
+.int-num-k {
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ssb-light-9);
+}
+
+/* 01: the donut and its legend */
+.int-donut-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-10);
+}
+.int-donut {
+  flex: none;
+  width: 13rem;
+  height: 13rem;
+  overflow: visible;
+}
+.int-donut circle {
+  fill: none;
+  stroke: var(--int-step);
+  stroke-width: 18;
+  stroke-dasharray: 0 var(--c);
+  transition: stroke-dasharray 900ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.int-num-card[data-in] .int-donut circle {
+  stroke-dasharray: var(--len) var(--c);
+}
+.int-donut-legend {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.int-donut-legend li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--tp-read, 1rem);
+  line-height: 1.3;
+  color: var(--content-primary);
+}
+.int-donut-legend b {
+  min-width: 2.75rem;
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+.int-donut-legend .int-key {
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 50%;
+}
+
+/* the brand green's steps, largest share darkest */
+.int-num-card [data-step='0'] {
+  --int-step: var(--color-ssb-light-11);
+}
+.int-num-card [data-step='1'] {
+  --int-step: var(--color-ssb-light-10);
+}
+.int-num-card [data-step='2'] {
+  --int-step: var(--color-ssb-light-9);
+}
+.int-num-card [data-step='3'] {
+  --int-step: var(--color-ssb-light-8);
+}
+.int-num-card [data-step='4'] {
+  --int-step: var(--color-ssb-light-7);
+}
+.int-num-card [data-step='5'] {
+  --int-step: var(--color-ssb-light-6);
+}
+.int-key {
+  flex: none;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 2px;
+  background: var(--int-step);
+}
+
+/* 02: the two facts, each its icon on a tint, the figure, its line */
+.int-facts {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-8);
+  margin: 0;
+}
+.int-facts > div {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: var(--space-5);
+  row-gap: var(--space-1);
+  align-items: center;
+}
+.int-fact-icon {
+  grid-row: 1 / 3;
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: var(--radius-lg);
+  background: var(--surface-brand-subtle);
+  color: var(--color-ssb-light-9);
+}
+.int-fact-icon svg {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+.int-facts dd {
+  margin: 0;
+  font-size: clamp(1.75rem, 2.4vw, 2.25rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-ssb-light-9);
+}
+.int-facts dt {
+  font-size: var(--tp-card, 0.875rem);
+  line-height: 1.45;
+  color: var(--content-secondary);
+}
+
+/* 03: the companies on the flip grid (2026-11-12, the user's ask: "let it change logos"), bordered
+   tiles, 6 × 2 on desktop, 4 × 3 on a tablet, 3 × 4 on a phone: all twelve cells at every size */
+main[data-page='v7'] .peers-flip.int-co-flip {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+main[data-page='v7'] .int-co-flip .peers-flip-cell,
+main[data-page='v7'] .int-co-flip .peers-flip-cell:nth-child(n) {
+  display: block;
+  height: 4.5rem;
+}
+main[data-page='v7'] .int-co-flip .peers-flip-face {
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--surface-default);
+  box-shadow: inset 0 0 0 1px var(--border-decorative);
+}
+main[data-page='v7'] .int-co-flip .peers-flip-logo[style] {
+  width: min(calc(var(--w) * 1.05), 100%);
+  max-width: 84%;
+  max-height: 2rem;
+}
+@media (width < 1056px) {
+  main[data-page='v7'] .peers-flip.int-co-flip {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (width < 672px) {
+  main[data-page='v7'] .peers-flip.int-co-flip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+  main[data-page='v7'] .int-co-flip .peers-flip-cell,
+  main[data-page='v7'] .int-co-flip .peers-flip-cell:nth-child(n) {
+    height: 3.75rem;
+  }
+  main[data-page='v7'] .int-co-flip .peers-flip-face {
+    padding: 0 var(--space-1-5, 6px);
+  }
+  main[data-page='v7'] .int-co-flip .peers-flip-logo[style] {
+    width: min(calc(var(--w) * 0.9), 100%);
+    max-width: 88%;
+    max-height: 1.625rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .int-donut circle {
+    stroke-dasharray: var(--len) var(--c);
+    transition: none;
+  }
+}
+@media (width < 672px) {
+  .int-num-card {
+    margin-top: var(--space-6);
+  }
+  .int-num-block {
+    gap: var(--space-6);
+    padding: var(--space-6) var(--space-5);
+  }
+  .int-donut-wrap {
+    gap: var(--space-6);
+  }
+  .int-donut {
+    width: 8.5rem;
+    height: 8.5rem;
+  }
+  .int-donut-legend {
+    gap: var(--space-2);
+  }
+  .int-donut-legend li {
+    gap: var(--space-2);
+    font-size: var(--tp-card, 0.875rem);
+  }
+  .int-donut-legend b {
+    min-width: 2.25rem;
+  }
+  .int-facts {
+    gap: var(--space-6);
+  }
+  .int-fact-icon {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+  .int-fact-icon svg {
+    width: 1.375rem;
+    height: 1.375rem;
+  }
+  .int-facts dd {
+    font-size: 1.5rem;
+  }
+}
+
+/* ── The reels (the home page's row): the students' videos carry their own captions in their lower
+   third, so here the shade runs deeper and the line a step smaller, to keep ours clear of theirs ── */
+.int-reels .in-reel-shade {
+  background: linear-gradient(
+    to bottom,
+    rgb(0 0 0 / 0.25) 0%,
+    transparent 22%,
+    transparent 50%,
+    rgb(0 0 0 / 0.6) 64%,
+    rgb(0 0 0 / 0.92) 78%,
+    rgb(0 0 0 / 0.95) 100%
+  );
+}
+html body .int-reels .in-reel-line {
+  font-size: var(--tp-item, 1.25rem) !important;
+  line-height: 1.25 !important;
+}
+
+/* phones (2026-11-13, the user's ask: more logos in the first fold): 4 × 3, twelve tiles, each a step
+   smaller (the hero's 3 × 2 before) */
+@media (width < 672px) {
+  main[data-page='v7'] .peers-flip.int-hero-flip {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-1-5, 6px);
+  }
+  main[data-page='v7'] .int-hero-flip .peers-flip-cell {
+    height: 3.25rem;
+  }
+  main[data-page='v7'] .int-hero-flip .peers-flip-cell:nth-child(n + 7) {
+    display: block;
+  }
+  main[data-page='v7'] .int-hero-flip .peers-flip-cell:nth-child(n + 13) {
+    display: none;
+  }
+  main[data-page='v7'] .int-hero-flip .peers-flip-face {
+    padding: 0 var(--space-1, 4px);
+  }
+  main[data-page='v7'] .int-hero-flip .peers-flip-logo[style] {
+    width: min(calc(var(--w) * 0.75), 100%);
+    max-width: 88%;
+    max-height: 1.5rem;
+  }
+}

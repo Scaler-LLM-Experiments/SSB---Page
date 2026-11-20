@@ -51,25 +51,27 @@ const PIVOTS: [string, string, string, string, string][] = [
 ];
 
 // The live site's success stories (scaler.com/school-of-business). The covers carry their own
-// headline and play mark. [CONFIRM] which name goes with which cover: taken from the order the
-// live page lists them in. `video` is the story's link once it is known; a cover without one
-// is not a link.
+// headline and play mark. (2026-11-19, the user's ask) each card now the live page's own: its cover
+// (framerusercontent, in public/testimonials) and the student's own short, which the live page plays in
+// its modal (Scaler's CloudFront, linked, not copied: 9:16 MP4s), matched by clicking each card there.
 const STORIES: { name: string; line: string; cover: string; video?: string; clip?: string }[] = [
-  { name: 'Akarsh', line: 'Created a GTM strategy for BSLR Technologies', cover: 'akarsh' },
-  { name: 'Yukthi', line: 'Career pivot from operations to strategy', cover: 'yukthi' },
-  { name: 'Moh', line: 'Building a Shark Tank funded startup', cover: 'moh' },
-  { name: 'Ayush', line: 'From CA to private equity', cover: 'ayush' },
-  { name: 'Yash', line: 'From fintech intern to Founder’s Office', cover: 'yash' },
+  { name: 'Akarsh', line: 'Created a GTM strategy for BSLR Technologies', cover: 'akarsh', clip: 'https://d2beiqkhq929f0.cloudfront.net/public_assets/assets/000/138/535/original/akarsh.mp4' },
+  { name: 'Yukthi', line: 'Career pivot from operations to strategy', cover: 'yukthi', clip: 'https://d2beiqkhq929f0.cloudfront.net/public_assets/assets/000/138/859/original/yukhti_compressed.mp4' },
+  { name: 'Moh', line: 'Building a Shark Tank funded startup', cover: 'moh', clip: 'https://d2beiqkhq929f0.cloudfront.net/public_assets/assets/000/138/217/original/Script_6_Moh_2_9-16_%281%29.mp4' },
+  { name: 'Ayush', line: 'From CA to private equity', cover: 'ayush', clip: 'https://d2beiqkhq929f0.cloudfront.net/public_assets/assets/000/138/536/original/ayush.mp4' },
+  { name: 'Yash', line: 'From fintech intern to Founder’s Office', cover: 'yash', clip: 'https://d2beiqkhq929f0.cloudfront.net/public_assets/assets/000/138/537/original/yash.mp4' },
 ];
 
-// The stories as shorts (2026-10-09). PLACEHOLDER: no learner's short is in the project yet, so each
-// plays the campus film from a different moment; set a story's `clip` to its own short.
+// The stories as shorts (2026-10-09): each its cover until tapped, then the student's own short with
+// sound (StoryReels plays a row with covers only on a tap). A story without a clip falls back to the
+// campus film, from a different moment each.
 export const REELS: Reel[] = STORIES.map((s, i) => ({
   name: s.name,
   line: s.line,
   clip: s.clip ?? '/media/campus-film.mp4',
   start: s.clip ? 0 : i * 3,
   poster: s.clip ? undefined : '/media/campus-film-poster.jpg',
+  cover: `/testimonials/${s.cover}.webp`,
 }));
 
 // Where learners have interned: the live site's grid ("Our Learners are now creating Impact at",

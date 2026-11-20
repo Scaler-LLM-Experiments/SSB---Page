@@ -365,3 +365,32 @@ html body .pt-panel:has(.fc-grid[data-kind='meet']) .fc-grid-dots { display: blo
 @media (width < 672px) { html body .fc-grid[data-kind='meet'] { grid-auto-columns: 85vw; } }
 
 /* phones: two rows, card over card, as Alumni (2026-10-23, the team's ask; one row tried that day) */
+
+/* phones (2026-11-11, the user's ask: too much empty space in these cards once their type came down to
+   the page's scale): the instructor, mentor, investor and team cards a step smaller, 76% of the width
+   (285 x 190 on a 375px phone, was 85%: 319 x 213; 72% left the faculty's course, name and credentials
+   5px too tall), close to the alumni cards; the type keeps its size (typography.css divides it by the
+   card's scale), so only the empty space goes. Credentials may break after a slash ("Ex-Flipkart/…") */
+@media (width < 672px) {
+  html body .fc-grid.fc-grid:is([data-kind], :not([data-kind])) { grid-auto-columns: 76vw; }
+  html body .fc-card .fc-card__credentials { overflow-wrap: anywhere; }
+}
+/* web and tablets too (2026-11-11, the user's ask: the same empty space): 320px wide on the web (was
+   368, 3.5 across), 21rem on a tablet (was 25rem); the copy then fills ~92% of the card's height */
+@media (width >= 672px) {
+  html body .fc-grid.fc-grid:is([data-kind], :not([data-kind])) { grid-auto-columns: 21rem; }
+}
+@media (width >= 1056px) {
+  html body .fc-grid.fc-grid:is([data-kind], :not([data-kind])) { grid-auto-columns: 20rem; }
+}
+/* (the same day) the smaller cards' copy column a little wider, so the longest names and credentials
+   ("Divya Venkataraghavan", "Ex-Flipkart/Razorpay/…") stay inside: from 46% (was 49%, where the portrait
+   has already faded into the ground) with 12px at the right (was 24); credentials may break at a slash */
+html body .fc-card .fc-card__body.fc-card__body { margin-left: 46%; padding-right: 12px; }
+html body .fc-card .fc-card__credentials { overflow-wrap: anywhere; }
+
+/* the faculty on phones (2026-11-11, the user's ask): three rows, card over card, as the alumni; the
+   cards' size as they were; the mentors, investors and the team keep their two */
+@media (width < 672px) {
+  html body #people-panel-faculty .fc-grid.fc-grid { grid-template-rows: repeat(3, auto) !important; }
+}

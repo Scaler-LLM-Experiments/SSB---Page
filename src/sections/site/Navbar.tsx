@@ -212,11 +212,18 @@ export function SsbNavbar({
 
   const hideRef = React.useRef({ y: 0, hidden: false });
   React.useEffect(() => {
-    if (pinned) return undefined;
+    // `pinned` keeps the bar put on the web only; on a phone it always hides on scroll down and comes
+    // back on scroll up (2026-11-11, the user's ask)
+    const phone = window.matchMedia('(max-width: 671px)');
     const el = document.documentElement;
     let raf = 0;
     const update = () => {
       raf = 0;
+      if (pinned && !phone.matches) {
+        if (hideRef.current.hidden) { hideRef.current.hidden = false; el.removeAttribute('data-nav-hidden'); }
+        hideRef.current.y = window.scrollY;
+        return;
+      }
       const y = window.scrollY;
       const st = hideRef.current;
       const dy = y - st.y;

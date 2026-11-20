@@ -43,6 +43,8 @@ export function BuiltCards({
   variant,
   id = 'built',
   heading,
+  hideSector = false,
+  phoneRows = 1,
 }: {
   content?: BuiltContent;
   variant?: 'deck';
@@ -50,12 +52,17 @@ export function BuiltCards({
   id?: string;
   /** A header of the caller's own in place of the eyebrow and title (it carries its own heading). */
   heading?: React.ReactNode;
+  /** Leave the sector off the cards (the student startups, 2026-11-11, the user's ask). */
+  hideSector?: boolean;
+  /** Rows on a phone (2026-11-11, the user's ask: the student startups in two, smaller and wider). */
+  phoneRows?: 1 | 2;
 } = {}) {
   const c = content;
   const sectionRef = React.useRef<HTMLElement>(null);
   const rowRef = React.useRef<HTMLUListElement>(null);
   // two rows from 672px, one on a phone (2026-10-27, the user's ask): a dot per column
-  const rows = useRows(2);
+  const wideRows = useRows(2);
+  const rows = wideRows === 1 ? phoneRows : wideRows;
   useSectionEntrance(sectionRef, { decks: ['.bc-row > li > article'] });
 
   return (
@@ -66,6 +73,7 @@ export function BuiltCards({
       aria-labelledby={heading ? `${id}-title` : 'bc-title'}
       className="overflow-x-clip"
       data-variant={variant}
+      data-phone-rows={phoneRows === 2 ? '2' : undefined}
     >
       <Container>
         {heading ? (
@@ -87,7 +95,7 @@ export function BuiltCards({
       <ul ref={rowRef} className="bc-row" aria-label={c.label}>
         {c.companies.map((co, i) => (
           <li key={co.company}>
-            <Card co={co} i={i} deck={variant === 'deck'} />
+            <Card co={co} i={i} deck={variant === 'deck'} hideSector={hideSector} />
           </li>
         ))}
       </ul>
@@ -98,7 +106,7 @@ export function BuiltCards({
   );
 }
 
-function Card({ co, i, deck }: { co: BuiltCard; i: number; deck: boolean }) {
+function Card({ co, i, deck, hideSector = false }: { co: BuiltCard; i: number; deck: boolean; hideSector?: boolean }) {
   // (2026-10-27, the user's ask) the companies' own photos for now, until the founders' portraits come
   const photo = co.banner ? (
     // eslint-disable-next-line @next/next/no-img-element -- its width set, its height from the file's ratio
@@ -156,7 +164,7 @@ function Card({ co, i, deck }: { co: BuiltCard; i: number; deck: boolean }) {
       )}
       <div className="bc-body" data-brand="ssb" data-theme={deck ? 'light' : 'dark'}>
         <div className="bc-top" data-part="title">
-          {deck ? <p className="bc-k">{co.sector}</p> : null}
+          {deck && !hideSector ? <p className="bc-k">{co.sector}</p> : null}
           <h3 className="bc-name">
             {co.href ? (
               <a href={co.href} target="_blank" rel="noreferrer" className="bc-link">

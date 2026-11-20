@@ -111,11 +111,11 @@ export type HeroFrameContent = {
 export const heroFrame: HeroFrameContent = {
   // PLACEHOLDER date: the mock's countdown (1 day 2 hours out); the real Phase 1 deadline to come
   deadline: {
-    // (review call, 21 Oct 2026) Intake 2 closes 27 Dec, as the fee table
-    message: 'Intake 2 applications close 27 Dec',
-    shortMessage: 'Intake 2 closes 27 Dec',
-    to: '2026-12-27T23:59:00+05:30',
-    label: '27 Dec, 11:59 PM IST',
+    // (2026-11-19, Stephan in #ssb-assets) the early bird closes 20 Dec, as the fee table
+    message: 'Early bird applications close on 20 Dec',
+    shortMessage: 'Early bird closes 20 Dec',
+    to: '2026-12-20T23:59:00+05:30',
+    label: '20 Dec, 11:59 PM IST',
   },
   // (review call, 21 Oct 2026) the programme's name; one subline, the "build startups" line dropped
   eyebrow: 'Full-Time PGP in Management & Technology',

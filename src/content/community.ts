@@ -318,6 +318,13 @@ export const foundingTeamSection = {
       logo: { name: 'Kearney', src: '/logos/kearney.svg' },
     },
     {
+      // (2026-11-11, the user's ask; the review call's "add Stefan": spelled as the user gave it, to confirm)
+      name: 'Stephan',
+      role: 'PnL Head and Director, Scaler School of Business',
+      image: '/people/stephan.jpg',
+      logo: { name: 'Scaler School of Business', src: '/logos/ssb.svg' },
+    },
+    {
       name: 'Adhiraj Arora',
       role: 'Program Director, Ex-BCG, ISB',
       image: '/people/adhiraj-arora.webp',
@@ -396,17 +403,20 @@ export const campusLife = {
       name: 'Marketing Club',
       tag: 'Marketing',
       text: 'Branding sessions and case competitions with founders like Meolaa’s Ishita Sawant: learn to build and pitch a brand.',
-      media: '/campus/flags.webp',
-      alt: 'SSB banners in the campus grounds',
-      position: '50% 70%',
+      // the team's photo (Drive, Life @ SSB Page Collateral > Club Activities, "Club Presentations to
+      // Founders", 2026-11-19): a student presenting to founders, Meolaa's deck on the screen beside him
+      media: '/campus/club-marketing.webp',
+      alt: 'A student presenting to founders in a club session, Meolaa’s deck on the screen',
+      position: '62% 50%',
     },
     {
       name: 'Consulting Club',
       tag: 'Consulting',
       text: 'SSB’s own Case Book and sessions with Ex-McKinsey and BCG consultants: learn to structure and present a case.',
-      media: '/campus/classroom.webp',
-      alt: 'Students in an SSB lecture hall',
-      position: '62% 50%',
+      // the team's photo (Club Activities, "Case Crunch", 2026-11-19): three students mapping a case on the table
+      media: '/campus/club-consulting.webp',
+      alt: 'Three students mapping out a case on a whiteboard table',
+      position: '50% 45%',
     },
   ],
   /** The campus around it, in the mosaic's order (left tall, left short, right short, right tall). */
@@ -414,67 +424,75 @@ export const campusLife = {
     { media: '/campus/arch.webp', alt: 'The Scaler School of Business arch on Commencement Day', position: '50% 50%' },
     { media: '/campus/gym.webp', alt: 'The campus gym', position: '45% 60%' },
     { media: '/campus/building.webp', alt: 'The SSB building in Bengaluru', position: '50% 55%' },
-    { media: '/campus/classroom.webp', alt: 'Students in an SSB lecture hall', position: '50% 40%' },
+    // the courtyard between the residence blocks (the team's accommodation photos, 2026-11-19), in place of
+    // the lecture hall, which leads the Classrooms tab: the title says "fully residential"
+    { media: '/campus/residence-courtyard.webp', alt: 'The garden courtyard between the residence blocks', position: '50% 50%' },
   ],
   /** The mosaic's other tabs (2026-10-23, the team's ask): the same five tiles, each tab its own photos
    *  and a caption on each. A tile with no `media` is a marked placeholder naming the photo to come. */
   galleries: [
     // (review call, 21 Oct 2026) the tabs the team named: classrooms, sports and gym, clubs, fests,
-    // cultural. Our photos where we have them; each placeholder names the shot to come
+    // cultural. (2026-11-19) every tile now the team's own photo, from the Drive folders shared in
+    // #ssb-assets (Life @ SSB Page Collateral, Vision Board Photos, the old campus activities shoot, Navera,
+    // cricket, badminton, Holi, convocation prom, accommodation). Tiles 1 and 4 are the mosaic's tall ones: portraits, or a single
+    // subject that survives a tall crop. Captions say only what the folder and the photo show.
     {
       id: 'classrooms',
       label: 'Classrooms',
-      feature: { media: '/campus/classroom.webp', alt: 'Students in an SSB lecture hall', caption: 'A lecture hall at SSB', position: '50% 40%' },
+      feature: { media: '/campus/class-session.webp', alt: 'A full SSB classroom, a speaker at the front', caption: 'A class in session', position: '50% 50%' },
       photos: [
-        { alt: 'Photo: a case discussion in class' },
-        { alt: 'Photo: a workshop in the Innovation Lab' },
-        { alt: 'Photo: a guest lecture' },
-        { alt: 'Photo: students presenting to a panel' },
+        { media: '/campus/class-case-study.webp', alt: 'A faculty member taking a case study class', caption: 'A case study class', position: '50% 50%' },
+        { media: '/campus/class-group-work.webp', alt: 'Students in a discussion round a table, one of them making her point', caption: 'Group work in class', position: '50% 50%' },
+        { media: '/campus/class-discussion.webp', alt: 'Students in a discussion round a table in class', caption: 'A class discussion', position: '50% 50%' },
+        { media: '/campus/class-fireside.webp', alt: 'A guest and an SSB faculty member in a fireside chat in front of the class', caption: 'A fireside chat with a guest', position: '40% 50%' },
       ],
     },
     {
       id: 'sports',
       label: 'Sports & gym',
-      feature: { media: '/campus/gym.webp', alt: 'The campus gym', caption: 'The campus gym', position: '45% 60%' },
+      feature: { media: '/campus/cricket-floodlights.webp', alt: 'A batter mid-swing in a cricket match under the floodlights', caption: 'Cricket under the floodlights', position: '55% 45%' },
       photos: [
-        { alt: 'Photo: cricket or football on campus' },
-        { alt: 'Photo: sports day' },
-        { alt: 'Photo: a morning run or yoga' },
-        { alt: 'Photo: the indoor games room' },
+        { media: '/campus/badminton.webp', alt: 'A player jumping for a smash in the badminton tournament', caption: 'The badminton tournament', position: '50% 30%' },
+        { media: '/campus/gym.webp', alt: 'The campus gym', caption: 'The campus gym', position: '45% 60%' },
+        { media: '/campus/basketball.webp', alt: 'Students playing on the campus basketball court', caption: 'The basketball court', position: '50% 60%' },
+        { media: '/campus/cricket-winners.webp', alt: 'The winning cricket team with their trophies', caption: 'The cricket winners', position: '50% 50%' },
       ],
     },
     {
       id: 'clubs',
       label: 'Clubs',
-      feature: { media: '/campus/flags.webp', alt: 'SSB banners in the campus grounds', caption: 'The student clubs', position: '50% 70%' },
+      feature: { media: '/campus/club-case-crunch.webp', alt: 'Students gathered round a table, working a case in a club session', caption: 'A club’s case session', position: '50% 45%' },
       photos: [
-        { alt: 'Photo: the Marketing Club at work' },
-        { alt: 'Photo: the Consulting Club’s case session' },
-        { alt: 'Photo: a club meet-up' },
-        { alt: 'Photo: a club’s guest session' },
+        { media: '/campus/club-whiteboard.webp', alt: 'Two students marking up a whiteboard table', caption: 'Mapping a case', position: '50% 45%' },
+        { media: '/campus/club-meolaa-session.webp', alt: 'Guests from Meolaa at a club session', caption: 'A club session with Meolaa', position: '50% 45%' },
+        { media: '/campus/club-guest-session.webp', alt: 'A guest in conversation with students in a club session', caption: 'A club’s guest session', position: '50% 55%' },
+        { media: '/campus/club-case-table.webp', alt: 'Students round a table, a club member taking notes on a tablet', caption: 'A club meet-up', position: '50% 50%' },
       ],
     },
     {
       id: 'fests',
       label: 'Fests & events',
-      feature: { media: '/on-campus/anupam-mittal.webp', alt: 'Anupam Mittal on campus with SSB students', caption: 'Anupam Mittal on campus', position: '50% 40%' },
+      // (2026-11-19) the team's photos of the two visits, in place of the YouTube thumbnails (text baked in)
+      feature: { media: '/campus/anupam-session.webp', alt: 'Anupam Mittal in a session with SSB students, a full room behind him', caption: 'Anupam Mittal on campus', position: '50% 50%' },
       photos: [
-        { media: '/on-campus/ankur-warikoo.webp', alt: 'Ankur Warikoo at the SSB convocation', caption: 'Ankur Warikoo at convocation', position: '50% 40%' },
+        { media: '/campus/warikoo-fireside.webp', alt: 'Ankur Warikoo in a fireside chat at the SSB convocation', caption: 'Ankur Warikoo at convocation', position: '38% 50%' },
         { media: '/campus/arch.webp', alt: 'The SSB arch on Commencement Day', caption: 'Commencement Day', position: '50% 50%' },
-        { alt: 'Photo: the annual fest, on stage' },
-        { alt: 'Photo: a hackathon or case competition' },
+        // Navera '26, "The Builders' Era": the name is on the stage's backdrop
+        { media: '/campus/navera-awards.webp', alt: 'Winners receiving a plaque on stage at Navera, the SSB fest', caption: 'Prize-giving at Navera', position: '50% 50%' },
+        { media: '/campus/navera-shark-tank.webp', alt: 'A student pitching with a mic in the fest’s Shark Tank event', caption: 'Shark Tank at Navera', position: '48% 50%' },
       ],
     },
     {
       id: 'cultural',
       label: 'Cultural',
-      // PLACEHOLDER: no cultural photos yet; each tile names the shot to come
-      feature: { alt: 'Photo: a cultural night, on stage' },
+      // no dance or festival-dinner photos in the team's folders yet: Holi, music, stand-up and the prom
+      // (2026-11-19, the user's ask: "something exciting") Holi leads: a frame of the team's Holi video
+      feature: { media: '/campus/holi-colours.webp', alt: 'Two students smearing Holi colours on each other on campus', caption: 'Holi on campus', position: '50% 45%' },
       photos: [
-        { alt: 'Photo: Diwali or Holi on campus' },
-        { alt: 'Photo: a music or open-mic night' },
-        { alt: 'Photo: a dance performance' },
-        { alt: 'Photo: a festival dinner' },
+        { media: '/campus/navera-music.webp', alt: 'A singer performing on stage at the fest’s cultural night', caption: 'Live music at Navera', position: '45% 45%' },
+        { media: '/campus/prom.webp', alt: 'Students arriving on the red carpet for prom night', caption: 'Prom night', position: '50% 55%' },
+        { media: '/campus/music-night.webp', alt: 'A singer and a guitarist performing at a music night', caption: 'A music night', position: '50% 50%' },
+        { media: '/campus/navera-standup.webp', alt: 'A stand-up comic performing at the fest’s cultural night', caption: 'Stand-up at Navera', position: '62% 40%' },
       ],
     },
   ] as { id: string; label: string; feature: CampusPhoto; photos: CampusPhoto[] }[],

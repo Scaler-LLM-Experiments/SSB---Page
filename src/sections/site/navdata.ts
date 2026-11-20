@@ -35,15 +35,16 @@ const SSB = 'https://www.scaler.com/school-of-business';
 export const SSB_NAV: NavContent = {
   menus: [],
   links: [
-    { label: 'Home', href: '#top' },
-    { label: 'Admission & Fees', href: `${SSB}/admission/` },
-    { label: 'Program', href: `${SSB}/program/` },
-    { label: 'Internship', href: `${SSB}/internship/` },
+    // '/…' (2026-11-11): the site has more than one page now, so the home page's anchors carry its path
+    { label: 'Home', href: '/#top' },
+    { label: 'Admission & Fees', href: '/admission' },
+    { label: 'Program', href: '/program' },
+    { label: 'Internship', href: '/internship' },
     { label: 'Campus Life', href: `${SSB}/campus-life/` },
     { label: 'Events', href: `${SSB}/events` },
     { label: 'Career Roadmap', href: 'https://interviewbit.typeform.com/career-planning/' },
     { label: 'Guide', href: `${SSB}/guide` },
-    { label: 'FAQs', href: `${SSB}/faq/` },
+    { label: 'FAQs', href: '/faq' },
   ],
   // [CONFIRM] the live Login and Apply Now are buttons that open the site's own forms, not links
   secondary: { label: 'Login', href: 'https://www.scaler.com/users/sign_in/' },

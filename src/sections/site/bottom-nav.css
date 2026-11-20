@@ -425,3 +425,23 @@ html[data-bn-instant] :is(.bn, .bn *, .bn-strip, .bn-call, .bn-apply, .bn-apply 
   animation: none !important;
   transition: none !important;
 }
+
+/* phones on the deck pages (2026-11-11, the user's ask: "the navbar and the section strip fully
+   joined", gaps showed while scrolling): the strip pinned straight to the navbar's foot (the
+   announcement bar's height plus the navbar's, 1px up so no seam can open), no slide out from behind
+   the navbar; it only fades in and out. The navbar is pinned here, so the two never move apart. */
+@media (width < 672px) {
+  html:has(main[data-page='v7']) .bn-strip,
+  html:has(main[data-page='v7']) .bn-strip[data-shown] {
+    top: calc(var(--hf-bar, 0px) + var(--bn-nav-h, 61px) - 1px) !important;
+    transform: none !important;
+    transition: opacity 160ms linear, transform 320ms cubic-bezier(0.32, 0.72, 0, 1) !important;
+  }
+  /* (later, the same day: the navbar hides on scroll down on a phone) the strip rides up with it, the
+     same distance, curve and duration (navbar.css), so the two never part; it stops under the
+     announcement bar */
+  html:has(main[data-page='v7'])[data-nav-hidden] .bn-strip,
+  html:has(main[data-page='v7'])[data-nav-hidden] .bn-strip[data-shown] {
+    transform: translateY(calc(1px - var(--bn-nav-h, 61px))) !important;
+  }
+}

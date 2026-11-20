@@ -38,7 +38,13 @@ const TAB_ICONS: Icon[] = [GraduationCap, BookOpen, Briefcase, Buildings];
 /** `items`: another page's own targets for the same pillars (/v6, whose sections run in another order). */
 /** `instant` (the final page, 2026-10-28, the user's ask): no pop-up entrance; the bars appear as they
  *  are, as soon as the first fold (the hero) has been scrolled past. */
-export function BottomNav({ items = bottomNav.items, instant = false }: { items?: BottomNavItem[]; instant?: boolean } = {}) {
+/** `hero` (the admission page, 2026-11-11): the first fold the bars wait to be scrolled past, when it
+ *  isn't the home page's (`.hf`). */
+export function BottomNav({
+  items = bottomNav.items,
+  instant = false,
+  hero: heroSelector = '.hf',
+}: { items?: BottomNavItem[]; instant?: boolean; hero?: string } = {}) {
   const [shown, setShown] = React.useState(false);
   const [active, setActive] = React.useState(-1);
   // tablets: the bar steps aside while the curriculum's own bar is at the window's foot
@@ -52,7 +58,7 @@ export function BottomNav({ items = bottomNav.items, instant = false }: { items?
       raf = 0;
       const vh = window.innerHeight;
       const first = sectionOf(items[0].target);
-      const hero = instant ? document.querySelector('.hf') : null;
+      const hero = instant ? document.querySelector(heroSelector) : null;
       const pastHero = hero
         ? hero.getBoundingClientRect().bottom < vh * 0.5
         : first
@@ -60,7 +66,14 @@ export function BottomNav({ items = bottomNav.items, instant = false }: { items?
           : window.scrollY > vh;
       // the footer is uncovered once the sheet the page lifts off it has risen above the window's foot
       const sheet = document.querySelector('.sf-lift');
-      const footer = sheet ? sheet.getBoundingClientRect().bottom < vh - 24 : false;
+      // the deck pages' own footer (DeckFooter, .dkft; 2026-11-11, the user's ask: the strip hung over it
+      // on a phone): uncovered once its top has risen into the window
+      const deckFooter = document.querySelector('.dkft');
+      const footer = sheet
+        ? sheet.getBoundingClientRect().bottom < vh - 24
+        : deckFooter
+          ? deckFooter.getBoundingClientRect().top < vh - 24
+          : false;
       // phones: the curriculum's own bar sits at the window's foot while its section is on screen
       const rail = document.querySelector('.cr');
       const phone = window.matchMedia('(max-width: 1055px)').matches;
@@ -110,7 +123,7 @@ export function BottomNav({ items = bottomNav.items, instant = false }: { items?
       window.removeEventListener('scroll', on);
       window.removeEventListener('resize', on);
     };
-  }, [instant]);
+  }, [instant, heroSelector]);
 
   // The entrance (bottom-nav.css, after the carousel controls'): the bar opens out of a square at
   // its centre and the call-back slides out from behind it, so the call-back starts this far left

@@ -44,17 +44,17 @@ export const SSB_FOOTER: FooterContent = {
     {
       title: 'Explore',
       links: [
-        { label: 'Why SSB', href: '#why-ssb' },
-        { label: 'Outcomes', href: '#outcomes' },
-        { label: 'Curriculum', href: '#curriculum' },
+        { label: 'Why SSB', href: '/#why-ssb' },
+        { label: 'Outcomes', href: '/#outcomes' },
+        { label: 'Curriculum', href: '/#curriculum' },
       ],
     },
     {
       title: 'Next steps',
       links: [
-        { label: 'Program Details', href: '#curriculum' },
-        { label: 'Admission Process', href: '#admissions' },
-        { label: 'FAQs', href: '#faq' },
+        { label: 'Program Details', href: '/program' },
+        { label: 'Admission Process', href: '/admission' },
+        { label: 'FAQs', href: '/faq' },
       ],
     },
   ],

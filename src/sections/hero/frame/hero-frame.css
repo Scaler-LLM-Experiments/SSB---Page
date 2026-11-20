@@ -473,3 +473,63 @@ body:has(.hf-deadline) header.sn { top: var(--hf-bar, 0px); }
 }
 /* the wave (HeroFrameFlipLogos `wave`, /v7): a quicker turn, each tile a beat after the one before */
 .hf-flip[data-wave] .hf-flip-logo { animation-duration: 380ms; }
+
+/* the intake's deadline under Apply Now (2026-11-11, the user's ask): a calendar icon and the line, small,
+   on a row of its own under the buttons; on the film, white at the line's strength */
+.hf-intake {
+  display: flex; flex-basis: 100%; align-items: center; gap: var(--space-2);
+  /* 15px on the web, over the film (a step under the 16px line and buttons); 14px on a phone, below */
+  margin: 0; font-size: 0.9375rem; line-height: 1.4;
+  font-weight: var(--font-weight-medium); color: var(--on-image-ink);
+}
+.hf-actions .hf-intake svg { flex: none; width: 1.125rem; height: 1.125rem; }
+/* phones: the buttons stack; the line goes under both, below Download Placement Report (2026-11-19, the
+   user's ask; it sat between the two buttons), centred */
+@media (width < 672px) {
+  .hf-actions > .hf-primary { order: 0; }
+  .hf-actions > .hf-secondary { order: 1; }
+  .hf-actions > .hf-intake { order: 2; justify-content: center; margin: var(--space-1) 0 0; font-size: 0.875rem; }
+  .hf-actions .hf-intake svg { width: 1rem; height: 1rem; }
+  .hf[data-tone='light'] .hf-intake { color: #616161; }
+}
+
+/* phones (2026-11-11): the short line now fits beside the countdown, so it needs a gap there too */
+@media (width < 672px) {
+  .hf-deadline [data-slot='banner-message'] { column-gap: var(--space-2); row-gap: var(--space-1); }
+  .hf-deadline .hf-count { margin: 0; }
+}
+
+/* 2026-11-16 (the team's review: "reduce font size and add as pills"): the title a step smaller, and the
+   three pointers as pills, frosted glass on the film (as the facts' panel), the facts' grey on a phone's
+   white ground. 4px corners, the chips' radius. */
+@media (width >= 1056px) { .hf[data-variant='deck'] .hf-title { font-size: 2.25rem; } }
+.hf .hf-pills {
+  display: flex; flex-wrap: wrap; gap: var(--space-2);
+  margin-left: 0; padding: 0; list-style: none; overflow: visible;
+}
+.hf .hf-pills > li {
+  padding: var(--space-1-5) var(--space-3);
+  border: 1px solid rgb(255 255 255 / 0.3);
+  border-radius: var(--radius-md);
+  background: rgb(255 255 255 / 0.12);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  color: var(--on-image-ink);
+  font-size: 0.9375rem; line-height: 1.4; font-weight: var(--font-weight-medium);
+}
+@media (width < 672px) {
+  .hf[data-variant='deck'] .hf-title { font-size: 1.25rem; line-height: 1.3; }
+  .hf .hf-pills > li { padding: var(--space-1) var(--space-2-5); font-size: 0.875rem; }
+  .hf[data-tone='light'] .hf-pills > li {
+    border-color: #e5e5e5; background: #f5f5f5; color: #262626;
+    -webkit-backdrop-filter: none; backdrop-filter: none;
+  }
+}
+
+/* the three pills on one line on a phone (2026-11-19, the user's ask; they wrapped to two): no wrap, the
+   type and padding scaled to the width (14px at 430px wide, 12px at 360, the page's floor); under 360 they
+   may still wrap */
+@media (width < 672px) {
+  .hf .hf-pills { flex-wrap: nowrap; gap: clamp(0.25rem, 1.2vw, 0.375rem); }
+  .hf .hf-pills > li { flex: none; white-space: nowrap; padding: var(--space-1) clamp(0.3125rem, 1.8vw, 0.625rem); font-size: clamp(0.75rem, 3.3vw, 0.875rem); }
+}
+@media (width < 360px) { .hf .hf-pills { flex-wrap: wrap; } }

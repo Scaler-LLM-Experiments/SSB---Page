@@ -46,8 +46,14 @@ export function DeckOutcomes({
         the report's CTA in the card's foot */}
       <article className="dko-press">
         <div className="dko-press-top">
-          {/* eslint-disable-next-line @next/next/no-img-element -- a wordmark */}
-          <img className="dko-clip-logo" {...press.logo} alt={press.logo.alt} />
+          {/* the report's kicker; a paper's wordmark only for real coverage (2026-11-16: the Times of
+              India's was a stand-in, taken off) */}
+          {press.logo ? (
+            // eslint-disable-next-line @next/next/no-img-element -- a wordmark
+            <img className="dko-clip-logo" {...press.logo} alt={press.logo.alt} />
+          ) : (
+            <span className="dko-press-kicker">{press.kicker}</span>
+          )}
           <span className="dko-press-date">{press.date}</span>
         </div>
         <h3 className="dko-clip-title">{press.title}</h3>

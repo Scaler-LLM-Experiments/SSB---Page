@@ -139,3 +139,34 @@
 /* the stories on /v7 (2026-10-28): no frame, a heading of their own over the reels */
 .in-reels-head .in-reels-title { margin-bottom: var(--space-6); font-weight: var(--font-weight-medium); }
 @media (width < 672px) { .in-reels-head .in-reels-title { margin-bottom: var(--space-4); } }
+
+/* covers (2026-11-19, the live page's thumbnails): the card takes the cover's shape (780 × 1020) so its
+   headline isn't cut at the sides; the cover carries the headline and the play mark, so the card's own
+   copy, shade and sound chip come up only once the short is playing */
+.in-reel[data-cover] { aspect-ratio: 780 / 1020; }
+.in-reel[data-cover]:not([aria-pressed='true']) .in-reel-copy,
+.in-reel[data-cover]:not([aria-pressed='true']) .in-reel-shade,
+.in-reel[data-cover]:not([aria-pressed='true']) .in-reel-sound {
+  opacity: 0;
+}
+.in-reel[data-cover] img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1); }
+@media (hover: hover) { .in-reel[data-cover]:hover img { transform: scale(1.03); } }
+
+/* the short, large, over the page (ReelBox, 2026-11-19): 9:16, as tall as the window allows */
+.in-reel-box {
+  position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: var(--space-6);
+  background: rgb(0 0 0 / 0.86); animation: in-reel-box-in 240ms ease both;
+}
+.in-reel-box__frame {
+  height: min(calc(100svh - 6rem), calc((100vw - 3rem) * 16 / 9)); aspect-ratio: 9 / 16;
+  overflow: hidden; border-radius: var(--radius-lg); background: #000;
+}
+.in-reel-box__frame video { display: block; width: 100%; height: 100%; object-fit: contain; }
+.in-reel-box__close {
+  all: unset; position: absolute; top: var(--space-4); right: var(--space-4); display: grid; place-items: center;
+  width: 44px; height: 44px; border-radius: 50%; background: rgb(255 255 255 / 0.14); color: #fff; cursor: pointer;
+}
+.in-reel-box__close:focus-visible { outline: 2px solid #fff; }
+.in-reel-box__close svg { width: 20px; height: 20px; }
+@keyframes in-reel-box-in { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .in-reel-box { animation: none; } .in-reel[data-cover] img { transition: none; } }

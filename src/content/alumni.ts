@@ -41,21 +41,22 @@ export const alumni: Alumnus[] = [
   },
   {
     name: 'Sagnik Banerjee',
-    // photo: 'sagnik-banerjee', (awaiting a photo in the new landscape style)
+    // (2026-11-16) the team's headshot (Figma, SSB 2026 > Assest), cut out and set on the empty-room plate
+    photo: 'sagnik-banerjee',
     before: 'Project Lead',
     role: 'Sr. Strategy Manager',
     company: marks.urbancompany,
   },
   {
     name: 'Suhaas Sastry',
-    // photo: 'suhaas-sastry', (awaiting a photo in the new landscape style)
+    photo: 'suhaas-sastry',
     before: 'Sales Engineer',
     role: 'Partnerships',
     company: marks.razorpay,
   },
   {
     name: 'Pranav Bagla',
-    // photo: 'pranav-bagla', (awaiting a photo in the new landscape style)
+    photo: 'pranav-bagla',
     before: 'Investment Analyst',
     role: 'Investment Advisor',
     company: marks.avendus,

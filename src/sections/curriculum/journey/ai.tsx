@@ -18,6 +18,8 @@ import { c, type JourneyConfig } from './config';
 import { CardStack, type StackItem } from './concepts/stack';
 import { TOOL_LOGOS } from './tool-logos';
 import { ScrollDots } from '@/sections/shared/ScrollDots';
+// the term chips on phones are the global immersion's day chips (.dkg-day, its phone rules)
+import '@/sections/deck/deck-global.css';
 
 const ICON: Record<AiIcon, React.ComponentType<{ weight?: 'bold' | 'regular'; 'aria-hidden'?: boolean }>> = {
   wand: MagicWand,
@@ -214,8 +216,11 @@ export function AiJourneyBlock({ ai, cfg, width }: { ai: AiJourney; cfg: Journey
       {cfg.aiTermTabs ? (
         <div ref={tabs} className="sj-ai-tabs" role="tablist" aria-label="Terms">
           {ai.terms.map((t, i) => (
-            <button key={t.term} type="button" role="tab" aria-selected={i === at} className="sj-ai-tab" onClick={() => go(i)}>
-              Term {t.term}
+            <button key={t.term} type="button" role="tab" aria-selected={i === at} className="sj-ai-tab dkg-day" onClick={() => go(i)}>
+              <span className="dkg-day-n">Term</span>
+              <span className="dkg-day-text">
+                <b>{String(t.term).padStart(2, '0')}</b>
+              </span>
             </button>
           ))}
         </div>

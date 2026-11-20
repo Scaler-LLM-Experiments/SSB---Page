@@ -28,10 +28,10 @@ export const bottomNav: {
   apply: {
     label: 'Apply now',
     tabs: [
-      { label: 'Admission & Fees', href: '#admissions' },
-      { label: 'Program', href: '#curriculum' },
-      { label: 'Internship', href: '#internship' },
-      { label: 'Campus Life', href: '#campus-title' },
+      { label: 'Admission & Fees', href: '/admission' },
+      { label: 'Program', href: '/program' },
+      { label: 'Internship', href: '/internship' },
+      { label: 'Campus Life', href: '/#campus-title' },
     ],
   },
 };

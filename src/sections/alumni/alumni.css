@@ -408,6 +408,28 @@ html body .alumni-row + .alumni-dots { display: block !important; margin-top: va
 @media (width < 1056px) { html body .alumni-row { grid-auto-columns: 25rem; } }
 @media (width < 672px) { html body .alumni-row { grid-auto-columns: 85vw; } }
 
+/* Three rows at every width (2026-11-09, the user's ask), the cards scaled down so all three rows fit
+   one screen between the navs with room to spare: a card's height is a third of the window less a
+   reserve (the top nav, the sticky bottom bar, the gaps and a margin), its width 3:2 to that
+   (AlumniCard scales its 480 x 320 design to the slot), never wider than before. */
+/* (2026-11-11, the user's ask) two rows from the tablet up, three on a phone (below): the card's height
+   is half the room on the web, the width capped as before */
+html body .alumni-row {
+  --alumni-fit: calc((100svh - 16rem) / 2 * 1.5);
+  grid-template-rows: repeat(2, auto); gap: var(--space-4);
+  grid-auto-columns: min(var(--alumni-fit), calc((100vw - (max(0px, (100vw - var(--size-container-max)) / 2) + var(--space-gutter)) - 3 * var(--space-4)) / 3.5));
+}
+@media (width < 1056px) { html body .alumni-row { grid-auto-columns: min(var(--alumni-fit), 25rem); } }
+/* phones: a larger reserve (their top bar with the section tabs, and the Apply bar with the tab bar
+   under it, take ~250px), never past three quarters of the width, so the next column peeks in */
+@media (width < 672px) {
+  html body .alumni-row {
+    --alumni-fit: calc((100svh - 18rem) / 3 * 1.5);
+    grid-template-rows: repeat(3, auto);
+    grid-auto-columns: min(var(--alumni-fit), 75vw); gap: var(--space-2);
+  }
+}
+
 /* phones: two rows again, card over card, as on desktop (2026-10-23, the team's ask: "every such card
    stacked top and bottom as set earlier"; one row tried that day) */
 
@@ -418,4 +440,20 @@ html body .alumni-row + .alumni-dots { display: block !important; margin-top: va
   .peers-flip-cell, .peers-flip-cell:is(*) { height: 3.75rem; }
   .peers-flip-face, .peers-flip-face:is(*) { padding: 0 var(--space-3); border-radius: var(--radius-lg); box-shadow: inset 0 0 0 1px var(--border-subtle); }
   .peers-flip-logo[style] { --peers-s: 0.6; max-height: 60%; }
+}
+
+/* Post SSB / Pre SSB a step larger on phones only (2026-11-11, the user's ask: "Blinkit" and "Software
+   Developer" read too small on mweb; the web untouched). In the card's 480 x 320 design units, 15 / 18 (a touch under the first 16 / 20, the user's ask)
+   (the card drawn at ~0.56 on a phone); the name, the role and the card's size as they were. */
+@media (width < 672px) {
+  html body .alumni-card .alumni-card__label.alumni-card__label { font-size: 0.9375rem !important; letter-spacing: 0.04em !important; }
+  html body .alumni-card .alumni-card__value.alumni-card__value { font-size: 1.125rem; line-height: 1.2; }
+  html body .alumni-card .alumni-card__step.alumni-card__step { gap: var(--space-4); }
+}
+
+/* the web (from 672px, 2026-11-11, the user's ask: "in web the size looks too small"): Post SSB / Pre SSB
+   a small step up, 13 / 16 in design units (was 12 / 14); the cards, name and role as they were */
+@media (width >= 672px) {
+  html body .alumni-card .alumni-card__label.alumni-card__label { font-size: 0.8125rem !important; }
+  html body .alumni-card .alumni-card__value.alumni-card__value { font-size: 1rem; line-height: 1.2; }
 }

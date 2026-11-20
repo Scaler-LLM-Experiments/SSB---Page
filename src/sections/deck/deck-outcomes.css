@@ -841,3 +841,9 @@ main[data-page='v7'] .peers-flip-logo[style] {
     radial-gradient(120% 160% at 100% 0%, var(--pg-white-a50), transparent 55%);
 }
 @media (width < 672px) { .dko-ticker::before, .dko-ticker::after { width: 34%; } }
+
+/* the report card's kicker, in place of a paper's wordmark (2026-11-16): the eyebrow's look, brand green */
+.dko-press-kicker {
+  font-size: var(--type-label-size); line-height: 1.2; font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-ssb-light-9);
+}

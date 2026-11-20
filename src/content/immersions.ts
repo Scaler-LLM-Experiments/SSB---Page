@@ -44,29 +44,38 @@ export type DomesticImmersion = {
   image: { src: string; width: number; height: number; position?: string; leftHalf?: boolean };
 };
 
+// (2026-11-16, the team's review: "copy is placeholder, add Britannia and Akshayakalpa, check with Guru")
+// the two companies the team named, in place of the placeholder three (ArcelorMittal, Zepto and Myntra's
+// logos over made-up students). PLACEHOLDER until Guru confirms: the lines are ours, from what each
+// company does, and the photos the companies' own (Akshayakalpa's farm-visit banner) or the press's
+// (Moneycontrol's, a Britannia biscuit line), not the trips'; the third immersion is to come.
 export const domesticImmersions: DomesticImmersion[] = [
   {
     place: 'Manufacturing floor',
-    name: 'Manufacturing',
-    // PLACEHOLDER logo (2026-10-27, the user's ask: "random companies' logos" until the real ones come)
-    logo: { src: '/logos/arcelormittal.svg', alt: 'ArcelorMittal' },
-    description: 'See how a product is made at scale: planning the line, quality checks and the cost of every unit.',
-    image: { src: '/media/built/tally.webp', width: 1600, height: 1065, position: '60% 50%' },
+    name: 'Inside a biscuit factory',
+    logo: { src: '/logos/britannia.webp', alt: 'Britannia' },
+    description: 'Walk Britannia’s production lines and see how one of India’s largest food brands plans, makes and ships at scale.',
+    // the team's photo (Drive, "Britannia + SSB outing", 2026-11-19): the cohort at Britannia Industries' gate
+    image: { src: '/immersions/britannia.webp', width: 1200, height: 675, position: '50% 55%' },
   },
   {
-    place: 'Quick-commerce backend',
-    name: 'Quick commerce',
-    logo: { src: '/logos/zepto.svg', alt: 'Zepto' }, // PLACEHOLDER logo
-    description: 'Go behind the 10-minute delivery: dark-store operations, inventory and the last mile.',
-    // the scene is the file's left half (its right half is a baked blur)
-    image: { src: '/immersions/domestic-immersions.webp', width: 948, height: 544, position: '0% 50%', leftHalf: true },
+    place: 'Organic dairy farm',
+    name: 'On an organic dairy farm',
+    logo: { src: '/logos/akshayakalpa.webp', alt: 'Akshayakalpa' },
+    description: 'Follow Akshayakalpa’s milk from its farmers’ cows to Bengaluru doorsteps: the testing, the processing and the supply chain.',
+    image: { src: '/immersions/akshayakalpa.webp', width: 1200, height: 600, position: '35% 50%' },
   },
+  // (2026-11-19) the third, from the team's Drive ("Domestic immersion" in #ssb-assets: "Organic Mandya"):
+  // students on an organic farm near Mandya (coconut and areca groves, the farm's cattle). PLACEHOLDER until
+  // Guru confirms: the line is ours, and whether this trip is the one the review called Akshayakalpa's.
+  // The logo is Organic Mandya's own (organicmandya.com).
   {
-    place: 'Fashion brand’s HQ',
-    name: 'Fashion brand',
-    logo: { src: '/logos/myntra.svg', alt: 'Myntra' }, // PLACEHOLDER logo
-    description: 'Sit in with the teams who design, merchandise and market a fashion label.',
-    image: { src: '/live-projects/ajio.jpg', width: 900, height: 1200, position: '50% 45%' },
+    place: 'Organic farm',
+    // not "On an organic farm" (2026-11-19, the user's ask): the Akshayakalpa card's title next to it says as much
+    name: 'From field to shelf',
+    logo: { src: '/logos/organic-mandya.webp', alt: 'Organic Mandya' },
+    description: 'Walk the fields with Organic Mandya’s farmers and see how organic produce gets from Mandya’s farms to city shelves.',
+    image: { src: '/immersions/organic-mandya.webp', width: 1200, height: 600, position: '50% 50%' },
   },
 ];
 
@@ -87,7 +96,7 @@ export const creators: Creator[] = [
     stats: [
       { value: '12.6M', label: 'Views' },
       { value: '90', label: 'Posts' },
-      { value: '13', label: 'Deals' },
+      { value: '10+', label: 'Deals' }, // (2026-11-19, Stephan)
     ],
   },
   {
@@ -97,7 +106,7 @@ export const creators: Creator[] = [
     stats: [
       { value: '7.8M', label: 'Views' },
       { value: '88', label: 'Posts' },
-      { value: '0', label: 'Deals' },
+      { value: '5+', label: 'Deals' }, // (2026-11-19, Stephan; was 0)
     ],
   },
   {
@@ -107,7 +116,7 @@ export const creators: Creator[] = [
     stats: [
       { value: '11.2M', label: 'Views' },
       { value: '75', label: 'Posts' },
-      { value: '0', label: 'Deals' },
+      { value: '5+', label: 'Deals' }, // (2026-11-19, Stephan; was 0)
     ],
   },
 ];

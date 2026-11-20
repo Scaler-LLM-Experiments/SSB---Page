@@ -1,0 +1,31 @@
+/* ── Nested corners (2026-11-11, the user's ask: "the images' corner radius inside the cards doesn't
+   match the cards' outer borders"). A photo set inside a card, a gap in from its edge, takes the card's
+   radius less that gap, so the two curves run parallel: every card here is 8px (--radius-lg) with its
+   photo 10–26px in, which leaves 4px, the floor (a smaller corner reads as a mistake). Photos flush to
+   a card's edge keep the card's own 8px (they share its corners). Each class doubled to win over the
+   sections' own rules; the clip-paths that also round some photos go with them. ── */
+:root { --radius-inset: 4px; }
+
+html body :is(
+  .bc-media.bc-media,
+  .dkk-video.dkk-video,
+  .dk-biz-media.dk-biz-media,
+  .dk-track-photo.dk-track-photo,
+  .tr-photo.tr-photo,
+  .vc-media.vc-media,
+  .sc.sc > .tk-media
+),
+html body .dk-photo-card.dk-photo-card img {
+  border-radius: var(--radius-inset);
+}
+/* the student startups' photo is also cut by a clip-path (built-cards.css: Chrome left its blur square) */
+html body [data-variant='deck'] .bc-media.bc-media { clip-path: inset(0 round var(--radius-inset)); }
+/* anything laid inside those photos with its own rounding (a shade, the founders' still and video) */
+html body :is(.dkk-video.dkk-video, .bc-media.bc-media, .tr-photo.tr-photo, .vc-media.vc-media) :is(img, video, iframe, .bc-media-shade) {
+  border-radius: inherit;
+}
+/* phones: the curriculum's term photo runs flush across the card's top (no gap, inside its 1px edge),
+   so it shares the card's top corners (8px less the edge) and meets the copy square */
+@media (width < 672px) {
+  html body .tr-card .tr-photo.tr-photo.tr-photo { border-radius: calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px) 0 0; }
+}

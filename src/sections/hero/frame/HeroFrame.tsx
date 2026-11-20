@@ -1,5 +1,5 @@
 import { Banner, Button, Heading, Text } from '@kishanscaler/ssx-ui';
-import { ArrowUpRight } from '@phosphor-icons/react/ssr';
+import { ArrowUpRight, CalendarBlank } from '@phosphor-icons/react/ssr';
 
 import type { HeroFrameContent } from '@/content/home';
 import { HeroFrameBarHeight } from './HeroFrameBarHeight';
@@ -41,18 +41,12 @@ export function HeroFrame({ content: c, variant, tone = 'light' }: { content: He
             <Heading as="h1" size="display" id="hf-title" className="hf-title">
               {c.title}
             </Heading>
-            <Text size="lg" className="hf-line">
-              {/* every phrase leads with its dot, and the row is pulled left by a dot's width and
-                  clipped: whichever phrase starts a line has its dot cut off (2026-10-28) */}
-              <span className="hf-line-in">
-                {c.line.map((phrase) => (
-                  <span key={phrase}>
-                    <span className="hf-dot" aria-hidden="true">·</span>
-                    {phrase}
-                  </span>
-                ))}
-              </span>
-            </Text>
+            {/* the three pointers as pills (2026-11-16, the team's review; were one line split by dots) */}
+            <ul className="hf-line hf-pills" aria-label="Highlights">
+              {c.line.map((phrase) => (
+                <li key={phrase}>{phrase}</li>
+              ))}
+            </ul>
             {/* the light theme's buttons: the brand green at full strength (the dark theme mutes it);
                 the secondary is drawn per tone in hero-frame.css */}
             <div className="hf-actions" data-brand="ssb" data-theme="light">
@@ -65,6 +59,14 @@ export function HeroFrame({ content: c, variant, tone = 'light' }: { content: He
               <Button asChild size="lg" variant="secondary" className="hf-secondary">
                 <a href={c.secondaryCta.href}>{c.secondaryCta.label}</a>
               </Button>
+              {/* the intake's deadline under Apply Now (2026-11-11, the user's ask): its own line on
+                  desktop, between the two buttons on a phone (hero-frame.css) */}
+              {c.deadline ? (
+                <p className="hf-intake">
+                  <CalendarBlank weight="regular" aria-hidden="true" />
+                  {c.deadline.message}
+                </p>
+              ) : null}
             </div>
           </div>
 

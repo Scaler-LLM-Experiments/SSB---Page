@@ -172,13 +172,24 @@
 [data-variant='deck'] .bc-blurb { font-size: 14px; line-height: 1.5; color: var(--content-secondary); -webkit-line-clamp: 3; }
 @media (width >= 672px) {
   [data-variant='deck'] .bc-row {
-    grid-auto-columns: calc((100vw - (max(0px, (100vw - var(--size-container-max)) / 2) + var(--space-gutter)) - 2 * var(--space-4)) / 2.5);
+    /* two cards and 70% of the third (2026-11-09, the user's ask; was two and a half) */
+    grid-auto-columns: calc((100vw - (max(0px, (100vw - var(--size-container-max)) / 2) + var(--space-gutter)) - 2 * var(--space-4)) / 2.7);
   }
   /* a little taller than the copy needs (2026-10-28, the user's ask), so the photo shows more */
   [data-variant='deck'] .bc-row > li { aspect-ratio: auto; min-height: 15.5rem; }
 }
+/* tablets and small laptops: two cards and 70% of the third too (2026-11-09, the user's ask; was a
+   fixed 30rem, under two cards), the whole gutter on the left, never narrower than 19rem */
 @media (width >= 672px) and (width < 1056px) {
-  [data-variant='deck'] .bc-row { grid-auto-columns: 30rem; }
+  [data-variant='deck'] .bc-row { grid-auto-columns: max(19rem, calc((100vw - var(--space-gutter) - 2 * var(--space-4)) / 2.7)); }
+}
+/* the narrower cards (2026-11-09): the photo as it was, the line up to five lines so it isn't cut short */
+@media (width >= 672px) {
+  [data-variant='deck'] .bc-blurb { -webkit-line-clamp: 5; }
+}
+/* under 1056px the copy column is narrower still: the whole line, the card growing to fit it */
+@media (672px <= width < 1056px) {
+  [data-variant='deck'] .bc-blurb { display: block; -webkit-line-clamp: unset; overflow: visible; }
 }
 /* phones: the photo a band across the card's top (inset, its figure over the shade), the copy under it */
 @media (width < 672px) {
@@ -212,4 +223,32 @@
   translate: 0 -50%;
   -webkit-mask-image: linear-gradient(to bottom, transparent, #000 28%, #000 72%, transparent);
   mask-image: linear-gradient(to bottom, transparent, #000 28%, #000 72%, transparent);
+}
+
+/* phones, the student startups (data-phone-rows='2'; 2026-11-11, the user's ask): two rows scrolled
+   sideways, each card the instructor cards' size (85% of the width at 3:2, 319 x 213 on a 375px phone,
+   16px apart): the photo at the left (40%, its figure over its foot), the name, founders and the line
+   at the right, the line held to four lines */
+@media (width < 672px) {
+  [data-phone-rows='2'] .bc-row {
+    grid-template-rows: repeat(2, auto);
+    grid-auto-columns: 85vw;
+    gap: var(--space-4);
+  }
+  [data-phone-rows='2'] .bc-row > li { aspect-ratio: 3 / 2; min-height: 0; }
+  [data-phone-rows='2'] .bc-card {
+    display: grid; grid-template-columns: 40% minmax(0, 1fr); align-items: stretch;
+    gap: var(--space-3); height: 100%; padding: var(--space-2);
+  }
+  [data-phone-rows='2'] .bc-media { position: relative; inset: auto; width: 100%; height: 100%; min-height: 0; }
+  [data-phone-rows='2'] .bc-media .bc-met { left: var(--space-2); right: var(--space-2); bottom: var(--space-2); }
+  [data-phone-rows='2'] .bc-met-v { font-size: 20px; }
+  [data-phone-rows='2'] .bc-met-l { margin-top: 2px; font-size: 11px; line-height: 1.3; }
+  [data-phone-rows='2'] .bc-body { grid-column: 2; gap: 6px; margin: 0; padding: var(--space-1) var(--space-1) var(--space-1) 0; overflow: hidden; }
+  [data-phone-rows='2'] .bc-name { font-size: 17px; }
+  [data-phone-rows='2'] .bc-by { font-size: 12px; }
+  [data-phone-rows='2'] .bc-blurb {
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden;
+    font-size: 13px; line-height: 1.45;
+  }
 }

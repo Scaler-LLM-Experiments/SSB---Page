@@ -25,11 +25,13 @@ import {
 
 import { ScrollDots } from '@/sections/shared/ScrollDots';
 
-import type { Journey } from '../data';
+import type { DeckTerm, Journey } from '../data';
 import { useOpenYear } from './shared';
 import { StageSheet, TermCounts } from './stage-sheet';
 import { MONTHS, PHOTO } from './stage';
 import './row.css';
+// the term chips on phones are the global immersion's day chips (.dkg-day, its phone rules)
+import '@/sections/deck/deck-global.css';
 
 /**
  * The terms as one plain row of equal cards (2026-10-27, the user's ask: "simple scroll, not small and
@@ -45,9 +47,53 @@ export function RowJourney({ j, width, portal, deck = false }: { j: Journey; wid
   const rowRef = React.useRef<HTMLUListElement>(null);
   const { open, setOpen, close } = useOpenYear(null);
 
+  // phones (2026-11-11, the user's ask): the AI journey's term slider over these cards too (its styles,
+  // curriculum-page.css .sj-ai-tabs: phones only): the term in view filled in, a tap brings its card in
+  const [at, setAt] = React.useState(0);
+  const tabsRef = React.useRef<HTMLDivElement>(null);
+  const sync = React.useCallback(() => {
+    const el = rowRef.current;
+    if (!el) return;
+    const cards = Array.from(el.children) as HTMLElement[];
+    if (!cards.length) return;
+    const left = el.getBoundingClientRect().left + parseFloat(getComputedStyle(el).scrollPaddingLeft || '0');
+    let best = 0;
+    cards.forEach((c, i) => {
+      if (Math.abs(c.getBoundingClientRect().left - left) < Math.abs(cards[best].getBoundingClientRect().left - left)) best = i;
+    });
+    if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 4) best = cards.length - 1;
+    setAt(best);
+  }, []);
+  const go = (i: number) => {
+    const el = rowRef.current;
+    const card = el?.children[i] as HTMLElement | undefined;
+    if (!el || !card) return;
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const pad = parseFloat(getComputedStyle(el).scrollPaddingLeft || '0');
+    const left = el.scrollLeft + card.getBoundingClientRect().left - el.getBoundingClientRect().left - pad;
+    el.scrollTo({ left, behavior: reduce ? 'auto' : 'smooth' });
+  };
+  React.useEffect(() => {
+    const row = tabsRef.current;
+    const b = row?.children[at] as HTMLElement | undefined;
+    if (row && b && row.scrollWidth > row.clientWidth) row.scrollTo({ left: b.offsetLeft - (row.clientWidth - b.offsetWidth) / 2, behavior: 'smooth' });
+  }, [at]);
+
   return (
     <div className="tr" data-deck={deck || undefined}>
-      <ul ref={rowRef} className="tr-row" aria-label="Programme terms">
+      {deck ? (
+        <div ref={tabsRef} className="sj-ai-tabs tr-tabs" role="tablist" aria-label="Terms">
+          {years.map((y, i) => (
+            <button key={y.year} type="button" role="tab" aria-selected={i === at} className="sj-ai-tab dkg-day" onClick={() => go(i)}>
+              <span className="dkg-day-n">Term</span>
+              <span className="dkg-day-text">
+                <b>{String(y.year).padStart(2, '0')}</b>
+              </span>
+            </button>
+          ))}
+        </div>
+      ) : null}
+      <ul ref={rowRef} className="tr-row" aria-label="Programme terms" onScroll={sync}>
         {years.map((y, i) => {
           const flagship = y.projects.find((p) => p.flagship);
           const photo = PHOTO[y.year];
@@ -64,6 +110,10 @@ export function RowJourney({ j, width, portal, deck = false }: { j: Journey; wid
                   <p className="tr-k">Term {String(y.year).padStart(2, '0')}</p>
                   <h3 className="tr-title">{y.name}</h3>
                   <p className="tr-sum">{deck && y.deck ? y.deck.line : (y.summary ?? y.description)}</p>
+                  {/* the term's first three courses and challenges (2026-11-16, the team's review: "the inside
+                      content isn't visible at first glance"; the user's ask: the card as it was, three of
+                      each, the rest behind "See the full term"), then the masterclasses as before */}
+                  {deck && y.deck ? <InOut d={y.deck} /> : null}
                   {deck && y.deck ? <Workshops items={y.deck.workshops} /> : null}
                   {flagship && !deck ? (
                     <div className="tr-flag">
@@ -96,6 +146,42 @@ export function RowJourney({ j, width, portal, deck = false }: { j: Journey; wid
         onClose={close}
         deck={deck}
       />
+    </div>
+  );
+}
+
+/** How many of each list the card shows; the rest are in the term sheet ("See the full term"). */
+const AT_A_GLANCE = 3;
+
+/**
+ * The term at a glance (2026-11-16): its first three courses ("In class") and challenges ("Out of
+ * class") side by side under a hairline, each a plain list under a green label, the way the term sheet
+ * heads them; the sheet ("See the full term") keeps every course and challenge, the outcome and more.
+ */
+function InOut({ d }: { d: DeckTerm }) {
+  const courses = d.inClass.flatMap((g) => g.items).slice(0, AT_A_GLANCE);
+  const outs = d.outClass.slice(0, AT_A_GLANCE);
+  return (
+    <div className="tr-io">
+      <section className="tr-io-col" aria-label="In class">
+        <p className="tr-io-k">In class</p>
+        <ul>
+          {courses.map((c) => (
+            <li key={c}>{c}</li>
+          ))}
+        </ul>
+      </section>
+      <section className="tr-io-col" aria-label="Out of class">
+        <p className="tr-io-k">Out of class</p>
+        <ul>
+          {outs.map((o) => (
+            <li key={o.title} data-or={o.or || undefined}>
+              {o.or ? <span className="tr-io-or">or </span> : null}
+              {o.title}
+            </li>
+          ))}
+        </ul>
+      </section>
     </div>
   );
 }

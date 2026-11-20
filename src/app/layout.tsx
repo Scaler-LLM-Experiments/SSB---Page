@@ -4,6 +4,12 @@ import './globals.css';
 import './type-standard.css';
 import './card-standard.css';
 import './color-standard.css';
+// one type scale for the page, loaded last (2026-11-11)
+import './typography.css';
+// photos inset in cards take the card's radius less the gap (2026-11-11)
+import './corners.css';
+// one rhythm of spacing and type on phones, after everything else (2026-11-16)
+import './mweb.css';
 
 const sans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -37,7 +43,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
-    <html lang="en" data-brand="ssb" className={`${sans.variable} ${sansItalic.variable} ${mono.variable}`}>
+    <html lang="en" data-brand="ssb" suppressHydrationWarning className={`${sans.variable} ${sansItalic.variable} ${mono.variable}`}>
       <body>{children}</body>
     </html>
   );

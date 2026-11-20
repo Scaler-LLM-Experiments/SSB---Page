@@ -1,0 +1,583 @@
+/* The admission page (2026-11-11): its first fold (AdmissionTop), its steps (AdmissionTimeline), its
+   video band (AdmissionVideo) and financing (AdmissionFinancing). Built on the home page's vocabulary:
+   the closing band's photo-and-blur (deck-finale.css), the rail's items
+   (curriculum-rail.css, `cr-item`), the admissions section's card (admissions-v4.css, `ad4-card`), the
+   video card's thumbnail (deck.css, `dk-biz-media`), the AI product cards' panel (deck.css,
+   `dk-product-art`), the career prep's cards (deck-career.css, `dcp-stat`), the footer's green and buttons
+   (deck-footer.css).
+   Tokens only. */
+
+/* ── The first fold ───────────────────────────────────────────────────────────────────────────────── */
+main [data-slot='section'][data-density='roomy'].adm-top { padding: var(--space-4) var(--space-4) 0; }
+@media (width < 672px) {
+  main [data-slot='section'][data-density='roomy'].adm-top { padding: var(--space-3) var(--space-3) 0; }
+}
+/* the panel: the footer's forest green, the campus photo out to its right edge, melting into the green
+   under the copy (a blurred copy of the photo, masked, then a green scrim) */
+.adm-panel {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding-block: var(--space-16) var(--space-10);
+  border-radius: var(--radius-lg);
+  background: var(--pg-green-24);
+  color: var(--pg-white);
+}
+.adm-panel-bg {
+  position: absolute;
+  inset: 0 0 0 auto;
+  z-index: -3;
+  width: 68%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 92%; /* (2026-11-11, the user's ask) the arch a little higher, clear of the facts */
+}
+.adm-panel-blur {
+  z-index: -2;
+  filter: blur(28px) saturate(1.05);
+  transform: scale(1.12);
+  mask-image: linear-gradient(to right, var(--pg-black) 0%, var(--pg-black) 12%, var(--pg-black-a60) 26%, transparent 42%);
+  -webkit-mask-image: linear-gradient(to right, var(--pg-black) 0%, var(--pg-black) 12%, var(--pg-black-a60) 26%, transparent 42%);
+}
+.adm-panel-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(
+      to right,
+      var(--pg-green-24) 0%,
+      var(--pg-green-24) 32%,
+      color-mix(in srgb, var(--pg-green-24) 82%, transparent) 42%,
+      color-mix(in srgb, var(--pg-green-24) 30%, transparent) 56%,
+      transparent 70%
+    ),
+    /* the facts' strip held on the green as the photo runs under it */
+    linear-gradient(to top, color-mix(in srgb, var(--pg-green-24) 70%, transparent) 0%, transparent 38%);
+}
+.adm-panel-copy { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4); max-width: 34rem; }
+
+/* the chip: light glass on the green, its dot the admissions section's, pulsing */
+.adm-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-1-5, 6px) var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--pg-white-a10);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: var(--pg-white);
+  font-size: var(--type-label-size);
+  line-height: 1.3;
+  font-weight: var(--font-weight-medium);
+}
+.adm-chip .ad4-dot { background: var(--pg-green-61); }
+/* the title at the home page's first-fold size and weight (40px, semibold) */
+.adm-title {
+  margin: 0;
+  font-size: clamp(2rem, 3.4vw, 2.5rem) !important;
+  line-height: 1.1 !important;
+  font-weight: var(--font-weight-semibold) !important;
+  letter-spacing: -0.03em;
+  color: var(--pg-white);
+}
+.adm-sub { margin: 0; color: var(--pg-white-a88); text-wrap: balance; }
+.adm-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-2); }
+/* the footer's buttons: white with the deep brand green, and an outline */
+.adm-apply,
+.adm-apply:is(:hover, :focus-visible) {
+  border-color: var(--pg-white) !important;
+  background: var(--pg-white) !important;
+  color: var(--color-ssb-light-11) !important;
+}
+.adm-apply:hover { background: var(--pg-white-a90) !important; }
+.adm-panel .adm-brochure,
+.adm-panel .adm-brochure:is(:hover, :focus-visible) {
+  border: 1px solid var(--pg-white-a85);
+  background: transparent;
+  color: var(--pg-white);
+  box-shadow: none;
+}
+.adm-panel .adm-brochure:hover { background: var(--pg-white-a10); }
+
+/* the facts (2026-11-11, the user's asks: highlighted; then one box, not four): one white box of the
+   page's (8px), four cells split by rules, each its icon on a brand tint, its label in ink, the figure
+   large in ink, its note in grey under it. The countdown is the page's top strip. */
+.adm-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: var(--space-12) 0 0;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--surface-default);
+  color: var(--content-primary);
+  box-shadow: 0 16px 32px -24px var(--pg-black-a60);
+}
+@media (width >= 1056px) { .adm-facts { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.adm-fact { display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-6); }
+/* rules: between the four in a row; on a 2 × 2, down the middle and across */
+@media (width >= 1056px) { .adm-fact + .adm-fact { border-left: 1px solid var(--border-decorative); } }
+@media (width < 1056px) {
+  .adm-fact:nth-child(even) { border-left: 1px solid var(--border-decorative); }
+  .adm-fact:nth-child(n + 3) { border-top: 1px solid var(--border-decorative); }
+}
+.adm-fact dt {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--type-body-size);
+  line-height: 1.3;
+  font-weight: var(--font-weight-medium);
+  color: var(--content-primary);
+}
+.adm-fact-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-md);
+  background: var(--surface-brand-subtle);
+  color: var(--color-ssb-light-9);
+}
+.adm-fact-icon svg { width: 1.25rem; height: 1.25rem; }
+.adm-fact dd { display: flex; flex-direction: column; gap: var(--space-1); margin: 0; }
+.adm-fact-value {
+  font-size: var(--type-h1-size);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+/* the note under the figure: the label size, regular, grey (it was 12px: too small to read) */
+.adm-fact-note { font-size: var(--type-label-size); line-height: 1.45; color: var(--content-secondary); }
+
+@media (width < 1056px) {
+  /* the photo over the copy, then the copy on the green */
+  .adm-panel { padding-top: 0; }
+  .adm-panel-bg { position: relative; inset: auto; display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; z-index: -3; }
+  .adm-panel-blur, .adm-panel-scrim { display: none; }
+  .adm-panel-copy { margin-top: var(--space-8); }
+}
+@media (width < 672px) {
+  /* phones: no photo, so the dates and fees stay in the first screen */
+  .adm-panel { padding-block: var(--space-8) var(--space-6); }
+  .adm-panel-bg { display: none; }
+  .adm-panel-copy { margin-top: 0; }
+  .adm-facts { margin-top: var(--space-8); }
+  .adm-fact { gap: var(--space-3); padding: var(--space-4); }
+  .adm-fact dt { flex-direction: column; align-items: flex-start; gap: var(--space-2); font-size: var(--type-label-size); }
+  .adm-fact-value { font-size: 1.25rem; }
+  .adm-actions { width: 100%; }
+  .adm-actions > * { flex: 1 1 auto; justify-content: center; }
+}
+
+/* ── The steps: the header and the step list held at the left, one timeline at the right ────────── */
+.adm-tl-grid { display: grid; gap: var(--space-10); }
+.adm-index { display: none; margin: 0; padding: 0; list-style: none; }
+@media (width >= 1056px) {
+  .adm-tl-grid { grid-template-columns: minmax(0, 3.2fr) minmax(0, 7fr); gap: var(--space-16); align-items: start; }
+  .adm-tl-aside {
+    position: sticky;
+    top: calc(var(--hf-bar, 0px) + var(--sn-h, 69px) + var(--space-10));
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+  .adm-index { display: flex; flex-direction: column; gap: var(--space-1); }
+}
+
+.adm-tl { --adm-m: 2.5rem; position: relative; }
+.adm-tl-track {
+  position: absolute;
+  top: calc(var(--adm-m) / 2);
+  bottom: 0;
+  left: calc(var(--adm-m) / 2 - 1px);
+  width: 2px;
+  overflow: hidden;
+  border-radius: 1px;
+  background: var(--border-decorative);
+}
+.adm-tl-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--surface-brand-solid);
+  transform: scaleY(0);
+  transform-origin: top;
+  will-change: transform;
+}
+.adm-tl-list { display: flex; flex-direction: column; gap: var(--space-16); margin: 0; padding: 0; list-style: none; }
+.adm-tl-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--adm-m) minmax(0, 1fr);
+  gap: var(--space-6);
+  scroll-margin-top: calc(var(--hf-bar, 0px) + var(--sn-h, 69px) + var(--space-8));
+}
+.adm-tl-marker {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: var(--adm-m);
+  height: var(--adm-m);
+  border: 1px solid var(--border-decorative);
+  border-radius: 50%;
+  background: var(--surface-page);
+  color: var(--content-secondary);
+  font-size: var(--type-label-size);
+  font-weight: var(--font-weight-medium);
+  font-variant-numeric: tabular-nums;
+  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+}
+.adm-tl-step:is([data-state='done'], [data-state='current']) .adm-tl-marker {
+  border-color: transparent;
+  background: var(--surface-brand-solid);
+  color: var(--content-on-brand-solid);
+}
+.adm-tl-body { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; padding-top: var(--space-1-5, 6px); }
+.adm-tl-title {
+  margin: 0;
+  font-size: var(--type-h1-size);
+  line-height: 1.2;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: -0.02em;
+}
+.adm-tl-accent { color: var(--color-ssb-light-9); }
+.adm-tl-lede { margin: 0 0 var(--space-4); font-size: var(--type-body-size); line-height: 1.55; color: var(--content-secondary); }
+@media (width < 672px) {
+  .adm-tl { --adm-m: 2rem; }
+  /* a step's title a step under the section's (24px on a phone), over the groups' (18px) */
+  .adm-tl-title { font-size: var(--type-h2-size); }
+  .adm-tl-step { gap: var(--space-4); }
+  .adm-tl-list { gap: var(--space-12); }
+  .adm-tl-body { padding-top: 2px; }
+}
+@media (prefers-reduced-motion: reduce) { .adm-tl-marker { transition: none; } }
+
+/* each step one card; step 1's groups side by side from 1312px, each under its icon, a rule between
+   them (2026-11-11, the user's ask: icons and dividers for some imagery); stacked below, a rule above
+   each after the first */
+.adm-card { display: flex; flex-direction: column; gap: var(--space-5); }
+.adm-card-body { display: flex; flex-direction: column; gap: var(--space-5); min-width: 0; }
+.adm-groups { display: grid; gap: var(--space-6); }
+.adm-groups:not([data-count='1']) > .adm-group + .adm-group { padding-top: var(--space-6); border-top: 1px solid var(--border-decorative); }
+@media (width >= 1312px) {
+  .adm-groups:not([data-count='1']) { grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 0; }
+  .adm-groups[data-count='2'] { --n: 2; }
+  .adm-groups:not([data-count='1']) > .adm-group { padding-inline: var(--space-6); }
+  .adm-groups:not([data-count='1']) > .adm-group:first-child { padding-left: 0; }
+  .adm-groups:not([data-count='1']) > .adm-group:last-child { padding-right: 0; }
+  .adm-groups:not([data-count='1']) > .adm-group + .adm-group { padding-top: 0; border-top: 0; border-left: 1px solid var(--border-decorative); }
+}
+.adm-group { display: flex; flex-direction: column; gap: var(--space-3); min-width: 0; }
+.adm-group-icon {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-bottom: var(--space-1);
+  border-radius: var(--radius-lg);
+  background: var(--surface-brand-subtle);
+  color: var(--color-ssb-light-9);
+}
+.adm-group-icon svg { width: 1.5rem; height: 1.5rem; }
+.adm-card-title {
+  margin: 0;
+  font-size: var(--type-h3-size);
+  line-height: 1.3;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.015em;
+}
+/* the points: the admissions list's green squares, no hairlines */
+.adm-points { display: grid; gap: var(--space-2-5, 10px); margin: 0; padding: 0; list-style: none; }
+.adm-points li {
+  position: relative;
+  padding-left: var(--space-5);
+  font-size: var(--type-label-size);
+  line-height: 1.55;
+  color: var(--content-secondary);
+  text-wrap: pretty;
+}
+.adm-points li::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 0.6em;
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+  background: var(--surface-brand-solid);
+}
+.adm-card .adm-note {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--surface-sunken);
+  font-size: var(--type-label-size);
+  line-height: 1.5;
+  color: var(--content-secondary);
+}
+/* the action with its deadline beside it */
+.adm-cta-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-4); }
+.adm-cta-aside { margin: 0; font-size: var(--type-label-size); line-height: 1.4; color: var(--content-secondary); }
+.adm-cta-aside b { color: var(--content-primary); font-weight: var(--font-weight-semibold); }
+
+/* ── The video band: the first fold's green, the copy at the left, the thumbnail large at the right ── */
+.adm-video-band {
+  display: grid;
+  gap: var(--space-8);
+  align-items: center;
+  padding: var(--space-12);
+  border-radius: var(--radius-lg);
+  background: var(--pg-green-24);
+  color: var(--pg-white);
+}
+@media (width >= 1056px) { .adm-video-band { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--space-12); } }
+.adm-video-copy { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4); }
+.adm-video-k { color: var(--pg-green-61) !important; }
+.adm-video-title { margin: 0; color: var(--pg-white); text-wrap: balance; }
+.adm-video-sub { margin: 0; max-width: 28rem; color: var(--pg-white-a88); }
+.adm-video-copy .adm-apply { margin-top: var(--space-2); }
+/* the thumbnail in a light frame, as the live page sets it */
+.adm-video-band .adm-video-media {
+  margin: 0;
+  border: 4px solid var(--pg-white-a90);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 48px -24px var(--pg-black-a60);
+}
+@media (width < 1056px) {
+  .adm-video-band { padding: var(--space-6); }
+  .adm-video-media { order: -1; }
+}
+@media (width < 672px) {
+  .adm-video-band { padding: var(--space-4) var(--space-4) var(--space-6); gap: var(--space-6); }
+  .adm-video-copy .adm-apply { width: 100%; justify-content: center; }
+}
+
+/* ── The callback band (DeckCloseSection, id "callback"): the first fold's four facts again, on one row
+   from 672px (the home page's band carries three) ───────────────────────────────────────────────── */
+@media (width >= 672px) {
+  #callback .dkc-facts { flex-wrap: nowrap; column-gap: var(--space-8); }
+  #callback .dkc-facts > div { flex: none; }
+  /* no chip over the title (the user's ask), so the card hugs its copy and the title sits higher */
+  #callback .dkc-card { min-height: 0; }
+}
+/* the title at the first fold's size (40px, was the home band's 52), with no gap left for the chip */
+/* (!important: deck-finale.css sets the band's title size with it) */
+#callback .dkc-title { margin-top: 0 !important; font-size: clamp(2rem, 3.4vw, 2.5rem) !important; line-height: 1.1 !important; }
+
+/* ── Steps 2 to 4: an illustration beside the card's copy, on the home page's AI product panel (deck.css
+   `dk-product-art`): a small white card of the school's, slightly turned (the user's pick, 2026-11-11:
+   the ID card's direction for all three). Over the copy on a phone. ────────────────────────────────── */
+@media (width >= 672px) {
+  .adm-card[data-art] { flex-direction: row; align-items: stretch; gap: var(--space-6); }
+  .adm-card[data-art] > .adm-art { flex: none; width: 38%; }
+  .adm-card[data-art] > .adm-card-body { flex: 1; justify-content: center; }
+}
+.dk-product-art.adm-art { margin: 0; min-height: 15rem; aspect-ratio: auto; }
+/* the home page's glass-tile rule for the panel's icon must not reach the icons inside the cards */
+.adm-art .adm-obj svg,
+.adm-art .adm-id svg {
+  box-sizing: border-box;
+  width: auto;
+  height: auto;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  color: inherit;
+}
+
+/* the card: white, 8px, the deep green head with the logo and what the card is */
+.adm-obj {
+  display: flex;
+  flex-direction: column;
+  width: 13rem;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--pg-white);
+  color: var(--content-primary);
+  text-align: left;
+  box-shadow: 0 22px 40px -18px var(--pg-black-a60);
+}
+.adm-app { transform: rotate(-4deg); }
+.adm-invite { width: 14rem; transform: rotate(4deg); }
+.adm-obj-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--pg-green-24);
+  color: var(--pg-white);
+}
+.adm-art .adm-obj-head svg { height: 1.25rem; }
+.adm-obj-tag { font-size: var(--type-caption-size); line-height: 1.2; font-weight: var(--font-weight-semibold); letter-spacing: 0.02em; color: var(--pg-white-a88); }
+.adm-obj-body { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3); }
+.adm-obj-tile { display: grid; flex: none; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: var(--radius-md); background: var(--surface-brand-subtle); color: var(--color-ssb-light-9); }
+.adm-art .adm-obj-tile svg { width: 1.5rem; height: 1.5rem; }
+.adm-obj-lines { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.adm-obj-lines b { font-size: var(--type-label-size); line-height: 1.25; font-weight: var(--font-weight-semibold); }
+.adm-obj-lines span { font-size: var(--type-caption-size); line-height: 1.3; color: var(--content-secondary); white-space: nowrap; }
+.adm-obj-btn {
+  align-self: flex-start;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--color-ssb-light-9);
+  color: var(--pg-white);
+  font-size: var(--type-caption-size);
+  line-height: 1.5;
+  font-weight: var(--font-weight-semibold);
+}
+
+/* step 2: the application, its first two parts done, the video essay recording */
+.adm-obj-rows { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-3) var(--space-3) var(--space-2); }
+.adm-obj-row { display: flex; align-items: center; gap: var(--space-2); font-size: var(--type-caption-size); line-height: 1.3; font-weight: var(--font-weight-medium); }
+.adm-art .adm-obj-row svg { width: 1rem; height: 1rem; color: var(--color-ssb-light-9); }
+.adm-obj-row[data-done] { color: var(--content-secondary); }
+.adm-rec {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  padding: 1px var(--space-1-5, 6px);
+  border-radius: var(--radius-md);
+  background: var(--color-ssb-light-2);
+  color: var(--color-ssb-light-11);
+  font-size: var(--type-caption-size);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.04em;
+}
+.adm-rec::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--color-ssb-light-9); }
+.adm-app .adm-obj-btn { margin: var(--space-1) var(--space-3) var(--space-3); }
+
+/* step 3: the interview invite, the panel's faces and Accept */
+.adm-obj-foot { display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-3) var(--space-3); }
+.adm-obj-faces { display: flex; }
+.adm-obj-faces > span {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin-left: -6px;
+  border: 2px solid var(--pg-white);
+  border-radius: 50%;
+  background: var(--color-ssb-light-3);
+  color: var(--color-ssb-light-10);
+}
+.adm-obj-faces > span:first-child { margin-left: 0; }
+.adm-art .adm-obj-faces svg { width: 0.875rem; height: 0.875rem; }
+
+/* step 4: the SSB student ID on its lanyard, hanging from the panel's top edge */
+.adm-art[data-kind='idcard'] { place-items: start center; }
+.adm-art .adm-id { display: flex; flex-direction: column; align-items: center; margin-top: -0.25rem; transform: rotate(-5deg); }
+.adm-id-strap {
+  width: 1.125rem;
+  height: 3.25rem;
+  border-radius: 0 0 4px 4px;
+  background: linear-gradient(180deg, var(--color-ssb-light-9), var(--pg-green-47));
+  box-shadow: inset 0 0 0 1px var(--pg-white-a12);
+}
+.adm-id-card { margin-top: -4px; }
+/* a barcode along its foot */
+.adm-id-code {
+  height: 0.875rem;
+  margin: 0 var(--space-3) var(--space-3);
+  background: repeating-linear-gradient(90deg, var(--content-primary) 0 2px, transparent 2px 4px, var(--content-primary) 4px 5px, transparent 5px 8px);
+  opacity: 0.75;
+}
+@media (width < 672px) {
+  .dk-product-art.adm-art { aspect-ratio: 4 / 3; min-height: 0; }
+  .adm-obj { scale: 0.88; }
+  .adm-art .adm-id { scale: 0.88; margin-top: -1rem; }
+}
+
+/* ── Financing (2026-11-11, the user's asks: the banks centre stage; text left, logos right): the header
+   and the pointers at the left, the four partners' logos large, two by two on the career prep's cards
+   (deck-career.css `dcp-stat`), at the right ───────────────────────────────────────────────────────── */
+.adm-fin-grid { display: grid; gap: var(--space-8); }
+@media (width >= 1056px) { .adm-fin-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); align-items: center; gap: var(--space-16); } }
+.adm-fin-copy { display: flex; flex-direction: column; gap: var(--space-6); }
+.adm-fin-points li { font-size: var(--type-body-size); color: var(--content-primary); }
+.adm-fin-logos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); margin: 0; padding: 0; list-style: none; }
+.adm-fin-logos .dcp-stat { align-items: center; justify-content: center; min-height: 10rem; padding: var(--space-6); }
+.adm-fin-logos img { display: block; width: calc(var(--w) * 1px); height: calc(var(--h) * 1px); max-width: 100%; object-fit: contain; }
+@media (width < 672px) {
+  .adm-fin-logos { gap: var(--space-3); }
+  .adm-fin-logos .dcp-stat { min-height: 6rem; padding: var(--space-4); }
+  .adm-fin-logos img { width: calc(var(--w) * 0.62px); height: calc(var(--h) * 0.62px); }
+}
+
+/* ── The scholarships here: the section has its own headline now, so the photo card's title is a step
+   smaller and the copy sits low, in the card's blurred foot, clear of the photo (the user's ask) ──── */
+main[data-page='v7'] .ad4[data-parts='scholarships'] .ad4-sch-title { font-size: var(--type-h1-size); line-height: 1.15; }
+main[data-page='v7'] .ad4[data-parts='scholarships'] .ad4-sch-head p { max-width: 26rem; }
+@media (width >= 672px) {
+  main[data-page='v7'] .ad4[data-parts='scholarships'] .ad4-sch-head { padding: var(--space-8); }
+}
+
+/* (2026-11-11, the user's ask) two groups in the band: the title, line and buttons held close (12px,
+   then 24px); the rule and the facts close too (16px); 64px between the two groups (40px on a phone).
+   !important: deck-finale.css sets these with it. */
+#callback .dkc-line { margin-top: var(--space-3) !important; }
+#callback .dkc-actions { margin-top: var(--space-6) !important; }
+#callback .dkc-facts { margin-top: var(--space-16) !important; padding-top: var(--space-4) !important; }
+@media (width < 672px) {
+  #callback .dkc-actions { margin-top: var(--space-5) !important; }
+  #callback .dkc-facts { margin-top: var(--space-10) !important; }
+}
+
+/* ── Important dates and fees (2026-11-13, the user's asks: the main page's table, light only) ─────────
+   The header at the left and the main page's "Programme fee" card at the right (admissions-v4.css, its
+   light colours), as the main page's admissions section lays them out; the open intake's "Open now"
+   pill in the brand green; under the card a small line with the brochure as a tertiary link. */
+.adm-fees-grid { display: grid; gap: var(--space-8); }
+@media (width >= 1056px) { .adm-fees-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-12); align-items: start; } }
+.adm-fees-col { display: flex; flex-direction: column; gap: var(--space-3); min-width: 0; }
+.adm-fees-pill {
+  display: inline-block;
+  margin-left: var(--space-2);
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--surface-brand-solid);
+  color: var(--content-on-brand, #fff);
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  vertical-align: 2px;
+}
+.adm-fees-more {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--space-1);
+  margin: 0;
+  font-size: var(--type-body-sm-size);
+  line-height: 1.5;
+  color: var(--content-secondary);
+}
+.adm-fees-link { padding-inline: var(--space-1) !important; }
+/* the open intake filled (2026-11-13, the user's ask): the row on the solid brand green, its text white,
+   the "Open now" pill white with green text */
+.adm-fees-card .ad4-tr[data-now] {
+  background: var(--surface-brand-solid);
+  box-shadow: none;
+  color: var(--pg-white);
+}
+.adm-fees-card .ad4-tr[data-now] .ad4-fee,
+.adm-fees-card .ad4-tr[data-now] time { color: var(--pg-white); }
+.adm-fees-card .ad4-tr[data-now] .adm-fees-pill { background: var(--pg-white); color: var(--surface-brand-solid); }
+/* the step number centred on its title's first line at every size (2026-11-13, the user's ask: the
+   numbers sat a little above the titles on desktop, below them on a phone): no fixed padding over the
+   body; the title moved down by half of (the marker's height less its own line, 1.2em) */
+.adm-tl-body,
+.adm-tl-step .adm-tl-body { padding-top: 0; }
+.adm-tl-title { margin-top: calc((var(--adm-m) - 1.2em) / 2); }

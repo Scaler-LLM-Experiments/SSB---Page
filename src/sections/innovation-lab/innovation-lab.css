@@ -215,6 +215,14 @@ main section.lab + section [data-enter='header'] {
   .lab[data-lab-live] .lab-tile[data-area] {
     will-change: transform;
   }
+  /* campus life's other tabs (2026-11-19): their middle photo sits in its tile like the rest, not lifted
+     over the stage (it was laid out stage-wide and clipped to the tile: a 2-3x zoom, its caption cut) */
+  .lab[data-lab-live] .lab-mosaic[data-gallery] .lab-hero {
+    position: relative;
+    inset: auto;
+    z-index: auto;
+    border-radius: var(--radius-lg);
+  }
 }
 
 /* phones and tablets, shorter (2026-10-23, the team's ask: "make the section smaller, the bottom four
