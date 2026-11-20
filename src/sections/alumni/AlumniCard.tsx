@@ -76,7 +76,12 @@ export function AlumniCard({ alumnus: a, priority = false }: { alumnus: Alumnus;
         <div className="alumni-card__path" data-part="description">
           <div className="alumni-card__step">
             <span className="alumni-card__tile" data-fill={a.company.fill || undefined}>
-              <img src={a.company.src} alt="" loading="lazy" />
+              {/* no mark yet (2026-11-20): the company's first letter on the white tile */}
+              {a.company.src ? (
+                <img src={a.company.src} alt="" loading="lazy" />
+              ) : (
+                <span className="alumni-card__mono" aria-hidden="true">{a.company.name.charAt(0)}</span>
+              )}
             </span>
             <span>
               <span className="alumni-card__label">Post SSB</span>

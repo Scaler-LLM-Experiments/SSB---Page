@@ -1,5 +1,5 @@
 import { heroFrame, type HeroFrameContent } from '@/content/home';
-import { alumni } from '@/content/alumni';
+import { alumni, cohort2025 } from '@/content/alumni';
 import { faqs } from '@/content/admissions';
 import type { Faq } from '@/content/admissions';
 import type { Venture } from '@/content/community';
@@ -70,7 +70,12 @@ export const deckAlumni = {
   eyebrow: 'Alumni',
   title: 'A strong alumni base.|Already at Avendus, Razorpay, The Whole Truth and more.',
   sub: 'From software, sales and finance into strategy, growth and investing roles.',
-  people: alumniFirst.map((name) => alumniBy.get(name)!),
+  // then the 2025 cohort (2026-11-20, the team's ask: 30+ cards), those with a portrait first
+  people: [
+    ...alumniFirst.map((name) => alumniBy.get(name)!),
+    ...cohort2025.filter((a) => a.photo),
+    ...cohort2025.filter((a) => !a.photo),
+  ],
   peersTitle: 'Your peers come from',
 };
 
