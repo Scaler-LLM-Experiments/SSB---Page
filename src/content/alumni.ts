@@ -96,10 +96,10 @@ export const alumni: Alumnus[] = [
 // The 2025 cohort (2026-11-20, the user's ask: "at least 30 cards", Stephan's review): every SSB 2025
 // student with an offer in the placement portal (scaler-school-of-business.web.app, Placement & Offers,
 // batch SSB 2025, read that day). One card each: the full-time offer if there is one, else the latest
-// internship; four offers still "awaiting details" there (Mahnoor, Rishi, Dilip, Lakshay) are included.
+// internship; four offers still "awaiting details" there (Mahnoor, Rishi, Dilip, Lakshay) are included. Devansh Parashar left out (2026-11-20, the user's call; no portrait).
 // Pre SSB: the latest full-time role in their placement profile, "Fresher" with none. Names without
 // middle names. Photos: the portal's studio portraits, cut out and set on the empty-room plate
-// (public/internship/plate.webp), as the cut-out cards above. Devansh Parashar has no portrait yet.
+// (public/internship/plate.webp), as the cut-out cards above.
 // Marks: the companies' own icons (Play Store, their sites, LinkedIn); AiStudio and First Batch have
 // none yet, so their tiles show the first letter.
 const marks2025 = {
@@ -124,7 +124,6 @@ const marks2025 = {
   dataflow: { name: 'DataFlow', src: '/logos/marks/dataflow.svg' },
   tricolite: { name: 'Tricolite', src: '/logos/marks/tricolite.png' },
   polygnan: { name: 'Polygnan', src: '/logos/marks/polygnan.png' },
-  bounceInfinity: { name: 'Bounce Infinity', src: '/logos/marks/bounce-infinity.png' },
 } satisfies Record<string, CompanyMark>;
 
 export const cohort2025: Alumnus[] = [
@@ -162,7 +161,6 @@ export const cohort2025: Alumnus[] = [
   { name: 'Ashutosh Bhavale', photo: 'ashutosh-bhavale', before: 'Manager, Omkar Motors', role: 'Director\u2019s Office Intern', company: marks2025.scaler },
   { name: 'Vismay Pujari', photo: 'vismay-pujari', before: 'Graduate Engineer Trainee', role: 'Communications Intern', company: marks2025.scaler },
   { name: 'Adwitiya Yadav', photo: 'adwitiya-yadav', before: 'Diamond Dealer & Grader', role: 'Social Media Intern', company: marks2025.scaler },
-  { name: 'Devansh Parashar', before: 'Program Manager', role: 'Strategy & Ops Intern', company: marks2025.bounceInfinity },
 ];
 
 // The internship section's learner cards, moved here (2026-10-07, the team's ask: that carousel keeps
