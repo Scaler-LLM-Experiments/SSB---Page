@@ -248,6 +248,9 @@ Design system and Tailwind traps (these fail silently):
 - Package docs: `node_modules/@kishanscaler/ssx-ui/README.md` (its Status section is out of date);
   the `.d.ts` files are the reliable source for props.
 
+The Nov 2026 component changes and the rules they set (black play buttons, one profile-card size,
+crops checked in both shapes, vertical video in `ReelBox`): `docs/ui-component-changes.md`.
+
 ## Motion
 
 - GSAP through `@kishanscaler/ssx-ui/motion` (`useMotion`, `motionTokens`, `ease()`), ScrollTrigger
