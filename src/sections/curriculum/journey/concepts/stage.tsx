@@ -13,14 +13,16 @@ import './stage.css';
 
 /** The terms' photos, and their focal points. (2026-11-19, the user's picks) the team's own: 1 a class in
  *  session and 2 a team working a problem at the table (the old campus activities shoot), 3 a pitch on SSB's
- *  stage, 4 a student making his point in class (the same shoot), 5 Anupam Mittal on his visit. The shoot's
- *  corner logo is cropped off each file. */
+ *  stage, 4 a student making his point in class (the same shoot), 5 Anupam Mittal with the student founders who pitched him
+ *  (his close portrait was cut on a phone's strip). The shoot's
+ *  corner logo is cropped off each file (1's from the right edge only, so the speaker keeps his headroom). The
+ *  focal points hold faces in both shapes: the tall card on desktop, the wide strip on a phone (2026-11-19). */
 export const PHOTO: Record<number, { src: string; pos: string }> = {
-  1: { src: '/media/terms/t1.webp', pos: '72% 50%' },
-  2: { src: '/media/terms/t2.webp', pos: '52% 50%' },
+  1: { src: '/media/terms/t1.webp', pos: '72% 20%' },
+  2: { src: '/media/terms/t2.webp', pos: '52% 35%' },
   3: { src: '/media/terms/t3.webp', pos: '50% 45%' },
   4: { src: '/media/terms/t4.webp', pos: '50% 50%' },
-  5: { src: '/media/terms/t5.webp', pos: '50% 40%' },
+  5: { src: '/media/terms/t5.webp', pos: '35% 30%' },
 };
 /** [CONFIRM] the cohort's dates, as the stack's: Term 1 Jan–Mar 2027, each term three months on. */
 export const MONTHS: Record<number, [string, string]> = {
