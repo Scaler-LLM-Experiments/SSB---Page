@@ -18,6 +18,8 @@ export type ShowcasePerson = {
   logo?: CardLogo;
   /** Two or more: the logo tile flips between them, each white on its brand colour (mentors, 2026-10-13). */
   logos?: CardLogo[];
+  /** The course they teach (faculty, 2026-11-20). */
+  course?: string;
 };
 
 /**

@@ -44,6 +44,10 @@ export const brandMarks: Record<string, BrandMark> = {
   rippling: { src: '/logos/marks/fc-rippling.png' },
   zeta: { src: '/logos/marks/fc-zeta.png', bg: '#FFFFFF' },
   webveda: { src: '/logos/marks/fc-webveda.png' },
+  // the new faculty's (2026-11-20): Aspora's and Glance's own icons, LoEstro's mark
+  aspora: { src: '/logos/marks/aspora.png', bg: '#FFFFFF' },
+  glance: { src: '/logos/marks/glance.png' },
+  loestro: { src: '/internship/marks/loestro.png', bg: '#FFFFFF' },
 };
 
 /** The mark for a wordmark file ('/logos/flipkart.svg' → Flipkart's bag on blue), or null. */

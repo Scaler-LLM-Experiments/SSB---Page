@@ -49,7 +49,7 @@ const ALL_GROUPS: (Group & { id: PeopleGroupId })[] = [
     itemName: 'faculty',
     people: faculty
       .filter((m) => m.photo)
-      .map((m) => ({ name: m.name, role: m.role, image: `/faculty/${m.photo}.webp`, logo: companyLogos[m.companies[0]] })),
+      .map((m) => ({ name: m.name, role: m.role, image: `/faculty/${m.photo}.webp`, logo: companyLogos[m.companies[0]], course: m.course })),
   },
   { id: 'mentors', tab: 'Mentors', ...mentorsSection, itemName: 'mentor', people: withPhoto(mentorsSection.people) },
   { id: 'founding', tab: 'Founding Team', ...foundingTeamSection, itemName: 'person', people: withPhoto(foundingTeamSection.people) },
@@ -70,17 +70,7 @@ const ALL_GROUPS: (Group & { id: PeopleGroupId })[] = [
 /** PLACEHOLDER (2026-10-12): the stacked cards' line under the logo, until each person's own is written. */
 const PLACEHOLDER_BIO = 'A line on what they teach at SSB and the work they have led.';
 
-/** PLACEHOLDER (2026-10-13): the faculty cards' course titles, until each person's own is written. */
-const PLACEHOLDER_COURSES = [
-  'Operation Management',
-  'Brand Strategy',
-  'Growth Marketing',
-  'Corporate Finance',
-  'Product Management',
-  'Sales Leadership',
-  'Business Analytics',
-  'Strategy & Consulting',
-];
+/* (2026-11-20) the faculty cards' course titles are each person's own now (content/people.ts, `course`) */
 
 /**
  * Faculty as two rows of `FacultyCard`s drifting sideways (2026-10-13, the team's ask: the alumni
@@ -116,7 +106,9 @@ function FacultyDrift({ group: g, stack = false }: { group: Group; stack?: boole
       // role under it, their company as its mark and name (the company in the role; the second logo off)
       <FacultyCard person={p} credentials={p.role} priority={priority} />
     ) : (
-      <FacultyCard person={p} course={PLACEHOLDER_COURSES[i % PLACEHOLDER_COURSES.length]} credentials={p.role} priority={priority} />
+      // the course each teaches (2026-11-20, from the student portal; was a rotating placeholder); a guest
+      // speaker with no course leads with their name
+      <FacultyCard person={p} course={p.course} credentials={p.role} priority={priority} />
     );
   const kind = meet ? 'meet' : undefined;
   const n = g.people.length;
