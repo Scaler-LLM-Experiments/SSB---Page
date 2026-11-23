@@ -457,3 +457,6 @@ html body .alumni-row {
   html body .alumni-card .alumni-card__label.alumni-card__label { font-size: 0.8125rem !important; }
   html body .alumni-card .alumni-card__value.alumni-card__value { font-size: 1rem; line-height: 1.2; }
 }
+
+/* a company with no mark yet (2026-11-20): its first letter, dark on the white tile */
+.alumni-card__mono { font-size: 1.375rem; line-height: 1; font-weight: var(--font-weight-semibold); color: #171717; }

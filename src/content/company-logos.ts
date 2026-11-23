@@ -27,4 +27,9 @@ export const companyLogos: Record<string, CompanyLogo> = {
   pwc: { name: 'PwC', src: '/logos/pwc.svg' },
   accenture: { name: 'Accenture', src: '/logos/accenture.svg' },
   iimb: { name: 'IIM Bangalore', src: '/logos/iimb.png' },
+  // (2026-11-20) the new faculty's companies
+  loestro: { name: 'LoEstro Advisors', src: '/internship/marks/loestro.png' },
+  glance: { name: 'Glance', src: '/logos/marks/glance.png' },
+  airtel: { name: 'Airtel', src: '/logos/airtel.svg' },
+  kpmg: { name: 'KPMG', src: '/logos/kpmg.svg' },
 };

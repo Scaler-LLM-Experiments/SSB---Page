@@ -6,7 +6,8 @@
 
 import type { HeroLogo } from '@/sections/hero/types';
 
-export type CompanyMark = { name: string; src: string; fill?: boolean };
+/** `src` absent: the card shows the name's first letter on the tile (no mark found yet). */
+export type CompanyMark = { name: string; src?: string; fill?: boolean };
 
 export type Alumnus = {
   name: string;
@@ -90,6 +91,76 @@ export const alumni: Alumnus[] = [
     role: 'Growth Manager',
     company: marks.ninjacart,
   },
+];
+
+// The 2025 cohort (2026-11-20, the user's ask: "at least 30 cards", Stephan's review): every SSB 2025
+// student with an offer in the placement portal (scaler-school-of-business.web.app, Placement & Offers,
+// batch SSB 2025, read that day). One card each: the full-time offer if there is one, else the latest
+// internship; four offers still "awaiting details" there (Mahnoor, Rishi, Dilip, Lakshay) are included. Devansh Parashar left out (2026-11-20, the user's call; no portrait).
+// Pre SSB: the latest full-time role in their placement profile, "Fresher" with none. Names without
+// middle names. Photos: the portal's studio portraits, cut out and set on the empty-room plate
+// (public/internship/plate.webp), as the cut-out cards above.
+// Marks: the companies' own icons (Play Store, their sites, LinkedIn); AiStudio and First Batch have
+// none yet, so their tiles show the first letter.
+const marks2025 = {
+  blinkit: { name: 'Blinkit', src: '/logos/marks/blinkit.png', fill: true },
+  emergent: { name: 'Emergent', src: '/logos/marks/emergent.png', fill: true },
+  scaler: { name: 'Scaler', src: '/logos/marks/scaler.png', fill: true },
+  scalerAiLabs: { name: 'Scaler AI Labs', src: '/logos/marks/scaler.png', fill: true },
+  ethos: { name: 'Ethos', src: '/logos/marks/ethos.png', fill: true },
+  aistudio: { name: 'AiStudio' },
+  sipwise: { name: 'Sipwise', src: '/logos/marks/sipwise.png', fill: true },
+  glance: { name: 'Glance', src: '/logos/marks/glance.png', fill: true },
+  scapia: { name: 'Scapia', src: '/logos/marks/scapia.png', fill: true },
+  incred: { name: 'InCred', src: '/logos/marks/incred.png' },
+  aspora: { name: 'Aspora', src: '/logos/marks/aspora.png' },
+  profound: { name: 'Profound', src: '/logos/marks/profound.png', fill: true },
+  wakefit: { name: 'Wakefit', src: '/logos/marks/wakefit.png', fill: true },
+  snabbit: { name: 'Snabbit', src: '/logos/marks/snabbit.png', fill: true },
+  firstclub: { name: 'First Club', src: '/internship/marks/firstclub.png' },
+  cekura: { name: 'Cekura', src: '/logos/marks/cekura.png' },
+  blyss: { name: 'Blyss', src: '/logos/marks/blyss.png' },
+  firstBatch: { name: 'First Batch' },
+  dataflow: { name: 'DataFlow', src: '/logos/marks/dataflow.svg' },
+  tricolite: { name: 'Tricolite', src: '/logos/marks/tricolite.png' },
+  polygnan: { name: 'Polygnan', src: '/logos/marks/polygnan.png' },
+} satisfies Record<string, CompanyMark>;
+
+export const cohort2025: Alumnus[] = [
+  { name: 'Pranav T R', photo: 'pranav-t-r', before: 'Sr. Growth Associate, Edmingle', role: 'Founder\u2019s Office', company: marks2025.scalerAiLabs },
+  { name: 'Ajay Kumar Shetgar', photo: 'ajay-kumar-shetgar', before: 'Analyst, Deloitte', role: 'Associate Program Manager', company: marks2025.blinkit },
+  { name: 'Chavda Tirthrajsinh', photo: 'chavda-tirthrajsinh', before: 'Fresher', role: 'Operations Associate', company: marks2025.ethos },
+  { name: 'Vinayak Jaligidad', photo: 'vinayak-jaligidad', before: 'Anaplan Developer, AB InBev', role: 'AI Strategist', company: marks2025.aistudio },
+  { name: 'Chiranjeevi Bhoyar', photo: 'chiranjeevi-bhoyar', before: 'Internal Audit Associate', role: 'Associate Program Manager', company: marks2025.blinkit },
+  { name: 'Devraj Gerela', photo: 'devraj-gerela', before: 'Credit Manager, ICICI Bank', role: 'Founder\u2019s Office', company: marks2025.sipwise },
+  { name: 'Akshay Sinha', photo: 'akshay-sinha', before: 'Operations, Hudl', role: 'Product Manager Intern', company: marks2025.glance },
+  { name: 'Aditya Geda', photo: 'aditya-geda', before: 'Process Developer, Genpact', role: 'Category Manager Intern', company: marks2025.scapia },
+  { name: 'Harsh Makwana', photo: 'harsh-makwana', before: 'Fresher', role: 'Associate Program Manager', company: marks2025.blinkit },
+  { name: 'Mahnoor Mistry', photo: 'mahnoor-mistry', before: 'General Manager', role: 'Founder\u2019s Office', company: marks2025.scalerAiLabs },
+  { name: 'Akshaya Nakhate', photo: 'akshaya-nakhate', before: 'Analyst, Accenture', role: 'Product Intern', company: marks2025.incred },
+  { name: 'Shubham Singh', photo: 'shubham-singh', before: 'Software Engineer', role: 'Vibe Coding Intern', company: marks2025.emergent },
+  { name: 'Geetika Mehta', photo: 'geetika-mehta', before: 'Presentation Specialist, McKinsey', role: 'Social Media & Content Intern', company: marks2025.aspora },
+  { name: 'Rishi Sharma', photo: 'rishi-sharma', before: 'Financial Officer', role: 'Associate Program Manager', company: marks2025.blinkit },
+  { name: 'Harsh Pardikar', photo: 'harsh-pardikar', before: 'Fresher', role: 'Founder\u2019s Office Intern', company: marks2025.profound },
+  { name: 'Rohit Prasad', photo: 'rohit-prasad', before: 'Fresher', role: 'GTM & Growth Intern', company: marks2025.wakefit },
+  { name: 'Siddharth Karampuri', photo: 'siddharth-karampuri', before: 'SEM Executive', role: 'CEO\u2019s Office Intern', company: marks2025.scaler },
+  { name: 'Malika Gupta', photo: 'malika-gupta', before: 'HR & Operations Executive', role: 'Copywriter Intern', company: marks2025.snabbit },
+  { name: 'Soham Chotalia', photo: 'soham-chotalia', before: 'Associate Product Manager', role: 'Product Management Intern', company: marks2025.incred },
+  { name: 'Pallavi O P', photo: 'pallavi-o-p', before: 'Fresher', role: 'Influencer Marketing Intern', company: marks2025.firstclub },
+  { name: 'Pratham Patel', photo: 'pratham-patel', before: 'Fresher', role: 'GTM Intern', company: marks2025.cekura },
+  { name: 'Dilip B V', photo: 'dilip-b-v', before: 'Associate, KPMG', role: 'Associate Program Manager Intern', company: marks2025.blinkit },
+  { name: 'Simran Vazirani', photo: 'simran-vazirani', before: 'Fresher', role: 'Vibe Coding Intern', company: marks2025.emergent },
+  { name: 'Shreya Rakhra', photo: 'shreya-rakhra', before: 'Management, Lal Rakhra Agencies', role: 'CEO\u2019s Office Intern', company: marks2025.scaler },
+  { name: 'Ronit Dadra', photo: 'ronit-dadra', before: 'Frontend Developer', role: 'Founder\u2019s Office Intern', company: marks2025.blyss },
+  { name: 'Ishika Vikas', photo: 'ishika-vikas', before: 'Performance Marketer', role: 'Founder\u2019s Office Intern', company: marks2025.firstBatch },
+  { name: 'Shravan Satish', photo: 'shravan-satish', before: 'Sales Associate, Pickyourtrail', role: 'Growth Marketing Intern', company: marks2025.dataflow },
+  { name: 'Nirmay Bhavsar', photo: 'nirmay-bhavsar', before: 'Fresher', role: 'Entrepreneur in Residence', company: marks2025.scaler },
+  { name: 'Aayush Prakash', photo: 'aayush-prakash', before: 'Operations Manager', role: 'Strategy & Growth Intern', company: marks2025.tricolite },
+  { name: 'Sarang Nambiar', photo: 'sarang-nambiar', before: 'Fresher', role: 'Founder\u2019s Office Intern', company: marks2025.polygnan },
+  { name: 'Lakshay Vashist', photo: 'lakshay-vashist', before: 'Business Development Manager', role: 'Founder\u2019s Office Intern', company: marks2025.blyss },
+  { name: 'Ashutosh Bhavale', photo: 'ashutosh-bhavale', before: 'Manager, Omkar Motors', role: 'Director\u2019s Office Intern', company: marks2025.scaler },
+  { name: 'Vismay Pujari', photo: 'vismay-pujari', before: 'Graduate Engineer Trainee', role: 'Communications Intern', company: marks2025.scaler },
+  { name: 'Adwitiya Yadav', photo: 'adwitiya-yadav', before: 'Diamond Dealer & Grader', role: 'Social Media Intern', company: marks2025.scaler },
 ];
 
 // The internship section's learner cards, moved here (2026-10-07, the team's ask: that carousel keeps

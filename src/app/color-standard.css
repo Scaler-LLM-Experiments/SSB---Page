@@ -58,7 +58,7 @@ html body :is(
   .fold-tags li,
   .cs-media-tag,
   .sj-ai-tag,
-  .alumni-card__tile:not(:has(img))
+  .alumni-card__tile:not(:has(img)):not(:has(.alumni-card__mono))
 ) {
   background: var(--glass-on-image-surface) !important;
   border-color: var(--glass-on-image-surface-hover) !important;
@@ -106,7 +106,7 @@ html body :is(
   .cm-glass,
   .cs-media-tag,
   .sj-ai-tag,
-  .alumni-card__tile:not(:has(img))
+  .alumni-card__tile:not(:has(img)):not(:has(.alumni-card__mono))
 ) {
   background: var(--plate-on-photo) !important;
 }
